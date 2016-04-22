@@ -20,6 +20,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.portal.kernel.application.type.ApplicationType;
 import com.liferay.portal.kernel.atom.AtomCollectionAdapter;
+import com.liferay.portal.kernel.concurrent.ValueSynchronizer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Plugin;
@@ -85,8 +86,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import javax.portlet.PortletMode;
 import javax.portlet.WindowState;
@@ -3500,49 +3499,31 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public void setReady(boolean ready) {
-		Registry registry = RegistryUtil.getRegistry();
-
-		Readiness readiness = new Readiness(
-			ready, registry.getServiceRegistrar(Portlet.class));
-
-		String rootPortletId = getRootPortletId();
-
-		Readiness previousReadiness = _readinessMap.putIfAbsent(
-			rootPortletId, readiness);
-
-		if (previousReadiness != null) {
-			readiness = previousReadiness;
-		}
-
-		synchronized (readiness) {
-			if (readiness != _readinessMap.get(rootPortletId)) {
-				return;
-			}
-
-			readiness._ready = ready;
-
-			ServiceRegistrar<Portlet> serviceRegistrar =
-				readiness._serviceRegistrar;
-
-			if (ready) {
-				if (serviceRegistrar.isDestroyed()) {
-					serviceRegistrar = registry.getServiceRegistrar(
-						Portlet.class);
-
-					readiness._serviceRegistrar = serviceRegistrar;
+		_valueSynchronizer.synchronizeOn(
+			getRootPortletId(),
+			rootPortletId -> {
+				if (ready == _readyMap.get(rootPortletId)) {
+					return;
 				}
 
-				Map<String, Object> properties = new HashMap<>();
+				_readyMap.put(rootPortletId, ready);
 
-				properties.put("javax.portlet.name", getPortletName());
+				ServiceRegistrar<Portlet> serviceRegistrar =
+					_serviceRegistrarMap.get(rootPortletId);
 
-				serviceRegistrar.registerService(
-					Portlet.class, this, properties);
+				if (ready) {
+					Map<String, Object> properties = new HashMap<>();
+
+					properties.put("javax.portlet.name", getPortletName());
+
+					serviceRegistrar.registerService(
+							Portlet.class, this, properties);
+				}
+				else {
+					serviceRegistrar.destroy();
+				}
 			}
-			else {
-				serviceRegistrar.destroy();
-			}
-		}
+		);
 	}
 
 	/**
@@ -3982,16 +3963,7 @@ public class PortletImpl extends PortletBaseImpl {
 
 	@Override
 	public void unsetReady() {
-		Readiness readiness = _readinessMap.remove(getRootPortletId());
-
-		if (readiness != null) {
-			synchronized (readiness) {
-				ServiceRegistrar<Portlet> serviceRegistrar =
-					readiness._serviceRegistrar;
-
-				serviceRegistrar.destroy();
-			}
-		}
+		_valueSynchronizer.clear(getRootPortletId());
 	}
 
 	/**
@@ -3999,11 +3971,30 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	private static final Log _log = LogFactoryUtil.getLog(PortletImpl.class);
 
+	private static final Map<String, Boolean> _readyMap = new HashMap<>();
+	private static final Map<String, ServiceRegistrar<Portlet>>
+		_serviceRegistrarMap = new HashMap<>();
+
 	/**
 	 * Map of the ready states of all portlets keyed by their root portlet ID.
 	 */
-	private static final ConcurrentMap<String, Readiness> _readinessMap =
-		new ConcurrentHashMap<>();
+	private static final ValueSynchronizer<String> _valueSynchronizer =
+		new ValueSynchronizer<String>().
+			onCreateResource(rootPortletId -> {
+				Registry registry = RegistryUtil.getRegistry();
+
+				_serviceRegistrarMap.put(
+					rootPortletId,
+					registry.getServiceRegistrar(Portlet.class));
+			}).
+			onClearResource(rootPortletId -> {
+				_readyMap.remove(rootPortletId);
+
+				ServiceRegistrar<Portlet> serviceRegistrar =
+					_serviceRegistrarMap.remove(rootPortletId);
+
+				serviceRegistrar.destroy();
+			});
 
 	/**
 	 * The action timeout of the portlet.
