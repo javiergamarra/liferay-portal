@@ -17,10 +17,7 @@ package com.liferay.portal.kernel.servlet.taglib;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceReference;
-import com.liferay.registry.collections.ServiceReferenceMapper;
+import com.liferay.registry.collections.ServiceReferenceMapperFactory;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerMap;
 
@@ -29,6 +26,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static com.liferay.registry.collections.ServiceReferenceMapperFactory.fromService;
 
 /**
  * @author Carlos Sierra Andrés
@@ -84,32 +83,7 @@ public class DynamicIncludeUtil {
 	private DynamicIncludeUtil() {
 		_dynamicIncludes = ServiceTrackerCollections.openMultiValueMap(
 			DynamicInclude.class, null,
-			new ServiceReferenceMapper<String, DynamicInclude>() {
-
-				@Override
-				public void map(
-					ServiceReference<DynamicInclude> serviceReference,
-					final Emitter<String> emitter) {
-
-					Registry registry = RegistryUtil.getRegistry();
-
-					DynamicInclude dynamicInclude = registry.getService(
-						serviceReference);
-
-					dynamicInclude.register(
-						new DynamicInclude.DynamicIncludeRegistry() {
-
-							@Override
-							public void register(String key) {
-								emitter.emit(key);
-							}
-
-						});
-
-					registry.ungetService(serviceReference);
-				}
-
-			});
+			fromService((di, emitter) -> di.register(emitter::emit)));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
