@@ -103,7 +103,7 @@ public class ScreensRatingsEntryServiceImpl
 
 		for (RatingsEntry entry : entries) {
 
-			int position = (int) entry.getScore() * stepCount;
+			int position = (int) (entry.getScore() * stepCount);
 
 			if (position == stepCount) {
 				position--;
