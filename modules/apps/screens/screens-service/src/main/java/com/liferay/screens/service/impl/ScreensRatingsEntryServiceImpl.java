@@ -38,6 +38,9 @@ public class ScreensRatingsEntryServiceImpl
 			long classPK, String className, int ratingsLength)
 		throws PortalException {
 
+		AssetEntryPermission.check(
+			getPermissionChecker(), className, classPK, ActionKeys.DELETE);
+
 		ratingsEntryLocalService.deleteEntry(getUserId(), className, classPK);
 
 		return getRatingsEntries(classPK, className, ratingsLength);
@@ -48,6 +51,9 @@ public class ScreensRatingsEntryServiceImpl
 		throws PortalException {
 
 		AssetEntry assetEntry = assetEntryLocalService.fetchEntry(assetEntryId);
+
+		AssetEntryPermission.check(
+			getPermissionChecker(), assetEntry, ActionKeys.VIEW);
 
 		return getRatingsEntries(
 			assetEntry.getClassPK(), assetEntry.getClassName(), ratingsLength);
@@ -103,6 +109,9 @@ public class ScreensRatingsEntryServiceImpl
 	public JSONObject updateRatingsEntry(
 			long classPK, String className, double score, int ratingsLength)
 		throws PortalException {
+
+		AssetEntryPermission.check(
+			getPermissionChecker(), className, classPK, ActionKeys.UPDATE);
 
 		ratingsEntryLocalService.updateEntry(
 			getUserId(), className, classPK, score, new ServiceContext());
