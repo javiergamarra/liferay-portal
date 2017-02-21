@@ -20,7 +20,9 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portlet.asset.service.permission.AssetEntryPermission;
 import com.liferay.ratings.kernel.model.RatingsEntry;
 import com.liferay.screens.service.base.ScreensRatingsEntryServiceBaseImpl;
 
