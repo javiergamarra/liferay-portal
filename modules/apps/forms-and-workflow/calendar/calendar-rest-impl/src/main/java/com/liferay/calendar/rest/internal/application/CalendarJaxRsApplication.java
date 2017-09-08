@@ -17,6 +17,7 @@ package com.liferay.calendar.rest.internal.application;
 import com.liferay.calendar.rest.internal.context.provider.CompanyContextProvider;
 import com.liferay.calendar.rest.internal.context.provider.LocaleContextProvider;
 import com.liferay.calendar.rest.internal.context.provider.UserContextProvider;
+import com.liferay.calendar.rest.resource.CalendarBookingResource;
 import com.liferay.calendar.rest.resource.CalendarResourceResource;
 
 import java.util.HashSet;
@@ -42,10 +43,14 @@ public class CalendarJaxRsApplication extends Application {
 		singletons.add(_companyContextProvider);
 		singletons.add(_localeContextProvider);
 		singletons.add(_userContextProvider);
+		singletons.add(_calendarBookingResource);
 		singletons.add(_calendarResourceResource);
 
 		return singletons;
 	}
+
+	@Reference
+	private CalendarBookingResource _calendarBookingResource;
 
 	@Reference
 	private CalendarResourceResource _calendarResourceResource;
