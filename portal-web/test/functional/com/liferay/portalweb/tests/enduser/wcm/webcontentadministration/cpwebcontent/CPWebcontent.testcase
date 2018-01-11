@@ -28,7 +28,6 @@
 	</tear-down>
 
 	<command name="AddFolder" priority="5">
-		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="Navigator#openURL" />
@@ -46,7 +45,6 @@
 	</command>
 
 	<command name="AddStructures" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="Navigator#openURL" />
@@ -658,7 +656,6 @@
 	</command>
 
 	<command name="AddTemplateXSL" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration,XSL" />
 
 		<execute macro="Navigator#openURL" />
@@ -1032,7 +1029,17 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="pageName" value="Test Page" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Test Page" />
 		</execute>
 
@@ -1125,7 +1132,17 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="pageName" value="Test Page" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Test Page" />
 		</execute>
 
@@ -1277,7 +1294,7 @@
 			<var name="templateLanguage" value="xsl" />
 		</execute>
 
-		<execute macro="PortletEntry#save" />
+		<execute macro="WebContentTemplates#save" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -1535,7 +1552,6 @@
 	</command>
 
 	<command name="DeleteWebContent" priority="5">
-		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Web Content Administration" />
 
 		<execute macro="Navigator#openURL" />
@@ -1847,7 +1863,6 @@
 	</command>
 
 	<command name="EditWebContent" priority="5">
-		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Web Content Administration" />
 
 		<execute macro="Navigator#openURL" />
@@ -1879,6 +1894,66 @@
 			<var name="webContentContentEdit" value="WC WebContent Content Edit" />
 			<var name="webContentTitle" value="WC WebContent Title" />
 			<var name="webContentTitleEdit" value="WC WebContent Title Edit" />
+		</execute>
+
+		<execute macro="WebContentNavigator#gotoEditCP">
+			<var name="webContentTitle" value="WC WebContent Title Edit" />
+		</execute>
+
+		<execute macro="WebContent#viewCP">
+			<var name="webContentContent" value="WC WebContent Content Edit" />
+			<var name="webContentTitle" value="WC WebContent Title Edit" />
+		</execute>
+	</command>
+
+	<command name="EditWebContentViaArticleTitle" priority="5">
+		<property name="portal.acceptance" value="pending" />
+		<property name="testray.component.names" value="Web Content Administration" />
+
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Web Content" />
+		</execute>
+
+		<execute macro="WebContentNavigator#gotoAddCP" />
+
+		<execute macro="WebContent#addCP">
+			<var name="webContentContent" value="WC WebContent Content" />
+			<var name="webContentTitle" value="WC WebContent Title" />
+		</execute>
+
+		<execute macro="PortletEntry#publish" />
+
+		<execute macro="WebContent#viewTitle">
+			<var name="webContentTitle" value="WC WebContent Title" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Web Content" />
+		</execute>
+
+		<execute macro="WebContent#searchCP">
+			<var name="webContentTitle" value="WC WebContent Title" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntry">
+			<var name="rowEntry" value="WC WebContent Title" />
+		</execute>
+
+		<execute macro="WebContent#editCP">
+			<var name="webContentContentEdit" value="WC WebContent Content Edit" />
+			<var name="webContentTitleEdit" value="WC WebContent Title Edit" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Web Content" />
 		</execute>
 
 		<execute macro="WebContentNavigator#gotoEditCP">
@@ -2061,7 +2136,7 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="PortletEntry#save" />
+		<execute macro="WebContentTemplates#save" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -2302,7 +2377,13 @@
 	<command name="ImportLARLinkToPageValidation" priority="4">
 		<property name="testray.component.names" value="Web Content Administration" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Test Page" />
 		</execute>
 
@@ -2391,10 +2472,6 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSite">
-			<var name="site" value="Site Name" />
-		</execute>
-
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
 			<var name="panel" value="Site Administration" />
@@ -2409,8 +2486,7 @@
 		</execute>
 	</command>
 
-	<command ignore="true" name="ImportTrainingLAR" priority="5">
-		<property name="portal.acceptance" value="pending" />
+	<command name="ImportTrainingLAR" priority="5">
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -2423,9 +2499,14 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Site Page Name" />
-			<var name="siteName" value="Site Name" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -2454,9 +2535,13 @@
 			<var name="portletOption" value="Look and Feel Configuration" />
 		</execute>
 
+		<execute macro="IFrame#selectConfigurationFrame" />
+
 		<execute macro="Portlet#selectApplicationDecorator">
 			<var name="decorator" value="Barebone" />
 		</execute>
+
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="Navigator#gotoSitePage">
 			<var name="pageName" value="Site Page Name" />
@@ -2594,7 +2679,6 @@
 	</command>
 
 	<command name="SearchWebContent" priority="5">
-		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Web Content Administration" />
 
 		<execute macro="Navigator#openURL" />

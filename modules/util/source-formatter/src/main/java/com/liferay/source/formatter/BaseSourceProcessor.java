@@ -15,8 +15,8 @@
 package com.liferay.source.formatter;
 
 import com.liferay.petra.nio.CharsetDecoderUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -194,6 +194,11 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	@Override
+	public void setProjectPathPrefix(String projectPathPrefix) {
+		_projectPathPrefix = projectPathPrefix;
+	}
+
+	@Override
 	public void setPropertiesMap(Map<String, Properties> propertiesMap) {
 		_propertiesMap = propertiesMap;
 	}
@@ -288,11 +293,13 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		String newContent = _processSourceChecks(
 			file, fileName, absolutePath, content);
 
-		if (content.equals(newContent)) {
-			return content;
+		if ((newContent == null) || content.equals(newContent)) {
+			return newContent;
 		}
 
 		if (!modifiedContents.add(newContent)) {
+			_sourceFormatterMessagesMap.remove(fileName);
+
 			processMessage(fileName, "Infinite loop in SourceFormatter");
 
 			return originalContent;
@@ -302,6 +309,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			count++;
 
 			if (count > 100) {
+				_sourceFormatterMessagesMap.remove(fileName);
+
 				processMessage(fileName, "Infinite loop in SourceFormatter");
 
 				return originalContent;
@@ -362,6 +371,17 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return _sourceFormatterExcludes;
 	}
 
+	protected boolean hasGeneratedTag(String content) {
+		if ((content.contains("@generated") || content.contains("$ANTLR")) &&
+			!content.contains("hasGeneratedTag")) {
+
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	protected void postFormat() throws Exception {
 	}
 
@@ -381,7 +401,12 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			}
 
 			if (sourceFormatterArgs.isAutoFix()) {
-				FileUtil.write(file, newContent);
+				if (newContent != null) {
+					FileUtil.write(file, newContent);
+				}
+				else {
+					file.delete();
+				}
 			}
 			else if (_firstSourceMismatchException == null) {
 				_firstSourceMismatchException = new SourceMismatchException(
@@ -466,6 +491,14 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	private boolean _containsModuleFile(List<String> fileNames) {
+		if (subrepository) {
+			return true;
+		}
+
+		if (!portalSource) {
+			return false;
+		}
+
 		for (String fileName : fileNames) {
 			if (!_isMatchPath(fileName)) {
 				continue;
@@ -498,7 +531,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 		String content = FileUtil.read(file);
 
-		if (_hasGeneratedTag(content)) {
+		if (hasGeneratedTag(content)) {
 			return;
 		}
 
@@ -526,17 +559,6 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return sourceChecks;
 	}
 
-	private boolean _hasGeneratedTag(String content) {
-		if ((content.contains("@generated") || content.contains("$ANTLR")) &&
-			!content.contains("hasGeneratedTag")) {
-
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	private void _initSourceCheck(SourceCheck sourceCheck) throws Exception {
 		sourceCheck.setAllFileNames(_allFileNames);
 		sourceCheck.setBaseDirName(sourceFormatterArgs.getBaseDirName());
@@ -544,6 +566,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		sourceCheck.setPluginsInsideModulesDirectoryNames(
 			_pluginsInsideModulesDirectoryNames);
 		sourceCheck.setPortalSource(portalSource);
+		sourceCheck.setProjectPathPrefix(_projectPathPrefix);
 		sourceCheck.setPropertiesMap(_propertiesMap);
 		sourceCheck.setSourceFormatterExcludes(_sourceFormatterExcludes);
 		sourceCheck.setSubrepository(subrepository);
@@ -570,6 +593,10 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 		if (subrepository) {
 			return true;
+		}
+
+		if (!portalSource) {
+			return false;
 		}
 
 		if (includePlugins) {
@@ -648,6 +675,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		new CopyOnWriteArrayList<>();
 	private List<String> _pluginsInsideModulesDirectoryNames;
 	private BlockingQueue<ProgressStatusUpdate> _progressStatusQueue;
+	private String _projectPathPrefix;
 	private Map<String, Properties> _propertiesMap;
 	private List<SourceCheck> _sourceChecks = new ArrayList<>();
 	private SourceChecksSuppressions _sourceChecksSuppressions;

@@ -17,16 +17,26 @@
 <%@ include file="/init.jsp" %>
 
 <%
-ViewLayoutsDisplayContext viewLayoutsDisplayContext = new ViewLayoutsDisplayContext(liferayPortletRequest, liferayPortletResponse);
-
 renderResponse.setTitle(LanguageUtil.get(request, "pages"));
 %>
 
+<liferay-ui:success key='<%= portletDisplay.getPortletName() + "layoutAdded" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-created-succesfully") %>' />
+<liferay-ui:success key='<%= portletDisplay.getPortletName() + "layoutUpdated" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-updated-succesfully") %>' />
+
 <aui:nav-bar markupView="lexicon">
-	<aui:nav cssClass="navbar-nav">
-		<aui:nav-item label="pages" selected="<%= true %>" />
-	</aui:nav>
+	<liferay-util:include page="/navigation_tabs.jsp" servletContext="<%= application %>" />
 </aui:nav-bar>
+
+<liferay-ui:error exception="<%= LayoutTypeException.class %>">
+
+	<%
+	LayoutTypeException lte = (LayoutTypeException)errorException;
+	%>
+
+	<c:if test="<%= lte.getType() == LayoutTypeException.FIRST_LAYOUT %>">
+		<liferay-ui:message arguments='<%= "layout.types." + lte.getLayoutType() %>' key="the-first-page-cannot-be-of-type-x" />
+	</c:if>
+</liferay-ui:error>
 
 <liferay-frontend:management-bar
 	disabled="<%= false %>"
@@ -36,22 +46,22 @@ renderResponse.setTitle(LanguageUtil.get(request, "pages"));
 	<liferay-frontend:management-bar-buttons>
 		<liferay-frontend:management-bar-display-buttons
 			displayViews='<%= new String[] {"list"} %>'
-			portletURL="<%= viewLayoutsDisplayContext.getPortletURL() %>"
-			selectedDisplayStyle="<%= viewLayoutsDisplayContext.getDisplayStyle() %>"
+			portletURL="<%= layoutsAdminDisplayContext.getPortletURL() %>"
+			selectedDisplayStyle="<%= layoutsAdminDisplayContext.getDisplayStyle() %>"
 		/>
 	</liferay-frontend:management-bar-buttons>
 
 	<liferay-frontend:management-bar-filters>
 		<liferay-frontend:management-bar-navigation
-			navigationKeys="<%= viewLayoutsDisplayContext.getNavigationKeys() %>"
-			portletURL="<%= viewLayoutsDisplayContext.getPortletURL() %>"
+			navigationKeys="<%= layoutsAdminDisplayContext.getNavigationKeys() %>"
+			portletURL="<%= layoutsAdminDisplayContext.getPortletURL() %>"
 		/>
 
 		<liferay-frontend:management-bar-sort
-			orderByCol="<%= viewLayoutsDisplayContext.getOrderByCol() %>"
-			orderByType="<%= viewLayoutsDisplayContext.getOrderByType() %>"
-			orderColumns="<%= viewLayoutsDisplayContext.getOrderColumns() %>"
-			portletURL="<%= viewLayoutsDisplayContext.getPortletURL() %>"
+			orderByCol="<%= layoutsAdminDisplayContext.getOrderByCol() %>"
+			orderByType="<%= layoutsAdminDisplayContext.getOrderByType() %>"
+			orderColumns="<%= layoutsAdminDisplayContext.getOrderColumns() %>"
+			portletURL="<%= layoutsAdminDisplayContext.getPortletURL() %>"
 		/>
 	</liferay-frontend:management-bar-filters>
 
@@ -60,58 +70,72 @@ renderResponse.setTitle(LanguageUtil.get(request, "pages"));
 	</liferay-frontend:management-bar-action-buttons>
 </liferay-frontend:management-bar>
 
-<portlet:actionURL name="/delete_layout" var="deleteLayoutURL">
+<portlet:actionURL name="/layout/delete_layout" var="deleteLayoutURL">
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 </portlet:actionURL>
 
 <aui:form action="<%= deleteLayoutURL %>" cssClass="container-fluid-1280" name="fm">
-	<liferay-ui:search-container
-		id="pages"
-		searchContainer="<%= viewLayoutsDisplayContext.getLayoutsSearchContainer() %>"
-	>
-		<liferay-ui:search-container-row
-			className="com.liferay.portal.kernel.model.Layout"
-			keyProperty="plid"
-			modelVar="curLayout"
-		>
-			<liferay-ui:search-container-column-text
-				cssClass="table-cell-content"
-				name="layout"
-				value="<%= HtmlUtil.escape(curLayout.getName(locale)) %>"
-			/>
+	<c:choose>
+		<c:when test="<%= layoutsAdminDisplayContext.isMillerColumnsEnabled() %>">
 
-			<liferay-ui:search-container-column-text
-				cssClass="table-cell-content"
-				name="path"
+			<%
+			Map<String, Object> context = new HashMap<>();
+
+			context.put("breadcrumbEntries", layoutsAdminDisplayContext.getBreadcrumbEntriesJSONArray());
+			context.put("layoutColumns", layoutsAdminDisplayContext.getLayoutColumnsJSONArray());
+			context.put("pathThemeImages", themeDisplay.getPathThemeImages());
+			context.put("portletNamespace", renderResponse.getNamespace());
+			context.put("searchContainerId", "pages");
+			%>
+
+			<soy:template-renderer
+				context="<%= context %>"
+				module="layout-admin-web/js/Layout.es"
+				templateNamespace="Layout.render"
+			/>
+		</c:when>
+		<c:otherwise>
+			<liferay-ui:search-container
+				id="pages"
+				searchContainer="<%= layoutsAdminDisplayContext.getLayoutsSearchContainer() %>"
 			>
-				<%= HtmlUtil.escape(viewLayoutsDisplayContext.getPath(curLayout, locale)) %> <strong><%= HtmlUtil.escape(curLayout.getName(locale)) %></strong>
-			</liferay-ui:search-container-column-text>
+				<liferay-ui:search-container-row
+					className="com.liferay.portal.kernel.model.Layout"
+					keyProperty="plid"
+					modelVar="curLayout"
+				>
+					<liferay-ui:search-container-column-text
+						cssClass="table-cell-content"
+						name="page"
+						value="<%= HtmlUtil.escape(curLayout.getName(locale)) %>"
+					/>
 
-			<liferay-ui:search-container-column-date
-				name="create-date"
-				property="createDate"
-			/>
+					<liferay-ui:search-container-column-text
+						cssClass="table-cell-content"
+						name="path"
+					>
+						<%= HtmlUtil.escape(layoutsAdminDisplayContext.getPath(curLayout, locale)) %> <strong><%= HtmlUtil.escape(curLayout.getName(locale)) %></strong>
+					</liferay-ui:search-container-column-text>
 
-			<liferay-ui:search-container-column-jsp
-				path="/layout_action.jsp"
-			/>
-		</liferay-ui:search-container-row>
+					<liferay-ui:search-container-column-date
+						name="create-date"
+						property="createDate"
+					/>
 
-		<liferay-ui:search-iterator displayStyle="<%= viewLayoutsDisplayContext.getDisplayStyle() %>" markupView="lexicon" />
-	</liferay-ui:search-container>
+					<liferay-ui:search-container-column-jsp
+						path="/layout_action.jsp"
+					/>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator displayStyle="<%= layoutsAdminDisplayContext.getDisplayStyle() %>" markupView="lexicon" />
+			</liferay-ui:search-container>
+		</c:otherwise>
+	</c:choose>
 </aui:form>
 
-<c:if test="<%= viewLayoutsDisplayContext.isShowAddRootLayoutButton() %>">
-
-	<%
-	PortletURL addLayoutURL = viewLayoutsDisplayContext.getAddLayoutURL();
-
-	addLayoutURL.setParameter("redirect", currentURL);
-	addLayoutURL.setParameter("backURL", currentURL);
-	%>
-
+<c:if test="<%= layoutsAdminDisplayContext.isShowAddRootLayoutButton() %>">
 	<liferay-frontend:add-menu>
-		<liferay-frontend:add-menu-item title='<%= LanguageUtil.get(request, "page") %>' url="<%= addLayoutURL.toString() %>" />
+		<liferay-frontend:add-menu-item title='<%= LanguageUtil.get(request, "page") %>' url="<%= layoutsAdminDisplayContext.getAddLayoutURL() %>" />
 	</liferay-frontend:add-menu>
 </c:if>
 

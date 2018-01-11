@@ -16,6 +16,7 @@ package com.liferay.portlet;
 
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.encryptor.EncryptorException;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -38,7 +39,6 @@ import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -717,7 +717,9 @@ public class PortletURLImpl
 			biConsumer.accept("p_p_lifecycle", "2");
 		}
 
-		if (_windowStateString != null) {
+		if ((_windowStateString != null) &&
+			!_cacheability.equals(ResourceURL.FULL)) {
+
 			biConsumer.accept("p_p_state", _windowStateString);
 		}
 
@@ -725,7 +727,9 @@ public class PortletURLImpl
 			biConsumer.accept("p_p_state_rcv", "1");
 		}
 
-		if (_portletModeString != null) {
+		if ((_portletModeString != null) &&
+			!_cacheability.equals(ResourceURL.FULL)) {
+
 			biConsumer.accept("p_p_mode", _portletModeString);
 		}
 
@@ -948,7 +952,10 @@ public class PortletURLImpl
 
 		Map<String, String[]> renderParams = _params;
 
-		if (_copyCurrentRenderParameters) {
+		if (_copyCurrentRenderParameters &&
+			!(_lifecycle.equals(PortletRequest.RESOURCE_PHASE) &&
+			 _cacheability.equals(ResourceURL.FULL))) {
+
 			renderParams = _mergeWithRenderParameters(renderParams);
 		}
 
@@ -960,11 +967,13 @@ public class PortletURLImpl
 				continue;
 			}
 
-			String publicRenderParameterName = getPublicRenderParameterName(
-				name);
+			if (!_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
 
-			if (Validator.isNotNull(publicRenderParameterName)) {
-				name = publicRenderParameterName;
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
 			}
 
 			for (String value : values) {
@@ -1023,10 +1032,7 @@ public class PortletURLImpl
 	}
 
 	protected String generateWSRPToString() {
-		StringBundler sb = new StringBundler("wsrp_rewrite?");
-
-		sb.append("wsrp-urlType");
-		sb.append(StringPool.EQUAL);
+		StringBundler sb = new StringBundler("wsrp_rewrite?wsrp-urlType=");
 
 		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
 			sb.append(URLCodec.encodeURL("blockingAction"));
@@ -1080,7 +1086,10 @@ public class PortletURLImpl
 
 		Map<String, String[]> renderParams = _params;
 
-		if (_copyCurrentRenderParameters) {
+		if (_copyCurrentRenderParameters &&
+			!(_lifecycle.equals(PortletRequest.RESOURCE_PHASE) &&
+			 _cacheability.equals(ResourceURL.FULL))) {
+
 			renderParams = _mergeWithRenderParameters(renderParams);
 		}
 
@@ -1096,11 +1105,13 @@ public class PortletURLImpl
 				continue;
 			}
 
-			String publicRenderParameterName = getPublicRenderParameterName(
-				name);
+			if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
 
-			if (Validator.isNotNull(publicRenderParameterName)) {
-				name = publicRenderParameterName;
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
 			}
 
 			for (String value : values) {
@@ -1116,8 +1127,7 @@ public class PortletURLImpl
 			sb.setIndex(sb.index() - 1);
 		}
 
-		sb.append("wsrp-navigationalState");
-		sb.append(StringPool.EQUAL);
+		sb.append("wsrp-navigationalState=");
 
 		byte[] parameterBytes = null;
 
@@ -1132,8 +1142,7 @@ public class PortletURLImpl
 			}
 		}
 
-		String navigationalState = Base64.toURLSafe(
-			Base64.encode(parameterBytes));
+		String navigationalState = Base64.encodeToURL(parameterBytes);
 
 		sb.append(navigationalState);
 
@@ -1241,6 +1250,10 @@ public class PortletURLImpl
 		_removePublicRenderParameters = new LinkedHashSet<>();
 		_secure = PortalUtil.isSecure(request);
 		_wsrp = ParamUtil.getBoolean(request, "wsrp");
+
+		if (lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+			_copyCurrentRenderParameters = true;
+		}
 
 		if (!portlet.isUndeployedPortlet()) {
 			Set<String> autopropagatedParameters =

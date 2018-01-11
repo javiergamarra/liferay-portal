@@ -23,68 +23,52 @@ Layout curLayout = (Layout)row.getObject();
 %>
 
 <liferay-ui:icon-menu direction="left-side" icon="<%= StringPool.BLANK %>" markupView="lexicon" message="<%= StringPool.BLANK %>" showWhenSingleIcon="<%= true %>">
-	<c:if test="<%= LayoutPermissionUtil.contains(permissionChecker, curLayout, ActionKeys.UPDATE) %>">
-		<portlet:renderURL var="editLayoutURL">
-			<portlet:param name="mvcPath" value="/edit_layout.jsp" />
-			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="backURL" value="<%= currentURL %>" />
-			<portlet:param name="groupId" value="<%= String.valueOf(curLayout.getGroupId()) %>" />
-			<portlet:param name="selPlid" value="<%= String.valueOf(curLayout.getPlid()) %>" />
-			<portlet:param name="privateLayout" value="<%= String.valueOf(curLayout.isPrivateLayout()) %>" />
-		</portlet:renderURL>
-
-		<liferay-ui:icon
-			message="configure"
-			url="<%= editLayoutURL %>"
-		/>
-	</c:if>
-
-	<c:if test="<%= LayoutPermissionUtil.contains(permissionChecker, curLayout, ActionKeys.ADD_LAYOUT) %>">
-		<portlet:renderURL var="addChildPageURL">
-			<portlet:param name="mvcPath" value="/add_layout.jsp" />
-			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="backURL" value="<%= currentURL %>" />
-			<portlet:param name="groupId" value="<%= String.valueOf(curLayout.getGroupId()) %>" />
-			<portlet:param name="selPlid" value="<%= String.valueOf(curLayout.getPlid()) %>" />
-			<portlet:param name="privateLayout" value="<%= String.valueOf(curLayout.isPrivateLayout()) %>" />
-		</portlet:renderURL>
-
-		<liferay-ui:icon
-			message="add-child-page"
-			url="<%= addChildPageURL %>"
-		/>
-	</c:if>
-
 	<liferay-ui:icon
-		message="view-page"
+		message="edit"
 		target="_blank"
-		url="<%= PortalUtil.getLayoutFullURL(curLayout, themeDisplay) %>"
+		url="<%= layoutsAdminDisplayContext.getEditLayoutURL(curLayout) %>"
 	/>
 
-	<%
-	boolean isDeletable = true;
+	<c:if test="<%= layoutsAdminDisplayContext.showConfigureAction(curLayout) %>">
+		<liferay-ui:icon
+			message="configure"
+			url="<%= layoutsAdminDisplayContext.getConfigureLayoutURL(curLayout) %>"
+		/>
+	</c:if>
 
-	if (!LayoutPermissionUtil.contains(permissionChecker, curLayout, ActionKeys.DELETE)) {
-		isDeletable = false;
-	}
+	<c:if test="<%= layoutsAdminDisplayContext.showAddChildPageAction(curLayout) %>">
+		<liferay-ui:icon
+			message="add-child-page"
+			url="<%= layoutsAdminDisplayContext.getAddLayoutURL(curLayout.getPlid(), curLayout.isPrivateLayout()) %>"
+		/>
+	</c:if>
 
-	Group group = curLayout.getGroup();
+	<c:if test="<%= layoutsAdminDisplayContext.showPermissionsAction(curLayout) %>">
+		<liferay-ui:icon
+			message="permissions"
+			method="get"
+			url="<%= layoutsAdminDisplayContext.getPermissionsURL(curLayout) %>"
+			useDialog="<%= true %>"
+		/>
+	</c:if>
 
-	int layoutsCount = LayoutLocalServiceUtil.getLayoutsCount(group, false, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
+	<c:if test="<%= layoutsAdminDisplayContext.showCopyApplicationsAction(curLayout) %>">
+		<liferay-ui:icon
+			message="copy-applications"
+			url="<%= layoutsAdminDisplayContext.getCopyApplicationsURL(curLayout) %>"
+		/>
+	</c:if>
 
-	if (group.isGuest() && !curLayout.isPrivateLayout() && curLayout.isRootLayout() && (layoutsCount == 1)) {
-		isDeletable = false;
-	}
-	%>
+	<c:if test="<%= layoutsAdminDisplayContext.showOrphanPortletsAction(curLayout) %>">
+		<liferay-ui:icon
+			message="orphan-portlets"
+			url="<%= layoutsAdminDisplayContext.getOrphanPortletsURL(curLayout) %>"
+		/>
+	</c:if>
 
-	<c:if test="<%= isDeletable %>">
-		<portlet:actionURL name="/delete_layout" var="deleteLayoutURL">
-			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="plid" value="<%= String.valueOf(curLayout.getPlid()) %>" />
-		</portlet:actionURL>
-
+	<c:if test="<%= layoutsAdminDisplayContext.showDeleteAction(curLayout) %>">
 		<liferay-ui:icon-delete
-			url="<%= deleteLayoutURL %>"
+			url="<%= layoutsAdminDisplayContext.getDeleteLayoutURL(curLayout) %>"
 		/>
 	</c:if>
 </liferay-ui:icon-menu>

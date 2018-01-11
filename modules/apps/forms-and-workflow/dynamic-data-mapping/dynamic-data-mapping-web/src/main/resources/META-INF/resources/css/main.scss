@@ -199,3 +199,9 @@ textarea.script {
 .vertical-scrolling.nav {
 	flex-direction: row;
 }
+
+.vertical-scrolling.nav {
+	li {
+		width: 100%;
+	}
+}

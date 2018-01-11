@@ -52,7 +52,13 @@ public class VarPoshiElement extends BasePoshiElement {
 		if (valueAttributeName == null) {
 			for (Node node : Dom4JUtil.toNodeList(content())) {
 				if (node instanceof CDATA) {
-					return node.getText();
+					StringBuilder sb = new StringBuilder();
+
+					sb.append("escapeText(\"");
+					sb.append(node.getText());
+					sb.append("\")");
+
+					return sb.toString();
 				}
 			}
 		}
@@ -66,7 +72,15 @@ public class VarPoshiElement extends BasePoshiElement {
 
 		addAttribute("name", name);
 
-		String value = getQuotedContent(readableSyntax);
+		String quotedValue = getValueFromAssignment(readableSyntax);
+
+		String value = getQuotedContent(quotedValue);
+
+		if (quotedValue.startsWith("escapeText(")) {
+			addCDATA(value);
+
+			return;
+		}
 
 		if (value.contains("Util.") || value.startsWith("selenium.")) {
 			if (value.startsWith("selenium.")) {
@@ -81,11 +95,7 @@ public class VarPoshiElement extends BasePoshiElement {
 			return;
 		}
 
-		if (value.contains("\n")) {
-			addCDATA(value);
-
-			return;
-		}
+		value = value.replace("&quot;", "\"");
 
 		addAttribute("value", value);
 	}
@@ -109,7 +119,7 @@ public class VarPoshiElement extends BasePoshiElement {
 
 		sb.append(name);
 
-		sb.append(" = \"");
+		sb.append(" = ");
 
 		String value = getVarValue();
 
@@ -122,11 +132,18 @@ public class VarPoshiElement extends BasePoshiElement {
 					value = value.replace("Util#", "Util.");
 				}
 			}
+			else {
+				value = value.replaceAll("\"", "&quot;");
+
+				if (parentElement instanceof ExecutePoshiElement) {
+					value = value.replace("\\", "\\\\");
+				}
+			}
+
+			value = quoteContent(value);
 		}
 
 		sb.append(value);
-
-		sb.append("\"");
 
 		if (!parentElementName.equals("execute")) {
 			sb.append(";");
@@ -189,7 +206,7 @@ public class VarPoshiElement extends BasePoshiElement {
 				"Invalid variable element " + Dom4JUtil.format(element));
 		}
 		catch (IOException ioe) {
-			throw new IllegalArgumentException("Invalid variable element");
+			throw new IllegalArgumentException("Invalid variable element", ioe);
 		}
 	}
 

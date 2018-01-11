@@ -62,7 +62,6 @@ import org.apache.http.auth.NTCredentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -80,7 +79,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.ProxyAuthenticationStrategy;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
@@ -121,8 +119,8 @@ public abstract class BaseJSONWebServiceClientImpl
 
 		httpAsyncClientBuilder.setDefaultCredentialsProvider(
 			_getCredentialsProvider());
-		httpAsyncClientBuilder.setDefaultRequestConfig(
-			_getProxyRequestConfig());
+
+		setProxyHost(httpAsyncClientBuilder);
 
 		try {
 			_closeableHttpAsyncClient = httpAsyncClientBuilder.build();
@@ -212,7 +210,8 @@ public abstract class BaseJSONWebServiceClientImpl
 
 	@Override
 	public String doDelete(String url, String... parametersArray)
-		throws JSONWebServiceInvocationException {
+		throws JSONWebServiceInvocationException,
+			   JSONWebServiceTransportException {
 
 		Map<String, String> parameters = new HashMap<String, String>();
 
@@ -269,7 +268,8 @@ public abstract class BaseJSONWebServiceClientImpl
 
 	@Override
 	public String doGet(String url, String... parametersArray)
-		throws JSONWebServiceInvocationException {
+		throws JSONWebServiceInvocationException,
+			   JSONWebServiceTransportException {
 
 		Map<String, String> parameters = new HashMap<String, String>();
 
@@ -285,7 +285,8 @@ public abstract class BaseJSONWebServiceClientImpl
 			Class<T> clazz, String url, Map<String, String> parameters,
 			Map<String, String> headers)
 		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException {
+			   JSONWebServiceSerializeException,
+			   JSONWebServiceTransportException {
 
 		String json = doGet(url, parameters, headers);
 
@@ -312,7 +313,8 @@ public abstract class BaseJSONWebServiceClientImpl
 	public <V, T> List<V> doGetToList(
 			Class<T> clazz, String url, String... parametersArray)
 		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException {
+			   JSONWebServiceSerializeException,
+			   JSONWebServiceTransportException {
 
 		Map<String, String> parameters = new HashMap<String, String>();
 
@@ -328,7 +330,8 @@ public abstract class BaseJSONWebServiceClientImpl
 	public <T> T doGetToObject(
 			Class<T> clazz, String url, String... parametersArray)
 		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException {
+			   JSONWebServiceSerializeException,
+			   JSONWebServiceTransportException {
 
 		String json = doGet(url, parametersArray);
 
@@ -387,7 +390,8 @@ public abstract class BaseJSONWebServiceClientImpl
 
 	@Override
 	public String doPost(String url, String... parametersArray)
-		throws JSONWebServiceInvocationException {
+		throws JSONWebServiceInvocationException,
+			   JSONWebServiceTransportException {
 
 		Map<String, String> parameters = new HashMap<String, String>();
 
@@ -398,9 +402,11 @@ public abstract class BaseJSONWebServiceClientImpl
 		return doPost(url, parameters, Collections.<String, String>emptyMap());
 	}
 
+	@Override
 	public String doPostAsJSON(String url, Object object)
 		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException {
+			   JSONWebServiceSerializeException,
+			   JSONWebServiceTransportException {
 
 		try {
 			String json = _objectMapper.writeValueAsString(object);
@@ -430,7 +436,7 @@ public abstract class BaseJSONWebServiceClientImpl
 
 		addHeaders(httpPost, headers);
 
-		StringEntity stringEntity = new StringEntity(json.toString(), _CHARSET);
+		StringEntity stringEntity = new StringEntity(json, _CHARSET);
 
 		stringEntity.setContentType("application/json");
 
@@ -443,7 +449,8 @@ public abstract class BaseJSONWebServiceClientImpl
 	public <T> T doPostToObject(
 			Class<T> clazz, String url, String... parametersArray)
 		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException {
+			   JSONWebServiceSerializeException,
+			   JSONWebServiceTransportException {
 
 		String json = doPost(url, parametersArray);
 
@@ -502,7 +509,8 @@ public abstract class BaseJSONWebServiceClientImpl
 
 	@Override
 	public String doPut(String url, String... parametersArray)
-		throws JSONWebServiceInvocationException {
+		throws JSONWebServiceInvocationException,
+			   JSONWebServiceTransportException {
 
 		Map<String, String> parameters = new HashMap<String, String>();
 
@@ -909,7 +917,7 @@ public abstract class BaseJSONWebServiceClientImpl
 		_logger.debug(sb.toString());
 	}
 
-	protected void setProxyHost(HttpClientBuilder httpClientBuilder) {
+	protected void setProxyHost(HttpAsyncClientBuilder httpClientBuilder) {
 		if ((_proxyHostName == null) || _proxyHostName.equals("")) {
 			return;
 		}
@@ -1050,19 +1058,6 @@ public abstract class BaseJSONWebServiceClientImpl
 		}
 
 		return new UsernamePasswordCredentials(_proxyLogin, _proxyPassword);
-	}
-
-	private RequestConfig _getProxyRequestConfig() {
-		if (isNull(_proxyLogin) || isNull(_proxyPassword)) {
-			return null;
-		}
-
-		RequestConfig.Builder builder = RequestConfig.custom();
-
-		builder.setProxy(
-			new HttpHost(_proxyHostName, _proxyHostPort, _protocol));
-
-		return builder.build();
 	}
 
 	private boolean _isApplicationJSONContentType(HttpEntity httpEntity) {

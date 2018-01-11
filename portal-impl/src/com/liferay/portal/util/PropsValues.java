@@ -233,6 +233,8 @@ public class PropsValues {
 
 	public static final int CACHE_CONTENT_THRESHOLD_SIZE = GetterUtil.getInteger(PropsUtil.get(PropsKeys.CACHE_CONTENT_THRESHOLD_SIZE));
 
+	public static final boolean CACHE_FILTER_INCLUDE_USER_AGENT = GetterUtil.getBoolean(PropsKeys.CACHE_FILTER_INCLUDE_USER_AGENT);
+
 	public static final String CALENDAR_EMAIL_FROM_ADDRESS = PropsUtil.get(PropsKeys.CALENDAR_EMAIL_FROM_ADDRESS);
 
 	public static final String CALENDAR_EMAIL_FROM_NAME = PropsUtil.get(PropsKeys.CALENDAR_EMAIL_FROM_NAME);
@@ -872,6 +874,10 @@ public class PropsValues {
 
 	public static final boolean LAYOUT_PARALLEL_RENDER_ENABLE = false;
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean LAYOUT_PARALLEL_RENDER_THREAD_POOL_ALLOW_CORE_THREAD_TIMEOUT = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.LAYOUT_PARALLEL_RENDER_THREAD_POOL_ALLOW_CORE_THREAD_TIMEOUT));
 
 	public static final int LAYOUT_PARALLEL_RENDER_THREAD_POOL_CORE_THREAD_COUNT = GetterUtil.getInteger(PropsUtil.get(PropsKeys.LAYOUT_PARALLEL_RENDER_THREAD_POOL_CORE_THREAD_COUNT));
@@ -1878,6 +1884,8 @@ public class PropsValues {
 	public static final boolean YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS));
 
 	public static final boolean YUI_COMPRESSOR_JS_VERBOSE = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_VERBOSE));
+
+	public static final String ZIP_FILE_NAME_ENCODING = GetterUtil.getString(PropsUtil.get(PropsKeys.ZIP_FILE_NAME_ENCODING));
 
 	static {
 		if (!LAYOUT_USER_PRIVATE_LAYOUTS_ENABLED) {

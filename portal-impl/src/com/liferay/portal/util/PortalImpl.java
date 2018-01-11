@@ -24,6 +24,7 @@ import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.petra.encryptor.Encryptor;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.comment.action.EditDiscussionStrutsAction;
 import com.liferay.portal.comment.action.GetCommentsStrutsAction;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
@@ -160,7 +161,6 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.CookieKeys;
@@ -201,6 +201,7 @@ import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.model.impl.CookieRemotePreference;
 import com.liferay.portal.model.impl.LayoutTypeImpl;
+import com.liferay.portal.model.impl.LayoutTypePortletImpl;
 import com.liferay.portal.plugin.PluginPackageUtil;
 import com.liferay.portal.security.jaas.JAASHelper;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
@@ -312,6 +313,7 @@ import org.apache.struts.Globals;
  * @author Hugo Huijser
  * @author Juan Fernández
  * @author Marco Leo
+ * @author Neil Griffin
  */
 @DoPrivileged
 public class PortalImpl implements Portal {
@@ -4688,7 +4690,8 @@ public class PortalImpl implements Portal {
 
 				if ((group != null) && group.hasStagingGroup()) {
 					try {
-						Group stagingGroup = group.getStagingGroup();
+						Group stagingGroup =
+							StagingUtil.getPermissionStagingGroup(group);
 
 						scopeGroupId = stagingGroup.getGroupId();
 					}
@@ -4994,6 +4997,7 @@ public class PortalImpl implements Portal {
 			group, ppid, params);
 	}
 
+	@Override
 	public String getSiteAdminURL(
 			ThemeDisplay themeDisplay, String ppid,
 			Map<String, String[]> params)
@@ -5062,7 +5066,10 @@ public class PortalImpl implements Portal {
 		}
 
 		if (LanguageUtil.isInheritLocales(liveGroup.getGroupId())) {
-			return LocaleUtil.getDefault();
+			Company company = CompanyLocalServiceUtil.getCompany(
+				liveGroup.getCompanyId());
+
+			return company.getLocale();
 		}
 
 		UnicodeProperties typeSettingsProperties =
@@ -5165,7 +5172,7 @@ public class PortalImpl implements Portal {
 			parameterMap = HttpUtil.getParameterMap(queryString);
 		}
 
-		StringBundler sb = new StringBundler(18);
+		StringBundler sb = new StringBundler(17);
 
 		// URI
 
@@ -7166,6 +7173,20 @@ public class PortalImpl implements Portal {
 
 				updateLayout = true;
 			}
+			else if (layoutType instanceof LayoutTypePortletImpl) {
+				LayoutTypePortletImpl layoutTypePortletImpl =
+					(LayoutTypePortletImpl)layoutType;
+
+				if (_isCustomPortletMode(portletMode) &&
+					!layoutTypePortletImpl.hasModeCustomPortletId(
+						portletId, portletMode.toString())) {
+
+					layoutTypePortletImpl.addModeCustomPortletId(
+						portletId, portletMode.toString());
+
+					updateLayout = true;
+				}
+			}
 
 			if (updateLayout &&
 				PortletPermissionUtil.contains(
@@ -8497,7 +8518,7 @@ public class PortalImpl implements Portal {
 	private String _getPortalURL(
 		String serverName, int serverPort, boolean secure) {
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(2);
 
 		boolean https = false;
 
@@ -8682,6 +8703,23 @@ public class PortalImpl implements Portal {
 		}
 
 		return group;
+	}
+
+	private boolean _isCustomPortletMode(PortletMode portletMode) {
+		if (LiferayPortletMode.ABOUT.equals(portletMode) ||
+			LiferayPortletMode.CONFIG.equals(portletMode) ||
+			LiferayPortletMode.EDIT.equals(portletMode) ||
+			LiferayPortletMode.EDIT_DEFAULTS.equals(portletMode) ||
+			LiferayPortletMode.EDIT_GUEST.equals(portletMode) ||
+			LiferayPortletMode.HELP.equals(portletMode) ||
+			LiferayPortletMode.PREVIEW.equals(portletMode) ||
+			LiferayPortletMode.PRINT.equals(portletMode) ||
+			LiferayPortletMode.VIEW.equals(portletMode)) {
+
+			return false;
+		}
+
+		return true;
 	}
 
 	private boolean _isSameHostName(

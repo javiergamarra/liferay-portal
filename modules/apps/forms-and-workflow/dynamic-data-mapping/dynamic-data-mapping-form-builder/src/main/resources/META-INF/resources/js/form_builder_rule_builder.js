@@ -1,8 +1,6 @@
 AUI.add(
 	'liferay-ddm-form-builder-rule-builder',
 	function(A) {
-		var Settings = Liferay.DDM.Settings;
-
 		var SoyTemplateUtil = Liferay.DDM.SoyTemplateUtil;
 
 		var MAP_ACTION_DESCRIPTIONS = {
@@ -113,6 +111,10 @@ AUI.add(
 										condition.operands.forEach(
 											function(operand) {
 												operand.label = instance._getFieldLabel(operand.value);
+
+												if (!operand.label) {
+													operand.label = operand.value;
+												}
 											}
 										);
 									}
@@ -214,11 +216,14 @@ AUI.add(
 					renderRule: function(rule) {
 						var instance = this;
 
+						var formBuilder = instance.get('formBuilder');
+
 						if (!instance._ruleClasses) {
 							instance._ruleClasses = new Liferay.DDM.FormBuilderRenderRule(
 								{
 									boundingBox: instance.get('boundingBox'),
 									bubbleTargets: [instance],
+									builder: formBuilder,
 									contentBox: instance.get('contentBox'),
 									fields: instance.getFields(),
 									getDataProviders: instance._dataProviders,
@@ -250,13 +255,15 @@ AUI.add(
 					_fillDataProviders: function() {
 						var instance = this;
 
+						var formBuilder = instance.get('formBuilder');
+
 						var payload = {
-							bcp47LanguageId: themeDisplay.getBCP47LanguageId(),
+							languageId: formBuilder.get('defaultLanguageId'),
 							scopeGroupId: themeDisplay.getScopeGroupId()
 						};
 
 						A.io.request(
-							Settings.getDataProviderInstancesURL,
+							Liferay.DDM.Settings.getDataProviderInstancesURL,
 							{
 								data: payload,
 								method: 'GET',
@@ -386,16 +393,18 @@ AUI.add(
 					_getUserRoles: function() {
 						var instance = this;
 
+						var formBuilder = instance.get('formBuilder');
+
 						var roles = instance.get('roles');
 
 						var payload = {
-							bcp47LanguageId: themeDisplay.getBCP47LanguageId(),
+							languageId: formBuilder.get('defaultLanguageId'),
 							scopeGroupId: themeDisplay.getScopeGroupId()
 						};
 
 						if (!roles.length) {
 							A.io.request(
-								Settings.getRolesURL,
+								Liferay.DDM.Settings.getRolesURL,
 								{
 									data: payload,
 									method: 'GET',

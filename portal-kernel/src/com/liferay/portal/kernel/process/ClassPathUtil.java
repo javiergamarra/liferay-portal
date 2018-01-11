@@ -17,12 +17,12 @@ package com.liferay.portal.kernel.process;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.process.ProcessConfig.Builder;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
@@ -37,7 +37,6 @@ import java.io.FileFilter;
 import java.lang.reflect.Method;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
@@ -53,7 +52,11 @@ import javax.servlet.ServletException;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of 7.0.0, replaced by {@link com.liferay.petra.process.
+ *             ClassPathUtil} and {@link com.liferay.portal.util.
+ *             PortalClassPathUtil}
  */
+@Deprecated
 @ProviderType
 public class ClassPathUtil {
 
@@ -74,6 +77,10 @@ public class ClassPathUtil {
 		return sb.toString();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static Set<URL> getClassPathURLs(ClassLoader classLoader) {
 		Set<URL> urls = new LinkedHashSet<>();
 
@@ -90,39 +97,30 @@ public class ClassPathUtil {
 		return urls;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link com.liferay.petra.process.
+	 *             ClassPathUtil#getClassPathURLs(String)}
+	 */
+	@Deprecated
 	public static URL[] getClassPathURLs(String classPath)
 		throws MalformedURLException {
 
-		String[] paths = StringUtil.split(classPath, File.pathSeparatorChar);
-
-		Set<URL> urls = new LinkedHashSet<>();
-
-		for (String path : paths) {
-			File file = new File(path);
-
-			URI uri = file.toURI();
-
-			urls.add(uri.toURL());
-		}
-
-		return urls.toArray(new URL[urls.size()]);
+		return com.liferay.petra.process.ClassPathUtil.getClassPathURLs(
+			classPath);
 	}
 
 	public static String getGlobalClassPath() {
 		return _globalClassPath;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link com.liferay.petra.process.
+	 *             ClassPathUtil#getJVMClassPath(boolean)}
+	 */
+	@Deprecated
 	public static String getJVMClassPath(boolean includeBootClassPath) {
-		String jvmClassPath = System.getProperty("java.class.path");
-
-		if (includeBootClassPath) {
-			String bootClassPath = System.getProperty("sun.boot.class.path");
-
-			jvmClassPath = jvmClassPath.concat(File.pathSeparator).concat(
-				bootClassPath);
-		}
-
-		return jvmClassPath;
+		return com.liferay.petra.process.ClassPathUtil.getJVMClassPath(
+			includeBootClassPath);
 	}
 
 	public static String getPortalClassPath() {

@@ -22,7 +22,9 @@ import java.util.regex.Pattern;
  */
 public class CommitFactory {
 
-	public static Commit newCommit(String gitLogEntity) {
+	public static Commit newCommit(
+		String gitLogEntity, GitWorkingDirectory gitWorkingDirectory) {
+
 		Matcher matcher = _pattern.matcher(gitLogEntity);
 
 		if (!matcher.matches()) {
@@ -31,12 +33,13 @@ public class CommitFactory {
 
 		String message = matcher.group("message");
 		String sha = matcher.group("sha");
+		Commit.Type type = Commit.Type.MANUAL;
 
 		if (message.startsWith("archive:ignore")) {
-			return new LegacyDataArchiveCommit(message, sha);
+			type = Commit.Type.LEGACY_ARCHIVE;
 		}
 
-		return new ManualCommit(message, sha);
+		return new BaseCommit(gitWorkingDirectory, message, sha, type);
 	}
 
 	private static final Pattern _pattern = Pattern.compile(

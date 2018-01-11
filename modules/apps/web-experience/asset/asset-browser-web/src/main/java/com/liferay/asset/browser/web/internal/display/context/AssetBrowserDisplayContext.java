@@ -17,11 +17,12 @@ package com.liferay.asset.browser.web.internal.display.context;
 import com.liferay.asset.browser.web.internal.configuration.AssetBrowserWebConfigurationValues;
 import com.liferay.asset.browser.web.internal.constants.AssetBrowserPortletKeys;
 import com.liferay.asset.browser.web.internal.search.AssetBrowserSearch;
+import com.liferay.asset.constants.AssetWebKeys;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
 import com.liferay.frontend.taglib.servlet.taglib.ManagementBarFilterItem;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -36,7 +37,6 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -68,6 +68,9 @@ public class AssetBrowserDisplayContext {
 		_request = PortalUtil.getHttpServletRequest(renderRequest);
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+
+		_assetHelper = (AssetHelper)renderRequest.getAttribute(
+			AssetWebKeys.ASSET_HELPER);
 	}
 
 	public String getAddButtonLabel() {
@@ -109,13 +112,13 @@ public class AssetBrowserDisplayContext {
 		if (assetRendererFactory.isSupportsClassTypes() &&
 			(getSubtypeSelectionId() > 0)) {
 
-			addPortletURL = AssetUtil.getAddPortletURL(
+			addPortletURL = _assetHelper.getAddPortletURL(
 				liferayPortletRequest, liferayPortletResponse, groupId,
 				getTypeSelection(), getSubtypeSelectionId(), null, null,
 				getPortletURL().toString());
 		}
 		else {
-			addPortletURL = AssetUtil.getAddPortletURL(
+			addPortletURL = _assetHelper.getAddPortletURL(
 				liferayPortletRequest, liferayPortletResponse, groupId,
 				getTypeSelection(), 0, null, null, getPortletURL().toString());
 		}
@@ -192,7 +195,7 @@ public class AssetBrowserDisplayContext {
 				getStatuses(), assetBrowserSearch.getStart(),
 				assetBrowserSearch.getEnd(), sort);
 
-			List<AssetEntry> assetEntries = AssetUtil.getAssetEntries(hits);
+			List<AssetEntry> assetEntries = _assetHelper.getAssetEntries(hits);
 
 			assetBrowserSearch.setResults(assetEntries);
 		}
@@ -289,38 +292,40 @@ public class AssetBrowserDisplayContext {
 		List<ManagementBarFilterItem> managementBarFilterItems =
 			new ArrayList<>();
 
-		long[] selectedGroupIds = ArrayUtil.append(
-			new long[] {0}, getSelectedGroupIds());
+		String label = LanguageUtil.get(_request, "all");
 
-		for (long curGroupId : selectedGroupIds) {
-			Group curGroup = GroupLocalServiceUtil.fetchGroup(curGroupId);
+		PortletURL groupURL = getPortletURL();
 
-			if ((curGroup == null) && (curGroupId > 0)) {
-				continue;
-			}
+		groupURL.setParameter("groupId", "0");
 
+		ManagementBarFilterItem managementBarFilterItem =
+			new ManagementBarFilterItem(false, label, groupURL.toString());
+
+		managementBarFilterItems.add(managementBarFilterItem);
+
+		long selectedGroupId = ParamUtil.getLong(_request, "selectedGroupId");
+
+		long[] selectedGroupIds = PortalUtil.getSharedContentSiteGroupIds(
+			themeDisplay.getCompanyId(), selectedGroupId,
+			themeDisplay.getUserId());
+
+		List<Group> groups = GroupLocalServiceUtil.getGroups(selectedGroupIds);
+
+		for (Group curGroup : groups) {
 			boolean active = false;
 
-			if (getGroupId() == curGroupId) {
+			if (getGroupId() == curGroup.getGroupId()) {
 				active = true;
 			}
 
-			String label = StringPool.BLANK;
+			label = HtmlUtil.escape(
+				curGroup.getDescriptiveName(themeDisplay.getLocale()));
 
-			if (curGroup != null) {
-				label = HtmlUtil.escape(
-					curGroup.getDescriptiveName(themeDisplay.getLocale()));
-			}
-			else {
-				label = LanguageUtil.get(_request, "all");
-			}
+			groupURL.setParameter(
+				"groupId", String.valueOf(curGroup.getGroupId()));
 
-			PortletURL groupURL = getPortletURL();
-
-			groupURL.setParameter("groupId", String.valueOf(curGroupId));
-
-			ManagementBarFilterItem managementBarFilterItem =
-				new ManagementBarFilterItem(active, label, groupURL.toString());
+			managementBarFilterItem = new ManagementBarFilterItem(
+				active, label, groupURL.toString());
 
 			managementBarFilterItems.add(managementBarFilterItem);
 		}
@@ -374,13 +379,6 @@ public class AssetBrowserDisplayContext {
 		PortletURL portletURL = _renderResponse.createRenderURL();
 
 		portletURL.setParameter("groupId", String.valueOf(getGroupId()));
-
-		long[] selectedGroupIds = getSelectedGroupIds();
-
-		if (selectedGroupIds.length > 0) {
-			portletURL.setParameter(
-				"selectedGroupIds", StringUtil.merge(selectedGroupIds));
-		}
 
 		long selectedGroupId = ParamUtil.getLong(_request, "selectedGroupId");
 
@@ -530,6 +528,7 @@ public class AssetBrowserDisplayContext {
 		return _showScheduled;
 	}
 
+	private final AssetHelper _assetHelper;
 	private AssetRendererFactory _assetRendererFactory;
 	private String _displayStyle;
 	private String _eventName;

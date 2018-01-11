@@ -325,8 +325,9 @@ public class WabProcessor {
 	}
 
 	protected String getVersionedServicePackageName(String partialPackageName) {
-		return _servicePackageName + partialPackageName + ";version=" +
-			_bundleVersion;
+		return StringBundler.concat(
+			_servicePackageName, partialPackageName, ";version=",
+			_bundleVersion);
 	}
 
 	protected String getWebContextPath() {
@@ -447,6 +448,8 @@ public class WabProcessor {
 
 		processDefaultServletPackages();
 		processTLDDependencies(analyzer);
+
+		processPortalListenerClassesDependencies(analyzer);
 
 		Path pluginPath = _pluginDir.toPath();
 
@@ -703,6 +706,41 @@ public class WabProcessor {
 			_importPackageParameters.mergeWith(parameters, true);
 
 			pluginPackageProperties.remove(Constants.IMPORT_PACKAGE);
+		}
+	}
+
+	protected void processPortalListenerClassesDependencies(Analyzer analyzer) {
+		File file = new File(_pluginDir, "WEB-INF/web.xml");
+
+		if (!file.exists()) {
+			return;
+		}
+
+		Document document = readDocument(file);
+
+		Element rootElement = document.getRootElement();
+
+		List<Element> contextParamElements = rootElement.elements(
+			"context-param");
+
+		for (Element contextParamElement : contextParamElements) {
+			String paramName = contextParamElement.elementText("param-name");
+
+			if (Validator.isNotNull(paramName) &&
+				paramName.equals("portalListenerClasses")) {
+
+				String paramValue = contextParamElement.elementText(
+					"param-value");
+
+				String[] portalListenerClassNames = StringUtil.split(
+					paramValue, StringPool.COMMA);
+
+				for (String portalListenerClassName :
+						portalListenerClassNames) {
+
+					processClass(analyzer, portalListenerClassName.trim());
+				}
+			}
 		}
 	}
 
@@ -1158,7 +1196,7 @@ public class WabProcessor {
 				text = text.substring(1);
 			}
 
-			value = "!" + text + "/*," + value;
+			value = StringBundler.concat("!", text, "/*,", value);
 		}
 
 		analyzer.setProperty("-jsp", value);

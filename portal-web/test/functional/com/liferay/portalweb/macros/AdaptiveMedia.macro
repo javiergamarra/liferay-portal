@@ -26,6 +26,10 @@
 
 		<execute function="AssertVisible" locator1="AdaptiveMediaTable#PROGRESS" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="AdaptiveMediaTable#PROGRESS" value1="${percentAdapted}" />
+
+		<execute macro="Alert#_closeMessage">
+			<var name="messageType" value="GENERIC" />
+		</execute>
 	</command>
 
 	<command name="addImageResolution">
@@ -34,6 +38,13 @@
 		<execute macro="PortletEntry#inputName">
 			<var name="name" value="${imageName}" />
 		</execute>
+
+		<if>
+			<isset var="description" />
+			<then>
+				<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${description}" />
+			</then>
+		</if>
 
 		<execute function="Type" locator1="TextInput#MAX_WIDTH" value1="${maxWidth}" />
 
@@ -49,7 +60,7 @@
 		<if>
 			<isset var="customID" />
 			<then>
-				<execute function="Click" locator1="Radio#CUSTOM_ID" />
+				<execute function="Click" locator1="Radio#CUSTOM_URL" />
 
 				<execute function="Type" locator1="TextInput#IMAGE_ID" value1="${customID}" />
 			</then>
@@ -89,11 +100,11 @@
 
 		<execute function="Type" locator1="TextInput#MAX_HEIGHT" value1="${maxHeight}" />
 
-		<execute function="AssertElementPresent" locator1="Message#ERROR_FIELD_REQUIRED" />
-
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 
 		<execute function="AssertElementNotPresent" locator1="Message#SUCCESS" />
+
+		<execute function="AssertTextEquals" locator1="Message#REQUIRED_INFO" value1="At least one value is required." />
 	</command>
 
 	<command name="deleteImageResolution">
@@ -124,6 +135,15 @@
 		<var name="key_imageState" value="${imageState}" />
 
 		<execute function="AssertTextEquals" locator1="AdaptiveMediaTable#STATE" value1="Disabled" />
+
+		<if>
+			<isset var="percentAdapted" />
+			<then>
+				<var name="key_percentAdapted" value="${percentAdapted}" />
+
+				<execute function="AssertCssValue" locator1="AdaptiveMediaTable#PROGRESS_BAR_COLOR" locator2="opacity" value1="0.5" />
+			</then>
+		</if>
 	</command>
 
 	<command name="editImageResolution">
@@ -150,7 +170,7 @@
 		<execute function="AssertElementNotPresent" locator1="Checkbox#ADD_HIGH_DENSITY_DISPLAY" />
 
 		<if>
-			<condition function="IsTextEqual" locator1="Message#INFO" value1="The images for this resolution are already adapted." />
+			<condition function="IsElementPresent" locator1="Message#INFO" value1="The images for this resolution are already adapted." />
 			<then>
 				<execute function="AssertNotEditable" locator1="TextInput#IMAGE_ID" />
 				<execute function="AssertNotEditable" locator1="TextInput#MAX_HEIGHT" />
@@ -159,9 +179,6 @@
 				<execute function="AssertNotEditable" locator1="Radio#CUSTOM_URL" />
 			</then>
 			<else>
-
-				<execute function="AssertTextEquals" locator1="Message#INFO" value1="At least one dimension value is required (Max. Width or Max. Height)." />
-
 				<if>
 					<not>
 						<contains string="${maxHeightEdit}" substring="{maxHeightEdit}" />
@@ -247,6 +264,10 @@
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="AdaptiveMediaTable#MAX_WIDTH" value1="${maxWidth}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="AdaptiveMediaTable#MAX_HEIGHT" value1="${maxHeight}" />
+	</command>
+
+	<command name="viewImageVariantDescription">
+		<execute function="AssertTextEquals" locator1="TextArea#DESCRIPTION" value1="${description}" />
 	</command>
 
 	<command name="viewImageVariantID">

@@ -14,8 +14,9 @@
 
 package com.liferay.portal.service.test;
 
+import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
-import com.liferay.portal.kernel.executor.PortalExecutorManager;
+import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseDestination;
@@ -66,6 +67,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
@@ -335,21 +337,18 @@ public class ServiceTestUtil {
 
 		messageBus.replace(baseDestination, false);
 
-		Registry registry = RegistryUtil.getRegistry();
+		ExecutorService executorService =
+			PortalExecutorManagerUtil.getPortalExecutor(
+				oldDestination.getName());
 
-		ThreadPoolExecutor threadPoolExecutor = registry.callService(
-			PortalExecutorManager.class,
-			portalExecutorManager -> portalExecutorManager.getPortalExecutor(
-				oldDestination.getName(), false));
-
-		if (threadPoolExecutor == null) {
+		if (executorService == null) {
 			return;
 		}
 
-		threadPoolExecutor.shutdown();
+		executorService.shutdown();
 
 		try {
-			if (!threadPoolExecutor.awaitTermination(
+			if (!executorService.awaitTermination(
 					TestPropsValues.CI_TEST_TIMEOUT_TIME,
 					TimeUnit.MILLISECONDS)) {
 
@@ -381,7 +380,6 @@ public class ServiceTestUtil {
 		(MessageBus)ProxyUtil.newProxyInstance(
 			MessageBus.class.getClassLoader(),
 			new Class<?>[] {MessageBus.class},
-
 			new InvocationHandler() {
 
 				@Override
@@ -421,7 +419,7 @@ public class ServiceTestUtil {
 
 			Map<String, ThreadPoolExecutor> threadPoolExecutors =
 				ReflectionTestUtil.getFieldValue(
-					_portalExecutorManager, "_threadPoolExecutors");
+					_portalExecutorManager, "_executorServices");
 
 			for (Map.Entry<String, ThreadPoolExecutor> entry :
 					threadPoolExecutors.entrySet()) {

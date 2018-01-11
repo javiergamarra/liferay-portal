@@ -34,7 +34,7 @@ import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.display.context.AssetEntryResult;
 import com.liferay.asset.publisher.web.display.context.AssetPublisherDisplayContext;
 import com.liferay.asset.util.AssetEntryQueryProcessor;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -49,10 +49,13 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.PortletPreferencesIds;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -163,7 +166,7 @@ public class AssetPublisherUtil {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Layout layout = _layoutLocalService.fetchLayout(themeDisplay.getPlid());
+		Layout layout = themeDisplay.getLayout();
 
 		PortletPreferences portletPreferences =
 			PortletPreferencesFactoryUtil.getStrictPortletSetup(
@@ -356,7 +359,7 @@ public class AssetPublisherUtil {
 		throws Exception {
 
 		if (isSearchWithIndex(portletName, assetEntryQuery)) {
-			return AssetUtil.searchAssetEntries(
+			return _assetHelper.searchAssetEntries(
 				assetEntryQuery, getAssetCategoryIds(portletPreferences),
 				getAssetTagNames(portletPreferences), attributes, companyId,
 				assetEntryQuery.getKeywords(), layout, locale, scopeGroupId,
@@ -1133,6 +1136,27 @@ public class AssetPublisherUtil {
 			long ownerId, int ownerType, long plid, String portletId)
 		throws PortalException {
 
+		if (plid != LayoutConstants.DEFAULT_PLID) {
+			Layout layout = _layoutLocalService.fetchLayout(plid);
+
+			if (layout != null) {
+				long userId = 0;
+
+				if (PortletIdCodec.hasUserId(portletId)) {
+					userId = PortletIdCodec.decodeUserId(portletId);
+				}
+
+				PortletPreferencesIds portletPreferencesIds =
+					_portletPreferencesFactory.getPortletPreferencesIds(
+						layout.getGroupId(), userId, layout, portletId, false);
+
+				ownerId = portletPreferencesIds.getOwnerId();
+				ownerType = portletPreferencesIds.getOwnerType();
+				plid = portletPreferencesIds.getPlid();
+				portletId = portletPreferencesIds.getPortletId();
+			}
+		}
+
 		if (PortletIdCodec.hasUserId(portletId)) {
 			ownerId = PortletIdCodec.decodeUserId(portletId);
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
@@ -1609,6 +1633,11 @@ public class AssetPublisherUtil {
 	}
 
 	@Reference(unbind = "-")
+	protected void setAssetHelper(AssetHelper assetHelper) {
+		_assetHelper = assetHelper;
+	}
+
+	@Reference(unbind = "-")
 	protected void setAssetTagLocalService(
 		AssetTagLocalService assetTagLocalService) {
 
@@ -1630,6 +1659,13 @@ public class AssetPublisherUtil {
 		LayoutLocalService layoutLocalService) {
 
 		_layoutLocalService = layoutLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setPortletPreferencesFactory(
+		PortletPreferencesFactory portletPreferencesFactory) {
+
+		_portletPreferencesFactory = portletPreferencesFactory;
 	}
 
 	@Reference(unbind = "-")
@@ -1875,6 +1911,7 @@ public class AssetPublisherUtil {
 	private static AssetCategoryLocalService _assetCategoryLocalService;
 	private static AssetEntryLocalService _assetEntryLocalService;
 	private static AssetEntryService _assetEntryService;
+	private static AssetHelper _assetHelper;
 	private static AssetPublisherPortletInstanceConfiguration
 		_assetPublisherPortletInstanceConfiguration;
 	private static AssetPublisherWebConfiguration
@@ -1883,6 +1920,7 @@ public class AssetPublisherUtil {
 	private static DDMIndexer _ddmIndexer;
 	private static GroupLocalService _groupLocalService;
 	private static LayoutLocalService _layoutLocalService;
+	private static PortletPreferencesFactory _portletPreferencesFactory;
 	private static PortletPreferencesLocalService
 		_portletPreferencesLocalService;
 	private static SubscriptionLocalService _subscriptionLocalService;

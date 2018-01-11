@@ -14,7 +14,7 @@
 				<condition function="IsElementNotPresent" locator1="Home#PAGE_ACTIVE" />
 			</and>
 			<then>
-				<execute function="AssertClick" locator1="Home#PAGE" value1="${pageName}" />
+				<execute function="AssertClick#assertPartialTextClickAt" locator1="Home#PAGE" value1="${pageName}" />
 
 				<var method="MathUtil#sum('${count}', '1')" name="count" />
 			</then>
@@ -108,8 +108,6 @@
 		<execute macro="Navigator#openPrivateStagedSiteURL">
 			<var name="siteNameURL" value="${siteName}" />
 		</execute>
-
-		<execute macro="ProductMenu#gotoPrivatePages" />
 
 		<execute macro="Navigator#_gotoPage">
 			<var name="pageName" value="${pageName}" />

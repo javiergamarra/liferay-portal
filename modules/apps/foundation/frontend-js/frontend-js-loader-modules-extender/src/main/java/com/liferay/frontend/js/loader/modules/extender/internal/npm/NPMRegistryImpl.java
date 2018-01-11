@@ -72,6 +72,7 @@ public class NPMRegistryImpl implements NPMRegistry {
 	 * @param  identifier the NPM module's ID
 	 * @return the NPM module descriptor with the ID
 	 */
+	@Override
 	public JSModule getJSModule(String identifier) {
 		return _jsModules.get(identifier);
 	}
@@ -92,6 +93,7 @@ public class NPMRegistryImpl implements NPMRegistry {
 	 *
 	 * @return the deployed NPM packages
 	 */
+	@Override
 	public Collection<JSPackage> getJSPackages() {
 		return _jsPackages.values();
 	}
@@ -102,6 +104,7 @@ public class NPMRegistryImpl implements NPMRegistry {
 	 * @param  identifier the resolved module's ID
 	 * @return the resolved module with the ID
 	 */
+	@Override
 	public JSModule getResolvedJSModule(String identifier) {
 		return _resolvedJSModules.get(identifier);
 	}
@@ -111,10 +114,22 @@ public class NPMRegistryImpl implements NPMRegistry {
 	 *
 	 * @return the resolved modules deployed to the portal
 	 */
+	@Override
 	public Collection<JSModule> getResolvedJSModules() {
 		return _resolvedJSModules.values();
 	}
 
+	/**
+	 * Returns all resolved packages deployed to the portal.
+	 *
+	 * @return the resolved packages deployed to the portal
+	 * @review
+	 */
+	public Collection<JSPackage> getResolvedJSPackages() {
+		return _resolvedJSPackages.values();
+	}
+
+	@Override
 	public JSPackage resolveJSPackageDependency(
 		JSPackageDependency jsPackageDependency) {
 
@@ -139,7 +154,7 @@ public class NPMRegistryImpl implements NPMRegistry {
 					Version version2 = Version.from(
 						jsPackage2.getVersion(), true);
 
-					return version1.compareTo(version2);
+					return version2.compareTo(version1);
 				}
 
 			});
@@ -223,10 +238,12 @@ public class NPMRegistryImpl implements NPMRegistry {
 		Map<String, JSModule> jsModules = new HashMap<>();
 		Map<String, JSPackage> jsPackages = new HashMap<>();
 		Map<String, JSModule> resolvedJSModules = new HashMap<>();
+		Map<String, JSPackage> resolvedJSPackages = new HashMap<>();
 
 		for (JSBundle jsBundle : _jsBundles) {
 			for (JSPackage jsPackage : jsBundle.getJSPackages()) {
 				jsPackages.put(jsPackage.getId(), jsPackage);
+				resolvedJSPackages.put(jsPackage.getResolvedId(), jsPackage);
 
 				for (JSModule jsModule : jsPackage.getJSModules()) {
 					jsModules.put(jsModule.getId(), jsModule);
@@ -238,6 +255,7 @@ public class NPMRegistryImpl implements NPMRegistry {
 		_jsModules = jsModules;
 		_jsPackages = jsPackages;
 		_resolvedJSModules = resolvedJSModules;
+		_resolvedJSPackages = resolvedJSPackages;
 	}
 
 	private synchronized boolean _removeBundle(JSBundle jsBundle) {
@@ -278,6 +296,7 @@ public class NPMRegistryImpl implements NPMRegistry {
 	private Map<String, JSModule> _jsModules = new HashMap<>();
 	private Map<String, JSPackage> _jsPackages = new HashMap<>();
 	private Map<String, JSModule> _resolvedJSModules = new HashMap<>();
+	private Map<String, JSPackage> _resolvedJSPackages = new HashMap<>();
 
 	private class NPMRegistryBundleTrackerCustomizer
 		implements BundleTrackerCustomizer<JSBundle> {

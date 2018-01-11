@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
-import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -95,8 +94,7 @@ public class GroupServiceTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
-			PermissionCheckerTestRule.INSTANCE,
-			SynchronousDestinationTestRule.INSTANCE);
+			PermissionCheckerTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -539,6 +537,82 @@ public class GroupServiceTest {
 	}
 
 	@Test
+	public void testGetGlobalSiteDefaultLocale() throws Exception {
+		Company company = CompanyLocalServiceUtil.getCompany(
+			_group.getCompanyId());
+
+		Assert.assertEquals(
+			company.getLocale(),
+			PortalUtil.getSiteDefaultLocale(company.getGroupId()));
+	}
+
+	@Test
+	public void testGetGlobalSiteDefaultLocaleWhenCompanyLocaleModified()
+		throws Exception {
+
+		Company company = CompanyLocalServiceUtil.getCompany(
+			_group.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
+		String languageId = defaultUser.getLanguageId();
+
+		try {
+			defaultUser.setLanguageId(
+				LanguageUtil.getLanguageId(LocaleUtil.BRAZIL));
+
+			defaultUser = UserLocalServiceUtil.updateUser(defaultUser);
+
+			Assert.assertEquals(
+				LocaleUtil.BRAZIL,
+				PortalUtil.getSiteDefaultLocale(company.getGroupId()));
+		}
+		finally {
+			defaultUser.setLanguageId(languageId);
+
+			UserLocalServiceUtil.updateUser(defaultUser);
+		}
+	}
+
+	@Test
+	public void testGetSiteDefaultInheritLocale() throws Exception {
+		Company company = CompanyLocalServiceUtil.getCompany(
+			_group.getCompanyId());
+
+		Assert.assertEquals(
+			company.getLocale(),
+			PortalUtil.getSiteDefaultLocale(_group.getGroupId()));
+	}
+
+	@Test
+	public void testGetSiteDefaultInheritLocaleWhenCompanyLocaleModified()
+		throws Exception {
+
+		Company company = CompanyLocalServiceUtil.getCompany(
+			_group.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
+		String languageId = defaultUser.getLanguageId();
+
+		try {
+			defaultUser.setLanguageId(
+				LanguageUtil.getLanguageId(LocaleUtil.CHINA));
+
+			defaultUser = UserLocalServiceUtil.updateUser(defaultUser);
+
+			Assert.assertEquals(
+				LocaleUtil.CHINA,
+				PortalUtil.getSiteDefaultLocale(_group.getGroupId()));
+		}
+		finally {
+			defaultUser.setLanguageId(languageId);
+
+			UserLocalServiceUtil.updateUser(defaultUser);
+		}
+	}
+
+	@Test
 	public void testGroupHasCurrentPageScopeDescriptiveName() throws Exception {
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
@@ -553,7 +627,9 @@ public class GroupServiceTest {
 		String scopeDescriptiveName = scopeGroup.getScopeDescriptiveName(
 			themeDisplay);
 
-		Assert.assertTrue(scopeDescriptiveName.contains("current-page"));
+		Assert.assertTrue(
+			scopeDescriptiveName,
+			scopeDescriptiveName.contains("current-page"));
 
 		GroupLocalServiceUtil.deleteGroup(scopeGroup);
 
@@ -571,7 +647,9 @@ public class GroupServiceTest {
 		String scopeDescriptiveName = group.getScopeDescriptiveName(
 			themeDisplay);
 
-		Assert.assertTrue(scopeDescriptiveName.contains("current-site"));
+		Assert.assertTrue(
+			scopeDescriptiveName,
+			scopeDescriptiveName.contains("current-site"));
 
 		GroupLocalServiceUtil.deleteGroup(group);
 	}
@@ -589,7 +667,8 @@ public class GroupServiceTest {
 		String scopeDescriptiveName = group.getScopeDescriptiveName(
 			themeDisplay);
 
-		Assert.assertTrue(scopeDescriptiveName.contains("default"));
+		Assert.assertTrue(
+			scopeDescriptiveName, scopeDescriptiveName.contains("default"));
 
 		GroupLocalServiceUtil.deleteGroup(group);
 	}

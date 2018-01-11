@@ -12,8 +12,10 @@
 		<execute function="AssertElementPresent" locator1="TextInput#SUBJECT" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute macro="PortletEntry#publish" />
@@ -29,8 +31,10 @@
 		<execute function="Click" locator1="TextInput#SUBJECT" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute macro="Panel#expandPanel">
@@ -86,8 +90,9 @@
 				<execute function="Type#sendKeysAceEditor" locator1="TextArea#ACE_EDITOR" value1="${threadBody}" />
 			</then>
 			<else>
-				<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-					<var name="key_editor" value="body" />
+				<execute macro="AlloyEditor#typeEditor">
+					<var name="content" value="${threadBody}" />
+					<var name="editor" value="body" />
 				</execute>
 			</else>
 		</if>
@@ -99,8 +104,10 @@
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute macro="Panel#expandPanel">
@@ -117,9 +124,13 @@
 	<command name="addPGAsQuestion">
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
+		<execute function="AssertElementPresent" locator1="TextInput#SUBJECT" />
+
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute macro="Panel#expandPanel">
@@ -141,8 +152,10 @@
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute macro="Panel#expandPanel">
@@ -164,8 +177,10 @@
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute macro="Panel#expandPanel">
@@ -183,8 +198,10 @@
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute macro="Panel#expandPanel">
@@ -200,8 +217,10 @@
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
@@ -244,8 +263,10 @@
 		<execute function="AssertElementPresent" locator1="TextInput#SUBJECT" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute function="Click" locator1="Button#SUBMIT_FOR_PUBLICATION" />
@@ -257,8 +278,10 @@
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute function="Click" locator1="Button#SUBMIT_FOR_PUBLICATION" />
@@ -286,8 +309,10 @@
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute function="AssertClick" locator1="Button#CANCEL" value1="Cancel" />
@@ -297,8 +322,10 @@
 		<execute macro="PortletEntry#clickEditFromEllipsis" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubjectEdit}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBodyEdit}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBodyEdit}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute function="AssertClick" locator1="Button#CANCEL" value1="Cancel" />
@@ -357,8 +384,9 @@
 
 				<execute function="AssertElementPresent" locator1="AlloyEditor#CONTENT_ADD_BUTTON" />
 
-				<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBodyEdit}">
-					<var name="key_editor" value="body" />
+				<execute macro="AlloyEditor#typeEditor">
+					<var name="content" value="${threadBodyEdit}" />
+					<var name="editor" value="body" />
 				</execute>
 			</then>
 		</if>
@@ -379,8 +407,9 @@
 		<if>
 			<isset var="threadBodyEdit" />
 			<then>
-				<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBodyEdit}">
-					<var name="key_editor" value="body" />
+				<execute macro="AlloyEditor#typeEditor">
+					<var name="content" value="${threadBodyEdit}" />
+					<var name="editor" value="body" />
 				</execute>
 			</then>
 		</if>
@@ -549,8 +578,10 @@
 				<execute function="AssertElementPresent" locator1="MessageBoardsMoveThread#CATEGORY_FIELD" />
 				<execute function="Check" locator1="Checkbox#ADD_EXPLANATION_POST" />
 				<execute function="Type" locator1="TextInput#SUBJECT" value1="${explanationSubject}" />
-				<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${explanationBody}">
-					<var name="key_editor" value="body" />
+
+				<execute macro="AlloyEditor#typeEditor">
+					<var name="content" value="${explanationBody}" />
+					<var name="editor" value="body" />
 				</execute>
 			</then>
 		</if>
@@ -609,8 +640,10 @@
 				<execute function="Check" locator1="Checkbox#ADD_EXPLANATION_POST" />
 
 				<execute function="Type" locator1="TextInput#SUBJECT" value1="${explanationSubject}" />
-				<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${explanationBody}">
-					<var name="key_editor" value="body" />
+
+				<execute macro="AlloyEditor#typeEditor">
+					<var name="content" value="${explanationBody}" />
+					<var name="editor" value="body" />
 				</execute>
 			</then>
 		</if>
@@ -639,8 +672,10 @@
 		<execute function="AssertClick" locator1="Button#POST_NEW_THREAD" value1="Post New Thread" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute function="AssertClick" locator1="Button#PREVIEW" value1="Preview" />
@@ -743,6 +778,10 @@
 				</execute>
 			</then>
 			<else>
+				<execute function="AssertElementPresent" locator1="MessageBoardsThread#THREAD_REPLY_BUTTON">
+					<var name="key_threadSubject" value="${threadSubject}" />
+				</execute>
+
 				<execute function="AssertClick" locator1="MessageBoardsThread#THREAD_REPLY_BUTTON" value1="Reply to Main Thread">
 					<var name="key_threadSubject" value="${threadSubject}" />
 				</execute>
@@ -838,8 +877,10 @@
 		<execute function="Pause" locator1="3000" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute function="AssertClick" locator1="Button#SAVE_AS_DRAFT" value1="Save as Draft" />
@@ -879,8 +920,10 @@
 		<execute function="AssertTextEquals" locator1="Message#INFO_EXPLANATION_POST" value1="The following post will be added in place of the moved message." />
 
 		<execute function="Type" locator1="MessageBoardsSplitThread#ADD_EXPLANATION_SUBJECT_FIELD" value1="${threadSplitReplySubject}" />
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${threadSplitReplyBody}">
-			<var name="key_editor" value="body" />
+
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${threadSplitReplyBody}" />
+			<var name="editor" value="body" />
 		</execute>
 
 		<execute function="AssertClick" locator1="Button#OK" value1="OK" />
@@ -945,7 +988,7 @@
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="MessageBoardsThread#MESSAGE_ANSWER_1" value1="Answer" />
 
-		<execute function="AssertClick" locator1="MessageBoardsThread#THREAD_CONTROLS_BACK" value1="Back" />
+		<execute function="Click" locator1="MessageBoardsThread#THREAD_CONTROLS_BACK" />
 	</command>
 
 	<command name="viewAsWorkflowAsset">

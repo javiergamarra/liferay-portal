@@ -14,9 +14,6 @@
 
 package com.liferay.jenkins.results.parser;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONObject;
 
 /**
@@ -24,9 +21,20 @@ import org.json.JSONObject;
  */
 public class BaseCommit implements Commit {
 
-	public BaseCommit(String message, String sha) {
+	public BaseCommit(
+		GitWorkingDirectory gitWorkingDirectory, String message, String sha) {
+
+		this(gitWorkingDirectory, message, sha, null);
+	}
+
+	public BaseCommit(
+		GitWorkingDirectory gitWorkingDirectory, String message, String sha,
+		Type type) {
+
+		this.gitWorkingDirectory = gitWorkingDirectory;
 		_message = message;
 		_sha = sha;
+		_type = type;
 	}
 
 	@Override
@@ -38,16 +46,33 @@ public class BaseCommit implements Commit {
 		return false;
 	}
 
+	@Override
 	public String getAbbreviatedSHA() {
 		return _sha.substring(0, 7);
 	}
 
+	@Override
+	public String getGitHubCommitURL() {
+		return JenkinsResultsParserUtil.combine(
+			"https://github.com/",
+			GitWorkingDirectory.getGitHubUserName(
+				gitWorkingDirectory.getRemote("upstream")),
+			"/", gitWorkingDirectory.getRepositoryName(), "/commit/", getSHA());
+	}
+
+	@Override
 	public String getMessage() {
 		return _message;
 	}
 
+	@Override
 	public String getSHA() {
 		return _sha;
+	}
+
+	@Override
+	public Type getType() {
+		return _type;
 	}
 
 	@Override
@@ -59,6 +84,8 @@ public class BaseCommit implements Commit {
 		return json.hashCode();
 	}
 
+	protected GitWorkingDirectory gitWorkingDirectory;
+
 	private JSONObject _toJSONObject() {
 		JSONObject jsonObject = new JSONObject();
 
@@ -68,9 +95,8 @@ public class BaseCommit implements Commit {
 		return jsonObject;
 	}
 
-	private static final Map<String, Integer> _map = new HashMap<>();
-
 	private final String _message;
 	private final String _sha;
+	private final Type _type;
 
 }

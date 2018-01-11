@@ -103,8 +103,9 @@
 	</command>
 
 	<command name="addSubtitle">
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${entrySubtitle}">
-			<var name="key_editor" value="subtitle" />
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${entrySubtitle}" />
+			<var name="editor" value="subtitle" />
 		</execute>
 	</command>
 
@@ -195,7 +196,9 @@
 	</command>
 
 	<command name="addWithWorkflowPGViaAP">
-		<execute function="Click#makeVisibleClickAt" locator1="AP#ADD_ASSET_PLUS_ICON" />
+		<execute function="MouseOver#mouseOverNotVisible" locator1="AP#ADD_ASSET_PLUS_ICON" />
+
+		<execute function="Click" locator1="AP#ADD_ASSET_PLUS_ICON" />
 
 		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Blogs Entry">
 			<var name="key_menuItem" value="Blogs Entry" />
@@ -285,8 +288,9 @@
 			<var name="key_editor" value="subtitle" />
 		</execute>
 
-		<execute function="Type#typeEditor" locator1="AlloyEditor#EDITOR" value1="${entrySubtitleEdit}">
-			<var name="key_editor" value="subtitle" />
+		<execute macro="AlloyEditor#typeEditor">
+			<var name="content" value="${entrySubtitleEdit}" />
+			<var name="editor" value="subtitle" />
 		</execute>
 	</command>
 
@@ -853,7 +857,7 @@
 		<var name="key_entryTitle" value="${entryTitle}" />
 
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+			<var name="displayStyle" value="list" />
 		</execute>
 
 		<execute function="AssertElementPresent" locator1="Blogs#ENTRY_TABLE_CHECKBOX" />
@@ -1270,7 +1274,7 @@
 		<var name="key_entryTitle" value="${entryTitle}" />
 
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+			<var name="displayStyle" value="list" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="Blogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />

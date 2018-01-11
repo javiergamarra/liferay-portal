@@ -18,6 +18,7 @@ import com.liferay.admin.kernel.util.PortalMyAccountApplicationType;
 import com.liferay.expando.kernel.model.CustomAttributesDisplay;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.petra.lang.ClassLoaderPool;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.application.type.ApplicationType;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -68,7 +69,6 @@ import com.liferay.portal.kernel.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -95,6 +95,8 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.portlet.PortletBagFactory;
 import com.liferay.portlet.UndeployedPortlet;
+import com.liferay.portlet.extra.config.ExtraPortletAppConfig;
+import com.liferay.portlet.extra.config.ExtraPortletAppConfigRegistry;
 import com.liferay.registry.Filter;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
@@ -330,6 +332,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		_checkValidPortletId(portlet.getPortletId());
 
+		ResourceActionsUtil.check(portlet);
+
 		_portletsMap.put(portlet.getPortletId(), portlet);
 
 		if (eagerDestroy) {
@@ -339,8 +343,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		}
 
 		clearCache();
-
-		ResourceActionsUtil.check(portlet.getPortletId());
 
 		PortletCategory portletCategory = (PortletCategory)WebAppPool.get(
 			portlet.getCompanyId(), WebKeys.PORTLET_CATEGORY);
@@ -392,7 +394,12 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		PortletApp portletApp = portlet.getPortletApp();
 
 		if (portletApp != null) {
-			_portletApps.remove(portletApp.getServletContextName());
+			String servletContextName = portletApp.getServletContextName();
+
+			_portletApps.remove(servletContextName);
+
+			ExtraPortletAppConfigRegistry.unregisterExtraPortletAppConfig(
+				servletContextName);
 		}
 
 		clearCache();
@@ -659,6 +666,11 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	}
 
 	@Override
+	public int getPortletsCount(long companyId) {
+		return portletPersistence.countByCompanyId(companyId);
+	}
+
+	@Override
 	@Skip
 	public List<Portlet> getScopablePortlets() {
 		List<Portlet> portlets = ListUtil.fromMapValues(_portletsMap);
@@ -734,6 +746,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			portletApp.setServletContext(servletContext);
 
 			Set<String> servletURLPatterns = readWebXML(xmls[4]);
+
+			_readWebXML(xmls[4], portletApp.getServletContextName());
 
 			Map<String, Portlet> portletsMap = readPortletXML(
 				StringPool.BLANK, servletContext, xmls[0], servletURLPatterns,
@@ -835,6 +849,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		try {
 			Set<String> servletURLPatterns = readWebXML(xmls[3]);
+
+			_readWebXML(xmls[3], servletContextName);
 
 			portletsMap = readPortletXML(
 				servletContextName, servletContext, xmls[0], servletURLPatterns,
@@ -1290,10 +1306,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		for (String modelResource : modelResources) {
 			if (Validator.isBlank(modelResource)) {
-				continue;
-			}
-
-			if (resourceBlockLocalService.isSupported(modelResource)) {
 				continue;
 			}
 
@@ -2212,8 +2224,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		//supportedLocales.add(
 		//	LocaleUtil.toLanguageId(LocaleUtil.getDefault()));
 
-		for (Element supportedLocaleElement : portletElement.elements(
-				"supported-locale")) {
+		for (Element supportedLocaleElement :
+				portletElement.elements("supported-locale")) {
 
 			String supportedLocale = supportedLocaleElement.getText();
 
@@ -2367,6 +2379,34 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		}
 
 		portletModel.setPublicRenderParameters(publicRenderParameters);
+
+		Map<String, String[]> containerRuntimeOptions =
+			portletApp.getContainerRuntimeOptions();
+
+		String containerRuntimeOptionPrefix =
+			LiferayPortletConfig.class.getName();
+
+		containerRuntimeOptionPrefix = containerRuntimeOptionPrefix.concat(
+			portletName);
+
+		for (Element containerRuntimeOptionElement :
+				portletElement.elements("container-runtime-option")) {
+
+			String name = GetterUtil.getString(
+				containerRuntimeOptionElement.elementText("name"));
+
+			List<String> values = new ArrayList<>();
+
+			for (Element valueElement :
+					containerRuntimeOptionElement.elements("value")) {
+
+				values.add(valueElement.getTextTrim());
+			}
+
+			containerRuntimeOptions.put(
+				containerRuntimeOptionPrefix.concat(name),
+				values.toArray(new String[values.size()]));
+		}
 
 		portletsMap.put(portletId, portletModel);
 	}
@@ -2685,6 +2725,38 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 			throw new PrincipalException("Invalid portlet ID " + portletId);
 		}
+	}
+
+	private void _readWebXML(String xml, String servletContextName)
+		throws Exception {
+
+		Map<String, String> localeEncodings = new HashMap<>();
+
+		Document document = UnsecureSAXReaderUtil.read(xml);
+
+		Element rootElement = document.getRootElement();
+
+		for (Element localeEncodingMappingListElement :
+				rootElement.elements("locale-encoding-mapping-list")) {
+
+			for (Element localeEncodingMappingElement :
+					localeEncodingMappingListElement.elements(
+						"locale-encoding-mapping")) {
+
+				String locale = GetterUtil.getString(
+					localeEncodingMappingElement.elementText("locale"));
+				String encoding = GetterUtil.getString(
+					localeEncodingMappingElement.elementText("encoding"));
+
+				localeEncodings.put(locale, encoding);
+			}
+		}
+
+		ExtraPortletAppConfig extraPortletAppConfig = new ExtraPortletAppConfig(
+			localeEncodings);
+
+		ExtraPortletAppConfigRegistry.registerExtraPortletAppConfig(
+			servletContextName, extraPortletAppConfig);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -10,7 +10,7 @@
 <tbody>
 <tr>
 	<td>EDITOR</td>
-	<td>//div[contains(@id,'_${key_editor}')][@title='Rich Text Editor'][not(contains(@id,'Container') or contains(@id,'Wrapper') or contains(@id,'Source'))]</td>
+	<td>//div[contains(@class,'cke_editable_inline') and contains(@id,'_${key_editor}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -167,11 +167,6 @@
 	<td></td>
 </tr>
 <!--CONTENT_EDITOR-->
-<tr>
-	<td>CONTENT_EDITOR_SWITCH_ACE_EDITOR</td>
-	<td>//button[contains(@id,'EditorSwitch')]/span/*[name()='svg'][contains(@class,'icon-code')]</td>
-	<td></td>
-</tr>
 <tr>
 	<td>CONTENT_EDITOR_SWITCH_ABC</td>
 	<td>//button[contains(@id,'contentEditorSwitch') and contains(.,'abc')]</td>

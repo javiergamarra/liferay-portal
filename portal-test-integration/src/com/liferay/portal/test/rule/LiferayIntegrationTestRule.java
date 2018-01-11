@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.process.ClassPathUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.BaseTestRule;
 import com.liferay.portal.kernel.test.rule.BaseTestRule.StatementWrapper;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.rule.TimeoutTestRule;
 import com.liferay.portal.kernel.test.rule.callback.CompanyProviderTestCallback;
 import com.liferay.portal.kernel.test.rule.callback.DeleteAfterTestRunTestCallback;
@@ -35,6 +36,7 @@ import com.liferay.portal.test.rule.callback.MainServletTestCallback;
 import com.liferay.portal.test.rule.callback.SybaseDumpTransactionLogTestCallback;
 import com.liferay.portal.test.rule.callback.UniqueStringRandomizerBumperTestCallback;
 import com.liferay.portal.util.InitUtil;
+import com.liferay.portal.util.PortalClassPathUtil;
 import com.liferay.portal.util.PropsUtil;
 
 import java.util.ArrayList;
@@ -74,6 +76,7 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 		testRules.add(_destinationAwaitTestRule);
 		testRules.add(_companyProviderTestRule);
 		testRules.add(_deleteAfterTestRunTestRule);
+		testRules.add(SynchronousDestinationTestRule.INSTANCE);
 		testRules.add(_injectTestRule);
 
 		return testRules.toArray(new TestRule[testRules.size()]);
@@ -125,6 +128,8 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 								Level.INFO.toString(), false);
 
 							ClassPathUtil.initializeClassPaths(
+								new MockServletContext());
+							PortalClassPathUtil.initializeClassPaths(
 								new MockServletContext());
 
 							InitUtil.initWithSpring(

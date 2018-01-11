@@ -98,12 +98,28 @@ public interface LayoutPageTemplateEntryService extends BaseService {
 		java.lang.String name, int start, int end,
 		OrderByComparator<LayoutPageTemplateEntry> orderByComparator);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getLayoutPageTemplateEntriesCount(long groupId,
+		long layoutPageTemplateFolder);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getLayoutPageTemplateEntriesCount(long groupId,
+		long layoutPageTemplateFolder, java.lang.String name);
+
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+		long layoutPageTemplateEntryId, long[] fragmentEntryIds,
+		ServiceContext serviceContext) throws PortalException;
+
+	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+		long layoutPageTemplateEntryId, java.lang.String name)
+		throws PortalException;
 
 	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
 		long layoutPageTemplateEntryId, java.lang.String name,

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.search.highlight.HighlightUtil;
 import com.liferay.portal.kernel.security.RandomUtil;
 
@@ -3282,13 +3283,13 @@ public class StringUtil {
 
 				String oldValue = s.substring(x + begin.length(), y);
 
-				StringBundler newValue = values.get(oldValue);
+				StringBundler newValueSB = values.get(oldValue);
 
-				if (newValue == null) {
+				if (newValueSB == null) {
 					sb.append(oldValue);
 				}
 				else {
-					sb.append(newValue);
+					sb.append(newValueSB);
 				}
 
 				pos = y + end.length();
@@ -4233,7 +4234,7 @@ public class StringUtil {
 			return s;
 		}
 
-		return s.substring(0, x - 1).concat(s.substring(y + 1, s.length()));
+		return s.substring(0, x - 1).concat(s.substring(y + 1));
 	}
 
 	/**
@@ -4841,7 +4842,7 @@ public class StringUtil {
 	 *         empty
 	 */
 	public static String unquote(String s) {
-		if (Validator.isNull(s)) {
+		if (Validator.isNull(s) || (s.length() == 1)) {
 			return s;
 		}
 

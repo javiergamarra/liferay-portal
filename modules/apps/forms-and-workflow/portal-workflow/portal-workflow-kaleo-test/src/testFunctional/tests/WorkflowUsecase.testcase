@@ -100,8 +100,12 @@
 			<var name="entryTitle" value="Blogs Entry Title - Liferay" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#assignToMeTaskByActions">
@@ -123,8 +127,12 @@
 			<var name="entryTitle" value="Blogs Entry Title - Liferay" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#approveTaskByActions">
@@ -185,8 +193,12 @@
 			<var name="entryTitle" value="Blogs Entry Title - Site Name" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#assignToMeTaskByActions">
@@ -210,8 +222,12 @@
 			<var name="entryTitle" value="Blogs Entry Title - Site Name" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#approveTaskByActions">
@@ -243,8 +259,12 @@
 			<var name="entryTitle" value="Blogs Entry Title - Site Name" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#viewCompletedTask">
@@ -306,8 +326,12 @@
 			<var name="entryTitle" value="Blogs Entry Title - Liferay" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#assignToMeTaskByActions">
@@ -324,8 +348,12 @@
 			<var name="portlet" value="Blogs" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#approveTaskByActions">
@@ -362,8 +390,12 @@
 			<var name="portlet" value="Blogs" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#viewCompletedTask">
@@ -378,7 +410,7 @@
 	</command>
 
 	<command name="AddDDLRecordWithDoubleApproverDefinition" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -390,6 +422,13 @@
 		<execute macro="Workflow#uploadDefinition">
 			<var name="workflowDefinitionFile" value="workflow_definition_legal_marketing.xml" />
 			<var name="workflowDefinitionTitle" value="Double Approver Definition" />
+			<var name="workflowDefinitionUploadTitle" value="Legal and Marketing Approval" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Workflow" />
 		</execute>
 
 		<execute macro="Workflow#viewDefinition">
@@ -449,8 +488,12 @@
 
 		<execute macro="DDLRecord#submitForPublication" />
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#assignToMeTaskByActions">
@@ -478,8 +521,12 @@
 			<var name="workflowStatus" value="marketing-review" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#approveTaskByActions">
@@ -508,8 +555,12 @@
 			<var name="workflowStatus" value="legal-review" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#assignToMeTaskByActions">
@@ -537,8 +588,12 @@
 			<var name="workflowStatus" value="legal-review" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#approveTaskByActions">
@@ -736,8 +791,12 @@
 			<var name="workflowTask" value="content-review" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#viewTaskAssignedToMyRoles">
@@ -784,7 +843,13 @@
 			<var name="workflowResourceValue" value="Wiki Page" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Wiki Page" />
 		</execute>
 
@@ -887,8 +952,12 @@
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#assignToMeTaskByActions">
@@ -909,8 +978,12 @@
 			<var name="wikiPageUsername" value="userfn userln" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#approveTaskByActions">
@@ -990,8 +1063,6 @@
 	</command>
 
 	<command name="DeactivateAndDeleteUploadedDefinition" priority="5">
-		<property name="portal.acceptance" value="true" />
-
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
@@ -1001,6 +1072,13 @@
 		<execute macro="Workflow#uploadDefinition">
 			<var name="workflowDefinitionFile" value="workflow_definition_1.xml" />
 			<var name="workflowDefinitionTitle" value="New Uploaded Definition" />
+			<var name="workflowDefinitionUploadTitle" value="Uploaded Definition" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Workflow" />
 		</execute>
 
 		<execute macro="Workflow#viewDefinition">
@@ -1033,7 +1111,13 @@
 			<var name="workflowResourceValue" value="Blogs Entry" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Blogs Page" />
 		</execute>
 
@@ -1066,7 +1150,7 @@
 
 		<execute macro="Workflow#clickAssignToMeByDetails" />
 
-		<execute macro="Workflow#confirmAndViewSucessMessageViaDetails" />
+		<execute macro="Workflow#confirmWorkflowAction" />
 
 		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Blogs Page" />
@@ -1076,8 +1160,12 @@
 			<var name="notificationCount" value="0" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#viewTaskAssignedToMeDetails">
@@ -1089,7 +1177,7 @@
 
 		<execute macro="Workflow#clickApproveByDetails" />
 
-		<execute macro="Workflow#confirmAndViewSucessMessageViaDetails" />
+		<execute macro="Workflow#confirmWorkflowAction" />
 
 		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Blogs Page" />
@@ -1119,11 +1207,15 @@
 
 		<execute function="Click" locator1="Button#PLUS" />
 
+		<execute macro="PortletEntry#inputTitle">
+			<var name="title" value="Invalid Definition" />
+		</execute>
+
 		<execute function="UploadCommonFile#uploadCommonFileHidden" locator1="WorkflowUpload#FILE_UPLOAD" value1="Document_1.txt" />
 
-		<execute macro="Button#clickSave" />
+		<execute macro="Button#clickPublish" />
 
-		<execute function="AssertTextEquals" locator1="Message#ERROR_1" value1="Please enter a valid definition." />
+		<execute function="AssertTextEquals" locator1="Message#ERROR_1" value1="Please enter a valid definition before publishing." />
 	</command>
 
 	<command name="ViewTaskCount" priority="3">
@@ -1189,8 +1281,12 @@
 			<var name="portlet" value="Workflow" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<for list="1,2,3" param="number">
@@ -1344,7 +1440,6 @@
 
 	<command name="ViewWorkflowSubmissionsFromDifferentUsers" priority="5">
 		<description message="This is a use case for LRQA-13519." />
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
@@ -1466,8 +1561,12 @@
 				<var name="userScreenName" value="Test Test" />
 			</execute>
 
-			<execute macro="Page#gotoMyAccount">
-				<var name="portletName" value="My Workflow Tasks" />
+			<execute macro="Navigator#openURL" />
+
+			<execute macro="ProductMenu#gotoPortlet">
+				<var name="category" value="My Account" />
+				<var name="panel" value="User" />
+				<var name="portlet" value="My Workflow Tasks" />
 			</execute>
 
 			<execute macro="Workflow#assignToMeTaskByActions">
@@ -1488,8 +1587,12 @@
 			<var name="userScreenName" value="usersn1" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Submissions" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Submissions" />
 		</execute>
 
 		<execute macro="Workflow#viewMySubmissions">
@@ -1519,8 +1622,12 @@
 			<var name="userScreenName" value="usersn2" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Submissions" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Submissions" />
 		</execute>
 
 		<execute macro="Workflow#viewMySubmissions">
@@ -1586,8 +1693,12 @@
 			<var name="workflowTask" value="Review" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#assignToMeTaskByActions">
@@ -1597,8 +1708,12 @@
 			<var name="workflowActivityComment"><![CDATA[<script>alert("web commenting on WC")</script>]]></var>
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
+			<var name="portlet" value="My Workflow Tasks" />
 		</execute>
 
 		<execute macro="Workflow#approveTaskByActions">
@@ -1631,7 +1746,17 @@
 			<var name="portlet" value="Sites" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="pageName" value="Asset Publisher Test Page" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Asset Publisher Test Page" />
 			<var name="siteName" value="${siteName}" />
 		</execute>

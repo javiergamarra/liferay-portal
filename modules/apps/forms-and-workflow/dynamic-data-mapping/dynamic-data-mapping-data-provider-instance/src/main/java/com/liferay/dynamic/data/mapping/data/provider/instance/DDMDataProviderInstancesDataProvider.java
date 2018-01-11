@@ -24,15 +24,16 @@ import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -67,22 +68,29 @@ public class DDMDataProviderInstancesDataProvider implements DDMDataProvider {
 			HttpServletRequest request =
 				ddmDataProviderRequest.getHttpServletRequest();
 
+			long scopeGroupId = ParamUtil.getLong(request, "scopeGroupId");
+
+			if (scopeGroupId == 0) {
+				ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+					WebKeys.THEME_DISPLAY);
+
+				scopeGroupId = themeDisplay.getScopeGroupId();
+			}
+
 			long[] groupIds = _portal.getCurrentAndAncestorSiteGroupIds(
-				ParamUtil.getLong(request, "scopeGroupId"));
+				scopeGroupId);
 
 			List<DDMDataProviderInstance> ddmDataProviderInstances =
 				_ddmDataProviderInstanceLocalService.getDataProviderInstances(
 					groupIds);
-
-			Locale locale = LocaleThreadLocal.getThemeDisplayLocale();
 
 			for (DDMDataProviderInstance ddmDataProviderInstance :
 					ddmDataProviderInstances) {
 
 				long value =
 					ddmDataProviderInstance.getDataProviderInstanceId();
-
-				String label = ddmDataProviderInstance.getName(locale);
+				String label = ddmDataProviderInstance.getName(
+					LocaleThreadLocal.getThemeDisplayLocale());
 
 				data.add(new KeyValuePair(String.valueOf(value), label));
 			}

@@ -281,6 +281,8 @@ public interface PropsKeys {
 
 	public static final String CACHE_CONTENT_THRESHOLD_SIZE = "cache.content.threshold.size";
 
+	public static final String CACHE_FILTER_INCLUDE_USER_AGENT = "cache.filter.include.user.agent";
+
 	public static final String CALENDAR_EMAIL_EVENT_REMINDER_BODY = "calendar.email.event.reminder.body";
 
 	public static final String CALENDAR_EMAIL_EVENT_REMINDER_ENABLED = "calendar.email.event.reminder.enabled";
@@ -1223,6 +1225,10 @@ public interface PropsKeys {
 
 	public static final String LAYOUT_PARALLEL_RENDER_ENABLE = "layout.parallel.render.enable";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String LAYOUT_PARALLEL_RENDER_THREAD_POOL_ALLOW_CORE_THREAD_TIMEOUT = "layout.parallel.render.thread.pool.allow.core.thread.timeout";
 
 	public static final String LAYOUT_PARALLEL_RENDER_THREAD_POOL_CORE_THREAD_COUNT = "layout.parallel.render.thread.pool.core.thread.count";
@@ -2583,6 +2589,8 @@ public interface PropsKeys {
 
 	public static final String VALUE_OBJECT_FINDER_CACHE_ENABLED = "value.object.finder.cache.enabled";
 
+	public static final String VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD = "value.object.finder.cache.list.threshold";
+
 	public static final String VALUE_OBJECT_FINDER_THREAD_LOCAL_CACHE_MAX_SIZE = "value.object.finder.thread.local.cache.max.size";
 
 	public static final String VALUE_OBJECT_LISTENER = "value.object.listener.";
@@ -2686,5 +2694,7 @@ public interface PropsKeys {
 	public static final String YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS = "yui.compressor.js.preserve.all.semicolons";
 
 	public static final String YUI_COMPRESSOR_JS_VERBOSE = "yui.compressor.js.verbose";
+
+	public static final String ZIP_FILE_NAME_ENCODING = "zip.file.name.encoding";
 
 }

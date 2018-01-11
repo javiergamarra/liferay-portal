@@ -15,17 +15,22 @@
 package com.liferay.layout.page.template.service.impl;
 
 import com.liferay.fragment.model.FragmentEntry;
+import com.liferay.fragment.service.FragmentEntryService;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateActionKeys;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.base.LayoutPageTemplateEntryServiceBaseImpl;
-import com.liferay.layout.page.template.service.permission.LayoutPageTemplateEntryPermission;
-import com.liferay.layout.page.template.service.permission.LayoutPageTemplatePermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermissionFactory;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +47,7 @@ public class LayoutPageTemplateEntryServiceImpl
 			List<FragmentEntry> fragmentEntries, ServiceContext serviceContext)
 		throws PortalException {
 
-		LayoutPageTemplatePermission.check(
+		_portletResourcePermission.check(
 			getPermissionChecker(), groupId,
 			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
 
@@ -61,7 +66,7 @@ public class LayoutPageTemplateEntryServiceImpl
 
 		for (long layoutPageTemplateEntryId : layoutPageTemplateEntryIds) {
 			try {
-				LayoutPageTemplateEntryPermission.check(
+				_layoutPageTemplateEntryModelResourcePermission.check(
 					getPermissionChecker(), layoutPageTemplateEntryId,
 					ActionKeys.DELETE);
 
@@ -90,7 +95,7 @@ public class LayoutPageTemplateEntryServiceImpl
 			long layoutPageTemplateEntryId)
 		throws PortalException {
 
-		LayoutPageTemplateEntryPermission.check(
+		_layoutPageTemplateEntryModelResourcePermission.check(
 			getPermissionChecker(), layoutPageTemplateEntryId,
 			ActionKeys.DELETE);
 
@@ -108,7 +113,7 @@ public class LayoutPageTemplateEntryServiceImpl
 				layoutPageTemplateEntryId);
 
 		if (layoutPageTemplateEntry != null) {
-			LayoutPageTemplateEntryPermission.check(
+			_layoutPageTemplateEntryModelResourcePermission.check(
 				getPermissionChecker(), layoutPageTemplateEntry,
 				ActionKeys.VIEW);
 		}
@@ -166,12 +171,66 @@ public class LayoutPageTemplateEntryServiceImpl
 	}
 
 	@Override
+	public int getLayoutPageTemplateEntriesCount(
+		long groupId, long layoutPageTemplateFolder) {
+
+		return layoutPageTemplateEntryPersistence.filterCountByG_L(
+			groupId, layoutPageTemplateFolder);
+	}
+
+	@Override
+	public int getLayoutPageTemplateEntriesCount(
+		long groupId, long layoutPageTemplateFolder, String name) {
+
+		return layoutPageTemplateEntryPersistence.filterCountByG_L_LikeN(
+			groupId, layoutPageTemplateFolder, name);
+	}
+
+	@Override
+	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+			long layoutPageTemplateEntryId, long[] fragmentEntryIds,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			fetchLayoutPageTemplateEntry(layoutPageTemplateEntryId);
+
+		List<FragmentEntry> fragmentEntries = new ArrayList<>();
+
+		for (long fragmentEntryId : fragmentEntryIds) {
+			FragmentEntry fragmentEntry =
+				_fragmentEntryService.fetchFragmentEntry(fragmentEntryId);
+
+			fragmentEntries.add(fragmentEntry);
+		}
+
+		return layoutPageTemplateEntryLocalService.
+			updateLayoutPageTemplateEntry(
+				getUserId(), layoutPageTemplateEntryId,
+				layoutPageTemplateEntry.getName(), fragmentEntries,
+				serviceContext);
+	}
+
+	@Override
+	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+			long layoutPageTemplateEntryId, String name)
+		throws PortalException {
+
+		_layoutPageTemplateEntryModelResourcePermission.check(
+			getPermissionChecker(), layoutPageTemplateEntryId,
+			ActionKeys.UPDATE);
+
+		return layoutPageTemplateEntryLocalService.
+			updateLayoutPageTemplateEntry(layoutPageTemplateEntryId, name);
+	}
+
+	@Override
 	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
 			long layoutPageTemplateEntryId, String name,
 			List<FragmentEntry> fragmentEntries, ServiceContext serviceContext)
 		throws PortalException {
 
-		LayoutPageTemplateEntryPermission.check(
+		_layoutPageTemplateEntryModelResourcePermission.check(
 			getPermissionChecker(), layoutPageTemplateEntryId,
 			ActionKeys.UPDATE);
 
@@ -183,5 +242,21 @@ public class LayoutPageTemplateEntryServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutPageTemplateEntryServiceImpl.class);
+
+	private static volatile ModelResourcePermission<LayoutPageTemplateEntry>
+		_layoutPageTemplateEntryModelResourcePermission =
+			ModelResourcePermissionFactory.getInstance(
+				LayoutPageTemplateEntryServiceImpl.class,
+				"_layoutPageTemplateEntryModelResourcePermission",
+				LayoutPageTemplateEntry.class);
+	private static volatile PortletResourcePermission
+		_portletResourcePermission =
+			PortletResourcePermissionFactory.getInstance(
+				LayoutPageTemplateEntryServiceImpl.class,
+				"_portletResourcePermission",
+				LayoutPageTemplateConstants.RESOURCE_NAME);
+
+	@ServiceReference(type = FragmentEntryService.class)
+	private FragmentEntryService _fragmentEntryService;
 
 }

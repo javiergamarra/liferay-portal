@@ -218,6 +218,72 @@ public class LayoutPageTemplateEntryServiceSoap {
 		}
 	}
 
+	public static int getLayoutPageTemplateEntriesCount(long groupId,
+		long layoutPageTemplateFolder) throws RemoteException {
+		try {
+			int returnValue = LayoutPageTemplateEntryServiceUtil.getLayoutPageTemplateEntriesCount(groupId,
+					layoutPageTemplateFolder);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getLayoutPageTemplateEntriesCount(long groupId,
+		long layoutPageTemplateFolder, java.lang.String name)
+		throws RemoteException {
+		try {
+			int returnValue = LayoutPageTemplateEntryServiceUtil.getLayoutPageTemplateEntriesCount(groupId,
+					layoutPageTemplateFolder, name);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap updateLayoutPageTemplateEntry(
+		long layoutPageTemplateEntryId, long[] fragmentEntryIds,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.layout.page.template.model.LayoutPageTemplateEntry returnValue =
+				LayoutPageTemplateEntryServiceUtil.updateLayoutPageTemplateEntry(layoutPageTemplateEntryId,
+					fragmentEntryIds, serviceContext);
+
+			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap updateLayoutPageTemplateEntry(
+		long layoutPageTemplateEntryId, java.lang.String name)
+		throws RemoteException {
+		try {
+			com.liferay.layout.page.template.model.LayoutPageTemplateEntry returnValue =
+				LayoutPageTemplateEntryServiceUtil.updateLayoutPageTemplateEntry(layoutPageTemplateEntryId,
+					name);
+
+			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap updateLayoutPageTemplateEntry(
 		long layoutPageTemplateEntryId, java.lang.String name,
 		java.util.List<com.liferay.fragment.model.FragmentEntry> fragmentEntries,

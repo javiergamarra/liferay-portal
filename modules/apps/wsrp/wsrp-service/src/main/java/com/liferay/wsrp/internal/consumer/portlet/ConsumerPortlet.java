@@ -305,7 +305,7 @@ public class ConsumerPortlet extends MVCPortlet {
 		String wsrpAuth = GetterUtil.getString(
 			resourceRequest.getParameter(WebKeys.WSRP_AUTH));
 
-		StringBundler sb = new StringBundler(3);
+		StringBundler sb = new StringBundler(4);
 
 		sb.append(resourceID);
 		sb.append(url);
@@ -884,7 +884,7 @@ public class ConsumerPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(7);
 
 		sb.append(baseKey);
 		sb.append(StringPool.UNDERLINE);
@@ -982,8 +982,7 @@ public class ConsumerPortlet extends MVCPortlet {
 		String wsrpConsumerPortletUuid = portletName;
 
 		if (portletName.startsWith("WSRP_")) {
-			wsrpConsumerPortletUuid = portletName.substring(
-				5, portletName.length());
+			wsrpConsumerPortletUuid = portletName.substring(5);
 		}
 
 		wsrpConsumerPortletUuid = PortalUUIDUtil.fromJsSafeUuid(
@@ -1190,8 +1189,7 @@ public class ConsumerPortlet extends MVCPortlet {
 
 		if (Validator.isNotNull(navigationalState)) {
 			navigationalState = new String(
-				Base64.decode(Base64.fromURLSafe(navigationalState)),
-				StringPool.UTF8);
+				Base64.decodeFromURL(navigationalState), StringPool.UTF8);
 
 			navigationalContext.setOpaqueValue(navigationalState);
 		}
@@ -1733,7 +1731,7 @@ public class ConsumerPortlet extends MVCPortlet {
 			if (Validator.isNotNull(opaqueValue)) {
 				byte[] opaqueValueBytes = opaqueValue.getBytes(StringPool.UTF8);
 
-				opaqueValue = Base64.toURLSafe(Base64.encode(opaqueValueBytes));
+				opaqueValue = Base64.encodeToURL(opaqueValueBytes);
 
 				stateAwareResponse.setRenderParameter(
 					"wsrp-navigationalState", opaqueValue);
@@ -1909,7 +1907,7 @@ public class ConsumerPortlet extends MVCPortlet {
 				if (Validator.isNotNull(value)) {
 					byte[] valueBytes = value.getBytes(StringPool.UTF8);
 
-					value = Base64.toURLSafe(Base64.encode(valueBytes));
+					value = Base64.encodeToURL(valueBytes);
 
 					liferayPortletURL.setParameter(name, value);
 				}

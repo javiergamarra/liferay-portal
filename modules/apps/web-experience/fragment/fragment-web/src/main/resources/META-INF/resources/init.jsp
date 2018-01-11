@@ -27,16 +27,19 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 <%@ page import="com.liferay.fragment.constants.FragmentActionKeys" %><%@
 page import="com.liferay.fragment.exception.DuplicateFragmentCollectionException" %><%@
 page import="com.liferay.fragment.exception.FragmentCollectionNameException" %><%@
+page import="com.liferay.fragment.exception.FragmentEntryContentException" %><%@
+page import="com.liferay.fragment.exception.RequiredFragmentEntryException" %><%@
 page import="com.liferay.fragment.model.FragmentCollection" %><%@
 page import="com.liferay.fragment.model.FragmentEntry" %><%@
-page import="com.liferay.fragment.service.permission.FragmentCollectionPermission" %><%@
-page import="com.liferay.fragment.service.permission.FragmentEntryPermission" %><%@
 page import="com.liferay.fragment.web.internal.display.context.FragmentDisplayContext" %><%@
+page import="com.liferay.fragment.web.internal.security.permission.FragmentCollectionPermission" %><%@
+page import="com.liferay.fragment.web.internal.security.permission.FragmentEntryPermission" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
+page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.taglib.search.ResultRow" %>
 

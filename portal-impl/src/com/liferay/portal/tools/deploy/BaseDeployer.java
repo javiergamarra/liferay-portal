@@ -14,6 +14,9 @@
 
 package com.liferay.portal.tools.deploy;
 
+import com.liferay.petra.function.UnsafeConsumer;
+import com.liferay.petra.xml.DocUtil;
+import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.deploy.DeployUtil;
 import com.liferay.portal.kernel.deploy.Deployer;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployException;
@@ -44,7 +47,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.UnsafeConsumer;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -64,8 +66,6 @@ import com.liferay.util.ant.DeleteTask;
 import com.liferay.util.ant.ExpandTask;
 import com.liferay.util.ant.UpToDateTask;
 import com.liferay.util.ant.WarTask;
-import com.liferay.util.xml.DocUtil;
-import com.liferay.util.xml.XMLUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -126,10 +126,10 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	}
 
 	public BaseDeployer() {
-		for (DeploymentExtension deploymentExtension : ServiceLoader.load(
-				DeploymentExtension.class,
-				BaseDeployer.class.getClassLoader())) {
+		ServiceLoader<DeploymentExtension> serviceLoader = ServiceLoader.load(
+			DeploymentExtension.class, BaseDeployer.class.getClassLoader());
 
+		for (DeploymentExtension deploymentExtension : serviceLoader) {
 			_deploymentExtensions.add(deploymentExtension);
 		}
 	}
@@ -347,9 +347,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	public void copyJars(File srcFile, PluginPackage pluginPackage)
 		throws Exception {
 
-		for (int i = 0; i < jars.size(); i++) {
-			String jarFullName = jars.get(i);
-
+		for (String jarFullName : jars) {
 			String jarName = jarFullName.substring(
 				jarFullName.lastIndexOf("/") + 1);
 
@@ -1179,7 +1177,11 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			double webXmlVersion, File srcFile, String displayName)
 		throws Exception {
 
-		StringBundler sb = new StringBundler();
+		if (displayName.startsWith(StringPool.FORWARD_SLASH)) {
+			displayName = displayName.substring(1);
+		}
+
+		StringBundler sb = new StringBundler(62);
 
 		sb.append("<display-name>");
 		sb.append(displayName);
@@ -1230,8 +1232,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
 		if (Validator.isNotNull(portletTaglibDTD)) {
 			sb.append("<taglib>");
-			sb.append(
-				"<taglib-uri>http://java.sun.com/portlet_2_0</taglib-uri>");
+			sb.append("<taglib-uri>http://java.sun.com/portlet_2_0");
+			sb.append("</taglib-uri>");
 			sb.append("<taglib-location>");
 			sb.append("/WEB-INF/tld/liferay-portlet.tld");
 			sb.append("</taglib-location>");
@@ -1323,7 +1325,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	}
 
 	public String getInvokerFilterContent() {
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(5);
 
 		sb.append(getInvokerFilterContent("ASYNC"));
 		sb.append(getInvokerFilterContent("ERROR"));

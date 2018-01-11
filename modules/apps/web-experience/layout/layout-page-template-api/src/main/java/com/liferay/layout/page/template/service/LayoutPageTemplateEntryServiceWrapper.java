@@ -107,6 +107,20 @@ public class LayoutPageTemplateEntryServiceWrapper
 			layoutPageTemplateCollectionId, name, start, end, orderByComparator);
 	}
 
+	@Override
+	public int getLayoutPageTemplateEntriesCount(long groupId,
+		long layoutPageTemplateFolder) {
+		return _layoutPageTemplateEntryService.getLayoutPageTemplateEntriesCount(groupId,
+			layoutPageTemplateFolder);
+	}
+
+	@Override
+	public int getLayoutPageTemplateEntriesCount(long groupId,
+		long layoutPageTemplateFolder, java.lang.String name) {
+		return _layoutPageTemplateEntryService.getLayoutPageTemplateEntriesCount(groupId,
+			layoutPageTemplateFolder, name);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -115,6 +129,23 @@ public class LayoutPageTemplateEntryServiceWrapper
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _layoutPageTemplateEntryService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.layout.page.template.model.LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+		long layoutPageTemplateEntryId, long[] fragmentEntryIds,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _layoutPageTemplateEntryService.updateLayoutPageTemplateEntry(layoutPageTemplateEntryId,
+			fragmentEntryIds, serviceContext);
+	}
+
+	@Override
+	public com.liferay.layout.page.template.model.LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+		long layoutPageTemplateEntryId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _layoutPageTemplateEntryService.updateLayoutPageTemplateEntry(layoutPageTemplateEntryId,
+			name);
 	}
 
 	@Override
