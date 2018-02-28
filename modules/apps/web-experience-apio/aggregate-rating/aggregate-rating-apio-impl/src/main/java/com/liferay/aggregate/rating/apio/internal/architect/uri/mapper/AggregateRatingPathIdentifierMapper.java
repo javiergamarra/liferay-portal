@@ -73,8 +73,8 @@ public class AggregateRatingPathIdentifierMapper
 	}
 
 	@Override
-	public Path map(String name, ClassNameClassPK classNameClassPKIdentifier) {
-		String id = name + ":" + classNameClassPKIdentifier.getClassPK();
+	public Path map(String name, ClassNameClassPK classNameClassPK) {
+		String id = name + ":" + classNameClassPK.getClassPK();
 
 		return new Path(name, id);
 	}
