@@ -28,6 +28,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersionModel;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
+import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.forms.apio.architect.identifier.FormInstanceIdentifier;
 import com.liferay.forms.apio.architect.identifier.FormInstanceRecordIdentifier;
@@ -35,6 +36,7 @@ import com.liferay.forms.apio.internal.FormInstanceRecordServiceContext;
 import com.liferay.forms.apio.internal.architect.form.FormInstanceRecordForm;
 import com.liferay.forms.apio.internal.architect.locale.AcceptLocale;
 import com.liferay.forms.apio.internal.helper.FormInstanceRecordResourceHelper;
+import com.liferay.forms.apio.internal.helper.LocalizedValueHelper;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -109,10 +111,8 @@ public class FormInstanceRecordNestedCollectionResource
 			"datePublished", DDMFormInstanceRecord::getLastPublishDate
 		).addLinkedModel(
 			"author", PersonIdentifier.class, DDMFormInstanceRecord::getUserId
-		).addLocalizedStringByLocale(
-			"fieldValues", FormInstanceRecordResourceHelper::getFieldValuesJSON
 		).addNested(
-			"version", this::_getVersion,
+			"version", FormInstanceRecordResourceHelper::getVersion,
 			nestedBuilder -> nestedBuilder.types(
 				"FormInstanceRecordVersion"
 			).addLinkedModel(
@@ -120,6 +120,20 @@ public class FormInstanceRecordNestedCollectionResource
 				DDMFormInstanceRecordVersion::getUserId
 			).addString(
 				"name", DDMFormInstanceRecordVersionModel::getVersion
+			).build()
+		).addNestedList(
+			"fieldValues", this::_getFieldValues,
+			fieldValuesBuilder -> fieldValuesBuilder.types(
+				"FormFieldValue"
+			).addLocalizedStringByLocale(
+				"value",
+				(ddmFormFieldValue, locale) ->
+					LocalizedValueHelper.getLocalizedString(
+						ddmFormFieldValue.getValue(), locale)
+			).addString(
+				"identifier", DDMFormFieldValue::getInstanceId
+			).addString(
+				"name", DDMFormFieldValue::getName
 			).build()
 		).build();
 	}
@@ -141,16 +155,28 @@ public class FormInstanceRecordNestedCollectionResource
 				formInstanceRecordForm.getFieldValues(),
 				ddmStructure.getDDMForm(), acceptLocale.get());
 
-		ServiceContext serviceContext =
-			formInstanceRecordServiceContext.getServiceContext();
-
-		_setServiceContextAttributes(
-			serviceContext, formInstanceRecordForm.isDraft());
+		FormInstanceRecordResourceHelper.setServiceContextAttributes(
+			formInstanceRecordServiceContext, formInstanceRecordForm.isDraft());
 
 		return _ddmFormInstanceRecordService.addFormInstanceRecord(
 			ddmFormInstance.getGroupId(), ddmFormInstance.getFormInstanceId(),
 			ddmFormValues,
 			formInstanceRecordServiceContext.getServiceContext());
+	}
+
+	private List<DDMFormFieldValue> _getFieldValues(
+		DDMFormInstanceRecord ddmFormInstanceRecord) {
+
+		return Try.fromFallible(
+			() -> {
+				DDMFormValues ddmFormValues =
+					ddmFormInstanceRecord.getDDMFormValues();
+
+				return ddmFormValues.getDDMFormFieldValues();
+			}
+		).orElse(
+			null
+		);
 	}
 
 	private PageItems<DDMFormInstanceRecord> _getPageItems(
@@ -167,33 +193,6 @@ public class FormInstanceRecordNestedCollectionResource
 			formInstanceId);
 
 		return new PageItems<>(ddmFormInstances, count);
-	}
-
-	private DDMFormInstanceRecordVersion _getVersion(
-		DDMFormInstanceRecord ddmFormInstanceRecord) {
-
-		return Try.fromFallible(
-			ddmFormInstanceRecord::getVersion
-		).map(
-			ddmFormInstanceRecord::getFormInstanceRecordVersion
-		).orElse(
-			null
-		);
-	}
-
-	private void _setServiceContextAttributes(
-		ServiceContext serviceContext, boolean draft) {
-
-		if (draft) {
-			serviceContext.setAttribute(
-				"status", WorkflowConstants.STATUS_DRAFT);
-			serviceContext.setAttribute("validateDDMFormValues", Boolean.FALSE);
-			serviceContext.setWorkflowAction(
-				WorkflowConstants.ACTION_SAVE_DRAFT);
-		}
-		else {
-			serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
-		}
 	}
 
 	private DDMFormInstanceRecord _updateFormInstanceRecord(
@@ -220,8 +219,8 @@ public class FormInstanceRecordNestedCollectionResource
 		ServiceContext serviceContext =
 			formInstanceRecordServiceContext.getServiceContext();
 
-		_setServiceContextAttributes(
-			serviceContext, formInstanceRecordForm.isDraft());
+		FormInstanceRecordResourceHelper.setServiceContextAttributes(
+			formInstanceRecordServiceContext, formInstanceRecordForm.isDraft());
 
 		return _ddmFormInstanceRecordService.updateFormInstanceRecord(
 			formInstanceRecordId, false, ddmFormValues, serviceContext);
