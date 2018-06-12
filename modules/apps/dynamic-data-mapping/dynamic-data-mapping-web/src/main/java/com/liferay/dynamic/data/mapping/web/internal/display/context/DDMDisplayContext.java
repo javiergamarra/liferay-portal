@@ -249,7 +249,7 @@ public class DDMDisplayContext {
 						defaultDDMDisplayTabItem.getTitle(
 							liferayPortletRequest, liferayPortletResponse));
 
-					String ddmDisplayTabItemHref = GetterUtil.getString(
+					String ddmDisplayTabItemHREF = GetterUtil.getString(
 						ddmDisplayTabItem.getURL(
 							liferayPortletRequest, liferayPortletResponse));
 
@@ -259,7 +259,7 @@ public class DDMDisplayContext {
 								Objects.equals(
 									ddmDisplayTabItemTitle,
 									defaultDDMDisplayTabItemTitle));
-							navigationItem.setHref(ddmDisplayTabItemHref);
+							navigationItem.setHref(ddmDisplayTabItemHREF);
 							navigationItem.setLabel(ddmDisplayTabItemTitle);
 						});
 				}
@@ -871,7 +871,7 @@ public class DDMDisplayContext {
 
 		boolean showAncestorScopes = showAncestorScopes();
 
-		if (Validator.isNotNull(showAncestorScopes)) {
+		if (showAncestorScopes) {
 			portletURL.setParameter(
 				"showAncestorScopes", String.valueOf(showAncestorScopes));
 		}

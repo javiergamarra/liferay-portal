@@ -144,6 +144,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>APPLY</td>
+	<td>//button[contains(.,'Apply')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>APPLY_EFFECTS</td>
 	<td>//div[contains(@class,'controls-container') and contains(@class,'open')]//button[contains(@class,'btn') and contains(.,'Apply')]</td>
 	<td></td>
@@ -456,6 +461,11 @@
 <tr>
 	<td>LOCALIZATION</td>
 	<td>//div[label[contains(.,'${key_fieldName}')]]//div[contains(@class,'localized')]//button[contains(@class,'localized')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MAP_TO</td>
+	<td>//button[contains(.,'Map to')]</td>
 	<td></td>
 </tr>
 <tr>

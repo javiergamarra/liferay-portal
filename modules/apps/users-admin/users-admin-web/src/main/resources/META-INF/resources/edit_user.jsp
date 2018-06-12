@@ -18,10 +18,18 @@
 
 <%
 User selUser = PortalUtil.getSelectedUser(request);
+
+PortletURL portletURL = liferayPortletResponse.createRenderURL();
+
+portletURL.setParameter("mvcRenderCommandName", "/users_admin/edit_user");
+
+if (selUser != null) {
+	portletURL.setParameter("p_u_i_d", String.valueOf(selUser.getUserId()));
+}
 %>
 
 <liferay-frontend:screen-navigation
 	context="<%= selUser %>"
 	key="<%= UserFormConstants.SCREEN_NAVIGATION_KEY_USERS %>"
-	portletURL="<%= currentURLObj %>"
+	portletURL="<%= portletURL %>"
 />

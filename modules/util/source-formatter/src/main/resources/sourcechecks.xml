@@ -2,13 +2,12 @@
 
 <source-formatter>
 	<source-processor name="all">
+		<check name="CDNCheck" />
 		<check name="IncorrectFileLocationCheck" />
 		<check name="ReturnCharacterCheck" />
 	</source-processor>
 	<source-processor name="BNDSourceProcessor">
-		<check name="BNDBundleCheck">
-			<property name="enabled" value="false" />
-		</check>
+		<check name="BNDBundleCheck" />
 		<check name="BNDCapabilityCheck" />
 		<check name="BNDDefinitionKeysCheck" />
 		<check name="BNDImportsCheck" />
@@ -369,6 +368,9 @@
 		<check name="XMLResourceActionsFileCheck" />
 		<check name="XMLServiceEntityNameCheck" />
 		<check name="XMLServiceFileCheck" />
+		<check name="XMLServiceReferenceCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="XMLSolrSchemaFileCheck" />
 		<check name="XMLSuppressionsFileCheck" />
 		<check name="XMLTagAttributesCheck" />

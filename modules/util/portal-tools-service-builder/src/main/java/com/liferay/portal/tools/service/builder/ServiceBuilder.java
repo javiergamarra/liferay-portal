@@ -878,7 +878,6 @@ public class ServiceBuilder {
 
 					_createUADBnd(uadApplicationName);
 					_createUADConstants(uadApplicationName);
-					_createUADLanguageProperties(uadApplicationName);
 					_createUADTestBnd(uadApplicationName);
 				}
 
@@ -3431,9 +3430,19 @@ public class ServiceBuilder {
 		int x = oldContent.indexOf("<beans");
 		int y = oldContent.lastIndexOf("</beans>");
 
-		int firstSession = newContent.indexOf("<bean ", x);
+		int firstSession = newContent.indexOf(
+			"<bean class=\"" + _packagePath + ".service.", x);
 
-		int lastSession = newContent.lastIndexOf("<bean ", y);
+		int lastSession = newContent.lastIndexOf(
+			"<bean class=\"" + _packagePath + ".service.", y);
+
+		if (firstSession == -1) {
+			firstSession = newContent.indexOf(
+				"<bean class=\"" + _apiPackagePath + ".service.", x);
+
+			lastSession = newContent.lastIndexOf(
+				"<bean class=\"" + _apiPackagePath + ".service.", y);
+		}
 
 		if ((firstSession == -1) || (firstSession > y)) {
 			x = newContent.indexOf("</beans>");
@@ -4086,38 +4095,6 @@ public class ServiceBuilder {
 
 		if (!file.exists()) {
 			_write(file, content, _author, _jalopySettings, _modifiedFileNames);
-		}
-	}
-
-	private void _createUADLanguageProperties(String uadApplicationName)
-		throws Exception {
-
-		Map<String, Object> context = _getContext();
-
-		List<Entity> entities = _uadApplicationEntities.get(uadApplicationName);
-
-		Entity entity = entities.get(0);
-
-		context.put("uadApplicationName", uadApplicationName);
-		context.put("uadPackagePath", entity.getUADPackagePath());
-
-		// Content
-
-		String content = _processTemplate(_tplUADLangugageProperties, context);
-
-		// Write file
-
-		String uadOutputPath = entity.getUADOutputPath();
-
-		int index = uadOutputPath.indexOf("/src/");
-
-		String uadDirName = uadOutputPath.substring(0, index);
-
-		File file = new File(
-			uadDirName + "/src/main/resources/content/Language.properties");
-
-		if (!file.exists()) {
-			ToolsUtil.writeFileRaw(file, content, _modifiedFileNames);
 		}
 	}
 
@@ -7149,8 +7126,6 @@ public class ServiceBuilder {
 	private String _tplUADDisplayTest = _TPL_ROOT + "uad_display_test.ftl";
 	private String _tplUADExporter = _TPL_ROOT + "uad_exporter.ftl";
 	private String _tplUADExporterTest = _TPL_ROOT + "uad_exporter_test.ftl";
-	private String _tplUADLangugageProperties =
-		_TPL_ROOT + "uad_language_properties.ftl";
 	private String _tplUADTestBnd = _TPL_ROOT + "uad_test_bnd.ftl";
 	private String _tplUADTestHelper = _TPL_ROOT + "uad_test_helper.ftl";
 	private Map<String, List<Entity>> _uadApplicationEntities = new HashMap<>();

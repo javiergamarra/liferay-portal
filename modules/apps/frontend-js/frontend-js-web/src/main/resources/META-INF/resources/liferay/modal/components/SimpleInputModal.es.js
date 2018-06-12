@@ -63,7 +63,7 @@ class SimpleInputModal extends Component {
 					}
 				}
 			)
-			.catch(
+			.catch (
 				response => {
 					this._handleFormError(response);
 				}

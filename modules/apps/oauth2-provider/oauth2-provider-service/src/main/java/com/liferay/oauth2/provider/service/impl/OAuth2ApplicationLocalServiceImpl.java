@@ -35,7 +35,12 @@ import com.liferay.oauth2.provider.model.OAuth2ApplicationScopeAliases;
 import com.liferay.oauth2.provider.model.OAuth2Authorization;
 import com.liferay.oauth2.provider.service.base.OAuth2ApplicationLocalServiceBaseImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.ImageTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.image.ImageBag;
+import com.liferay.portal.kernel.image.ImageToolUtil;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
@@ -49,6 +54,9 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.awt.image.RenderedImage;
+
+import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.URI;
@@ -212,6 +220,19 @@ public class OAuth2ApplicationLocalServiceImpl
 
 		long oldIconFileEntryId = oAuth2Application.getIconFileEntryId();
 
+		if (inputStream == null) {
+			if (oldIconFileEntryId > 0) {
+				PortletFileRepositoryUtil.deletePortletFileEntry(
+					oldIconFileEntryId);
+
+				oAuth2Application.setIconFileEntryId(-1);
+
+				oAuth2Application = updateOAuth2Application(oAuth2Application);
+			}
+
+			return oAuth2Application;
+		}
+
 		Group group = groupLocalService.getCompanyGroup(
 			oAuth2Application.getCompanyId());
 
@@ -229,15 +250,39 @@ public class OAuth2ApplicationLocalServiceImpl
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, "icons",
 			serviceContext);
 
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		try {
+			ImageBag imageBag = ImageToolUtil.read(inputStream);
+
+			RenderedImage renderedImage = imageBag.getRenderedImage();
+
+			if (renderedImage == null) {
+				throw new ImageTypeException("Unable to read icon");
+			}
+
+			renderedImage = ImageToolUtil.scale(renderedImage, 160, 160);
+
+			ImageToolUtil.write(
+				renderedImage, imageBag.getType(), unsyncByteArrayOutputStream);
+		}
+		catch (IOException ioe) {
+			throw new PortalException(ioe);
+		}
+
 		String fileName = PortletFileRepositoryUtil.getUniqueFileName(
 			group.getGroupId(), folder.getFolderId(),
 			oAuth2Application.getClientId());
 
 		FileEntry fileEntry = PortletFileRepositoryUtil.addPortletFileEntry(
 			group.getGroupId(), oAuth2Application.getUserId(),
-			OAuth2Application.class.getName(), oAuth2ApplicationId,
+			OAuth2Application.class.getName(),
+			oAuth2Application.getOAuth2ApplicationId(),
 			OAuth2ProviderConstants.SERVICE_NAME, folder.getFolderId(),
-			inputStream, fileName, null, false);
+			new UnsyncByteArrayInputStream(
+				unsyncByteArrayOutputStream.toByteArray()),
+			fileName, null, false);
 
 		oAuth2Application.setIconFileEntryId(fileEntry.getFileEntryId());
 

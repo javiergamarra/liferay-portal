@@ -605,7 +605,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	/**
-	* Returns the primary key of the default layout for the group
+	* Returns the primary key of the default layout for the group.
 	*
 	* @param groupId the primary key of the group
 	* @return the primary key of the default layout for the group (optionally
