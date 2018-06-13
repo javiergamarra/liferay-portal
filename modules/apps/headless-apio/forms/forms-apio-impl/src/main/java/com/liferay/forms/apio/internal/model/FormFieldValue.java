@@ -12,18 +12,21 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal.resource;
+package com.liferay.forms.apio.internal.model;
 
-import com.liferay.apio.architect.customactions.PostRoute;
+import com.google.gson.JsonElement;
 
 /**
- * @author Javier Gamarra
+ * @author Paulo Cruz
  */
-public class UploadFileRoute extends PostRoute {
+public class FormFieldValue {
 
-	@Override
-	public String getName() {
-		return "uploadFileToRootFolder";
+	public FormFieldValue(String name, JsonElement value) {
+		this.name = name;
+		this.value = value;
 	}
+
+	public final String name;
+	public final JsonElement value;
 
 }

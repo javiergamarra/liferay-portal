@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal.representable;
+package com.liferay.forms.apio.internal.model;
 
 import java.util.List;
 import java.util.Map;

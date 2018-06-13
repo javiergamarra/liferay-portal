@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal.representable;
+package com.liferay.forms.apio.internal.model;
 
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal;
+package com.liferay.forms.apio.internal.model;
 
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayoutPage;

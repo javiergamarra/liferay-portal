@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal.form;
+package com.liferay.forms.apio.internal.architect.form;
 
 import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.apio.architect.form.Form;

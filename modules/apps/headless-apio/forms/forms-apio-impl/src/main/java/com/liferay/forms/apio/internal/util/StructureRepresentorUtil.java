@@ -27,7 +27,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormSuccessPageSettings;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
-import com.liferay.forms.apio.internal.FormLayoutPage;
+import com.liferay.forms.apio.internal.model.FormLayoutPage;
 
 import java.util.ArrayList;
 import java.util.List;

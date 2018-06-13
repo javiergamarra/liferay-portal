@@ -12,21 +12,18 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal;
+package com.liferay.forms.apio.internal.architect.route;
 
-import com.google.gson.JsonElement;
+import com.liferay.apio.architect.customactions.PostRoute;
 
 /**
- * @author Paulo Cruz
+ * @author Javier Gamarra
  */
-public class FormFieldValue {
+public class EvaluateContextRoute extends PostRoute {
 
-	public FormFieldValue(String name, JsonElement value) {
-		this.name = name;
-		this.value = value;
+	@Override
+	public String getName() {
+		return "evaluate-context";
 	}
-
-	public final String name;
-	public final JsonElement value;
 
 }
