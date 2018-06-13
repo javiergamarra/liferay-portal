@@ -32,29 +32,28 @@ import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceVersion;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
+import com.liferay.forms.apio.architect.identifier.FormContextIdentifier;
 import com.liferay.forms.apio.architect.identifier.FormInstanceIdentifier;
 import com.liferay.forms.apio.architect.identifier.StructureIdentifier;
 import com.liferay.forms.apio.internal.architect.form.FormContextForm;
 import com.liferay.forms.apio.internal.architect.form.MediaObjectCreatorForm;
 import com.liferay.forms.apio.internal.architect.route.EvaluateContextRoute;
-import com.liferay.forms.apio.architect.identifier.FormContextIdentifier;
+import com.liferay.forms.apio.internal.architect.route.UploadFileRoute;
 import com.liferay.forms.apio.internal.model.FormContextWrapper;
 import com.liferay.forms.apio.internal.util.EvaluateContextUtil;
 import com.liferay.forms.apio.internal.util.FormInstanceRepresentorUtil;
-import com.liferay.media.object.apio.architect.identifier.FileEntryIdentifier;
+import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.site.apio.architect.identifier.WebSiteIdentifier;
-
-import java.io.InputStream;
-
-import java.util.List;
-import java.util.Locale;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Provides the information necessary to expose FormInstance resources through a
@@ -98,7 +97,7 @@ public class FormInstanceNestedCollectionResource
 			FormContextForm::buildForm, DDMFormRenderingContext.class,
 			Language.class
 		).addCustomRoute(
-			uploadFileRoute, this::_uploadFile, FileEntryIdentifier.class,
+			uploadFileRoute, this::_uploadFile, MediaObjectIdentifier.class,
 			(credentials, aLong) -> true, MediaObjectCreatorForm::buildForm
 		).build();
 	}
