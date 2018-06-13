@@ -32,7 +32,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
 import com.liferay.forms.apio.architect.identifier.StructureIdentifier;
-import com.liferay.forms.apio.internal.FormLayoutPage;
+import com.liferay.forms.apio.internal.model.FormLayoutPage;
 import com.liferay.forms.apio.internal.util.StructureRepresentorUtil;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 

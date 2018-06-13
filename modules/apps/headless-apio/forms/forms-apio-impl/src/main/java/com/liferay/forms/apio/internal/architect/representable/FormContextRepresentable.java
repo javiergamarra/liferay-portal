@@ -12,17 +12,20 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal.representable;
-
-import static com.liferay.forms.apio.internal.util.LocalizedValueUtil.getLocalizedString;
+package com.liferay.forms.apio.internal.architect.representable;
 
 import com.liferay.apio.architect.representor.NestedRepresentor;
 import com.liferay.apio.architect.representor.NestedRepresentor.Builder;
 import com.liferay.apio.architect.representor.Representable;
 import com.liferay.apio.architect.representor.Representor;
+import com.liferay.forms.apio.architect.identifier.FormContextIdentifier;
+import com.liferay.forms.apio.internal.model.FormContextWrapper;
+import com.liferay.forms.apio.internal.model.FormFieldContextWrapper;
+import com.liferay.forms.apio.internal.model.FormPageContextWrapper;
 import com.liferay.portal.kernel.util.KeyValuePair;
-
 import org.osgi.service.component.annotations.Component;
+
+import static com.liferay.forms.apio.internal.util.LocalizedValueUtil.getLocalizedString;
 
 /**
  * @author Paulo Cruz
@@ -30,7 +33,7 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true)
 public class FormContextRepresentable
 	implements Representable<FormContextWrapper, String,
-		FormContextIdentifier> {
+	FormContextIdentifier> {
 
 	@Override
 	public String getName() {

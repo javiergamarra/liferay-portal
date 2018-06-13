@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal.representable;
+package com.liferay.forms.apio.architect.identifier;
 
 import com.liferay.apio.architect.identifier.Identifier;
 

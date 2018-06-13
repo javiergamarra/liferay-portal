@@ -12,18 +12,19 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal.representable;
-
-import com.liferay.apio.architect.customactions.PostRoute;
+package com.liferay.forms.apio.internal.model;
 
 /**
  * @author Javier Gamarra
  */
-public class EvaluateContextRoute extends PostRoute {
+public class FileEntryValue {
 
-	@Override
-	public String getName() {
-		return "evaluate-context";
+	public FileEntryValue(long groupId, String uuid) {
+		this.groupId = groupId;
+		this.uuid = uuid;
 	}
+
+	public final long groupId;
+	public final String uuid;
 
 }

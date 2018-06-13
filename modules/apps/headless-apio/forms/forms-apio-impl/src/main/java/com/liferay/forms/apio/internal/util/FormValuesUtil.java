@@ -25,7 +25,7 @@ import com.liferay.dynamic.data.mapping.model.UnlocalizedValue;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.forms.apio.internal.FormFieldValue;
+import com.liferay.forms.apio.internal.model.FormFieldValue;
 
 import java.lang.reflect.Type;
 
