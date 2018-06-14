@@ -34,10 +34,6 @@ public class FormLayoutPage {
 		_title = ddmFormLayoutPage.getTitle();
 	}
 
-	public LocalizedValue getDescription() {
-		return _description;
-	}
-
 	public String getDescription(Locale locale) {
 		return _description.getString(locale);
 	}
@@ -46,28 +42,12 @@ public class FormLayoutPage {
 		return _fields;
 	}
 
-	public LocalizedValue getTitle() {
-		return _title;
-	}
-
 	public String getTitle(Locale locale) {
 		return _title.getString(locale);
 	}
 
-	public void setDescription(LocalizedValue description) {
-		_description = description;
-	}
-
-	public void setFields(List<DDMFormField> fields) {
-		_fields = fields;
-	}
-
-	public void setTitle(LocalizedValue title) {
-		_title = title;
-	}
-
-	private LocalizedValue _description;
-	private List<DDMFormField> _fields;
-	private LocalizedValue _title;
+	private final LocalizedValue _description;
+	private final List<DDMFormField> _fields;
+	private final LocalizedValue _title;
 
 }
