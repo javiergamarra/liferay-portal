@@ -15,7 +15,6 @@
 package com.liferay.forms.apio.internal.architect.resource;
 
 import com.liferay.apio.architect.customactions.PostRoute;
-import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.language.Language;
 import com.liferay.apio.architect.pagination.PageItems;
@@ -25,9 +24,7 @@ import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.NestedCollectionResource;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
-import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
-import com.liferay.dynamic.data.mapping.form.renderer.DDMFormTemplateContextFactory;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceVersion;
@@ -39,17 +36,15 @@ import com.liferay.forms.apio.internal.architect.form.FormContextForm;
 import com.liferay.forms.apio.internal.architect.form.MediaObjectCreatorForm;
 import com.liferay.forms.apio.internal.architect.route.EvaluateContextRoute;
 import com.liferay.forms.apio.internal.architect.route.UploadFileRoute;
+import com.liferay.forms.apio.internal.helper.EvaluateContextHelper;
+import com.liferay.forms.apio.internal.helper.UploadFileHelper;
 import com.liferay.forms.apio.internal.model.FormContextWrapper;
-import com.liferay.forms.apio.internal.util.EvaluateContextUtil;
 import com.liferay.forms.apio.internal.util.FormInstanceRepresentorUtil;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.site.apio.architect.identifier.WebSiteIdentifier;
-
-import java.io.InputStream;
 
 import java.util.List;
 import java.util.Locale;
@@ -201,9 +196,6 @@ public class FormInstanceNestedCollectionResource
 		Long ddmFormInstanceId, FormContextForm formContextForm,
 		DDMFormRenderingContext ddmFormRenderingContext, Language language) {
 
-		EvaluateContextUtil evaluateContextUtil = new EvaluateContextUtil(
-			_ddmFormTemplateContextFactory);
-
 		String fieldValues = formContextForm.getFieldValues();
 		Locale locale = language.getPreferredLocale();
 
@@ -212,7 +204,7 @@ public class FormInstanceNestedCollectionResource
 		).map(
 			DDMFormInstance::getStructure
 		).map(
-			ddmStructure -> evaluateContextUtil.evaluateContext(
+			ddmStructure -> _evaluateContextHelper.evaluateContext(
 				fieldValues, ddmStructure, ddmFormRenderingContext, locale)
 		).orElse(
 			null
@@ -236,25 +228,11 @@ public class FormInstanceNestedCollectionResource
 	private FileEntry _uploadFile(
 		Long ddmFormInstanceId, MediaObjectCreatorForm mediaObjectCreatorForm) {
 
-		ServiceContext serviceContext = new ServiceContext();
-		BinaryFile binaryFile = mediaObjectCreatorForm.getBinaryFile();
-		String sourceFileName = mediaObjectCreatorForm.getName();
-		String title = mediaObjectCreatorForm.getTitle();
-		String mimeType = binaryFile.getMimeType();
-		String description = mediaObjectCreatorForm.getDescription();
-		String changelog = mediaObjectCreatorForm.getChangelog();
-		InputStream inputStream = binaryFile.getInputStream();
-		long size = binaryFile.getSize();
-		long folderId = 0;
-
 		return Try.fromFallible(
 			() -> _ddmFormInstanceService.getFormInstance(ddmFormInstanceId)
 		).map(
-			DDMFormInstance::getGroupId
-		).map(
-			repositoryId -> _dlAppService.addFileEntry(
-				repositoryId, folderId, sourceFileName, mimeType, title,
-				description, changelog, inputStream, size, serviceContext)
+			ddmFormInstance -> _uploadFileHelper.uploadFile(
+				ddmFormInstance, mediaObjectCreatorForm)
 		).orElse(
 			null
 		);
@@ -264,9 +242,9 @@ public class FormInstanceNestedCollectionResource
 	private DDMFormInstanceService _ddmFormInstanceService;
 
 	@Reference
-	private DDMFormTemplateContextFactory _ddmFormTemplateContextFactory;
+	private EvaluateContextHelper _evaluateContextHelper;
 
 	@Reference
-	private DLAppService _dlAppService;
+	private UploadFileHelper _uploadFileHelper;
 
 }
