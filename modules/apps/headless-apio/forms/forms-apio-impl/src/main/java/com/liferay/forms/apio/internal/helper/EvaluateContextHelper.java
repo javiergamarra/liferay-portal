@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.forms.apio.internal.util;
+package com.liferay.forms.apio.internal.helper;
 
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
@@ -22,21 +22,20 @@ import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.forms.apio.internal.model.FormContextWrapper;
+import com.liferay.forms.apio.internal.util.FormValuesUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 
 import java.util.Locale;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Paulo Cruz
  */
-public final class EvaluateContextUtil {
-
-	public EvaluateContextUtil(
-		DDMFormTemplateContextFactory ddmFormTemplateContextFactory) {
-
-		_ddmFormTemplateContextFactory = ddmFormTemplateContextFactory;
-	}
+@Component(immediate = true, service = EvaluateContextHelper.class)
+public final class EvaluateContextHelper {
 
 	public FormContextWrapper evaluateContext(
 			String fieldValues, DDMStructure ddmStructure,
@@ -82,6 +81,7 @@ public final class EvaluateContextUtil {
 		ddmFormRenderingContext.setLocale(locale);
 	}
 
-	private final DDMFormTemplateContextFactory _ddmFormTemplateContextFactory;
+	@Reference
+	private DDMFormTemplateContextFactory _ddmFormTemplateContextFactory;
 
 }
