@@ -19,10 +19,20 @@ import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.Form.Builder;
 
 /**
+ * Instances of this class represent the values extracted from a media object
+ * creator form.
+ *
  * @author Javier Gamarra
  */
 public class MediaObjectCreatorForm {
 
+	/**
+	 * Builds a {@code Form} that generates {@code MediaObjectCreatorForm}
+	 * depending on the HTTP body.
+	 *
+	 * @param  formBuilder the {@code Form} builder
+	 * @return a media object creator form
+	 */
 	public static Form<MediaObjectCreatorForm> buildForm(
 		Builder<MediaObjectCreatorForm> formBuilder) {
 
