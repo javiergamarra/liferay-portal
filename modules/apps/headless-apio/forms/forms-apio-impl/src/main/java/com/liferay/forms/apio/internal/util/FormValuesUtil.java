@@ -66,19 +66,21 @@ public final class FormValuesUtil {
 			DDMFormField ddmFormField = ddmFormFieldsMap.get(
 				formFieldValue.name);
 
+			Value value = _EMPTY_VALUE;
+
 			if ((ddmFormField != null) && !ddmFormField.isTransient()) {
-				Value value = Optional.ofNullable(
+				value = Optional.ofNullable(
 					formFieldValue.value
 				).map(
 					JsonElement::toString
 				).map(
 					stringValue -> _getValue(stringValue, ddmFormField, locale)
 				).orElse(
-					null
+					_EMPTY_VALUE
 				);
-
-				_setFieldValue(value, ddmFormValues, ddmFormFieldValue);
 			}
+
+			_setFieldValue(value, ddmFormValues, ddmFormFieldValue);
 		}
 
 		return ddmFormValues;
@@ -109,6 +111,9 @@ public final class FormValuesUtil {
 
 		ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
 	}
+
+	private static final Value _EMPTY_VALUE =
+		new UnlocalizedValue((String) null);
 
 	private static class FormFieldValueListToken
 		extends TypeToken<ArrayList<FormFieldValue>> {
