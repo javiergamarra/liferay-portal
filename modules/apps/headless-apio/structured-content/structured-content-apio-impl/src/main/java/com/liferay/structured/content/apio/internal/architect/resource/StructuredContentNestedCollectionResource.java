@@ -37,8 +37,12 @@ import com.liferay.content.space.apio.architect.identifier.ContentSpaceIdentifie
 import com.liferay.dynamic.data.mapping.kernel.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.dynamic.data.mapping.kernel.Value;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleService;
+import com.liferay.journal.util.JournalContent;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.portal.apio.identifier.ClassNameClassPK;
@@ -58,6 +62,7 @@ import com.liferay.structured.content.apio.architect.identifier.StructuredConten
 import com.liferay.structured.content.apio.internal.architect.form.StructuredContentCreatorForm;
 import com.liferay.structured.content.apio.internal.architect.form.StructuredContentUpdaterForm;
 import com.liferay.structured.content.apio.internal.model.JournalArticleWrapper;
+import com.liferay.structured.content.apio.internal.model.RenderedJournalArticle;
 
 import java.util.List;
 import java.util.Locale;
@@ -133,6 +138,26 @@ public class StructuredContentNestedCollectionResource
 			"datePublished", JournalArticle::getDisplayDate
 		).addDate(
 			"lastReviewed", JournalArticle::getReviewDate
+		).addLinkedModel(
+			"aggregateRating", AggregateRatingIdentifier.class,
+			this::_createClassNameClassPK
+		).addLinkedModel(
+			"author", PersonIdentifier.class, JournalArticle::getUserId
+		).addLinkedModel(
+			"creator", PersonIdentifier.class, JournalArticle::getUserId
+		).addLinkedModel(
+			"contentStructure", ContentStructureIdentifier.class,
+			journalArticleWrapper ->
+				journalArticleWrapper.getDDMStructure().getStructureId()
+		).addNestedList(
+			"renderedContentsByTemplate", this::_getRenderedJournalArticles,
+			nestedBuilder -> nestedBuilder.types(
+				"templates"
+			).addLocalizedStringByLocale(
+				"template", RenderedJournalArticle::getTemplateName
+			).addLocalizedStringByLocale(
+				"renderedContent", RenderedJournalArticle::getRenderedContent
+			).build()
 		).addNestedList(
 			"values", this::_getJournalArticleDDMFormFieldValues,
 			fieldValuesBuilder -> fieldValuesBuilder.types(
@@ -144,17 +169,6 @@ public class StructuredContentNestedCollectionResource
 			).addString(
 				"name", DDMFormFieldValue::getName
 			).build()
-		).addLinkedModel(
-			"aggregateRating", AggregateRatingIdentifier.class,
-			this::_createClassNameClassPK
-		).addLinkedModel(
-			"creator", PersonIdentifier.class, JournalArticle::getUserId
-		).addLinkedModel(
-			"contentStructure", ContentStructureIdentifier.class,
-			journalArticleWrapper ->
-				journalArticleWrapper.getDDMStructure().getStructureId()
-		).addLocalizedStringByLocale(
-			"renderedContent", this::_getJournalArticleHtml
 		).addRelatedCollection(
 			"categories", CategoryIdentifier.class
 		).addRelatedCollection(
@@ -287,26 +301,6 @@ public class StructuredContentNestedCollectionResource
 		);
 	}
 
-	private String _getJournalArticleHtml(
-		JournalArticleWrapper journalArticleWrapper, Locale locale) {
-
-		try {
-			String content = _journalArticleService.getArticleContent(
-				journalArticleWrapper.getGroupId(),
-				journalArticleWrapper.getArticleId(), locale.getLanguage(),
-				null, journalArticleWrapper.getThemeDisplay());
-
-			return content.replaceAll("[\\t\\n]", "");
-		}
-		catch (PortalException pe) {
-			if (_log.isInfoEnabled()) {
-				_log.info(pe, pe);
-			}
-		}
-
-		return null;
-	}
-
 	private JournalArticleWrapper _getJournalArticleWrapper(
 			long journalArticleId, ThemeDisplay themeDisplay)
 		throws PortalException {
@@ -349,6 +343,44 @@ public class StructuredContentNestedCollectionResource
 		return new PageItems<>(journalArticleWrappers, count);
 	}
 
+	private String _getRenderedContent(
+		JournalArticleWrapper journalArticleWrapper, DDMTemplate ddmTemplate,
+		Locale locale) {
+
+		return Try.fromFallible(
+			() -> _journalContent.getDisplay(
+				journalArticleWrapper.getGroupId(),
+				journalArticleWrapper.getArticleId(),
+				ddmTemplate.getTemplateKey(), null, locale.getLanguage(),
+				journalArticleWrapper.getThemeDisplay())
+		).map(
+			JournalArticleDisplay::getContent
+		).map(
+			content -> content.replaceAll("[\\t\\n]", "")
+		).orElse(
+			null
+		);
+	}
+
+	private List<RenderedJournalArticle> _getRenderedJournalArticles(
+		JournalArticleWrapper journalArticleWrapper) {
+
+		DDMStructure ddmStructure = journalArticleWrapper.getDDMStructure();
+
+		return Stream.of(
+			ddmStructure.getTemplates()
+		).flatMap(
+			List::stream
+		).map(
+			ddmTemplate -> RenderedJournalArticle.create(
+				ddmTemplate::getName,
+				locale -> _getRenderedContent(
+					journalArticleWrapper, ddmTemplate, locale))
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	private JournalArticleWrapper _updateJournalArticle(
 			long journalArticleId,
 			StructuredContentUpdaterForm structuredContentUpdaterForm,
@@ -386,5 +418,8 @@ public class StructuredContentNestedCollectionResource
 
 	@Reference
 	private JournalArticleService _journalArticleService;
+
+	@Reference
+	private JournalContent _journalContent;
 
 }
