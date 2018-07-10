@@ -25,6 +25,8 @@ import javax.portlet.PortletException;
 import javax.portlet.PortletURLGenerationListener;
 import javax.portlet.UnavailableException;
 
+import javax.servlet.ServletContext;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -72,6 +74,8 @@ public class PortletURLListenerFactory {
 		}
 
 		if (portletApp.isWARFile()) {
+			ServletContext servletContext = portletApp.getServletContext();
+
 			PortletContextBag portletContextBag = PortletContextBagPool.get(
 				portletApp.getServletContextName());
 
@@ -82,7 +86,8 @@ public class PortletURLListenerFactory {
 				portletURLListener.getListenerClass());
 
 			portletURLGenerationListener = _init(
-				portletURLListener, portletURLGenerationListener);
+				servletContext.getClassLoader(), portletURLListener,
+				portletURLGenerationListener);
 		}
 		else {
 			portletURLGenerationListener = _init(portletURLListener);
@@ -122,11 +127,11 @@ public class PortletURLListenerFactory {
 			PortletURLListener portletURLListener)
 		throws PortletException {
 
-		return _init(portletURLListener, null);
+		return _init(null, portletURLListener, null);
 	}
 
 	private PortletURLGenerationListener _init(
-			PortletURLListener portletURLListener,
+			ClassLoader classLoader, PortletURLListener portletURLListener,
 			PortletURLGenerationListener portletURLGenerationListener)
 		throws PortletException {
 
@@ -134,7 +139,7 @@ public class PortletURLListenerFactory {
 			if (portletURLGenerationListener == null) {
 				portletURLGenerationListener =
 					(PortletURLGenerationListener)InstanceFactory.newInstance(
-						portletURLListener.getListenerClass());
+						classLoader, portletURLListener.getListenerClass());
 			}
 		}
 		catch (Exception e) {

@@ -787,6 +787,9 @@ public class JournalDisplayContext {
 	}
 
 	public List<NavigationItem> getNavigationBarItems(String currentItem) {
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
 		return new NavigationItemList() {
 			{
 				add(
@@ -799,19 +802,23 @@ public class JournalDisplayContext {
 							LanguageUtil.get(_request, "web-content"));
 					});
 
-				add(
-					navigationItem -> {
-						navigationItem.setHref(_getStructuresURL());
-						navigationItem.setLabel(
-							LanguageUtil.get(_request, "structures"));
-					});
+				Group group = themeDisplay.getScopeGroup();
 
-				add(
-					navigationItem -> {
-						navigationItem.setHref(_getTemplatesURL());
-						navigationItem.setLabel(
-							LanguageUtil.get(_request, "templates"));
-					});
+				if (!group.isLayout()) {
+					add(
+						navigationItem -> {
+							navigationItem.setHref(_getStructuresURL());
+							navigationItem.setLabel(
+								LanguageUtil.get(_request, "structures"));
+						});
+
+					add(
+						navigationItem -> {
+							navigationItem.setHref(_getTemplatesURL());
+							navigationItem.setLabel(
+								LanguageUtil.get(_request, "templates"));
+						});
+				}
 
 				if (_journalWebConfiguration.showFeeds() &&
 					PortalUtil.isRSSFeedsEnabled()) {
@@ -1444,19 +1451,25 @@ public class JournalDisplayContext {
 			group = group.getParentGroup();
 		}
 
-		if (group.isStaged() && !group.isStagingGroup() &&
-			!group.isStagedRemotely() &&
-			group.isStagedPortlet(JournalPortletKeys.JOURNAL)) {
+		StagingGroupHelper stagingGroupHelper =
+			StagingGroupHelperUtil.getStagingGroupHelper();
+
+		if ((stagingGroupHelper.isLocalLiveGroup(group) ||
+			 stagingGroupHelper.isRemoteLiveGroup(group)) &&
+			stagingGroupHelper.isStagedPortlet(
+				group, JournalPortletKeys.JOURNAL)) {
 
 			return false;
 		}
 
 		if (JournalFolderPermission.contains(
-			themeDisplay.getPermissionChecker(), themeDisplay.getScopeGroupId(),
-			getFolderId(), ActionKeys.ADD_FOLDER) ||
-		JournalFolderPermission.contains(
-			themeDisplay.getPermissionChecker(), themeDisplay.getScopeGroupId(),
-			getFolderId(), ActionKeys.ADD_ARTICLE)) {
+				themeDisplay.getPermissionChecker(),
+				themeDisplay.getScopeGroupId(),
+				getFolderId(), ActionKeys.ADD_FOLDER) ||
+			JournalFolderPermission.contains(
+				themeDisplay.getPermissionChecker(),
+				themeDisplay.getScopeGroupId(), getFolderId(),
+				ActionKeys.ADD_ARTICLE)) {
 
 			return true;
 		}
