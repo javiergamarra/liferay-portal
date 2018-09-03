@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Social Bookmarks API
-Bundle-SymbolicName: com.liferay.social.bookmarks.api
-Bundle-Version: 2.0.0
-Export-Package: com.liferay.social.bookmarks

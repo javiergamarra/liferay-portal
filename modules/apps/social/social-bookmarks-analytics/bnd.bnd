@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Social Bookmarks Analytics
-Bundle-SymbolicName: com.liferay.social.bookmarks.analytics
-Bundle-Version: 2.0.0
-Web-ContextPath: /social-bookmarks-analytics

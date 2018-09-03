@@ -1,4 +1,0 @@
-Bundle-Name: Liferay User Associated Data Web
-Bundle-SymbolicName: com.liferay.user.associated.data.web
-Bundle-Version: 2.0.0
--dsannotations-options: inherit

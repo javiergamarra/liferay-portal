@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Staging Bar Web
-Bundle-SymbolicName: com.liferay.staging.bar.web
-Bundle-Version: 3.0.0
-Web-ContextPath: /staging-bar-web
