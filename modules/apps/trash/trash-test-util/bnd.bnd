@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Trash Test Utilities
-Bundle-SymbolicName: com.liferay.trash.test.util
-Bundle-Version: 3.0.0
-Export-Package: com.liferay.trash.test.util

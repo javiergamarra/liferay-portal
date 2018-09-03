@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Subscription Web
-Bundle-SymbolicName: com.liferay.subscription.web
-Bundle-Version: 2.0.0
-Web-ContextPath: /subscription-web

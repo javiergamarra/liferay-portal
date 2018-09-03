@@ -1,4 +1,0 @@
-Bundle-Name: Liferay User Groups Admin UAD
-Bundle-SymbolicName: com.liferay.user.groups.admin.uad
-Bundle-Version: 2.0.0
--dsannotations-options: inherit

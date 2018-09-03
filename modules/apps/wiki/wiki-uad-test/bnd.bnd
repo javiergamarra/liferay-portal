@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Wiki UAD Test
-Bundle-SymbolicName: com.liferay.wiki.uad.test
-Bundle-Version: 1.0.0
--includeresource: test-classes/integration

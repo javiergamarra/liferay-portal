@@ -1,7 +1,0 @@
-Bundle-Name: Liferay Portal Configuration Persistence API
-Bundle-SymbolicName: com.liferay.portal.configuration.persistence.api
-Bundle-Version: 2.0.0
-Export-Package:\
-	com.liferay.portal.configuration.persistence,\
-	com.liferay.portal.configuration.persistence.listener,\
-	com.liferay.portal.configuration.persistence.upgrade

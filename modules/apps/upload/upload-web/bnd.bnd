@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Upload Web
-Bundle-SymbolicName: com.liferay.upload.web
-Bundle-Version: 3.0.0
--dsannotations-options: inherit

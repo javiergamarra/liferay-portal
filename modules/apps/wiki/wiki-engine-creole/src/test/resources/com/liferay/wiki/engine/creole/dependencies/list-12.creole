@@ -1,1 +1,0 @@
-*This is an item with a link [[l|a]] inside text

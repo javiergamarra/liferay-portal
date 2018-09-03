@@ -1,5 +1,0 @@
-=Before Horizontal section=
-----
-{{{
-	No wiki section after Horizontal section
-}}}

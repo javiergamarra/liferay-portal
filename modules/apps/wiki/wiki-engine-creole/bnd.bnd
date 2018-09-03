@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Wiki Engine Creole
-Bundle-SymbolicName: com.liferay.wiki.engine.creole
-Bundle-Version: 4.0.0
-Web-ContextPath: /wiki-engine-creole
