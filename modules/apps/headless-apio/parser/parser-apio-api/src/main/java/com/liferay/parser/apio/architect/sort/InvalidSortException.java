@@ -12,35 +12,38 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.entity;
+package com.liferay.parser.apio.architect.sort;
 
-import java.util.Map;
+import javax.ws.rs.BadRequestException;
 
 /**
- * Models a <code>EntityModel</code>.
+ * Models {@link Sort} errors.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.entity.EntityModel}
+ * @author Cristina González
  * @review
  */
-@Deprecated
-public interface EntityModel {
+public class InvalidSortException extends BadRequestException {
 
 	/**
-	 * Returns a Map with all the entity fields used to create the EDM.
+	 * Creates a new {@code InvalidSortException} with the provided message.
 	 *
-	 * @return the entity field map
+	 * @param  msg the message
 	 * @review
 	 */
-	public Map<String, EntityField> getEntityFieldsMap();
+	public InvalidSortException(String msg) {
+		super(msg);
+	}
 
 	/**
-	 * Returns the name of the single entity type used to create the EDM.
+	 * Creates a new {@code InvalidSortException} with the provided message and
+	 * cause.
 	 *
-	 * @return the entity type name
+	 * @param  msg the message
+	 * @param  cause the cause
 	 * @review
 	 */
-	public String getName();
+	public InvalidSortException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
 
 }

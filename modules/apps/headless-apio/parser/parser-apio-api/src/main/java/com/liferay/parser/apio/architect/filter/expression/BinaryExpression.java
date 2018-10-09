@@ -12,29 +12,29 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.filter.expression;
+package com.liferay.parser.apio.architect.filter.expression;
 
 /**
  * Represents a binary expression node in the expression tree.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.filter.expression.BinaryExpression}
+ * @author Cristina González
+ * @review
  */
-@Deprecated
 public interface BinaryExpression extends Expression {
 
 	/**
 	 * Returns an {@link Expression} subtree of the left operation.
 	 *
-	 * @return the expression subtree
+	 * @return Expression sub tree of the left operation
+	 * @review
 	 */
 	public Expression getLeftOperationExpression();
 
 	/**
 	 * Returns the binary expression's operation.
 	 *
-	 * @return the operation
+	 * @return the operation of the binary Expression
+	 * @review
 	 */
 	public Operation getOperation();
 
@@ -42,6 +42,7 @@ public interface BinaryExpression extends Expression {
 	 * Returns an {@link Expression} subtree of the right operation.
 	 *
 	 * @return the expression subtree
+	 * @review
 	 */
 	public Expression getRightOperationExpression();
 

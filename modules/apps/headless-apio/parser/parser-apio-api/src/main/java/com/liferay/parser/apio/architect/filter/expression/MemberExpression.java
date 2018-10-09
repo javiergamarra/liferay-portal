@@ -12,35 +12,25 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.entity;
+package com.liferay.parser.apio.architect.filter.expression;
 
-import java.util.Map;
+import java.util.List;
 
 /**
- * Models a <code>EntityModel</code>.
+ * Represents a member expression node in the expression tree. This expression
+ * is used to describe access paths to properties.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.entity.EntityModel}
+ * @author Cristina González
  * @review
  */
-@Deprecated
-public interface EntityModel {
+public interface MemberExpression extends Expression {
 
 	/**
-	 * Returns a Map with all the entity fields used to create the EDM.
+	 * Returns the member expression's resource path.
 	 *
-	 * @return the entity field map
+	 * @return the resource path
 	 * @review
 	 */
-	public Map<String, EntityField> getEntityFieldsMap();
-
-	/**
-	 * Returns the name of the single entity type used to create the EDM.
-	 *
-	 * @return the entity type name
-	 * @review
-	 */
-	public String getName();
+	public List<String> getResourcePath();
 
 }

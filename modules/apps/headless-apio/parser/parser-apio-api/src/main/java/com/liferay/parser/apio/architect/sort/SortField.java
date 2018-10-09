@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.sort;
+package com.liferay.parser.apio.architect.sort;
 
-import com.liferay.structured.content.apio.architect.entity.EntityField;
+import com.liferay.parser.apio.architect.entity.EntityField;
 
 import java.io.Serializable;
 
@@ -23,18 +23,17 @@ import java.util.Locale;
 /**
  * Models a sort field.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.sort.SortField}
+ * @author Cristina González
+ * @review
  */
-@Deprecated
 public class SortField implements Serializable {
 
 	/**
 	 * Creates a new sort field.
 	 *
-	 * @param entityField the entity field
-	 * @param asc whether the sort should be ascending
+	 * @param  entityField the entity field
+	 * @param  asc whether the sort should be ascending
+	 * @review
 	 */
 	public SortField(EntityField entityField, boolean asc) {
 		if (entityField == null) {
@@ -46,31 +45,11 @@ public class SortField implements Serializable {
 	}
 
 	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #SortField(EntityField, boolean)}
-	 */
-	@Deprecated
-	public SortField(String fieldName, boolean asc) {
-		throw new UnsupportedOperationException(
-			"This constructor is deprecated and replaced by #SortField(" +
-				"EntityField, boolean)");
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #getSortableFieldName}
-	 */
-	@Deprecated
-	public String getFieldName() {
-		throw new UnsupportedOperationException(
-			"This method is deprecated and replaced by #getSortableFieldName");
-	}
-
-	/**
 	 * Returns the field's name.
 	 *
 	 * @param  locale the locale
 	 * @return the field's name
+	 * @review
 	 */
 	public String getSortableFieldName(Locale locale) {
 		return _entityField.getSortableName(locale);
@@ -81,6 +60,7 @@ public class SortField implements Serializable {
 	 *
 	 * @return {@code true} if the sort field is ascending; {@code false}
 	 *         otherwise
+	 * @review
 	 */
 	public boolean isAscending() {
 		return _asc;

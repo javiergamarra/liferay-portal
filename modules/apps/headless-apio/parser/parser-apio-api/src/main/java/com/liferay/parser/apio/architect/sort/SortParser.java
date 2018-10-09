@@ -12,35 +12,25 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.entity;
+package com.liferay.parser.apio.architect.sort;
 
-import java.util.Map;
+import java.util.List;
 
 /**
- * Models a <code>EntityModel</code>.
+ * Models a parser from string to sort fields.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.entity.EntityModel}
+ * @author Cristina González
  * @review
  */
-@Deprecated
-public interface EntityModel {
+public interface SortParser {
 
 	/**
-	 * Returns a Map with all the entity fields used to create the EDM.
+	 * Returns a {@link SortField} list from a string.
 	 *
-	 * @return the entity field map
+	 * @param  sortString the string to parse
+	 * @return the {@link SortField} list
 	 * @review
 	 */
-	public Map<String, EntityField> getEntityFieldsMap();
-
-	/**
-	 * Returns the name of the single entity type used to create the EDM.
-	 *
-	 * @return the entity type name
-	 * @review
-	 */
-	public String getName();
+	public List<SortField> parse(String sortString);
 
 }

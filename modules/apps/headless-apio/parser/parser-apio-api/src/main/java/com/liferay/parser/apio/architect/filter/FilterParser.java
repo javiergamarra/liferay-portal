@@ -12,35 +12,28 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.entity;
+package com.liferay.parser.apio.architect.filter;
 
-import java.util.Map;
+import com.liferay.parser.apio.architect.filter.expression.Expression;
+import com.liferay.parser.apio.architect.filter.expression.ExpressionVisitException;
 
 /**
- * Models a <code>EntityModel</code>.
+ * Transforms a string containing an OData filter into a manageable {@code
+ * Expression}.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.entity.EntityModel}
+ * @author David Arques
  * @review
  */
-@Deprecated
-public interface EntityModel {
+public interface FilterParser {
 
 	/**
-	 * Returns a Map with all the entity fields used to create the EDM.
+	 * Returns an {@code Expression} from a string.
 	 *
-	 * @return the entity field map
+	 * @param  filterString the string
+	 * @return the {@code Expression}
 	 * @review
 	 */
-	public Map<String, EntityField> getEntityFieldsMap();
-
-	/**
-	 * Returns the name of the single entity type used to create the EDM.
-	 *
-	 * @return the entity type name
-	 * @review
-	 */
-	public String getName();
+	public Expression parse(String filterString)
+		throws ExpressionVisitException;
 
 }

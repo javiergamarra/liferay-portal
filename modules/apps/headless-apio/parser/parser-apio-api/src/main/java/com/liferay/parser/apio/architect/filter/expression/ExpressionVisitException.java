@@ -12,23 +12,22 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.filter.expression;
+package com.liferay.parser.apio.architect.filter.expression;
 
 /**
  * Defines an exception for {@link ExpressionVisitor} to throw if an error
  * occurs while traversing the expression tree.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.filter.expression.ExpressionVisitException}
+ * @author Cristina González
+ * @review
  */
-@Deprecated
 public class ExpressionVisitException extends Exception {
 
 	/**
 	 * Creates a new {@code ExpressionVisitException} with a message.
 	 *
-	 * @param msg the exception's message
+	 * @param  msg the exception's message
+	 * @review
 	 */
 	public ExpressionVisitException(String msg) {
 		super(msg);
@@ -38,8 +37,9 @@ public class ExpressionVisitException extends Exception {
 	 * Creates a new {@code ExpressionVisitException} with a message and the
 	 * cause of the exception.
 	 *
-	 * @param msg the exception's message
-	 * @param cause the exception's cause
+	 * @param  msg the exception's message
+	 * @param  cause the exception's cause
+	 * @review
 	 */
 	public ExpressionVisitException(String msg, Throwable cause) {
 		super(msg, cause);

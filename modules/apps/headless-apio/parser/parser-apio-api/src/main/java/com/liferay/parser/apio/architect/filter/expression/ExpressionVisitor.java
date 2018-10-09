@@ -12,19 +12,16 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.filter.expression;
+package com.liferay.parser.apio.architect.filter.expression;
 
 /**
  * Defines expression visitors with arbitrary return types. This interface's
  * methods are called when an expression node of the expression tree is
  * traversed.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.filter.expression.ExpressionVisitor}
+ * @author Cristina González
  * @review
  */
-@Deprecated
 public interface ExpressionVisitor<T> {
 
 	/**
@@ -36,6 +33,7 @@ public interface ExpressionVisitor<T> {
 	 * @return T the object of type {@code T}
 	 * @throws ExpressionVisitException if an expression visit exception
 	 *         occurred
+	 * @review
 	 */
 	public T visitBinaryExpressionOperation(
 			BinaryExpression.Operation operation, T left, T right)
@@ -48,6 +46,7 @@ public interface ExpressionVisitor<T> {
 	 * @return T the object of type {@code T}
 	 * @throws ExpressionVisitException if an expression visit exception
 	 *         occurred
+	 * @review
 	 */
 	public T visitLiteralExpression(LiteralExpression literalExpression)
 		throws ExpressionVisitException;
@@ -59,6 +58,7 @@ public interface ExpressionVisitor<T> {
 	 * @return T the object of type {@code T}
 	 * @throws ExpressionVisitException if an expression visit exception
 	 *         occurred
+	 * @review
 	 */
 	public T visitMemberExpression(MemberExpression memberExpression)
 		throws ExpressionVisitException;

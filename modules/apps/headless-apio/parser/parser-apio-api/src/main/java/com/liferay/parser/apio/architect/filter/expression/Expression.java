@@ -12,35 +12,25 @@
  * details.
  */
 
-package com.liferay.structured.content.apio.architect.entity;
-
-import java.util.Map;
+package com.liferay.parser.apio.architect.filter.expression;
 
 /**
- * Models a <code>EntityModel</code>.
+ * Provides a common abstraction for expression evaluation.
  *
- * @author     Cristina González
- * @deprecated As of Judson (7.1.x), replaced by {@link
- *             com.liferay.parser.apio.architect.entity.EntityModel}
+ * @author Cristina González
  * @review
  */
-@Deprecated
-public interface EntityModel {
+public interface Expression {
 
 	/**
-	 * Returns a Map with all the entity fields used to create the EDM.
+	 * Called when traversing the expression tree.
 	 *
-	 * @return the entity field map
+	 * @param  expressionVisitor the {@link ExpressionVisitor}
+	 * @return the object of type {@code T}, which should be passed to the
+	 *         processing algorithm of the parent expression node
 	 * @review
 	 */
-	public Map<String, EntityField> getEntityFieldsMap();
-
-	/**
-	 * Returns the name of the single entity type used to create the EDM.
-	 *
-	 * @return the entity type name
-	 * @review
-	 */
-	public String getName();
+	public <T> T accept(ExpressionVisitor<T> expressionVisitor)
+		throws ExpressionVisitException;
 
 }
