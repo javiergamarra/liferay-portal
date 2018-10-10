@@ -48,6 +48,7 @@ import com.liferay.forms.apio.internal.model.FormContextWrapper;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.portal.apio.permission.HasPermission;
+import com.liferay.portal.apio.permission.HasPermissionUtil;
 import com.liferay.portal.apio.user.CurrentUser;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -60,6 +61,8 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+
+import static com.liferay.portal.apio.permission.HasPermissionUtil.failOnException;
 
 /**
  * Provides the information necessary to expose FormInstance resources through a
@@ -98,14 +101,17 @@ public class FormInstanceNestedCollectionResource
 			new EvaluateContextRoute(), this::_evaluateContext,
 			AcceptLanguage.class, DDMFormRenderingContext.class,
 			ThemeDisplay.class, FormContextIdentifier.class,
-			this::_hasPermission, FormContextForm::buildForm
+			failOnException(_hasPermission.forAddingIn(
+				FormInstanceRecordIdentifier.class)), FormContextForm::buildForm
 		).addCustomRoute(
 			new FetchLatestDraftRoute(), this::_fetchDDMFormInstanceRecord,
 			CurrentUser.class, FormInstanceRecordIdentifier.class,
-			this::_hasPermission, FetchLatestDraftForm::buildForm
+			failOnException(_hasPermission.forAddingIn(
+				FormInstanceRecordIdentifier.class)), FetchLatestDraftForm::buildForm
 		).addCustomRoute(
 			new UploadFileRoute(), this::_uploadFile,
-			MediaObjectIdentifier.class, this::_hasPermission,
+			MediaObjectIdentifier.class, failOnException(_hasPermission.forAddingIn(
+				FormInstanceRecordIdentifier.class)),
 			MediaObjectCreatorForm::buildForm
 		).build();
 	}
@@ -203,20 +209,6 @@ public class FormInstanceNestedCollectionResource
 			DDMStructureVersion::getStructureId
 		).orElse(
 			null
-		);
-	}
-
-	private Boolean _hasPermission(
-		Credentials credentials, Long formInstanceId) {
-
-		return Try.fromFallible(
-			() -> _hasPermission.forAddingIn(
-				FormInstanceRecordIdentifier.class
-			).apply(
-				credentials, formInstanceId
-			)
-		).orElse(
-			false
 		);
 	}
 
