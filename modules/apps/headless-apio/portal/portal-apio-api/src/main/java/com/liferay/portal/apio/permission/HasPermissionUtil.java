@@ -34,12 +34,13 @@ public class HasPermissionUtil {
 
 	/**
 	 * Execute the received function and transforms any occurred exception into a {@code false}
+	 * @review
 	 */
 	public static BiFunction<Credentials, Long, Boolean> failOnException(
 		ThrowableBiFunction<Credentials, Long, Boolean> throwableBiFunction) {
 
-		return (credentials, aLong) -> Try.fromFallible(
-			() -> throwableBiFunction.apply(credentials, aLong)
+		return (credentials, id) -> Try.fromFallible(
+			() -> throwableBiFunction.apply(credentials, id)
 		).orElse(
 			false
 		);
