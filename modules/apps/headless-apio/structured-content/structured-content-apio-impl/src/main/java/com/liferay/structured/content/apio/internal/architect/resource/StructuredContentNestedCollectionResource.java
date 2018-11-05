@@ -102,7 +102,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -847,22 +846,18 @@ public class StructuredContentNestedCollectionResource
 				String dataType = _ddmStructure.getFieldDataType(
 					_ddmFormFieldValue.getName());
 
-				String displayDataType = dataType;
-
 				if ("document-library".equals(dataType)) {
-					displayDataType = "document";
+					return "document";
 				}
 				else if ("journal-article".equals(dataType)) {
-					displayDataType = "structuredContent";
+					return "structuredContent";
 				}
 				else if ("link-to-page".equals(dataType)) {
-					displayDataType = "url";
+					return "url";
 				}
 				else if ("radio".equals(dataType)) {
-					displayDataType = "string";
+					return "string";
 				}
-
-				return displayDataType;
 			}
 			catch (PortalException pe) {
 				if (_log.isWarnEnabled()) {
@@ -871,9 +866,9 @@ public class StructuredContentNestedCollectionResource
 							_ddmFormFieldValue.getName(),
 						pe);
 				}
-
-				return null;
 			}
+
+			return null;
 		}
 
 		public String getDDMFormFieldInputControl() {
