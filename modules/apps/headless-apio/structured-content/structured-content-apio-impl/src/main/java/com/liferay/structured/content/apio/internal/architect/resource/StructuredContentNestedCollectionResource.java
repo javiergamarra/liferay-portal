@@ -849,16 +849,16 @@ public class StructuredContentNestedCollectionResource
 
 				String displayDataType = dataType;
 
-				if (Objects.equals(dataType, "document-library")) {
+				if ("document-library".equals(dataType)) {
 					displayDataType = "document";
 				}
-				else if (Objects.equals(dataType, "journal-article")) {
+				else if ("journal-article".equals(dataType)) {
 					displayDataType = "structuredContent";
 				}
-				else if (Objects.equals(dataType, "link-to-page")) {
+				else if ("link-to-page".equals(dataType)) {
 					displayDataType = "url";
 				}
-				else if (Objects.equals(dataType, "radio")) {
+				else if ("radio".equals(dataType)) {
 					displayDataType = "string";
 				}
 
