@@ -114,15 +114,13 @@ public class StructureRepresentorBuilderHelperImpl
 				String.class::cast, "dataSourceType")
 		).addString(
 			"dataType",
-			ddmFormField -> _structureFieldConverter.getFieldDataType(
-				ddmFormField.getDataType())
+			this::_getDDMFormFieldDataType
 		).addString(
 			"displayStyle",
 			getDDMFormFieldPropertyFunction(String.class::cast, "displayStyle")
 		).addString(
 			"inputControl",
-			ddmFormField -> _structureFieldConverter.getFieldInputControl(
-				ddmFormField.getType())
+			this::_getDDMFormFieldInputControl
 		).addString(
 			"name", DDMFormField::getName
 		).addString(
@@ -347,4 +345,13 @@ public class StructureRepresentorBuilderHelperImpl
 	@Reference
 	private StructureFieldConverter _structureFieldConverter;
 
+	private String _getDDMFormFieldDataType(DDMFormField ddmFormField) {
+		return _structureFieldConverter.getFieldDataType(
+			ddmFormField.getDataType());
+	}
+
+	private String _getDDMFormFieldInputControl(DDMFormField ddmFormField) {
+		return _structureFieldConverter.getFieldInputControl(
+			ddmFormField.getType());
+	}
 }
