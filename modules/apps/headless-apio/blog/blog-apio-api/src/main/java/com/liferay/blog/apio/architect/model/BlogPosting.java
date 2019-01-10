@@ -14,6 +14,19 @@
 
 package com.liferay.blog.apio.architect.model;
 
+import com.liferay.aggregate.rating.apio.architect.identifier.AggregateRatingIdentifier;
+import com.liferay.apio.architect.annotation.FieldMode;
+import com.liferay.apio.architect.annotation.Id;
+import com.liferay.apio.architect.annotation.Vocabulary;
+import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.category.apio.architect.identifier.CategoryIdentifier;
+import com.liferay.comment.apio.architect.identifier.CommentIdentifier;
+import com.liferay.content.space.apio.architect.model.ContentSpace;
+import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
+import com.liferay.person.apio.architect.identifier.PersonIdentifier;
+import com.liferay.portal.apio.identifier.ClassNameClassPK;
+
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +38,21 @@ import java.util.List;
  * @author Víctor Galán
  * @review
  */
-public interface BlogPosting {
+@Vocabulary.Type("BlogPosting")
+public interface BlogPosting extends Identifier<Long> {
+
+	/**
+	 * Returns the blog posting's ID
+	 *
+	 * @return the blog posting's ID
+	 * @review
+	 */
+	@Id
+	public Long getId();
+
+	@Vocabulary.Field("aggregateRating")
+	@Vocabulary.LinkTo(resource = AggregateRatingIdentifier.class)
+	public ClassNameClassPK getAggregateRatingId();
 
 	/**
 	 * Returns the blog posting's alternate headline. See <a
@@ -35,6 +62,7 @@ public interface BlogPosting {
 	 * @return the alternate headline
 	 * @review
 	 */
+	@Vocabulary.Field("alternativeHeadline")
 	public String getAlternativeHeadline();
 
 	/**
@@ -45,6 +73,7 @@ public interface BlogPosting {
 	 * @return the blog posting's body
 	 * @review
 	 */
+	@Vocabulary.Field("articleBody")
 	public String getArticleBody();
 
 	/**
@@ -53,6 +82,7 @@ public interface BlogPosting {
 	 * @return the image caption
 	 * @review
 	 */
+	@Vocabulary.Field("caption")
 	public String getCaption();
 
 	/**
@@ -61,7 +91,56 @@ public interface BlogPosting {
 	 * @return the categories
 	 * @review
 	 */
-	public List<Long> getCategories();
+	@Vocabulary.Field(mode = FieldMode.READ_ONLY, value = "category")
+	@Vocabulary.LinkTo(
+		resource = CategoryIdentifier.class,
+		resourceType = Vocabulary.LinkTo.ResourceType.CHILD_COLLECTION
+	)
+	public default List<Long> getCategories() {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * Returns the ID used as a parent for the category collection
+	 *
+	 * @return the category collection's ID
+	 * @review
+	 */
+	@Vocabulary.Field(mode = FieldMode.WRITE_ONLY, value = "category")
+	@Vocabulary.LinkTo(
+		resource = CategoryIdentifier.class,
+		resourceType = Vocabulary.LinkTo.ResourceType.CHILD_COLLECTION
+	)
+	public default Long getCategoryId() {
+		return getId();
+	}
+
+	/**
+	 * Returns the ID used as a parent for the comment collection
+	 *
+	 * @return the category collection's ID
+	 * @review
+	 */
+	@Vocabulary.Field("comment")
+	@Vocabulary.LinkTo(
+		resource = CommentIdentifier.class,
+		resourceType = Vocabulary.LinkTo.ResourceType.CHILD_COLLECTION
+	)
+	public default Long getCommentId() {
+		return getId();
+	}
+
+	/**
+	 * Returns the ID of the content space
+	 *
+	 * @return the content space's ID
+	 * @review
+	 */
+	@Vocabulary.BidirectionalModel(
+		field = @Vocabulary.Field("blogPosts"), modelClass = ContentSpace.class
+	)
+	@Vocabulary.Field("contentSpace")
+	public Long getContentSpaceId();
 
 	/**
 	 * Returns the blog posting's creation date. See <a
@@ -71,6 +150,7 @@ public interface BlogPosting {
 	 * @return the creation date
 	 * @review
 	 */
+	@Vocabulary.Field("dateCreated")
 	public Date getCreatedDate();
 
 	/**
@@ -80,6 +160,8 @@ public interface BlogPosting {
 	 * @return the creator's ID
 	 * @review
 	 */
+	@Vocabulary.Field("creator")
+	@Vocabulary.LinkTo(resource = PersonIdentifier.class)
 	public Long getCreatorId();
 
 	/**
@@ -90,7 +172,17 @@ public interface BlogPosting {
 	 * @return the headline
 	 * @review
 	 */
+	@Vocabulary.Field("description")
 	public String getDescription();
+
+	/**
+	 * Returns the encoding format of the blog post
+	 *
+	 * @return the encoding format
+	 * @review
+	 */
+	@Vocabulary.Field("encodingFormat")
+	public String getEncodingFormat();
 
 	/**
 	 * Returns the the blog posting's friendly URL
@@ -98,6 +190,7 @@ public interface BlogPosting {
 	 * @return the friendly URL
 	 * @review
 	 */
+	@Vocabulary.Field("friendlyUrlPath")
 	public String getFriendlyURLPath();
 
 	/**
@@ -107,6 +200,7 @@ public interface BlogPosting {
 	 * @return the headline
 	 * @review
 	 */
+	@Vocabulary.Field("headline")
 	public String getHeadline();
 
 	/**
@@ -115,6 +209,8 @@ public interface BlogPosting {
 	 * @return the keywords
 	 * @review
 	 */
+	@Vocabulary.Field("image")
+	@Vocabulary.LinkTo(resource = MediaObjectIdentifier.class)
 	public Long getImageId();
 
 	/**
@@ -123,6 +219,7 @@ public interface BlogPosting {
 	 * @return the keywords
 	 * @review
 	 */
+	@Vocabulary.Field("keywords")
 	public List<String> getKeywords();
 
 	/**
@@ -133,6 +230,7 @@ public interface BlogPosting {
 	 * @return the modification date
 	 * @review
 	 */
+	@Vocabulary.Field("dateModified")
 	public Date getModifiedDate();
 
 	/**
@@ -143,6 +241,7 @@ public interface BlogPosting {
 	 * @return the modification date
 	 * @review
 	 */
+	@Vocabulary.Field("datePublished")
 	public Date getPublishedDate();
 
 }
