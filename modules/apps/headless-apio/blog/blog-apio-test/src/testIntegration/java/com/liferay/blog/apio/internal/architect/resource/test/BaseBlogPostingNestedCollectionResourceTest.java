@@ -17,10 +17,12 @@ package com.liferay.blog.apio.internal.architect.resource.test;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.resource.NestedCollectionResource;
+import com.liferay.apio.architect.router.ActionRouter;
 import com.liferay.blog.apio.architect.model.BlogPosting;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.portal.apio.user.CurrentUser;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
@@ -39,20 +41,16 @@ public class BaseBlogPostingNestedCollectionResourceTest {
 			long groupId, BlogPosting blogPosting, User user)
 		throws Exception {
 
-		NestedCollectionResource nestedCollectionResource =
-			_getNestedCollectionResource();
-
-		Class<?> clazz = nestedCollectionResource.getClass();
+		Class<? extends ActionRouter> clazz = _actionRouter.getClass();
 
 		Method method = clazz.getDeclaredMethod(
-			"_addBlogsEntry", long.class, BlogPosting.class, CurrentUser.class);
+			"addBlogsEntry", long.class, BlogPosting.class, CurrentUser.class);
 
 		method.setAccessible(true);
 
 		try {
 			return (BlogsEntry)method.invoke(
-				nestedCollectionResource, groupId, blogPosting,
-				new CurrentUser(user));
+				clazz, groupId, blogPosting, new CurrentUser(user));
 		}
 		catch (InvocationTargetException ite) {
 			throw (Exception)ite.getTargetException();
@@ -63,54 +61,35 @@ public class BaseBlogPostingNestedCollectionResourceTest {
 			Pagination pagination, long groupId)
 		throws Exception {
 
-		NestedCollectionResource nestedCollectionResource =
-			_getNestedCollectionResource();
-
-		Class<? extends NestedCollectionResource> clazz =
-			nestedCollectionResource.getClass();
+		Class<? extends ActionRouter> clazz = _actionRouter.getClass();
 
 		Method method = clazz.getDeclaredMethod(
-			"_getPageItems", Pagination.class, long.class);
+			"getPageItems", Pagination.class, long.class);
 
 		method.setAccessible(true);
 
-		return (PageItems)method.invoke(
-			nestedCollectionResource, pagination, groupId);
+		return (PageItems)method.invoke(clazz, pagination, groupId);
 	}
 
 	protected BlogsEntry updateBlogsEntry(
 			long blogEntryId, BlogPosting blogPosting, User currentUser)
 		throws Exception {
 
-		NestedCollectionResource nestedCollectionResource =
-			_getNestedCollectionResource();
-
-		Class<?> clazz = nestedCollectionResource.getClass();
+		Class<? extends ActionRouter> clazz = _actionRouter.getClass();
 
 		Method method = clazz.getDeclaredMethod(
-			"_updateBlogsEntry", long.class, BlogPosting.class,
+			"updateBlogsEntry", long.class, BlogPosting.class,
 			CurrentUser.class);
 
 		method.setAccessible(true);
 
 		return (BlogsEntry)method.invoke(
-			nestedCollectionResource, blogEntryId, blogPosting,
-			new CurrentUser(currentUser));
+			clazz, blogEntryId, blogPosting, new CurrentUser(currentUser));
 	}
 
-	private NestedCollectionResource _getNestedCollectionResource()
-		throws Exception {
-
-		Registry registry = RegistryUtil.getRegistry();
-
-		Collection<NestedCollectionResource> collection = registry.getServices(
-			NestedCollectionResource.class,
-			"(component.name=com.liferay.blog.apio.internal.architect." +
-				"resource." + "BlogPostingNestedCollectionResource)");
-
-		Iterator<NestedCollectionResource> iterator = collection.iterator();
-
-		return iterator.next();
-	}
+	@Inject(
+		filter = "component.name=com.liferay.blog.apio.internal.architect.resource.BlogPostingActionRouter"
+	)
+	private ActionRouter _actionRouter;
 
 }

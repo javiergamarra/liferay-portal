@@ -20,6 +20,7 @@ import com.liferay.blog.apio.architect.model.BlogPosting;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.portal.apio.exception.ValidationException;
+import com.liferay.portal.apio.identifier.ClassNameClassPK;
 import com.liferay.portal.apio.test.util.PaginationRequest;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -341,6 +342,16 @@ public class DefaultBlogPostingNestedCollectionResourceTest
 		}
 
 		@Override
+		public Long getId() {
+			return null;
+		}
+
+		@Override
+		public ClassNameClassPK getAggregateRatingId() {
+			return null;
+		}
+
+		@Override
 		public String getAlternativeHeadline() {
 			return _alternativeHeadline;
 		}
@@ -361,6 +372,11 @@ public class DefaultBlogPostingNestedCollectionResourceTest
 		}
 
 		@Override
+		public Long getContentSpaceId() {
+			return null;
+		}
+
+		@Override
 		public Date getCreatedDate() {
 			return _createdDate;
 		}
@@ -373,6 +389,11 @@ public class DefaultBlogPostingNestedCollectionResourceTest
 		@Override
 		public String getDescription() {
 			return _description;
+		}
+
+		@Override
+		public String getEncodingFormat() {
+			return null;
 		}
 
 		@Override

@@ -254,7 +254,8 @@ public class BlogApioTest {
 		).get(
 			_blogPostsURL.toExternalForm()
 		).then(
-		).statusCode(
+		).log().all()
+			.statusCode(
 			200
 		).body(
 			"_embedded.BlogPosting[0].alternativeHeadline",
