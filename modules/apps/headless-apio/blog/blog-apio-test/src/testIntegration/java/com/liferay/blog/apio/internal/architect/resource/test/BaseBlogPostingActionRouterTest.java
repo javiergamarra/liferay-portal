@@ -16,48 +16,42 @@ package com.liferay.blog.apio.internal.architect.resource.test;
 
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
-import com.liferay.apio.architect.resource.NestedCollectionResource;
 import com.liferay.apio.architect.router.ActionRouter;
 import com.liferay.blog.apio.architect.model.BlogPosting;
-import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.portal.apio.user.CurrentUser;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.test.rule.Inject;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 /**
  * @author Víctor Galán
  */
-public class BaseBlogPostingNestedCollectionResourceTest {
+public class BaseBlogPostingActionRouterTest {
 
-	protected BlogsEntry addBlogsEntry(
+	protected BlogPosting addBlogPosting(
 			long groupId, BlogPosting blogPosting, User user)
 		throws Exception {
 
 		Class<? extends ActionRouter> clazz = _actionRouter.getClass();
 
 		Method method = clazz.getDeclaredMethod(
-			"addBlogsEntry", long.class, BlogPosting.class, CurrentUser.class);
+			"createBlogPosting", long.class, BlogPosting.class,
+			CurrentUser.class);
 
 		method.setAccessible(true);
 
 		try {
-			return (BlogsEntry)method.invoke(
-				clazz, groupId, blogPosting, new CurrentUser(user));
+			return (BlogPosting)method.invoke(
+				_actionRouter, groupId, blogPosting, new CurrentUser(user));
 		}
 		catch (InvocationTargetException ite) {
 			throw (Exception)ite.getTargetException();
 		}
 	}
 
-	protected PageItems<BlogsEntry> getPageItems(
+	protected PageItems<BlogPosting> getPageItems(
 			Pagination pagination, long groupId)
 		throws Exception {
 
@@ -68,23 +62,23 @@ public class BaseBlogPostingNestedCollectionResourceTest {
 
 		method.setAccessible(true);
 
-		return (PageItems)method.invoke(clazz, pagination, groupId);
+		return (PageItems)method.invoke(_actionRouter, pagination, groupId);
 	}
 
-	protected BlogsEntry updateBlogsEntry(
+	protected BlogPosting replaceBlogPosting(
 			long blogEntryId, BlogPosting blogPosting, User currentUser)
 		throws Exception {
 
 		Class<? extends ActionRouter> clazz = _actionRouter.getClass();
 
 		Method method = clazz.getDeclaredMethod(
-			"updateBlogsEntry", long.class, BlogPosting.class,
+			"replaceBlogPosting", long.class, BlogPosting.class,
 			CurrentUser.class);
 
 		method.setAccessible(true);
 
-		return (BlogsEntry)method.invoke(
-			clazz, blogEntryId, blogPosting, new CurrentUser(currentUser));
+		return (BlogPosting)method.invoke(
+			_actionRouter, blogEntryId, blogPosting, new CurrentUser(currentUser));
 	}
 
 	@Inject(

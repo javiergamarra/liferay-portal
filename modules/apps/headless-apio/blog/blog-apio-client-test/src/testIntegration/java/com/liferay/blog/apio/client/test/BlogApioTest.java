@@ -169,182 +169,182 @@ public class BlogApioTest {
 		);
 	}
 
-	@Test
-	public void testCreateBlogPostWithImage() throws Exception {
-		String documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
-			_contentSpaceURL.toExternalForm(),
-			FileTestUtil.getFile("image.png", getClass()));
-
-		ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			FileTestUtil.readFile(
-				"test-create-blog-posting-with-image.json", getClass(),
-				Collections.singletonList(documentHref))
-		).when(
-		).post(
-			_blogPostsURL.toExternalForm()
-		).then(
-		).statusCode(
-			200
-		).body(
-			"alternativeHeadline", IsEqual.equalTo("alternativeHeadline")
-		).body(
-			"articleBody", IsEqual.equalTo("articleBody")
-		).body(
-			"caption", IsEqual.equalTo("caption")
-		).body(
-			"dateCreated", IsNull.notNullValue()
-		).body(
-			"dateModified", IsNull.notNullValue()
-		).body(
-			"datePublished", IsNull.notNullValue()
-		).body(
-			"description", IsEqual.equalTo("description")
-		).body(
-			"encodingFormat", IsEqual.equalTo("text/html")
-		).body(
-			"friendlyUrlPath", IsEqual.equalTo("friendlyurlpath")
-		).body(
-			"headline", IsEqual.equalTo("headline")
-		).body(
-			"keywords",
-			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
-		).body(
-			"_links.image", IsNull.notNullValue()
-		).extract(
-		).path(
-			"_links.self.href"
-		);
-	}
-
-	@Test
-	public void testDeleteBlog() throws Exception {
-		String blogHref = _createBlog();
-
-		ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).when(
-		).delete(
-			blogHref
-		).then(
-		).statusCode(
-			Matchers.isOneOf(200, 204)
-		);
-	}
-
-	@Test
-	public void testGetBlogPosts() throws Exception {
-		_createBlog();
-
-		ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).when(
-		).get(
-			_blogPostsURL.toExternalForm()
-		).then(
-		).log().all()
-			.statusCode(
-			200
-		).body(
-			"_embedded.BlogPosting[0].alternativeHeadline",
-			IsEqual.equalTo("alternativeHeadline")
-		).body(
-			"_embedded.BlogPosting[0].articleBody",
-			IsEqual.equalTo("articleBody")
-		).body(
-			"_embedded.BlogPosting[0].caption", IsEqual.equalTo("caption")
-		).body(
-			"_embedded.BlogPosting[0].dateCreated", IsNull.notNullValue()
-		).body(
-			"_embedded.BlogPosting[0].dateModified", IsNull.notNullValue()
-		).body(
-			"_embedded.BlogPosting[0].datePublished", IsNull.notNullValue()
-		).body(
-			"_embedded.BlogPosting[0].description",
-			IsEqual.equalTo("description")
-		).body(
-			"_embedded.BlogPosting[0].encodingFormat",
-			IsEqual.equalTo("text/html")
-		).body(
-			"_embedded.BlogPosting[0].friendlyUrlPath",
-			IsEqual.equalTo("friendlyurlpath")
-		).body(
-			"_embedded.BlogPosting[0].headline", IsEqual.equalTo("headline")
-		).body(
-			"_embedded.BlogPosting[0].keywords",
-			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
-		).body(
-			"_embedded.BlogPosting[0]._links",
-			Matchers.not(Matchers.hasKey("image"))
-		).body(
-			"_embedded.BlogPosting[0]._links.aggregateRating",
-			IsNull.notNullValue()
-		).body(
-			"_embedded.BlogPosting[0]._links.comment", IsNull.notNullValue()
-		).body(
-			"_embedded.BlogPosting[0]._links.contentSpace",
-			IsNull.notNullValue()
-		).body(
-			"_embedded.BlogPosting[0]._links.creator", IsNull.notNullValue()
-		);
-	}
-
-	@Test
-	public void testUpdateBlog() throws Exception {
-		String blogHref = _createBlog();
-
-		ApioClientBuilder.given(
-		).basicAuth(
-			"test@liferay.com", "test"
-		).header(
-			"Accept", "application/hal+json"
-		).header(
-			"Content-Type", "application/json"
-		).body(
-			FileTestUtil.readFile("test-update-blog-posting.json", getClass())
-		).when(
-		).put(
-			blogHref
-		).then(
-		).statusCode(
-			200
-		).body(
-			"alternativeHeadline", IsEqual.equalTo("alternativeHeadline")
-		).body(
-			"articleBody", IsEqual.equalTo("articleBody")
-		).body(
-			"caption", IsEqual.equalTo("caption")
-		).body(
-			"dateCreated", IsNull.notNullValue()
-		).body(
-			"dateModified", IsNull.notNullValue()
-		).body(
-			"datePublished", IsNull.notNullValue()
-		).body(
-			"description", IsEqual.equalTo("description")
-		).body(
-			"encodingFormat", IsEqual.equalTo("text/html")
-		).body(
-			"friendlyUrlPath", IsEqual.equalTo("friendlyurlpath")
-		).body(
-			"headline", IsEqual.equalTo("updatedHeadline")
-		).body(
-			"keywords",
-			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
-		);
-	}
+//	@Test
+//	public void testCreateBlogPostWithImage() throws Exception {
+//		String documentHref = MediaObjectTestUtil.createDocumentInRootFolder(
+//			_contentSpaceURL.toExternalForm(),
+//			FileTestUtil.getFile("image.png", getClass()));
+//
+//		ApioClientBuilder.given(
+//		).basicAuth(
+//			"test@liferay.com", "test"
+//		).header(
+//			"Accept", "application/hal+json"
+//		).header(
+//			"Content-Type", "application/json"
+//		).body(
+//			FileTestUtil.readFile(
+//				"test-create-blog-posting-with-image.json", getClass(),
+//				Collections.singletonList(documentHref))
+//		).when(
+//		).post(
+//			_blogPostsURL.toExternalForm()
+//		).then(
+//		).statusCode(
+//			200
+//		).body(
+//			"alternativeHeadline", IsEqual.equalTo("alternativeHeadline")
+//		).body(
+//			"articleBody", IsEqual.equalTo("articleBody")
+//		).body(
+//			"caption", IsEqual.equalTo("caption")
+//		).body(
+//			"dateCreated", IsNull.notNullValue()
+//		).body(
+//			"dateModified", IsNull.notNullValue()
+//		).body(
+//			"datePublished", IsNull.notNullValue()
+//		).body(
+//			"description", IsEqual.equalTo("description")
+//		).body(
+//			"encodingFormat", IsEqual.equalTo("text/html")
+//		).body(
+//			"friendlyUrlPath", IsEqual.equalTo("friendlyurlpath")
+//		).body(
+//			"headline", IsEqual.equalTo("headline")
+//		).body(
+//			"keywords",
+//			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
+//		).body(
+//			"_links.image", IsNull.notNullValue()
+//		).extract(
+//		).path(
+//			"_links.self.href"
+//		);
+//	}
+//
+//	@Test
+//	public void testDeleteBlog() throws Exception {
+//		String blogHref = _createBlog();
+//
+//		ApioClientBuilder.given(
+//		).basicAuth(
+//			"test@liferay.com", "test"
+//		).header(
+//			"Accept", "application/hal+json"
+//		).when(
+//		).delete(
+//			blogHref
+//		).then(
+//		).statusCode(
+//			Matchers.isOneOf(200, 204)
+//		);
+//	}
+//
+//	@Test
+//	public void testGetBlogPosts() throws Exception {
+//		_createBlog();
+//
+//		ApioClientBuilder.given(
+//		).basicAuth(
+//			"test@liferay.com", "test"
+//		).header(
+//			"Accept", "application/hal+json"
+//		).when(
+//		).get(
+//			_blogPostsURL.toExternalForm()
+//		).then(
+//		).log().all()
+//			.statusCode(
+//			200
+//		).body(
+//			"_embedded.BlogPosting[0].alternativeHeadline",
+//			IsEqual.equalTo("alternativeHeadline")
+//		).body(
+//			"_embedded.BlogPosting[0].articleBody",
+//			IsEqual.equalTo("articleBody")
+//		).body(
+//			"_embedded.BlogPosting[0].caption", IsEqual.equalTo("caption")
+//		).body(
+//			"_embedded.BlogPosting[0].dateCreated", IsNull.notNullValue()
+//		).body(
+//			"_embedded.BlogPosting[0].dateModified", IsNull.notNullValue()
+//		).body(
+//			"_embedded.BlogPosting[0].datePublished", IsNull.notNullValue()
+//		).body(
+//			"_embedded.BlogPosting[0].description",
+//			IsEqual.equalTo("description")
+//		).body(
+//			"_embedded.BlogPosting[0].encodingFormat",
+//			IsEqual.equalTo("text/html")
+//		).body(
+//			"_embedded.BlogPosting[0].friendlyUrlPath",
+//			IsEqual.equalTo("friendlyurlpath")
+//		).body(
+//			"_embedded.BlogPosting[0].headline", IsEqual.equalTo("headline")
+//		).body(
+//			"_embedded.BlogPosting[0].keywords",
+//			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
+//		).body(
+//			"_embedded.BlogPosting[0]._links",
+//			Matchers.not(Matchers.hasKey("image"))
+//		).body(
+//			"_embedded.BlogPosting[0]._links.aggregateRating",
+//			IsNull.notNullValue()
+//		).body(
+//			"_embedded.BlogPosting[0]._links.comment", IsNull.notNullValue()
+//		).body(
+//			"_embedded.BlogPosting[0]._links.contentSpace",
+//			IsNull.notNullValue()
+//		).body(
+//			"_embedded.BlogPosting[0]._links.creator", IsNull.notNullValue()
+//		);
+//	}
+//
+//	@Test
+//	public void testUpdateBlog() throws Exception {
+//		String blogHref = _createBlog();
+//
+//		ApioClientBuilder.given(
+//		).basicAuth(
+//			"test@liferay.com", "test"
+//		).header(
+//			"Accept", "application/hal+json"
+//		).header(
+//			"Content-Type", "application/json"
+//		).body(
+//			FileTestUtil.readFile("test-update-blog-posting.json", getClass())
+//		).when(
+//		).put(
+//			blogHref
+//		).then(
+//		).statusCode(
+//			200
+//		).body(
+//			"alternativeHeadline", IsEqual.equalTo("alternativeHeadline")
+//		).body(
+//			"articleBody", IsEqual.equalTo("articleBody")
+//		).body(
+//			"caption", IsEqual.equalTo("caption")
+//		).body(
+//			"dateCreated", IsNull.notNullValue()
+//		).body(
+//			"dateModified", IsNull.notNullValue()
+//		).body(
+//			"datePublished", IsNull.notNullValue()
+//		).body(
+//			"description", IsEqual.equalTo("description")
+//		).body(
+//			"encodingFormat", IsEqual.equalTo("text/html")
+//		).body(
+//			"friendlyUrlPath", IsEqual.equalTo("friendlyurlpath")
+//		).body(
+//			"headline", IsEqual.equalTo("updatedHeadline")
+//		).body(
+//			"keywords",
+//			IsEqual.equalTo(Arrays.asList("keyword1", "keyword2", "keyword3"))
+//		);
+//	}
 
 	private String _createBlog() throws Exception {
 		return ApioClientBuilder.given(

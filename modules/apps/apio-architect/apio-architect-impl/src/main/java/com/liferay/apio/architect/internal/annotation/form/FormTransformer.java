@@ -85,7 +85,7 @@ public class FormTransformer {
 		Map<String, Object> resultsMap = new HashMap<>();
 
 		InvocationHandler invocationHandler =
-			(object, method, args) -> resultsMap.get(method.getName());
+			(object, method, args) -> _getReturnValue(resultsMap, method);
 
 		Function<String, BiConsumer<T, ?>> formFunction =
 			methodName -> (object, value) -> resultsMap.put(methodName, value);
@@ -232,6 +232,17 @@ public class FormTransformer {
 			});
 
 		return fieldStep.build();
+	}
+
+	private static Object _getReturnValue(
+		Map<String, Object> resultsMap, Method method) {
+		Object value = resultsMap.get(method.getName());
+
+		if (method.getReturnType() == Optional.class) {
+			return Optional.ofNullable(value);
+		}
+
+		return value;
 	}
 
 	private static <T extends FieldData> List<T> _filterReadableFields(

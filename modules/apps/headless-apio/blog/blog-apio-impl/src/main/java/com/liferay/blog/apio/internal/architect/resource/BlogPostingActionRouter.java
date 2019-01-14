@@ -63,7 +63,7 @@ import java.util.stream.Stream;
 public class BlogPostingActionRouter implements ActionRouter<BlogPosting> {
 
 	@Actions.Create
-	public BlogPosting addBlogsEntry(
+	public BlogPosting createBlogPosting(
 		@ParentId(ContentSpace.class) long groupId,
 		@Body BlogPosting blogPosting, CurrentUser currentUser)
 		throws PortalException {
@@ -83,6 +83,8 @@ public class BlogPostingActionRouter implements ActionRouter<BlogPosting> {
 		}
 		catch (DuplicateFriendlyURLEntryException dfurlee) {
 			throw new ValidationException("Duplicate friendly URL", dfurlee);
+		} catch (Exception ex) {
+			throw ex;
 		}
 	}
 
@@ -111,7 +113,7 @@ public class BlogPostingActionRouter implements ActionRouter<BlogPosting> {
 	}
 
 	@Actions.Replace
-	public BlogPosting updateBlogsEntry(
+	public BlogPosting replaceBlogPosting(
 			@ParentId(ContentSpace.class) long blogsEntryId,
 			@Body BlogPosting blogPosting, CurrentUser currentUser)
 		throws PortalException {
@@ -245,6 +247,11 @@ public class BlogPostingActionRouter implements ActionRouter<BlogPosting> {
 		@Override
 		public String getAlternativeHeadline() {
 			return _blogsEntry.getSubtitle();
+		}
+
+		@Override
+		public Optional<String> getTest() {
+			return Optional.empty();
 		}
 
 		@Override

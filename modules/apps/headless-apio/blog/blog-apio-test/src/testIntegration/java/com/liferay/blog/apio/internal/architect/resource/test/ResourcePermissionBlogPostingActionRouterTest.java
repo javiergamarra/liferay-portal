@@ -16,6 +16,7 @@ package com.liferay.blog.apio.internal.architect.resource.test;
 
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.blog.apio.architect.model.BlogPosting;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.portal.apio.test.util.PaginationRequest;
@@ -51,8 +52,8 @@ import org.junit.runner.RunWith;
  * @author Víctor Galán
  */
 @RunWith(Arquillian.class)
-public class ResourcePermissionBlogPostingNestedCollectionResourceTest
-	extends BaseBlogPostingNestedCollectionResourceTest {
+public class ResourcePermissionBlogPostingActionRouterTest
+	extends BaseBlogPostingActionRouterTest {
 
 	@ClassRule
 	@Rule
@@ -86,7 +87,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -117,7 +118,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -144,7 +145,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -174,7 +175,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -204,7 +205,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -235,7 +236,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -262,7 +263,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -292,7 +293,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -322,7 +323,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -353,7 +354,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -380,7 +381,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -410,7 +411,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -440,7 +441,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(1, pageItems.getTotalCount());
@@ -471,7 +472,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -498,7 +499,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());
@@ -528,7 +529,7 @@ public class ResourcePermissionBlogPostingNestedCollectionResourceTest
 		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
 				user, permissionChecker)) {
 
-			PageItems<BlogsEntry> pageItems = getPageItems(
+			PageItems<BlogPosting> pageItems = getPageItems(
 				PaginationRequest.of(10, 1), _group.getGroupId());
 
 			Assert.assertEquals(0, pageItems.getTotalCount());

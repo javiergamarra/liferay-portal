@@ -29,6 +29,7 @@ import com.liferay.portal.apio.identifier.ClassNameClassPK;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a blog posting exposed through the API. See <a
@@ -64,6 +65,8 @@ public interface BlogPosting extends Identifier<Long> {
 	 */
 	@Vocabulary.Field("alternativeHeadline")
 	public String getAlternativeHeadline();
+
+	public Optional<String> getTest();
 
 	/**
 	 * Returns the blog posting's body. See <a
