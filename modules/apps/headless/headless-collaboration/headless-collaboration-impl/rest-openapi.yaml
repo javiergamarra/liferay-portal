@@ -235,6 +235,78 @@ paths:
               schema:
                 $ref: "#/components/schemas/BlogPosting"
           description: ""
+  "/blog-posting/{blog-posting-id}/categories":
+    get:
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+        - in: path
+          name: blog-posting-id
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                items:
+                  format: int64
+                  type: integer
+                type: array
+          description: ""
+    post:
+      parameters:
+        - in: path
+          name: blog-posting-id
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              format: int64
+              type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+          description: ""
+  "/blog-posting/{blog-posting-id}/categories/batch-create":
+    post:
+      parameters:
+        - in: path
+          name: blog-posting-id
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              format: int64
+              type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+          description: ""
   "/blog-posting/{blog-posting-id}/comment":
     get:
       parameters:
