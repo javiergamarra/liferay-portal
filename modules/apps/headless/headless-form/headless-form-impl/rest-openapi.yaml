@@ -55,7 +55,9 @@ components:
         description:
           type: string
         formRecords:
-          $ref: "#/components/schemas/FormRecord"
+          items:
+            $ref: "#/components/schemas/FormRecord"
+          type: array
         id:
           format: int64
           type: integer

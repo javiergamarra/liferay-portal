@@ -28,7 +28,9 @@ components:
           format: uri
           type: string
         subcategories:
-          $ref: "#/components/schemas/Category"
+          items:
+            $ref: "#/components/schemas/Category"
+          type: array
         vocabulary:
           $ref: "#/components/schemas/Vocabulary"
       type: object
@@ -80,9 +82,13 @@ components:
           description: https://www.schema.org/ContactInformation
           properties:
             address:
-              $ref: "#/components/schemas/PostalAddress"
+              items:
+                $ref: "#/components/schemas/PostalAddress"
+              type: array
             email:
-              $ref: "#/components/schemas/Email"
+              items:
+                $ref: "#/components/schemas/Email"
+              type: array
             id:
               format: int64
               type: integer
@@ -90,9 +96,13 @@ components:
               format: uri
               type: string
             telephone:
-              $ref: "#/components/schemas/Phone"
+              items:
+                $ref: "#/components/schemas/Phone"
+              type: array
             webUrl:
-              $ref: "#/components/schemas/WebUrl"
+              items:
+                $ref: "#/components/schemas/WebUrl"
+              type: array
           type: object
         id:
           format: int64
@@ -115,7 +125,9 @@ components:
           format: uri
           type: string
         members:
-          $ref: "#/components/schemas/UserAccount"
+          items:
+            $ref: "#/components/schemas/UserAccount"
+          type: array
         name:
           type: string
         parentOrganization:
@@ -152,7 +164,9 @@ components:
               type: string
           type: object
         subOrganization:
-          $ref: "#/components/schemas/Organization"
+          items:
+            $ref: "#/components/schemas/Organization"
+          type: array
       type: object
     Phone:
       description: https://www.schema.org/Phone
@@ -238,9 +252,13 @@ components:
           description: https://www.schema.org/ContactInformation
           properties:
             address:
-              $ref: "#/components/schemas/PostalAddress"
+              items:
+                $ref: "#/components/schemas/PostalAddress"
+              type: array
             email:
-              $ref: "#/components/schemas/Email"
+              items:
+                $ref: "#/components/schemas/Email"
+              type: array
             facebook:
               type: string
             id:
@@ -256,11 +274,15 @@ components:
             sms:
               type: string
             telephone:
-              $ref: "#/components/schemas/Phone"
+              items:
+                $ref: "#/components/schemas/Phone"
+              type: array
             twitter:
               type: string
             webUrl:
-              $ref: "#/components/schemas/WebUrl"
+              items:
+                $ref: "#/components/schemas/WebUrl"
+              type: array
           type: object
         dashboardURL:
           type: string
@@ -283,22 +305,30 @@ components:
         jobTitle:
           type: string
         myOrganizations:
-          $ref: "#/components/schemas/Organization"
+          items:
+            $ref: "#/components/schemas/Organization"
+          type: array
         name:
           type: string
         profileURL:
           type: string
         roles:
-          $ref: "#/components/schemas/Role"
+          items:
+            $ref: "#/components/schemas/Role"
+          type: array
         self:
           format: uri
           type: string
         tasksAssignedToMe:
-          format: uri
-          type: string
+          items:
+            format: uri
+            type: string
+          type: array
         tasksAssignedToMyRoles:
-          format: uri
-          type: string
+          items:
+            format: uri
+            type: string
+          type: array
       type: object
     Vocabulary:
       description: https://www.schema.org/Vocabulary
@@ -329,7 +359,9 @@ components:
           format: uri
           type: string
         vocabularyCategories:
-          $ref: "#/components/schemas/Category"
+          items:
+            $ref: "#/components/schemas/Category"
+          type: array
       type: object
     WebUrl:
       description: https://www.schema.org/WebUrl

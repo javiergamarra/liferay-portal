@@ -30,10 +30,14 @@ components:
         caption:
           type: string
         category:
-          format: uri
-          type: string
+          items:
+            format: int64
+            type: integer
+          type: array
         comment:
-          $ref: "#/components/schemas/Comment"
+          items:
+            $ref: "#/components/schemas/Comment"
+          type: array
         contentSpace:
           format: int64
           type: integer
@@ -75,7 +79,9 @@ components:
       description: https://www.schema.org/Comment
       properties:
         comments:
-          $ref: "#/components/schemas/Comment"
+          items:
+            $ref: "#/components/schemas/Comment"
+          type: array
         creator:
           $ref: "#/components/schemas/Creator"
         id:
@@ -367,12 +373,12 @@ paths:
   "/creator/{creator-id}":
     get:
       parameters:
-      - in: path
-        name: creator-id
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - in: path
+          name: creator-id
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         200:
           content:

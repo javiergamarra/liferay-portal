@@ -54,7 +54,9 @@ components:
           format: int64
           type: integer
         logs:
-          $ref: "#/components/schemas/WorkflowLog"
+          items:
+            $ref: "#/components/schemas/WorkflowLog"
+          type: array
         name:
           type: string
         object:

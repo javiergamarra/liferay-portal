@@ -4,7 +4,9 @@ components:
       description: https://www.schema.org/Comment
       properties:
         comments:
-          $ref: "#/components/schemas/Comment"
+          items:
+            $ref: "#/components/schemas/Comment"
+          type: array
         creator:
           $ref: "#/components/schemas/Creator"
         id:
@@ -70,8 +72,10 @@ components:
               type: number
           type: object
         category:
-          format: uri
-          type: string
+          items:
+            format: int64
+            type: integer
+          type: array
         contentUrl:
           format: uri
           type: string
@@ -118,7 +122,11 @@ components:
         description:
           type: string
         documents:
-          $ref: "#/components/schemas/Document"
+          items:
+            $ref: "#/components/schemas/Document"
+          type: array
+        documentsRepository:
+          $ref: "#/components/schemas/Folder"
         id:
           format: int64
           type: integer
@@ -128,7 +136,9 @@ components:
           format: uri
           type: string
         subFolders:
-          $ref: "#/components/schemas/Folder"
+          items:
+            $ref: "#/components/schemas/Folder"
+          type: array
       type: object
 info:
   description: ""
@@ -139,12 +149,12 @@ paths:
   "/creator/{creator-id}":
     get:
       parameters:
-      - in: path
-        name: creator-id
-        required: true
-        schema:
-          format: int64
-          type: integer
+        - in: path
+          name: creator-id
+          required: true
+          schema:
+            format: int64
+            type: integer
       responses:
         200:
           content:
