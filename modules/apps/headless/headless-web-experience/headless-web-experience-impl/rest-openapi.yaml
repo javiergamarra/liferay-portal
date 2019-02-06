@@ -146,7 +146,13 @@ components:
           format: int64
           type: integer
         contentStructure:
-          $ref: "#/components/schemas/ContentStructure"
+          allOf:
+            - $ref: "#/components/schemas/ContentStructure"
+          readOnly: true
+        contentStructureId:
+          format: int64
+          type: integer
+          writeOnly: true
         creator:
           $ref: "#/components/schemas/Creator"
         dateCreated:
@@ -194,7 +200,12 @@ components:
             dataType:
               type: string
             document:
-              $ref: "#/components/schemas/ContentDocument"
+              allOf:
+                - $ref: "#/components/schemas/ContentDocument"
+            documentId:
+              format: int64
+              type: integer
+              writeOnly: true
             filterAndSortIdentifier:
               type: string
             geo:
@@ -227,7 +238,13 @@ components:
               format: uri
               type: string
             structuredContent:
-              $ref: "#/components/schemas/StructuredContent"
+              allOf:
+                - $ref: "#/components/schemas/StructuredContent"
+              readOnly: true
+            structuredContentId:
+              format: int64
+              type: integer
+              writeOnly: true
             value:
               type: string
           type: object
