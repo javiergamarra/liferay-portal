@@ -24,8 +24,7 @@ components:
         comments:
           $ref: "#/components/schemas/Comment"
         creator:
-          format: uri
-          type: string
+          $ref: "#/components/schemas/Creator"
         id:
           format: int64
           type: integer
@@ -39,10 +38,10 @@ components:
       description: https://www.schema.org/ContentDocument
       properties:
         contentUrl:
-          type: string
-        creator:
           format: uri
           type: string
+        creator:
+          $ref: "#/components/schemas/Creator"
         dateCreated:
           format: date-time
           type: string
@@ -72,11 +71,10 @@ components:
             type: string
           type: array
         contentSpace:
-          format: uri
-          type: string
+          format: int64
+          type: integer
         creator:
-          format: uri
-          type: string
+          $ref: "#/components/schemas/Creator"
         dateCreated:
           format: date-time
           type: string
@@ -89,6 +87,36 @@ components:
           format: int64
           type: integer
         name:
+          type: string
+        self:
+          format: uri
+          type: string
+      type: object
+    Creator:
+      description: https://www.schema.org/Creator
+      properties:
+        additionalName:
+          type: string
+        alternateName:
+          type: string
+        email:
+          type: string
+        familyName:
+          type: string
+        givenName:
+          type: string
+        id:
+          format: int64
+          type: integer
+        image:
+          format: uri
+          type: string
+        jobTitle:
+          type: string
+        name:
+          type: string
+        profileURL:
+          format: uri
           type: string
         self:
           format: uri
@@ -109,13 +137,12 @@ components:
         comment:
           $ref: "#/components/schemas/Comment"
         contentSpace:
-          format: uri
-          type: string
+          format: int64
+          type: integer
         contentStructure:
           $ref: "#/components/schemas/ContentStructure"
         creator:
-          format: uri
-          type: string
+          $ref: "#/components/schemas/Creator"
         dateCreated:
           format: date-time
           type: string
@@ -420,6 +447,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ContentStructure"
+          description: ""
+  "/creator/{creator-id}":
+    get:
+      parameters:
+      - in: path
+        name: creator-id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Creator"
           description: ""
   "/structured-contents/{structured-contents-id}":
     delete:

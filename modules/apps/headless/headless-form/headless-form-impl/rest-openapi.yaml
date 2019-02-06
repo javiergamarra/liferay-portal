@@ -1,5 +1,34 @@
 components:
   schemas:
+    Creator:
+      description: https://www.schema.org/Creator
+      properties:
+        additionalName:
+          type: string
+        alternateName:
+          type: string
+        email:
+          type: string
+        familyName:
+          type: string
+        givenName:
+          type: string
+        id:
+          format: int64
+          type: integer
+        image:
+          format: uri
+          type: string
+        jobTitle:
+          type: string
+        name:
+          type: string
+        profileURL:
+          type: string
+        self:
+          format: uri
+          type: string
+      type: object
     Form:
       description: https://www.schema.org/Form
       properties:
@@ -8,11 +37,10 @@ components:
             type: string
           type: array
         contentSpace:
-          format: uri
-          type: string
+          format: int64
+          type: integer
         creator:
-          format: uri
-          type: string
+          $ref: "#/components/schemas/Creator"
         dateCreated:
           format: date-time
           type: string
@@ -43,6 +71,7 @@ components:
       description: https://www.schema.org/FormDocument
       properties:
         contentUrl:
+          format: uri
           type: string
         encodingFormat:
           type: string
@@ -63,8 +92,7 @@ components:
       description: https://www.schema.org/FormRecord
       properties:
         creator:
-          format: uri
-          type: string
+          $ref: "#/components/schemas/Creator"
         dateCreated:
           format: date-time
           type: string
@@ -109,11 +137,10 @@ components:
             type: string
           type: array
         contentSpace:
-          format: uri
-          type: string
+          format: int64
+          type: integer
         creator:
-          format: uri
-          type: string
+          $ref: "#/components/schemas/Creator"
         dateCreated:
           format: date-time
           type: string
@@ -336,6 +363,22 @@ paths:
                 items:
                   $ref: "#/components/schemas/FormStructure"
                 type: array
+          description: ""
+  "/creator/{creator-id}":
+    get:
+      parameters:
+        - in: path
+          name: creator-id
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Creator"
           description: ""
   "/form-document/{form-document-id}":
     delete:

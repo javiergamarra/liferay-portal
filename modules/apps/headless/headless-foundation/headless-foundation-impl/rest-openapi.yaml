@@ -32,50 +32,6 @@ components:
         vocabulary:
           $ref: "#/components/schemas/Vocabulary"
       type: object
-    ContentSpace:
-      description: https://www.schema.org/ContentSpace
-      properties:
-        availableLanguages:
-          items:
-            type: string
-          type: array
-        blogPosts:
-          format: uri
-          type: string
-        contentStructures:
-          format: uri
-          type: string
-        creator:
-          $ref: "#/components/schemas/UserAccount"
-        description:
-          type: string
-        documentsRepository:
-          format: uri
-          type: string
-        formStructures:
-          format: uri
-          type: string
-        forms:
-          format: uri
-          type: string
-        id:
-          format: int64
-          type: integer
-        keywords:
-          $ref: "#/components/schemas/Keyword"
-        name:
-          type: string
-        self:
-          format: uri
-          type: string
-        structuredContents:
-          format: uri
-          type: string
-        vocabularies:
-          $ref: "#/components/schemas/Vocabulary"
-        webSite:
-          $ref: "#/components/schemas/WebSite"
-      type: object
     Email:
       description: https://www.schema.org/Email
       properties:
@@ -94,7 +50,8 @@ components:
       description: https://www.schema.org/Keyword
       properties:
         contentSpace:
-          $ref: "#/components/schemas/ContentSpace"
+          format: int64
+          type: integer
         creator:
           $ref: "#/components/schemas/UserAccount"
         dateCreated:
@@ -196,8 +153,6 @@ components:
           type: object
         subOrganization:
           $ref: "#/components/schemas/Organization"
-        website:
-          $ref: "#/components/schemas/WebSite"
       type: object
     Phone:
       description: https://www.schema.org/Phone
@@ -329,8 +284,6 @@ components:
           type: string
         myOrganizations:
           $ref: "#/components/schemas/Organization"
-        myWebSites:
-          $ref: "#/components/schemas/WebSite"
         name:
           type: string
         profileURL:
@@ -355,7 +308,8 @@ components:
             type: string
           type: array
         contentSpace:
-          $ref: "#/components/schemas/ContentSpace"
+          format: int64
+          type: integer
         creator:
           $ref: "#/components/schemas/UserAccount"
         dateCreated:
@@ -376,40 +330,6 @@ components:
           type: string
         vocabularyCategories:
           $ref: "#/components/schemas/Category"
-      type: object
-    WebSite:
-      description: https://www.schema.org/WebSite
-      properties:
-        availableLanguages:
-          items:
-            type: string
-          type: array
-        contentSpace:
-          $ref: "#/components/schemas/ContentSpace"
-        creator:
-          $ref: "#/components/schemas/UserAccount"
-        description:
-          type: string
-        id:
-          format: int64
-          type: integer
-        members:
-          $ref: "#/components/schemas/UserAccount"
-        membershipType:
-          type: string
-        name:
-          type: string
-        privateUrl:
-          type: string
-        publicUrl:
-          type: string
-        self:
-          format: uri
-          type: string
-        webSite:
-          $ref: "#/components/schemas/WebSite"
-        webSites:
-          $ref: "#/components/schemas/WebSite"
       type: object
     WebUrl:
       description: https://www.schema.org/WebUrl
@@ -587,22 +507,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Category"
-          description: ""
-  "/content-space/{content-space-id}":
-    get:
-      parameters:
-        - in: path
-          name: content-space-id
-          required: true
-          schema:
-            format: int64
-            type: integer
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ContentSpace"
           description: ""
   "/content-space/{content-space-id}/keywords":
     get:
@@ -914,32 +818,6 @@ paths:
               schema:
                 items:
                   $ref: "#/components/schemas/Role"
-                type: array
-          description: ""
-  "/my-user-account/{my-user-account-id}/web-site":
-    get:
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-        - in: path
-          name: my-user-account-id
-          required: true
-          schema:
-            format: int64
-            type: integer
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/WebSite"
                 type: array
           description: ""
   "/organization":
@@ -1261,32 +1139,6 @@ paths:
                   $ref: "#/components/schemas/Role"
                 type: array
           description: ""
-  "/user-account/{user-account-id}/web-site":
-    get:
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-        - in: path
-          name: user-account-id
-          required: true
-          schema:
-            format: int64
-            type: integer
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/WebSite"
-                type: array
-          description: ""
   "/vocabularies/{vocabularies-id}":
     delete:
       parameters:
@@ -1403,22 +1255,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Category"
           description: ""
-  "/web-site/{web-site-id}":
-    get:
-      parameters:
-        - in: path
-          name: web-site-id
-          required: true
-          schema:
-            format: int64
-            type: integer
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WebSite"
-          description: ""
   "/web-site/{web-site-id}/user-account":
     get:
       parameters:
@@ -1443,32 +1279,6 @@ paths:
               schema:
                 items:
                   $ref: "#/components/schemas/UserAccount"
-                type: array
-          description: ""
-  "/web-site/{web-site-id}/web-site":
-    get:
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-        - in: query
-          name: per_page
-          schema:
-            type: integer
-        - in: path
-          name: web-site-id
-          required: true
-          schema:
-            format: int64
-            type: integer
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/WebSite"
                 type: array
           description: ""
   "/web-urls":
