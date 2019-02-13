@@ -12,51 +12,36 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.internal.jaxrs.message.body;
+package com.liferay.portal.vulcan.internal.jaxrs.context.resolver;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import org.osgi.service.component.annotations.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyReader;
+import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
 /**
  * @author Ivica Cardic
  */
-@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Provider
-public class JSONMessageBodyReader implements MessageBodyReader<Object> {
+public class ObjectMapperContextResolver
+	implements ContextResolver<ObjectMapper> {
 
 	@Override
-	public boolean isReadable(
-		Class<?> clazz, Type genericType, Annotation[] annotations,
-		MediaType mediaType) {
-
-		return _objectMapper.canSerialize(clazz);
-	}
-
-	@Override
-	public Object readFrom(
-			Class<Object> clazz, Type genericType, Annotation[] annotations,
-			MediaType mediaType, MultivaluedMap<String, String> multivaluedMap,
-			InputStream inputStream)
-		throws IOException, WebApplicationException {
-
-		return _objectMapper.readValue(inputStream, clazz);
+	public ObjectMapper getContext(Class<?> aClass) {
+		return _objectMapper;
 	}
 
 	private static final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
+			configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+			enable(SerializationFeature.INDENT_OUTPUT);
 			setDateFormat(new ISO8601DateFormat());
 		}
 	};
