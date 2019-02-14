@@ -19,13 +19,11 @@ import com.liferay.headless.collaboration.dto.v1_0.BlogPosting;
 import com.liferay.headless.collaboration.dto.v1_0.BlogPostingImage;
 import com.liferay.headless.collaboration.dto.v1_0.Comment;
 import com.liferay.headless.collaboration.dto.v1_0.Creator;
-import com.liferay.headless.collaboration.dto.v1_0.ImageObjectRepository;
 import com.liferay.headless.collaboration.resource.v1_0.AggregateRatingResource;
 import com.liferay.headless.collaboration.resource.v1_0.BlogPostingImageResource;
 import com.liferay.headless.collaboration.resource.v1_0.BlogPostingResource;
 import com.liferay.headless.collaboration.resource.v1_0.CommentResource;
 import com.liferay.headless.collaboration.resource.v1_0.CreatorResource;
-import com.liferay.headless.collaboration.resource.v1_0.ImageObjectRepositoryResource;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -81,9 +79,9 @@ public class Query {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public Collection<BlogPostingImage> getImageObjectRepositoryBlogPostingImagesPage( @GraphQLName("image-object-repository-id") Long imageObjectRepositoryId , @GraphQLName("per_page") int perPage , @GraphQLName("page") int page ) throws Exception {
+	public Collection<BlogPostingImage> getContentSpaceBlogPostingImagesPage( @GraphQLName("content-space-id") Long contentSpaceId , @GraphQLName("per_page") int perPage , @GraphQLName("page") int page ) throws Exception {
 
-		return _getBlogPostingImageResource().getImageObjectRepositoryBlogPostingImagesPage( imageObjectRepositoryId , Pagination.of(perPage, page) ).getItems();
+		return _getBlogPostingImageResource().getContentSpaceBlogPostingImagesPage( contentSpaceId , Pagination.of(perPage, page) ).getItems();
 
 	}
 
@@ -127,14 +125,6 @@ public class Query {
 
 	}
 
-	@GraphQLField
-	@GraphQLInvokeDetached
-	public ImageObjectRepository getImageObjectRepository( @GraphQLName("image-object-repository-id") Long imageObjectRepositoryId ) throws Exception {
-
-		return _getImageObjectRepositoryResource().getImageObjectRepository( imageObjectRepositoryId );
-
-	}
-
 	private static AggregateRatingResource _getAggregateRatingResource() {
 			return _aggregateRatingResourceServiceTracker.getService();
 	}
@@ -164,12 +154,6 @@ public class Query {
 	}
 
 	private static final ServiceTracker<CreatorResource, CreatorResource> _creatorResourceServiceTracker;
-
-	private static ImageObjectRepositoryResource _getImageObjectRepositoryResource() {
-			return _imageObjectRepositoryResourceServiceTracker.getService();
-	}
-
-	private static final ServiceTracker<ImageObjectRepositoryResource, ImageObjectRepositoryResource> _imageObjectRepositoryResourceServiceTracker;
 
 	static {
 		Bundle bundle = FrameworkUtil.getBundle(Query.class);
@@ -208,13 +192,6 @@ public class Query {
 		creatorResourceServiceTracker.open();
 
 		_creatorResourceServiceTracker = creatorResourceServiceTracker;
-
-		ServiceTracker<ImageObjectRepositoryResource, ImageObjectRepositoryResource> imageObjectRepositoryResourceServiceTracker =
-			new ServiceTracker<ImageObjectRepositoryResource, ImageObjectRepositoryResource>(bundle.getBundleContext(), ImageObjectRepositoryResource.class, null);
-
-		imageObjectRepositoryResourceServiceTracker.open();
-
-		_imageObjectRepositoryResourceServiceTracker = imageObjectRepositoryResourceServiceTracker;
 
 	}
 

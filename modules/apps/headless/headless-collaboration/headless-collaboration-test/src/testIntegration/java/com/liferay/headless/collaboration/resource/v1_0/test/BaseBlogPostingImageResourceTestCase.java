@@ -69,22 +69,18 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 	}
 
 	@Test
+	public void testGetContentSpaceBlogPostingImagesPage() throws Exception {
+		Assert.assertTrue(true);
+	}
+
+	@Test
 	public void testGetImageObject() throws Exception {
 		Assert.assertTrue(true);
 	}
 
 	@Test
-	public void testGetImageObjectRepositoryBlogPostingImagesPage()
-		throws Exception {
-
-			Assert.assertTrue(true);
-	}
-
-	@Test
-	public void testPostImageObjectRepositoryBlogPostingImage()
-		throws Exception {
-
-			Assert.assertTrue(true);
+	public void testPostContentSpaceBlogPostingImage() throws Exception {
+		Assert.assertTrue(true);
 	}
 
 	@Test
@@ -103,6 +99,17 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			requestSpecification.post("/blog-posting-images/{image-object-id}");
 	}
 
+	protected void invokeGetContentSpaceBlogPostingImagesPage(
+			Long contentSpaceId, Pagination pagination)
+		throws Exception {
+
+			RequestSpecification requestSpecification =
+				_createRequestRequestSpecification();
+
+			requestSpecification.post(
+				"/content-spaces/{content-space-id}/blog-posting-images");
+	}
+
 	protected void invokeGetImageObject(Long imageObjectId) throws Exception {
 			RequestSpecification requestSpecification =
 				_createRequestRequestSpecification();
@@ -110,26 +117,15 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			requestSpecification.post("/blog-posting-images/{image-object-id}");
 	}
 
-	protected void invokeGetImageObjectRepositoryBlogPostingImagesPage(
-			Long imageObjectRepositoryId, Pagination pagination)
+	protected void invokePostContentSpaceBlogPostingImage(
+			Long contentSpaceId, BlogPostingImage blogPostingImage)
 		throws Exception {
 
 			RequestSpecification requestSpecification =
 				_createRequestRequestSpecification();
 
 			requestSpecification.post(
-				"/image-object-repositories/{image-object-repository-id}/blog-posting-images");
-	}
-
-	protected void invokePostImageObjectRepositoryBlogPostingImage(
-			Long imageObjectRepositoryId, BlogPostingImage blogPostingImage)
-		throws Exception {
-
-			RequestSpecification requestSpecification =
-				_createRequestRequestSpecification();
-
-			requestSpecification.post(
-				"/image-object-repositories/{image-object-repository-id}/blog-posting-images");
+				"/content-spaces/{content-space-id}/blog-posting-images");
 	}
 
 	protected void invokePostImageObjectRepositoryBlogPostingImageBatchCreate(
