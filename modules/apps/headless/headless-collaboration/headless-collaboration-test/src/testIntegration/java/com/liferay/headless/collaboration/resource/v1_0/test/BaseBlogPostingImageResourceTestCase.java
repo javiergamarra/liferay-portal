@@ -17,7 +17,7 @@ package com.liferay.headless.collaboration.resource.v1_0.test;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.headless.collaboration.dto.v1_0.ImageObject;
+import com.liferay.headless.collaboration.dto.v1_0.BlogPostingImage;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -43,7 +43,7 @@ import org.junit.Test;
  * @generated
  */
 @Generated("")
-public abstract class BaseImageObjectResourceTestCase {
+public abstract class BaseBlogPostingImageResourceTestCase {
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -74,19 +74,21 @@ public abstract class BaseImageObjectResourceTestCase {
 	}
 
 	@Test
-	public void testGetImageObjectRepositoryImageObjectsPage()
+	public void testGetImageObjectRepositoryBlogPostingImagesPage()
 		throws Exception {
 
 			Assert.assertTrue(true);
 	}
 
 	@Test
-	public void testPostImageObjectRepositoryImageObject() throws Exception {
-		Assert.assertTrue(true);
+	public void testPostImageObjectRepositoryBlogPostingImage()
+		throws Exception {
+
+			Assert.assertTrue(true);
 	}
 
 	@Test
-	public void testPostImageObjectRepositoryImageObjectBatchCreate()
+	public void testPostImageObjectRepositoryBlogPostingImageBatchCreate()
 		throws Exception {
 
 			Assert.assertTrue(true);
@@ -98,17 +100,17 @@ public abstract class BaseImageObjectResourceTestCase {
 			RequestSpecification requestSpecification =
 				_createRequestRequestSpecification();
 
-			requestSpecification.post("/image-objects/{image-object-id}");
+			requestSpecification.post("/blog-posting-images/{image-object-id}");
 	}
 
 	protected void invokeGetImageObject(Long imageObjectId) throws Exception {
 			RequestSpecification requestSpecification =
 				_createRequestRequestSpecification();
 
-			requestSpecification.post("/image-objects/{image-object-id}");
+			requestSpecification.post("/blog-posting-images/{image-object-id}");
 	}
 
-	protected void invokeGetImageObjectRepositoryImageObjectsPage(
+	protected void invokeGetImageObjectRepositoryBlogPostingImagesPage(
 			Long imageObjectRepositoryId, Pagination pagination)
 		throws Exception {
 
@@ -116,35 +118,35 @@ public abstract class BaseImageObjectResourceTestCase {
 				_createRequestRequestSpecification();
 
 			requestSpecification.post(
-				"/image-object-repositories/{image-object-repository-id}/image-objects");
+				"/image-object-repositories/{image-object-repository-id}/blog-posting-images");
 	}
 
-	protected void invokePostImageObjectRepositoryImageObject(
-			Long imageObjectRepositoryId, ImageObject imageObject)
+	protected void invokePostImageObjectRepositoryBlogPostingImage(
+			Long imageObjectRepositoryId, BlogPostingImage blogPostingImage)
 		throws Exception {
 
 			RequestSpecification requestSpecification =
 				_createRequestRequestSpecification();
 
 			requestSpecification.post(
-				"/image-object-repositories/{image-object-repository-id}/image-objects");
+				"/image-object-repositories/{image-object-repository-id}/blog-posting-images");
 	}
 
-	protected void invokePostImageObjectRepositoryImageObjectBatchCreate(
-			Long imageObjectRepositoryId, ImageObject imageObject)
+	protected void invokePostImageObjectRepositoryBlogPostingImageBatchCreate(
+			Long imageObjectRepositoryId, BlogPostingImage blogPostingImage)
 		throws Exception {
 
 			RequestSpecification requestSpecification =
 				_createRequestRequestSpecification();
 
 			requestSpecification.post(
-				"/image-object-repositories/{image-object-repository-id}/image-objects/batch-create");
+				"/image-object-repositories/{image-object-repository-id}/blog-posting-images/batch-create");
 	}
 
-	protected ImageObject randomImageObject() {
-		ImageObject imageObject = new ImageObject();
+	protected BlogPostingImage randomBlogPostingImage() {
+		BlogPostingImage blogPostingImage = new BlogPostingImage();
 
-		return imageObject;
+		return blogPostingImage;
 	}
 
 	protected Group testGroup;

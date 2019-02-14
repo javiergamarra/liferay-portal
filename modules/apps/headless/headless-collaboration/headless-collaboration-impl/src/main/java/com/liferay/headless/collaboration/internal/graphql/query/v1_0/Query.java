@@ -16,16 +16,16 @@ package com.liferay.headless.collaboration.internal.graphql.query.v1_0;
 
 import com.liferay.headless.collaboration.dto.v1_0.AggregateRating;
 import com.liferay.headless.collaboration.dto.v1_0.BlogPosting;
+import com.liferay.headless.collaboration.dto.v1_0.BlogPostingImage;
 import com.liferay.headless.collaboration.dto.v1_0.Comment;
 import com.liferay.headless.collaboration.dto.v1_0.Creator;
-import com.liferay.headless.collaboration.dto.v1_0.ImageObject;
 import com.liferay.headless.collaboration.dto.v1_0.ImageObjectRepository;
 import com.liferay.headless.collaboration.resource.v1_0.AggregateRatingResource;
+import com.liferay.headless.collaboration.resource.v1_0.BlogPostingImageResource;
 import com.liferay.headless.collaboration.resource.v1_0.BlogPostingResource;
 import com.liferay.headless.collaboration.resource.v1_0.CommentResource;
 import com.liferay.headless.collaboration.resource.v1_0.CreatorResource;
 import com.liferay.headless.collaboration.resource.v1_0.ImageObjectRepositoryResource;
-import com.liferay.headless.collaboration.resource.v1_0.ImageObjectResource;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -81,6 +81,22 @@ public class Query {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
+	public Collection<BlogPostingImage> getImageObjectRepositoryBlogPostingImagesPage( @GraphQLName("image-object-repository-id") Long imageObjectRepositoryId , @GraphQLName("per_page") int perPage , @GraphQLName("page") int page ) throws Exception {
+
+		return _getBlogPostingImageResource().getImageObjectRepositoryBlogPostingImagesPage( imageObjectRepositoryId , Pagination.of(perPage, page) ).getItems();
+
+	}
+
+	@GraphQLField
+	@GraphQLInvokeDetached
+	public BlogPostingImage getImageObject( @GraphQLName("image-object-id") Long imageObjectId ) throws Exception {
+
+		return _getBlogPostingImageResource().getImageObject( imageObjectId );
+
+	}
+
+	@GraphQLField
+	@GraphQLInvokeDetached
 	public Collection<Comment> getBlogPostingCommentsPage( @GraphQLName("blog-posting-id") Long blogPostingId , @GraphQLName("per_page") int perPage , @GraphQLName("page") int page ) throws Exception {
 
 		return _getCommentResource().getBlogPostingCommentsPage( blogPostingId , Pagination.of(perPage, page) ).getItems();
@@ -113,22 +129,6 @@ public class Query {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public Collection<ImageObject> getImageObjectRepositoryImageObjectsPage( @GraphQLName("image-object-repository-id") Long imageObjectRepositoryId , @GraphQLName("per_page") int perPage , @GraphQLName("page") int page ) throws Exception {
-
-		return _getImageObjectResource().getImageObjectRepositoryImageObjectsPage( imageObjectRepositoryId , Pagination.of(perPage, page) ).getItems();
-
-	}
-
-	@GraphQLField
-	@GraphQLInvokeDetached
-	public ImageObject getImageObject( @GraphQLName("image-object-id") Long imageObjectId ) throws Exception {
-
-		return _getImageObjectResource().getImageObject( imageObjectId );
-
-	}
-
-	@GraphQLField
-	@GraphQLInvokeDetached
 	public ImageObjectRepository getImageObjectRepository( @GraphQLName("image-object-repository-id") Long imageObjectRepositoryId ) throws Exception {
 
 		return _getImageObjectRepositoryResource().getImageObjectRepository( imageObjectRepositoryId );
@@ -147,6 +147,12 @@ public class Query {
 
 	private static final ServiceTracker<BlogPostingResource, BlogPostingResource> _blogPostingResourceServiceTracker;
 
+	private static BlogPostingImageResource _getBlogPostingImageResource() {
+			return _blogPostingImageResourceServiceTracker.getService();
+	}
+
+	private static final ServiceTracker<BlogPostingImageResource, BlogPostingImageResource> _blogPostingImageResourceServiceTracker;
+
 	private static CommentResource _getCommentResource() {
 			return _commentResourceServiceTracker.getService();
 	}
@@ -158,12 +164,6 @@ public class Query {
 	}
 
 	private static final ServiceTracker<CreatorResource, CreatorResource> _creatorResourceServiceTracker;
-
-	private static ImageObjectResource _getImageObjectResource() {
-			return _imageObjectResourceServiceTracker.getService();
-	}
-
-	private static final ServiceTracker<ImageObjectResource, ImageObjectResource> _imageObjectResourceServiceTracker;
 
 	private static ImageObjectRepositoryResource _getImageObjectRepositoryResource() {
 			return _imageObjectRepositoryResourceServiceTracker.getService();
@@ -188,6 +188,13 @@ public class Query {
 
 		_blogPostingResourceServiceTracker = blogPostingResourceServiceTracker;
 
+		ServiceTracker<BlogPostingImageResource, BlogPostingImageResource> blogPostingImageResourceServiceTracker =
+			new ServiceTracker<BlogPostingImageResource, BlogPostingImageResource>(bundle.getBundleContext(), BlogPostingImageResource.class, null);
+
+		blogPostingImageResourceServiceTracker.open();
+
+		_blogPostingImageResourceServiceTracker = blogPostingImageResourceServiceTracker;
+
 		ServiceTracker<CommentResource, CommentResource> commentResourceServiceTracker =
 			new ServiceTracker<CommentResource, CommentResource>(bundle.getBundleContext(), CommentResource.class, null);
 
@@ -201,13 +208,6 @@ public class Query {
 		creatorResourceServiceTracker.open();
 
 		_creatorResourceServiceTracker = creatorResourceServiceTracker;
-
-		ServiceTracker<ImageObjectResource, ImageObjectResource> imageObjectResourceServiceTracker =
-			new ServiceTracker<ImageObjectResource, ImageObjectResource>(bundle.getBundleContext(), ImageObjectResource.class, null);
-
-		imageObjectResourceServiceTracker.open();
-
-		_imageObjectResourceServiceTracker = imageObjectResourceServiceTracker;
 
 		ServiceTracker<ImageObjectRepositoryResource, ImageObjectRepositoryResource> imageObjectRepositoryResourceServiceTracker =
 			new ServiceTracker<ImageObjectRepositoryResource, ImageObjectRepositoryResource>(bundle.getBundleContext(), ImageObjectRepositoryResource.class, null);
