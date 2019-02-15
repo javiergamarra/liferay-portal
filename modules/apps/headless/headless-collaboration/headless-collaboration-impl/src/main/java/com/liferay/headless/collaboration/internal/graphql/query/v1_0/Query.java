@@ -14,12 +14,10 @@
 
 package com.liferay.headless.collaboration.internal.graphql.query.v1_0;
 
-import com.liferay.headless.collaboration.dto.v1_0.AggregateRating;
 import com.liferay.headless.collaboration.dto.v1_0.BlogPosting;
 import com.liferay.headless.collaboration.dto.v1_0.BlogPostingImage;
 import com.liferay.headless.collaboration.dto.v1_0.Comment;
 import com.liferay.headless.collaboration.dto.v1_0.Creator;
-import com.liferay.headless.collaboration.resource.v1_0.AggregateRatingResource;
 import com.liferay.headless.collaboration.resource.v1_0.BlogPostingImageResource;
 import com.liferay.headless.collaboration.resource.v1_0.BlogPostingResource;
 import com.liferay.headless.collaboration.resource.v1_0.CommentResource;
@@ -44,14 +42,6 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 @Generated("")
 public class Query {
-
-	@GraphQLField
-	@GraphQLInvokeDetached
-	public AggregateRating getAggregateRating( @GraphQLName("aggregate-rating-id") Long aggregateRatingId ) throws Exception {
-
-		return _getAggregateRatingResource().getAggregateRating( aggregateRatingId );
-
-	}
 
 	@GraphQLField
 	@GraphQLInvokeDetached
@@ -125,12 +115,6 @@ public class Query {
 
 	}
 
-	private static AggregateRatingResource _getAggregateRatingResource() {
-			return _aggregateRatingResourceServiceTracker.getService();
-	}
-
-	private static final ServiceTracker<AggregateRatingResource, AggregateRatingResource> _aggregateRatingResourceServiceTracker;
-
 	private static BlogPostingResource _getBlogPostingResource() {
 			return _blogPostingResourceServiceTracker.getService();
 	}
@@ -157,13 +141,6 @@ public class Query {
 
 	static {
 		Bundle bundle = FrameworkUtil.getBundle(Query.class);
-
-		ServiceTracker<AggregateRatingResource, AggregateRatingResource> aggregateRatingResourceServiceTracker =
-			new ServiceTracker<AggregateRatingResource, AggregateRatingResource>(bundle.getBundleContext(), AggregateRatingResource.class, null);
-
-		aggregateRatingResourceServiceTracker.open();
-
-		_aggregateRatingResourceServiceTracker = aggregateRatingResourceServiceTracker;
 
 		ServiceTracker<BlogPostingResource, BlogPostingResource> blogPostingResourceServiceTracker =
 			new ServiceTracker<BlogPostingResource, BlogPostingResource>(bundle.getBundleContext(), BlogPostingResource.class, null);
