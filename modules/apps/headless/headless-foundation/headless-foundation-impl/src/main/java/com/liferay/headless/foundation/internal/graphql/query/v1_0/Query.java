@@ -66,10 +66,10 @@ return _getCategoryResource().getCategory( categoryId );
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public Collection<Category> getCategoryCategoriesPage( @GraphQLName("category-id") Long categoryId , @GraphQLName("pageSize") int pageSize , @GraphQLName("page") int page ) throws Exception {
+	public Collection<Category> getCategoryCategoriesPage( @GraphQLName("category-id") Long categoryId , @GraphQLName("filter") Filter filter , @GraphQLName("pageSize") int pageSize , @GraphQLName("page") int page , @GraphQLName("Sort[]") Sort[] sorts ) throws Exception {
 				Page paginationPage = _getCategoryResource().getCategoryCategoriesPage(
 
-					categoryId , Pagination.of(pageSize, page)
+					categoryId , filter , Pagination.of(pageSize, page) , sorts
 				);
 
 				return paginationPage.getItems();
@@ -78,10 +78,10 @@ return _getCategoryResource().getCategory( categoryId );
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public Collection<Category> getVocabularyCategoriesPage( @GraphQLName("vocabulary-id") Long vocabularyId , @GraphQLName("pageSize") int pageSize , @GraphQLName("page") int page ) throws Exception {
+	public Collection<Category> getVocabularyCategoriesPage( @GraphQLName("vocabulary-id") Long vocabularyId , @GraphQLName("filter") Filter filter , @GraphQLName("pageSize") int pageSize , @GraphQLName("page") int page , @GraphQLName("Sort[]") Sort[] sorts ) throws Exception {
 				Page paginationPage = _getCategoryResource().getVocabularyCategoriesPage(
 
-					vocabularyId , Pagination.of(pageSize, page)
+					vocabularyId , filter , Pagination.of(pageSize, page) , sorts
 				);
 
 				return paginationPage.getItems();
