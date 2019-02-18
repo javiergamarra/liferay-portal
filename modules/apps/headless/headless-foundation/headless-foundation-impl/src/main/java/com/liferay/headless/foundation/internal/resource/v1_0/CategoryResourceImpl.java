@@ -25,6 +25,8 @@ import com.liferay.headless.foundation.internal.dto.v1_0.ParentCategoryImpl;
 import com.liferay.headless.foundation.internal.dto.v1_0.util.CreatorUtil;
 import com.liferay.headless.foundation.resource.v1_0.CategoryResource;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -56,7 +58,7 @@ public class CategoryResourceImpl extends BaseCategoryResourceImpl {
 
 	@Override
 	public Page<Category> getCategoryCategoriesPage(
-			Long categoryId, Pagination pagination)
+			Long categoryId, Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
 
 		return Page.of(
@@ -71,7 +73,7 @@ public class CategoryResourceImpl extends BaseCategoryResourceImpl {
 
 	@Override
 	public Page<Category> getVocabularyCategoriesPage(
-			Long vocabularyId, Pagination pagination)
+		Long vocabularyId, Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
 
 		AssetVocabulary assetVocabulary = _assetVocabularyService.getVocabulary(
