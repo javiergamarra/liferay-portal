@@ -94,6 +94,9 @@ public class AssetEntryDocumentContributor implements DocumentContributor {
 		document.addKeyword("visible", assetEntry.isVisible());
 	}
 
+	@Reference
+	protected AssetEntryLocalService assetEntryLocalService;
+
 	private Map<Locale, String> _populateMap(
 		AssetEntry assetEntry, Map<Locale, String> map) {
 
@@ -112,8 +115,5 @@ public class AssetEntryDocumentContributor implements DocumentContributor {
 
 		return map;
 	}
-
-	@Reference
-	protected AssetEntryLocalService assetEntryLocalService;
 
 }
