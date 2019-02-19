@@ -72,13 +72,9 @@ public class AssetCategoryModelDocumentContributor
 			assetCategory.getDescriptionMap());
 
 		document.addText(Field.NAME, assetCategory.getName());
-
-		_searchLocalizationHelper.addLocalizedField(
-			document, Field.TITLE, siteDefaultLocale,
-			assetCategory.getTitleMap());
-
+		document.addText(Field.TITLE, assetCategory.getTitle());
 		document.addLocalizedKeyword(
-			"localized_title",
+			Field.TITLE,
 			_populateMap(assetCategory, assetCategory.getTitleMap()), true,
 			true);
 
