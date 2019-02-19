@@ -79,7 +79,7 @@ public class AssetCategoryModelDocumentContributor
 
 		document.addLocalizedKeyword(
 			"localized_title",
-			populateMap(assetCategory, assetCategory.getTitleMap()), true,
+			_populateMap(assetCategory, assetCategory.getTitleMap()), true,
 			true);
 
 		document.addKeyword(
@@ -149,7 +149,10 @@ public class AssetCategoryModelDocumentContributor
 		}
 	}
 
-	protected Map<Locale, String> populateMap(
+	@Reference
+	protected Portal portal;
+
+	private Map<Locale, String> _populateMap(
 		AssetCategory assetCategory, Map<Locale, String> map) {
 
 		String defaultValue = map.get(
@@ -167,9 +170,6 @@ public class AssetCategoryModelDocumentContributor
 
 		return map;
 	}
-
-	@Reference
-	protected Portal portal;
 
 	@Reference
 	private SearchLocalizationHelper _searchLocalizationHelper;
