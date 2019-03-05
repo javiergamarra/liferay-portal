@@ -14,6 +14,7 @@
 
 package com.liferay.headless.foundation.internal.resource.v1_0;
 
+import com.liferay.headless.foundation.dto.v1_0.SegmentUser;
 import com.liferay.headless.foundation.dto.v1_0.UserAccount;
 import com.liferay.headless.foundation.resource.v1_0.UserAccountResource;
 import com.liferay.petra.function.UnsafeFunction;
@@ -81,6 +82,18 @@ public abstract class BaseUserAccountResourceImpl
 	@Produces("application/json")
 	public Page<UserAccount> getOrganizationUserAccountsPage(
 			@PathParam("organization-id") Long organizationId,
+			@Context Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@GET
+	@Override
+	@Path("/segments/{segment-id}/user-accounts")
+	@Produces("application/json")
+	public Page<SegmentUser> getSegmentUserAccountsPage(
+			@PathParam("segment-id") Long segmentId,
 			@Context Pagination pagination)
 		throws Exception {
 

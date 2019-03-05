@@ -22,6 +22,7 @@ import com.liferay.headless.foundation.dto.v1_0.Phone;
 import com.liferay.headless.foundation.dto.v1_0.PostalAddress;
 import com.liferay.headless.foundation.dto.v1_0.Role;
 import com.liferay.headless.foundation.dto.v1_0.Segment;
+import com.liferay.headless.foundation.dto.v1_0.SegmentUser;
 import com.liferay.headless.foundation.dto.v1_0.UserAccount;
 import com.liferay.headless.foundation.dto.v1_0.Vocabulary;
 import com.liferay.headless.foundation.dto.v1_0.WebUrl;
@@ -450,6 +451,26 @@ public class Query {
 
 		Page paginationPage = roleResource.getRolesPage(
 			Pagination.of(pageSize, page));
+
+		return paginationPage.getItems();
+	}
+
+	@GraphQLField
+	@GraphQLInvokeDetached
+	public Collection<SegmentUser> getSegmentUserAccountsPage(
+			@GraphQLName("segment-id") Long segmentId,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page)
+		throws Exception {
+
+		UserAccountResource userAccountResource = _createUserAccountResource();
+
+		userAccountResource.setContextCompany(
+			CompanyLocalServiceUtil.getCompany(
+				CompanyThreadLocal.getCompanyId()));
+
+		Page paginationPage = userAccountResource.getSegmentUserAccountsPage(
+			segmentId, Pagination.of(pageSize, page));
 
 		return paginationPage.getItems();
 	}

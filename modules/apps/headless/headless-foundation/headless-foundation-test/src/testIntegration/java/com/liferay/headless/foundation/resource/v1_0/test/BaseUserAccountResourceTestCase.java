@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.headless.foundation.dto.v1_0.SegmentUser;
 import com.liferay.headless.foundation.dto.v1_0.UserAccount;
 import com.liferay.headless.foundation.resource.v1_0.UserAccountResource;
 import com.liferay.petra.string.StringBundler;
@@ -166,6 +167,70 @@ public abstract class BaseUserAccountResourceTestCase {
 
 		Page<UserAccount> page2 = invokeGetOrganizationUserAccountsPage(
 			organizationId, Pagination.of(2, 2));
+
+		Assert.assertEquals(3, page2.getTotalCount());
+
+		List<UserAccount> userAccounts2 = (List<UserAccount>)page2.getItems();
+
+		Assert.assertEquals(userAccounts2.toString(), 1, userAccounts2.size());
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(userAccount1, userAccount2, userAccount3),
+			new ArrayList<UserAccount>() {
+				{
+					addAll(userAccounts1);
+					addAll(userAccounts2);
+				}
+			});
+	}
+
+	@Test
+	public void testGetSegmentUserAccountsPage() throws Exception {
+		Long segmentId = testGetSegmentUserAccountsPage_getSegmentId();
+
+		UserAccount userAccount1 =
+			testGetSegmentUserAccountsPage_addUserAccount(
+				segmentId, randomUserAccount());
+		UserAccount userAccount2 =
+			testGetSegmentUserAccountsPage_addUserAccount(
+				segmentId, randomUserAccount());
+
+		Page<UserAccount> page = invokeGetSegmentUserAccountsPage(
+			segmentId, Pagination.of(2, 1));
+
+		Assert.assertEquals(2, page.getTotalCount());
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(userAccount1, userAccount2),
+			(List<UserAccount>)page.getItems());
+		assertValid(page);
+	}
+
+	@Test
+	public void testGetSegmentUserAccountsPageWithPagination()
+		throws Exception {
+
+		Long segmentId = testGetSegmentUserAccountsPage_getSegmentId();
+
+		UserAccount userAccount1 =
+			testGetSegmentUserAccountsPage_addUserAccount(
+				segmentId, randomUserAccount());
+		UserAccount userAccount2 =
+			testGetSegmentUserAccountsPage_addUserAccount(
+				segmentId, randomUserAccount());
+		UserAccount userAccount3 =
+			testGetSegmentUserAccountsPage_addUserAccount(
+				segmentId, randomUserAccount());
+
+		Page<UserAccount> page1 = invokeGetSegmentUserAccountsPage(
+			segmentId, Pagination.of(2, 1));
+
+		List<UserAccount> userAccounts1 = (List<UserAccount>)page1.getItems();
+
+		Assert.assertEquals(userAccounts1.toString(), 2, userAccounts1.size());
+
+		Page<UserAccount> page2 = invokeGetSegmentUserAccountsPage(
+			segmentId, Pagination.of(2, 2));
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -734,6 +799,51 @@ public abstract class BaseUserAccountResourceTestCase {
 		return options.getResponse();
 	}
 
+	protected Page<SegmentUser> invokeGetSegmentUserAccountsPage(
+			Long segmentId, Pagination pagination)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		String location =
+			_resourceURL +
+				_toPath("/segments/{segment-id}/user-accounts", segmentId);
+
+		location = HttpUtil.addParameter(
+			location, "page", pagination.getPageNumber());
+		location = HttpUtil.addParameter(
+			location, "pageSize", pagination.getItemsPerPage());
+
+		options.setLocation(location);
+
+		return _outputObjectMapper.readValue(
+			HttpUtil.URLtoString(options),
+			new TypeReference<Page<UserAccount>>() {
+			});
+	}
+
+	protected Http.Response invokeGetSegmentUserAccountsPageResponse(
+			Long segmentId, Pagination pagination)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		String location =
+			_resourceURL +
+				_toPath("/segments/{segment-id}/user-accounts", segmentId);
+
+		location = HttpUtil.addParameter(
+			location, "page", pagination.getPageNumber());
+		location = HttpUtil.addParameter(
+			location, "pageSize", pagination.getItemsPerPage());
+
+		options.setLocation(location);
+
+		HttpUtil.URLtoString(options);
+
+		return options.getResponse();
+	}
+
 	protected UserAccount invokeGetUserAccount(Long userAccountId)
 		throws Exception {
 
@@ -974,6 +1084,21 @@ public abstract class BaseUserAccountResourceTestCase {
 	}
 
 	protected Long testGetOrganizationUserAccountsPage_getOrganizationId()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected UserAccount testGetSegmentUserAccountsPage_addUserAccount(
+			Long segmentId, UserAccount userAccount)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected Long testGetSegmentUserAccountsPage_getSegmentId()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
