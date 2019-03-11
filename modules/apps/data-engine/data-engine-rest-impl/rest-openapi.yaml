@@ -77,7 +77,7 @@ paths:
             parameters:
                 - in: query
                   name: page
-                  requerid: true
+                  required: true
                   schema:
                       type: integer
                 - in: query
@@ -120,6 +120,41 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/DataDefinition"
+            tags: ["DataDefinition"]
+    "/data-definitions/search":
+        get:
+            parameters:
+                - in: query
+                  name: page
+                  required: true
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  required: true
+                  schema:
+                      type: integer
+                - in: query
+                  name: groupId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: keywords
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/DataDefinition"
+                                type:
+                                    array
+                    description: ""
             tags: ["DataDefinition"]
     "/data-definitions/{data-definition-id}":
         delete:
