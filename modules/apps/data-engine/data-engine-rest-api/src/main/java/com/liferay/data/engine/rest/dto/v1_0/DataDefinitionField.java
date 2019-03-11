@@ -14,7 +14,6 @@
 
 package com.liferay.data.engine.rest.dto.v1_0;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,12 +33,43 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Generated("")
 @GraphQLName("DataDefinitionField")
-@JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "DataDefinitionField")
 public class DataDefinitionField {
 
 	public String getDefaultValue() {
 		return defaultValue;
+	}
+
+	public String getFieldType() {
+		return fieldType;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Boolean getIndexable() {
+		return indexable;
+	}
+
+	public LocalizedValue[] getLabel() {
+		return label;
+	}
+
+	public Boolean getLocalizable() {
+		return localizable;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Boolean getRepeatable() {
+		return repeatable;
+	}
+
+	public LocalizedValue[] getTip() {
+		return tip;
 	}
 
 	public void setDefaultValue(String defaultValue) {
@@ -58,14 +88,6 @@ public class DataDefinitionField {
 		}
 	}
 
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String defaultValue;
-
-	public String getFieldType() {
-		return fieldType;
-	}
-
 	public void setFieldType(String fieldType) {
 		this.fieldType = fieldType;
 	}
@@ -82,14 +104,6 @@ public class DataDefinitionField {
 		}
 	}
 
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String fieldType;
-
-	public Long getId() {
-		return id;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -102,14 +116,6 @@ public class DataDefinitionField {
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Long id;
-
-	public Boolean getIndexable() {
-		return indexable;
 	}
 
 	public void setIndexable(Boolean indexable) {
@@ -128,14 +134,6 @@ public class DataDefinitionField {
 		}
 	}
 
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Boolean indexable;
-
-	public LocalizedValue[] getLabel() {
-		return label;
-	}
-
 	public void setLabel(LocalizedValue[] label) {
 		this.label = label;
 	}
@@ -150,14 +148,6 @@ public class DataDefinitionField {
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected LocalizedValue[] label;
-
-	public Boolean getLocalizable() {
-		return localizable;
 	}
 
 	public void setLocalizable(Boolean localizable) {
@@ -176,14 +166,6 @@ public class DataDefinitionField {
 		}
 	}
 
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Boolean localizable;
-
-	public String getName() {
-		return name;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -196,14 +178,6 @@ public class DataDefinitionField {
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String name;
-
-	public Boolean getRepeatable() {
-		return repeatable;
 	}
 
 	public void setRepeatable(Boolean repeatable) {
@@ -222,14 +196,6 @@ public class DataDefinitionField {
 		}
 	}
 
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Boolean repeatable;
-
-	public LocalizedValue[] getTip() {
-		return tip;
-	}
-
 	public void setTip(LocalizedValue[] tip) {
 		this.tip = tip;
 	}
@@ -246,12 +212,8 @@ public class DataDefinitionField {
 		}
 	}
 
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected LocalizedValue[] tip;
-
 	public String toString() {
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(38);
 
 		sb.append("{");
 
@@ -281,23 +243,9 @@ public class DataDefinitionField {
 
 		sb.append("\"label\": ");
 
-		if (label == null) {
-			sb.append("null");
-		}
-		else {
-			sb.append("[");
-
-			for (int i = 0; i < label.length; i++) {
-				sb.append(label[i]);
-
-				if ((i + 1) < label.length) {
-					sb.append(", ");
-				}
-			}
-
-			sb.append("]");
-		}
-
+		sb.append("\"");
+		sb.append(label);
+		sb.append("\"");
 		sb.append(", ");
 
 		sb.append("\"localizable\": ");
@@ -319,26 +267,49 @@ public class DataDefinitionField {
 
 		sb.append("\"tip\": ");
 
-		if (tip == null) {
-			sb.append("null");
-		}
-		else {
-			sb.append("[");
-
-			for (int i = 0; i < tip.length; i++) {
-				sb.append(tip[i]);
-
-				if ((i + 1) < tip.length) {
-					sb.append(", ");
-				}
-			}
-
-			sb.append("]");
-		}
+		sb.append("\"");
+		sb.append(tip);
+		sb.append("\"");
 
 		sb.append("}");
 
 		return sb.toString();
 	}
+
+	@GraphQLField
+	@JsonProperty
+	protected String defaultValue;
+
+	@GraphQLField
+	@JsonProperty
+	protected String fieldType;
+
+	@GraphQLField
+	@JsonProperty
+	protected Long id;
+
+	@GraphQLField
+	@JsonProperty
+	protected Boolean indexable;
+
+	@GraphQLField
+	@JsonProperty
+	protected LocalizedValue[] label;
+
+	@GraphQLField
+	@JsonProperty
+	protected Boolean localizable;
+
+	@GraphQLField
+	@JsonProperty
+	protected String name;
+
+	@GraphQLField
+	@JsonProperty
+	protected Boolean repeatable;
+
+	@GraphQLField
+	@JsonProperty
+	protected LocalizedValue[] tip;
 
 }

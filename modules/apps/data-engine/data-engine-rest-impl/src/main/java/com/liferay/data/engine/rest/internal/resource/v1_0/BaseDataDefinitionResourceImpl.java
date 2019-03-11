@@ -24,12 +24,6 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.net.URI;
 
 import java.util.Collections;
@@ -59,42 +53,10 @@ import javax.ws.rs.core.UriInfo;
 public abstract class BaseDataDefinitionResourceImpl
 	implements DataDefinitionResource {
 
-	@Override
-	@GET
-	@Parameters(
-		value = {
-			@Parameter(in = ParameterIn.QUERY, name = "page"),
-			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
-		}
-	)
-	@Path("/data-definitions")
-	@Produces("application/json")
-	@Tags(value = {@Tag(name = "DataDefinition")})
-	public Page<DataDefinition> getDataDefinitionsPage(
-			@QueryParam("groupId") Long groupId, @Context Pagination pagination)
-		throws Exception {
-
-		return Page.of(Collections.emptyList());
-	}
-
-	@Override
-	@Consumes("application/json")
-	@POST
-	@Path("/data-definitions")
-	@Produces("application/json")
-	@Tags(value = {@Tag(name = "DataDefinition")})
-	public DataDefinition postDataDefinition(
-			@QueryParam("groupId") Long groupId, DataDefinition dataDefinition)
-		throws Exception {
-
-		return new DataDefinition();
-	}
-
-	@Override
 	@DELETE
+	@Override
 	@Path("/data-definitions/{data-definition-id}")
 	@Produces("application/json")
-	@Tags(value = {@Tag(name = "DataDefinition")})
 	public boolean deleteDataDefinition(
 			@PathParam("data-definition-id") Long dataDefinitionId)
 		throws Exception {
@@ -102,11 +64,10 @@ public abstract class BaseDataDefinitionResourceImpl
 		return false;
 	}
 
-	@Override
 	@GET
+	@Override
 	@Path("/data-definitions/{data-definition-id}")
 	@Produces("application/json")
-	@Tags(value = {@Tag(name = "DataDefinition")})
 	public DataDefinition getDataDefinition(
 			@PathParam("data-definition-id") Long dataDefinitionId)
 		throws Exception {
@@ -114,12 +75,47 @@ public abstract class BaseDataDefinitionResourceImpl
 		return new DataDefinition();
 	}
 
+	@GET
 	@Override
+	@Path("/data-definitions")
+	@Produces("application/json")
+	public Page<DataDefinition> getDataDefinitionsPage(
+			@QueryParam("groupId") Long groupId, @Context Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@GET
+	@Override
+	@Path("/data-definitions/search")
+	@Produces("application/json")
+	public Page<DataDefinition> getDataDefinitionsSearchPage(
+			@QueryParam("groupId") Long groupId,
+			@QueryParam("keywords") String keywords,
+			@Context Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
 	@Consumes("application/json")
-	@PUT
+	@Override
+	@Path("/data-definitions")
+	@POST
+	@Produces("application/json")
+	public DataDefinition postDataDefinition(
+			@QueryParam("groupId") Long groupId, DataDefinition dataDefinition)
+		throws Exception {
+
+		return new DataDefinition();
+	}
+
+	@Consumes("application/json")
+	@Override
 	@Path("/data-definitions/{data-definition-id}")
 	@Produces("application/json")
-	@Tags(value = {@Tag(name = "DataDefinition")})
+	@PUT
 	public DataDefinition putDataDefinition(
 			@PathParam("data-definition-id") Long dataDefinitionId,
 			DataDefinition dataDefinition)

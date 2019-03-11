@@ -18,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 import com.liferay.data.engine.rest.dto.v1_0.DataDefinition;
 import com.liferay.data.engine.rest.resource.v1_0.DataDefinitionResource;
@@ -97,6 +95,30 @@ public abstract class BaseDataDefinitionResourceTestCase {
 	}
 
 	@Test
+	public void testDeleteDataDefinition() throws Exception {
+		DataDefinition dataDefinition =
+			testDeleteDataDefinition_addDataDefinition();
+
+		assertResponseCode(
+			200, invokeDeleteDataDefinitionResponse(dataDefinition.getId()));
+
+		assertResponseCode(
+			404, invokeGetDataDefinitionResponse(dataDefinition.getId()));
+	}
+
+	@Test
+	public void testGetDataDefinition() throws Exception {
+		DataDefinition postDataDefinition =
+			testGetDataDefinition_addDataDefinition();
+
+		DataDefinition getDataDefinition = invokeGetDataDefinition(
+			postDataDefinition.getId());
+
+		assertEquals(postDataDefinition, getDataDefinition);
+		assertValid(getDataDefinition);
+	}
+
+	@Test
 	public void testGetDataDefinitionsPage() throws Exception {
 		Long groupId = testGetDataDefinitionsPage_getGroupId();
 
@@ -108,7 +130,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 				groupId, randomDataDefinition());
 
 		Page<DataDefinition> page = invokeGetDataDefinitionsPage(
-			groupId, Pagination.of(1, 2));
+			groupId, Pagination.of(2, 1));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -133,7 +155,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 				groupId, randomDataDefinition());
 
 		Page<DataDefinition> page1 = invokeGetDataDefinitionsPage(
-			groupId, Pagination.of(1, 2));
+			groupId, Pagination.of(2, 1));
 
 		List<DataDefinition> dataDefinitions1 =
 			(List<DataDefinition>)page1.getItems();
@@ -162,58 +184,72 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			});
 	}
 
-	protected DataDefinition testGetDataDefinitionsPage_addDataDefinition(
-			Long groupId, DataDefinition dataDefinition)
-		throws Exception {
+	@Test
+	public void testGetDataDefinitionsSearchPage() throws Exception {
+		Long groupId = testGetDataDefinitionsSearchPage_getGroupId();
 
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		DataDefinition dataDefinition1 =
+			testGetDataDefinitionsSearchPage_addDataDefinition(
+				groupId, randomDataDefinition());
+		DataDefinition dataDefinition2 =
+			testGetDataDefinitionsSearchPage_addDataDefinition(
+				groupId, randomDataDefinition());
+
+		Page<DataDefinition> page = invokeGetDataDefinitionsSearchPage(
+			groupId, Pagination.of(2, 1));
+
+		Assert.assertEquals(2, page.getTotalCount());
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(dataDefinition1, dataDefinition2),
+			(List<DataDefinition>)page.getItems());
+		assertValid(page);
 	}
 
-	protected Long testGetDataDefinitionsPage_getGroupId() throws Exception {
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
-	}
-
-	protected Page<DataDefinition> invokeGetDataDefinitionsPage(
-			Long groupId, Pagination pagination)
+	@Test
+	public void testGetDataDefinitionsSearchPageWithPagination()
 		throws Exception {
 
-		Http.Options options = _createHttpOptions();
+		Long groupId = testGetDataDefinitionsSearchPage_getGroupId();
 
-		String location = _resourceURL + _toPath("/data-definitions", groupId);
+		DataDefinition dataDefinition1 =
+			testGetDataDefinitionsSearchPage_addDataDefinition(
+				groupId, randomDataDefinition());
+		DataDefinition dataDefinition2 =
+			testGetDataDefinitionsSearchPage_addDataDefinition(
+				groupId, randomDataDefinition());
+		DataDefinition dataDefinition3 =
+			testGetDataDefinitionsSearchPage_addDataDefinition(
+				groupId, randomDataDefinition());
 
-		location = HttpUtil.addParameter(
-			location, "page", pagination.getPage());
-		location = HttpUtil.addParameter(
-			location, "pageSize", pagination.getPageSize());
+		Page<DataDefinition> page1 = invokeGetDataDefinitionsSearchPage(
+			groupId, Pagination.of(2, 1));
 
-		options.setLocation(location);
+		List<DataDefinition> dataDefinitions1 =
+			(List<DataDefinition>)page1.getItems();
 
-		return _outputObjectMapper.readValue(
-			HttpUtil.URLtoString(options),
-			new TypeReference<Page<DataDefinition>>() {
+		Assert.assertEquals(
+			dataDefinitions1.toString(), 2, dataDefinitions1.size());
+
+		Page<DataDefinition> page2 = invokeGetDataDefinitionsSearchPage(
+			groupId, Pagination.of(2, 2));
+
+		Assert.assertEquals(3, page2.getTotalCount());
+
+		List<DataDefinition> dataDefinitions2 =
+			(List<DataDefinition>)page2.getItems();
+
+		Assert.assertEquals(
+			dataDefinitions2.toString(), 1, dataDefinitions2.size());
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(dataDefinition1, dataDefinition2, dataDefinition3),
+			new ArrayList<DataDefinition>() {
+				{
+					addAll(dataDefinitions1);
+					addAll(dataDefinitions2);
+				}
 			});
-	}
-
-	protected Http.Response invokeGetDataDefinitionsPageResponse(
-			Long groupId, Pagination pagination)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		String location = _resourceURL + _toPath("/data-definitions", groupId);
-
-		location = HttpUtil.addParameter(
-			location, "page", pagination.getPage());
-		location = HttpUtil.addParameter(
-			location, "pageSize", pagination.getPageSize());
-
-		options.setLocation(location);
-
-		HttpUtil.URLtoString(options);
-
-		return options.getResponse();
 	}
 
 	@Test
@@ -225,165 +261,6 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 		assertEquals(randomDataDefinition, postDataDefinition);
 		assertValid(postDataDefinition);
-	}
-
-	protected DataDefinition testPostDataDefinition_addDataDefinition(
-			DataDefinition dataDefinition)
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
-	}
-
-	protected DataDefinition invokePostDataDefinition(
-			Long groupId, DataDefinition dataDefinition)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		options.setBody(
-			_inputObjectMapper.writeValueAsString(dataDefinition),
-			ContentTypes.APPLICATION_JSON, StringPool.UTF8);
-
-		String location = _resourceURL + _toPath("/data-definitions", groupId);
-
-		options.setLocation(location);
-
-		options.setPost(true);
-
-		return _outputObjectMapper.readValue(
-			HttpUtil.URLtoString(options), DataDefinition.class);
-	}
-
-	protected Http.Response invokePostDataDefinitionResponse(
-			Long groupId, DataDefinition dataDefinition)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		options.setBody(
-			_inputObjectMapper.writeValueAsString(dataDefinition),
-			ContentTypes.APPLICATION_JSON, StringPool.UTF8);
-
-		String location = _resourceURL + _toPath("/data-definitions", groupId);
-
-		options.setLocation(location);
-
-		options.setPost(true);
-
-		HttpUtil.URLtoString(options);
-
-		return options.getResponse();
-	}
-
-	@Test
-	public void testDeleteDataDefinition() throws Exception {
-		DataDefinition dataDefinition =
-			testDeleteDataDefinition_addDataDefinition();
-
-		assertResponseCode(
-			200, invokeDeleteDataDefinitionResponse(dataDefinition.getId()));
-
-		assertResponseCode(
-			404, invokeGetDataDefinitionResponse(dataDefinition.getId()));
-	}
-
-	protected DataDefinition testDeleteDataDefinition_addDataDefinition()
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
-	}
-
-	protected boolean invokeDeleteDataDefinition(Long dataDefinitionId)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		options.setDelete(true);
-
-		String location =
-			_resourceURL +
-				_toPath(
-					"/data-definitions/{data-definition-id}", dataDefinitionId);
-
-		options.setLocation(location);
-
-		return _outputObjectMapper.readValue(
-			HttpUtil.URLtoString(options), Boolean.class);
-	}
-
-	protected Http.Response invokeDeleteDataDefinitionResponse(
-			Long dataDefinitionId)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		options.setDelete(true);
-
-		String location =
-			_resourceURL +
-				_toPath(
-					"/data-definitions/{data-definition-id}", dataDefinitionId);
-
-		options.setLocation(location);
-
-		HttpUtil.URLtoString(options);
-
-		return options.getResponse();
-	}
-
-	@Test
-	public void testGetDataDefinition() throws Exception {
-		DataDefinition postDataDefinition =
-			testGetDataDefinition_addDataDefinition();
-
-		DataDefinition getDataDefinition = invokeGetDataDefinition(
-			postDataDefinition.getId());
-
-		assertEquals(postDataDefinition, getDataDefinition);
-		assertValid(getDataDefinition);
-	}
-
-	protected DataDefinition testGetDataDefinition_addDataDefinition()
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
-	}
-
-	protected DataDefinition invokeGetDataDefinition(Long dataDefinitionId)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		String location =
-			_resourceURL +
-				_toPath(
-					"/data-definitions/{data-definition-id}", dataDefinitionId);
-
-		options.setLocation(location);
-
-		return _outputObjectMapper.readValue(
-			HttpUtil.URLtoString(options), DataDefinition.class);
-	}
-
-	protected Http.Response invokeGetDataDefinitionResponse(
-			Long dataDefinitionId)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		String location =
-			_resourceURL +
-				_toPath(
-					"/data-definitions/{data-definition-id}", dataDefinitionId);
-
-		options.setLocation(location);
-
-		HttpUtil.URLtoString(options);
-
-		return options.getResponse();
 	}
 
 	@Test
@@ -404,67 +281,6 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 		assertEquals(randomDataDefinition, getDataDefinition);
 		assertValid(getDataDefinition);
-	}
-
-	protected DataDefinition testPutDataDefinition_addDataDefinition()
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
-	}
-
-	protected DataDefinition invokePutDataDefinition(
-			Long dataDefinitionId, DataDefinition dataDefinition)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		options.setBody(
-			_inputObjectMapper.writeValueAsString(dataDefinition),
-			ContentTypes.APPLICATION_JSON, StringPool.UTF8);
-
-		String location =
-			_resourceURL +
-				_toPath(
-					"/data-definitions/{data-definition-id}", dataDefinitionId);
-
-		options.setLocation(location);
-
-		options.setPut(true);
-
-		return _outputObjectMapper.readValue(
-			HttpUtil.URLtoString(options), DataDefinition.class);
-	}
-
-	protected Http.Response invokePutDataDefinitionResponse(
-			Long dataDefinitionId, DataDefinition dataDefinition)
-		throws Exception {
-
-		Http.Options options = _createHttpOptions();
-
-		options.setBody(
-			_inputObjectMapper.writeValueAsString(dataDefinition),
-			ContentTypes.APPLICATION_JSON, StringPool.UTF8);
-
-		String location =
-			_resourceURL +
-				_toPath(
-					"/data-definitions/{data-definition-id}", dataDefinitionId);
-
-		options.setLocation(location);
-
-		options.setPut(true);
-
-		HttpUtil.URLtoString(options);
-
-		return options.getResponse();
-	}
-
-	protected void assertResponseCode(
-		int expectedResponseCode, Http.Response actualResponse) {
-
-		Assert.assertEquals(
-			expectedResponseCode, actualResponse.getResponseCode());
 	}
 
 	protected void assertEquals(
@@ -512,6 +328,13 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		}
 	}
 
+	protected void assertResponseCode(
+		int expectedResponseCode, Http.Response actualResponse) {
+
+		Assert.assertEquals(
+			expectedResponseCode, actualResponse.getResponseCode());
+	}
+
 	protected void assertValid(DataDefinition dataDefinition) {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
@@ -524,8 +347,8 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 		int size = dataDefinitions.size();
 
-		if ((page.getLastPage() > 0) && (page.getPage() > 0) &&
-			(page.getPageSize() > 0) && (page.getTotalCount() > 0) &&
+		if ((page.getItemsPerPage() > 0) && (page.getLastPageNumber() > 0) &&
+			(page.getPageNumber() > 0) && (page.getTotalCount() > 0) &&
 			(size > 0)) {
 
 			valid = true;
@@ -644,6 +467,216 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			"Invalid entity field " + entityFieldName);
 	}
 
+	protected boolean invokeDeleteDataDefinition(Long dataDefinitionId)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setDelete(true);
+
+		options.setLocation(
+			_resourceURL +
+				_toPath(
+					"/data-definitions/{data-definition-id}",
+					dataDefinitionId));
+
+		return _outputObjectMapper.readValue(
+			HttpUtil.URLtoString(options), Boolean.class);
+	}
+
+	protected Http.Response invokeDeleteDataDefinitionResponse(
+			Long dataDefinitionId)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setDelete(true);
+
+		options.setLocation(
+			_resourceURL +
+				_toPath(
+					"/data-definitions/{data-definition-id}",
+					dataDefinitionId));
+
+		HttpUtil.URLtoString(options);
+
+		return options.getResponse();
+	}
+
+	protected DataDefinition invokeGetDataDefinition(Long dataDefinitionId)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setLocation(
+			_resourceURL +
+				_toPath(
+					"/data-definitions/{data-definition-id}",
+					dataDefinitionId));
+
+		return _outputObjectMapper.readValue(
+			HttpUtil.URLtoString(options), DataDefinition.class);
+	}
+
+	protected Http.Response invokeGetDataDefinitionResponse(
+			Long dataDefinitionId)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setLocation(
+			_resourceURL +
+				_toPath(
+					"/data-definitions/{data-definition-id}",
+					dataDefinitionId));
+
+		HttpUtil.URLtoString(options);
+
+		return options.getResponse();
+	}
+
+	protected Page<DataDefinition> invokeGetDataDefinitionsPage(
+			Long groupId, Pagination pagination)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setLocation(
+			_resourceURL + _toPath("/data-definitions", groupId));
+
+		return _outputObjectMapper.readValue(
+			HttpUtil.URLtoString(options),
+			new TypeReference<Page<DataDefinition>>() {
+			});
+	}
+
+	protected Http.Response invokeGetDataDefinitionsPageResponse(
+			Long groupId, Pagination pagination)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setLocation(
+			_resourceURL + _toPath("/data-definitions", groupId));
+
+		HttpUtil.URLtoString(options);
+
+		return options.getResponse();
+	}
+
+	protected Page<DataDefinition> invokeGetDataDefinitionsSearchPage(
+			Long groupId, String keywords, Pagination pagination)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setLocation(
+			_resourceURL + _toPath("/data-definitions/search", groupId));
+
+		return _outputObjectMapper.readValue(
+			HttpUtil.URLtoString(options),
+			new TypeReference<Page<DataDefinition>>() {
+			});
+	}
+
+	protected Http.Response invokeGetDataDefinitionsSearchPageResponse(
+			Long groupId, String keywords, Pagination pagination)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setLocation(
+			_resourceURL + _toPath("/data-definitions/search", groupId));
+
+		HttpUtil.URLtoString(options);
+
+		return options.getResponse();
+	}
+
+	protected DataDefinition invokePostDataDefinition(
+			Long groupId, DataDefinition dataDefinition)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setBody(
+			_inputObjectMapper.writeValueAsString(dataDefinition),
+			ContentTypes.APPLICATION_JSON, StringPool.UTF8);
+
+		options.setLocation(
+			_resourceURL + _toPath("/data-definitions", groupId));
+
+		options.setPost(true);
+
+		return _outputObjectMapper.readValue(
+			HttpUtil.URLtoString(options), DataDefinition.class);
+	}
+
+	protected Http.Response invokePostDataDefinitionResponse(
+			Long groupId, DataDefinition dataDefinition)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setBody(
+			_inputObjectMapper.writeValueAsString(dataDefinition),
+			ContentTypes.APPLICATION_JSON, StringPool.UTF8);
+
+		options.setLocation(
+			_resourceURL + _toPath("/data-definitions", groupId));
+
+		options.setPost(true);
+
+		HttpUtil.URLtoString(options);
+
+		return options.getResponse();
+	}
+
+	protected DataDefinition invokePutDataDefinition(
+			Long dataDefinitionId, DataDefinition dataDefinition)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setBody(
+			_inputObjectMapper.writeValueAsString(dataDefinition),
+			ContentTypes.APPLICATION_JSON, StringPool.UTF8);
+
+		options.setLocation(
+			_resourceURL +
+				_toPath(
+					"/data-definitions/{data-definition-id}",
+					dataDefinitionId));
+
+		options.setPut(true);
+
+		return _outputObjectMapper.readValue(
+			HttpUtil.URLtoString(options), DataDefinition.class);
+	}
+
+	protected Http.Response invokePutDataDefinitionResponse(
+			Long dataDefinitionId, DataDefinition dataDefinition)
+		throws Exception {
+
+		Http.Options options = _createHttpOptions();
+
+		options.setBody(
+			_inputObjectMapper.writeValueAsString(dataDefinition),
+			ContentTypes.APPLICATION_JSON, StringPool.UTF8);
+
+		options.setLocation(
+			_resourceURL +
+				_toPath(
+					"/data-definitions/{data-definition-id}",
+					dataDefinitionId));
+
+		options.setPut(true);
+
+		HttpUtil.URLtoString(options);
+
+		return options.getResponse();
+	}
+
 	protected DataDefinition randomDataDefinition() {
 		return new DataDefinition() {
 			{
@@ -657,6 +690,63 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		};
 	}
 
+	protected DataDefinition testDeleteDataDefinition_addDataDefinition()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected DataDefinition testGetDataDefinition_addDataDefinition()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected DataDefinition testGetDataDefinitionsPage_addDataDefinition(
+			Long groupId, DataDefinition dataDefinition)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected Long testGetDataDefinitionsPage_getGroupId() throws Exception {
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected DataDefinition testGetDataDefinitionsSearchPage_addDataDefinition(
+			Long groupId, DataDefinition dataDefinition)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected Long testGetDataDefinitionsSearchPage_getGroupId()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected DataDefinition testPostDataDefinition_addDataDefinition(
+			DataDefinition dataDefinition)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected DataDefinition testPutDataDefinition_addDataDefinition()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
 	protected Group testGroup;
 
 	protected static class Page<T> {
@@ -665,16 +755,16 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			return new ArrayList<>(items);
 		}
 
-		public long getLastPage() {
-			return lastPage;
+		public long getItemsPerPage() {
+			return itemsPerPage;
 		}
 
-		public long getPage() {
-			return page;
+		public long getLastPageNumber() {
+			return lastPageNumber;
 		}
 
-		public long getPageSize() {
-			return pageSize;
+		public long getPageNumber() {
+			return pageNumber;
 		}
 
 		public long getTotalCount() {
@@ -684,14 +774,14 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		@JsonProperty
 		protected Collection<T> items;
 
-		@JsonProperty
-		protected long lastPage;
+		@JsonProperty("pageSize")
+		protected long itemsPerPage;
 
 		@JsonProperty
-		protected long page;
+		protected long lastPageNumber;
 
-		@JsonProperty
-		protected long pageSize;
+		@JsonProperty("page")
+		protected long pageNumber;
 
 		@JsonProperty
 		protected long totalCount;
@@ -721,31 +811,12 @@ public abstract class BaseDataDefinitionResourceTestCase {
 	}
 
 	private static DateFormat _dateFormat;
-	private final static ObjectMapper _inputObjectMapper = new ObjectMapper() {
+	private static final ObjectMapper _inputObjectMapper = new ObjectMapper() {
 		{
-			setFilterProvider(
-				new SimpleFilterProvider() {
-					{
-						addFilter(
-							"Liferay.Vulcan",
-							SimpleBeanPropertyFilter.serializeAll());
-					}
-				});
 			setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		}
 	};
-	private final static ObjectMapper _outputObjectMapper = new ObjectMapper() {
-		{
-			setFilterProvider(
-				new SimpleFilterProvider() {
-					{
-						addFilter(
-							"Liferay.Vulcan",
-							SimpleBeanPropertyFilter.serializeAll());
-					}
-				});
-		}
-	};
+	private static final ObjectMapper _outputObjectMapper = new ObjectMapper();
 
 	@Inject
 	private DataDefinitionResource _dataDefinitionResource;
