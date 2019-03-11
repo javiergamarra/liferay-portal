@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -82,6 +83,26 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 			_ddmStructureService.getStructuresCount(
 				contextCompany.getCompanyId(), new long[] {groupId},
 				_portal.getClassNameId(DataDefinition.class)));
+	}
+
+	@Override
+	public Page<DataDefinition> getDataDefinitionsSearchPage(
+			Long groupId, String keywords, Pagination pagination)
+		throws Exception {
+
+		return Page.of(
+			transform(
+				_ddmStructureService.search(
+					contextCompany.getCompanyId(), new long[] {groupId},
+					_portal.getClassNameId(DataDefinition.class), keywords,
+					WorkflowConstants.STATUS_ANY, pagination.getStartPosition(),
+					pagination.getEndPosition(), null),
+				this::_toDataDefinition),
+			pagination,
+			_ddmStructureService.searchCount(
+				contextCompany.getCompanyId(), new long[] {groupId},
+				_portal.getClassNameId(DataDefinition.class), keywords,
+				WorkflowConstants.STATUS_ANY));
 	}
 
 	@Override
