@@ -240,7 +240,7 @@ public class StructureUtil {
 				showLabel = ddmFormField.isShowLabel();
 
 				setDataType(_toDataType(ddmFormField));
-				setInputControl(_toInputControl(ddmFormField));
+				setInputControl(ddmFormField.getType());
 				setLabel(_toString(ddmFormField.getLabel(), locale));
 				setLocalizable(ddmFormField.isLocalizable());
 				setMultiple(ddmFormField.isMultiple());
@@ -296,21 +296,6 @@ public class StructureUtil {
 				text = _toString(ddmFormLayoutPage.getDescription(), locale);
 			}
 		};
-	}
-
-	private static String _toInputControl(DDMFormField ddmFormField) {
-		String type = ddmFormField.getType();
-
-		if (DDMFormFieldType.CHECKBOX.equals(type) ||
-			DDMFormFieldType.RADIO.equals(type) ||
-			DDMFormFieldType.SELECT.equals(type) ||
-			DDMFormFieldType.TEXT.equals(type) ||
-			DDMFormFieldType.TEXT_AREA.equals(type)) {
-
-			return type;
-		}
-
-		return null;
 	}
 
 	private static Map.Entry<String, LocalizedValue>[]
