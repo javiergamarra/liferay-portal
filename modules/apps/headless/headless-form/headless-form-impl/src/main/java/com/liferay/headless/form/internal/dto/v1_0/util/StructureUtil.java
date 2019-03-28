@@ -39,6 +39,7 @@ import com.liferay.headless.form.dto.v1_0.Row;
 import com.liferay.headless.form.dto.v1_0.SuccessPage;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 
@@ -204,20 +205,26 @@ public class StructureUtil {
 		);
 	}
 
+	private static Boolean _showAsSwitcher(DDMFormField ddmFormField) {
+		String type = ddmFormField.getType();
+
+		if (DDMFormFieldType.CHECKBOX.equals(type) ||
+			DDMFormFieldType.CHECKBOX_MULTIPLE.equals(type)) {
+
+			return GetterUtil.getBoolean(
+				ddmFormField.getProperty("showAsSwitcher"));
+		}
+
+		return null;
+	}
+
 	private static String _toDataType(DDMFormField ddmFormField) {
 		String type = ddmFormField.getType();
 
-		if (DDMFormFieldType.DOCUMENT_LIBRARY.equals(type)) {
-			return "document";
-		}
-		else if (DDMFormFieldType.JOURNAL_ARTICLE.equals(type)) {
-			return "structuredContent";
-		}
-		else if (DDMFormFieldType.LINK_TO_PAGE.equals(type)) {
-			return "url";
-		}
-		else if (DDMFormFieldType.RADIO.equals(type)) {
-			return "string";
+		if (type.equals("date") || type.equals("document_library") ||
+			type.equals("paragraph")) {
+
+			return type;
 		}
 
 		return ddmFormField.getDataType();
@@ -237,6 +244,7 @@ public class StructureUtil {
 					ddmFormField.getPredefinedValue(), locale);
 				repeatable = ddmFormField.isRepeatable();
 				required = ddmFormField.isRequired();
+				showAsSwitcher = _showAsSwitcher(ddmFormField);
 				showLabel = ddmFormField.isShowLabel();
 
 				setDataType(_toDataType(ddmFormField));
@@ -301,14 +309,21 @@ public class StructureUtil {
 	private static Map.Entry<String, LocalizedValue>[]
 		_toLocalizedValueMapEntry(DDMFormField ddmFormField, String element) {
 
-		DDMFormFieldOptions ddmFormFieldOptions =
-			(DDMFormFieldOptions)ddmFormField.getProperty(element);
+		Object property = ddmFormField.getProperty(element);
 
-		Map<String, LocalizedValue> options = ddmFormFieldOptions.getOptions();
+		if (property != null) {
+			DDMFormFieldOptions ddmFormFieldOptions =
+				(DDMFormFieldOptions)property;
 
-		Set<Map.Entry<String, LocalizedValue>> entries = options.entrySet();
+			Map<String, LocalizedValue> options =
+				ddmFormFieldOptions.getOptions();
 
-		return entries.toArray(new Map.Entry[0]);
+			Set<Map.Entry<String, LocalizedValue>> entries = options.entrySet();
+
+			return entries.toArray(new Map.Entry[entries.size()]);
+		}
+
+		return new Map.Entry[0];
 	}
 
 	private static String _toString(
