@@ -121,6 +121,38 @@ public class StructureUtil {
 		);
 	}
 
+	private static Grid _getGrid(DDMFormField ddmFormField, Locale locale) {
+		String type = ddmFormField.getType();
+
+		if (type.equals("grid")) {
+			return new Grid() {
+				{
+					columns = transform(
+						_toLocalizedValueMapEntry(ddmFormField, "columns"),
+						entry -> new Column() {
+							{
+								label = _toString(entry.getValue(), locale);
+								value = entry.getKey();
+							}
+						},
+						Column.class);
+
+					rows = transform(
+						_toLocalizedValueMapEntry(ddmFormField, "rows"),
+						entry -> new Row() {
+							{
+								label = _toString(entry.getValue(), locale);
+								value = entry.getKey();
+							}
+						},
+						Row.class);
+				}
+			};
+		}
+
+		return null;
+	}
+
 	private static List<String> _getNestedFieldNames(
 		List<String> ddmFormFieldNames, DDMStructure ddmStructure) {
 
@@ -184,29 +216,7 @@ public class StructureUtil {
 	private static Field _toField(DDMFormField ddmFormField, Locale locale) {
 		return new Field() {
 			{
-				grid = new Grid() {
-					{
-						columns = transform(
-							_toLocalizedValueMapEntry(ddmFormField, "columns"),
-							entry -> new Column() {
-								{
-									label = _toString(entry.getValue(), locale);
-									value = entry.getKey();
-								}
-							},
-							Map.Entry.class);
-
-						rows = transform(
-							_toLocalizedValueMapEntry(ddmFormField, "rows"),
-							entry -> new Row() {
-								{
-									label = _toString(entry.getValue(), locale);
-									value = entry.getKey();
-								}
-							},
-							Map.Entry.class);
-					}
-				};
+				grid = _getGrid(ddmFormField, locale);
 				hasFormRules = _hasFormRulesFunction(ddmFormField);
 				immutable = ddmFormField.isTransient();
 				label = _toString(ddmFormField.getLabel(), locale);
