@@ -34,10 +34,8 @@ import org.osgi.service.component.annotations.ServiceScope;
 public class FormDocumentResourceImpl extends BaseFormDocumentResourceImpl {
 
 	@Override
-	public boolean deleteFormDocument(Long formDocumentId) throws Exception {
+	public void deleteFormDocument(Long formDocumentId) throws Exception {
 		_dlAppService.deleteFileEntry(formDocumentId);
-
-		return true;
 	}
 
 	@Override
