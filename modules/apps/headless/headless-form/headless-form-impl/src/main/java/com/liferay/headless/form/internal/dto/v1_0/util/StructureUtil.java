@@ -21,6 +21,7 @@ import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldValidation;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayoutColumn;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayoutPage;
@@ -37,6 +38,7 @@ import com.liferay.headless.form.dto.v1_0.Grid;
 import com.liferay.headless.form.dto.v1_0.Option;
 import com.liferay.headless.form.dto.v1_0.Row;
 import com.liferay.headless.form.dto.v1_0.SuccessPage;
+import com.liferay.headless.form.dto.v1_0.Validation;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -202,6 +204,24 @@ public class StructureUtil {
 		return null;
 	}
 
+	private static Validation _getValidation(DDMFormField ddmFormField) {
+		Object obj = ddmFormField.getProperty("validation");
+
+		if (obj instanceof DDMFormFieldValidation) {
+			DDMFormFieldValidation ddmFormFieldValidation =
+				(DDMFormFieldValidation)obj;
+
+			return new Validation() {
+				{
+					expression = ddmFormFieldValidation.getExpression();
+					errorMessage = ddmFormFieldValidation.getErrorMessage();
+				}
+			};
+		}
+
+		return null;
+	}
+
 	private static Boolean _hasFormRulesFunction(DDMFormField ddmFormField) {
 		DDMForm ddmForm = ddmFormField.getDDMForm();
 
@@ -257,6 +277,7 @@ public class StructureUtil {
 				showAsSwitcher = _showAsSwitcher(ddmFormField);
 				showLabel = ddmFormField.isShowLabel();
 				text = _getText(ddmFormField, locale);
+				validation = _getValidation(ddmFormField);
 
 				setDataType(_toDataType(ddmFormField));
 				setInputControl(ddmFormField.getType());
