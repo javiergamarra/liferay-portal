@@ -86,15 +86,8 @@ public class StructureUtil {
 					FormPage.class);
 				id = ddmStructure.getStructureId();
 				name = ddmStructure.getName(locale);
-
-				successPage = new SuccessPage() {
-					{
-						description = _toString(
-							ddmFormSuccessPageSettings.getBody(), locale);
-						headline = _toString(
-							ddmFormSuccessPageSettings.getTitle(), locale);
-					}
-				};
+				successPage = _getSuccessPage(
+					ddmFormSuccessPageSettings, locale);
 			}
 		};
 	}
@@ -179,6 +172,23 @@ public class StructureUtil {
 		).collect(
 			Collectors.toList()
 		);
+	}
+
+	private static SuccessPage _getSuccessPage(
+		DDMFormSuccessPageSettings ddmFormSuccessPageSettings, Locale locale) {
+
+		if (ddmFormSuccessPageSettings.isEnabled()) {
+			return new SuccessPage() {
+				{
+					description = _toString(
+						ddmFormSuccessPageSettings.getBody(), locale);
+					headline = _toString(
+						ddmFormSuccessPageSettings.getTitle(), locale);
+				}
+			};
+		}
+
+		return null;
 	}
 
 	private static Boolean _hasFormRulesFunction(DDMFormField ddmFormField) {
