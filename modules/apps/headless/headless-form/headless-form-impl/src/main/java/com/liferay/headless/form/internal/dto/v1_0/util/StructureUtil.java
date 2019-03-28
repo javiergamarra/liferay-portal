@@ -192,6 +192,16 @@ public class StructureUtil {
 		return null;
 	}
 
+	private static String _getText(DDMFormField ddmFormField, Locale locale) {
+		Object textProperty = ddmFormField.getProperty("text");
+
+		if (textProperty instanceof LocalizedValue) {
+			return _toString((LocalizedValue)textProperty, locale);
+		}
+
+		return null;
+	}
+
 	private static Boolean _hasFormRulesFunction(DDMFormField ddmFormField) {
 		DDMForm ddmForm = ddmFormField.getDDMForm();
 
@@ -246,6 +256,7 @@ public class StructureUtil {
 				required = ddmFormField.isRequired();
 				showAsSwitcher = _showAsSwitcher(ddmFormField);
 				showLabel = ddmFormField.isShowLabel();
+				text = _getText(ddmFormField, locale);
 
 				setDataType(_toDataType(ddmFormField));
 				setInputControl(ddmFormField.getType());
