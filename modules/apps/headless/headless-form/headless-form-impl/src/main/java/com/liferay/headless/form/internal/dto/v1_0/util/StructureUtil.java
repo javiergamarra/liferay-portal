@@ -251,9 +251,10 @@ public class StructureUtil {
 	private static String _toDataType(DDMFormField ddmFormField) {
 		String type = ddmFormField.getType();
 
-		if (type.equals("date") || type.equals("document_library") ||
-			type.equals("paragraph")) {
-
+		if (type.equals("document_library")) {
+			return "document";
+		}
+		else if (type.equals("date") || type.equals("paragraph")) {
 			return type;
 		}
 
