@@ -46,18 +46,20 @@
 
 		<aui:field-wrapper cssClass="field-label-inline order-by-type-container">
 			<liferay-ui:icon
-				cssClass='<%= StringUtil.equalsIgnoreCase(orderByType1, "DESC") ? "hide icon" : "icon" %>'
-				icon="angle-up"
+				cssClass='<%= StringUtil.equalsIgnoreCase(orderByType1, "DESC") ? "order-arrow-up-active hide icon" : "order-arrow-up-active icon" %>'
+				icon="order-arrow"
+				linkCssClass="btn btn-outline-borderless btn-outline-secondary"
 				markupView="lexicon"
-				message="ascending"
+				message="descending"
 				url="javascript:;"
 			/>
 
 			<liferay-ui:icon
-				cssClass='<%= StringUtil.equalsIgnoreCase(orderByType1, "ASC") ? "hide icon" : "icon" %>'
-				icon="angle-down"
+				cssClass='<%= StringUtil.equalsIgnoreCase(orderByType1, "ASC") ? "order-arrow-down-active hide icon" : "order-arrow-down-active icon" %>'
+				icon="order-arrow"
+				linkCssClass="btn btn-outline-borderless btn-outline-secondary"
 				markupView="lexicon"
-				message="descending"
+				message="ascending"
 				url="javascript:;"
 			/>
 
@@ -91,18 +93,20 @@
 
 		<aui:field-wrapper cssClass="field-label-inline order-by-type-container">
 			<liferay-ui:icon
-				cssClass='<%= StringUtil.equalsIgnoreCase(orderByType2, "DESC") ? "hide icon" : "icon" %>'
-				icon="angle-up"
+				cssClass='<%= StringUtil.equalsIgnoreCase(orderByType2, "DESC") ? "order-arrow-up-active hide icon" : "order-arrow-up-active icon" %>'
+				icon="order-arrow"
+				linkCssClass="btn btn-outline-borderless btn-outline-secondary"
 				markupView="lexicon"
-				message="ascending"
+				message="descending"
 				url="javascript:;"
 			/>
 
 			<liferay-ui:icon
-				cssClass='<%= StringUtil.equalsIgnoreCase(orderByType2, "ASC") ? "hide icon" : "icon" %>'
-				icon="angle-down"
+				cssClass='<%= StringUtil.equalsIgnoreCase(orderByType2, "ASC") ? "order-arrow-down-active hide icon" : "order-arrow-down-active icon" %>'
+				icon="order-arrow"
+				linkCssClass="btn btn-outline-borderless btn-outline-secondary"
 				markupView="lexicon"
-				message="descending"
+				message="ascending"
 				url="javascript:;"
 			/>
 
