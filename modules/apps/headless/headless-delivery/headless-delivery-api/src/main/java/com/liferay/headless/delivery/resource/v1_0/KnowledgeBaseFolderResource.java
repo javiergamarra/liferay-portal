@@ -32,12 +32,12 @@ import javax.annotation.Generated;
 @Generated("")
 public interface KnowledgeBaseFolderResource {
 
-	public Page<KnowledgeBaseFolder> getContentSpaceKnowledgeBaseFoldersPage(
-			Long contentSpaceId, Pagination pagination)
+	public Page<KnowledgeBaseFolder> getSiteKnowledgeBaseFoldersPage(
+			Long siteId, Pagination pagination)
 		throws Exception;
 
-	public KnowledgeBaseFolder postContentSpaceKnowledgeBaseFolder(
-			Long contentSpaceId, KnowledgeBaseFolder knowledgeBaseFolder)
+	public KnowledgeBaseFolder postSiteKnowledgeBaseFolder(
+			Long siteId, KnowledgeBaseFolder knowledgeBaseFolder)
 		throws Exception;
 
 	public void deleteKnowledgeBaseFolder(Long knowledgeBaseFolderId)

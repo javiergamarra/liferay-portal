@@ -72,11 +72,11 @@ public abstract class BaseKnowledgeBaseArticleResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "sorts")
 		}
 	)
-	@Path("/content-spaces/{contentSpaceId}/knowledge-base-articles")
+	@Path("/sites/{siteId}/knowledge-base-articles")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "KnowledgeBaseArticle")})
-	public Page<KnowledgeBaseArticle> getContentSpaceKnowledgeBaseArticlesPage(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Page<KnowledgeBaseArticle> getSiteKnowledgeBaseArticlesPage(
+			@NotNull @PathParam("siteId") Long siteId,
 			@QueryParam("flatten") Boolean flatten,
 			@QueryParam("search") String search, @Context Filter filter,
 			@Context Pagination pagination, @Context Sort[] sorts)
@@ -88,11 +88,11 @@ public abstract class BaseKnowledgeBaseArticleResourceImpl
 	@Override
 	@Consumes("application/json")
 	@POST
-	@Path("/content-spaces/{contentSpaceId}/knowledge-base-articles")
+	@Path("/sites/{siteId}/knowledge-base-articles")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "KnowledgeBaseArticle")})
-	public KnowledgeBaseArticle postContentSpaceKnowledgeBaseArticle(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public KnowledgeBaseArticle postSiteKnowledgeBaseArticle(
+			@NotNull @PathParam("siteId") Long siteId,
 			KnowledgeBaseArticle knowledgeBaseArticle)
 		throws Exception {
 
@@ -143,11 +143,6 @@ public abstract class BaseKnowledgeBaseArticleResourceImpl
 				knowledgeBaseArticle.getArticleBody());
 		}
 
-		if (knowledgeBaseArticle.getContentSpaceId() != null) {
-			existingKnowledgeBaseArticle.setContentSpaceId(
-				knowledgeBaseArticle.getContentSpaceId());
-		}
-
 		if (knowledgeBaseArticle.getDateCreated() != null) {
 			existingKnowledgeBaseArticle.setDateCreated(
 				knowledgeBaseArticle.getDateCreated());
@@ -191,6 +186,11 @@ public abstract class BaseKnowledgeBaseArticleResourceImpl
 		if (knowledgeBaseArticle.getParentKnowledgeBaseFolderId() != null) {
 			existingKnowledgeBaseArticle.setParentKnowledgeBaseFolderId(
 				knowledgeBaseArticle.getParentKnowledgeBaseFolderId());
+		}
+
+		if (knowledgeBaseArticle.getSiteId() != null) {
+			existingKnowledgeBaseArticle.setSiteId(
+				knowledgeBaseArticle.getSiteId());
 		}
 
 		if (knowledgeBaseArticle.getTaxonomyCategoryIds() != null) {

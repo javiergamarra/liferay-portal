@@ -34,12 +34,12 @@ import javax.annotation.Generated;
 @Generated("")
 public interface KeywordResource {
 
-	public Page<Keyword> getContentSpaceKeywordsPage(
-			Long contentSpaceId, String search, Filter filter,
-			Pagination pagination, Sort[] sorts)
+	public Page<Keyword> getSiteKeywordsPage(
+			Long siteId, String search, Filter filter, Pagination pagination,
+			Sort[] sorts)
 		throws Exception;
 
-	public Keyword postContentSpaceKeyword(Long contentSpaceId, Keyword keyword)
+	public Keyword postSiteKeyword(Long siteId, Keyword keyword)
 		throws Exception;
 
 	public void deleteKeyword(Long keywordId) throws Exception;

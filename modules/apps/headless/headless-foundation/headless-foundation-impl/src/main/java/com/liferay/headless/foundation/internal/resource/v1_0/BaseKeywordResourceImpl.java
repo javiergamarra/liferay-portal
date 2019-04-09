@@ -69,11 +69,11 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 			@Parameter(in = ParameterIn.QUERY, name = "sorts")
 		}
 	)
-	@Path("/content-spaces/{contentSpaceId}/keywords")
+	@Path("/sites/{siteId}/keywords")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "Keyword")})
-	public Page<Keyword> getContentSpaceKeywordsPage(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Page<Keyword> getSiteKeywordsPage(
+			@NotNull @PathParam("siteId") Long siteId,
 			@QueryParam("search") String search, @Context Filter filter,
 			@Context Pagination pagination, @Context Sort[] sorts)
 		throws Exception {
@@ -84,12 +84,11 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	@Override
 	@Consumes("application/json")
 	@POST
-	@Path("/content-spaces/{contentSpaceId}/keywords")
+	@Path("/sites/{siteId}/keywords")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "Keyword")})
-	public Keyword postContentSpaceKeyword(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
-			Keyword keyword)
+	public Keyword postSiteKeyword(
+			@NotNull @PathParam("siteId") Long siteId, Keyword keyword)
 		throws Exception {
 
 		return new Keyword();

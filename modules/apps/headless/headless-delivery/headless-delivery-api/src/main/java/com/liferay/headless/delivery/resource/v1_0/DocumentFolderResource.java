@@ -34,13 +34,13 @@ import javax.annotation.Generated;
 @Generated("")
 public interface DocumentFolderResource {
 
-	public Page<DocumentFolder> getContentSpaceDocumentFoldersPage(
-			Long contentSpaceId, Boolean flatten, String search, Filter filter,
+	public Page<DocumentFolder> getSiteDocumentFoldersPage(
+			Long siteId, Boolean flatten, String search, Filter filter,
 			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public DocumentFolder postContentSpaceDocumentFolder(
-			Long contentSpaceId, DocumentFolder documentFolder)
+	public DocumentFolder postSiteDocumentFolder(
+			Long siteId, DocumentFolder documentFolder)
 		throws Exception;
 
 	public void deleteDocumentFolder(Long documentFolderId) throws Exception;

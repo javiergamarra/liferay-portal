@@ -113,22 +113,18 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceStructuredContentsPage() throws Exception {
-		Long contentSpaceId =
-			testGetContentSpaceStructuredContentsPage_getContentSpaceId();
-		Long irrelevantContentSpaceId =
-			testGetContentSpaceStructuredContentsPage_getIrrelevantContentSpaceId();
+	public void testGetSiteStructuredContentsPage() throws Exception {
+		Long siteId = testGetSiteStructuredContentsPage_getSiteId();
+		Long irrelevantSiteId =
+			testGetSiteStructuredContentsPage_getIrrelevantSiteId();
 
-		if ((irrelevantContentSpaceId != null)) {
+		if ((irrelevantSiteId != null)) {
 			StructuredContent irrelevantStructuredContent =
-				testGetContentSpaceStructuredContentsPage_addStructuredContent(
-					irrelevantContentSpaceId,
-					randomIrrelevantStructuredContent());
+				testGetSiteStructuredContentsPage_addStructuredContent(
+					irrelevantSiteId, randomIrrelevantStructuredContent());
 
-			Page<StructuredContent> page =
-				invokeGetContentSpaceStructuredContentsPage(
-					irrelevantContentSpaceId, null, null, null,
-					Pagination.of(1, 2), null);
+			Page<StructuredContent> page = invokeGetSiteStructuredContentsPage(
+				irrelevantSiteId, null, null, null, Pagination.of(1, 2), null);
 
 			Assert.assertEquals(1, page.getTotalCount());
 
@@ -139,16 +135,15 @@ public abstract class BaseStructuredContentResourceTestCase {
 		}
 
 		StructuredContent structuredContent1 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, randomStructuredContent());
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, randomStructuredContent());
 
 		StructuredContent structuredContent2 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, randomStructuredContent());
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, randomStructuredContent());
 
-		Page<StructuredContent> page =
-			invokeGetContentSpaceStructuredContentsPage(
-				contentSpaceId, null, null, null, Pagination.of(1, 2), null);
+		Page<StructuredContent> page = invokeGetSiteStructuredContentsPage(
+			siteId, null, null, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -159,7 +154,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceStructuredContentsPageWithFilterDateTimeEquals()
+	public void testGetSiteStructuredContentsPageWithFilterDateTimeEquals()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -169,8 +164,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 			return;
 		}
 
-		Long contentSpaceId =
-			testGetContentSpaceStructuredContentsPage_getContentSpaceId();
+		Long siteId = testGetSiteStructuredContentsPage_getSiteId();
 
 		StructuredContent structuredContent1 = randomStructuredContent();
 		StructuredContent structuredContent2 = randomStructuredContent();
@@ -182,21 +176,20 @@ public abstract class BaseStructuredContentResourceTestCase {
 		}
 
 		structuredContent1 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, structuredContent1);
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, structuredContent1);
 
 		Thread.sleep(1000);
 
 		structuredContent2 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, structuredContent2);
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, structuredContent2);
 
 		for (EntityField entityField : entityFields) {
-			Page<StructuredContent> page =
-				invokeGetContentSpaceStructuredContentsPage(
-					contentSpaceId, null, null,
-					getFilterString(entityField, "eq", structuredContent1),
-					Pagination.of(1, 2), null);
+			Page<StructuredContent> page = invokeGetSiteStructuredContentsPage(
+				siteId, null, null,
+				getFilterString(entityField, "eq", structuredContent1),
+				Pagination.of(1, 2), null);
 
 			assertEquals(
 				Collections.singletonList(structuredContent1),
@@ -205,7 +198,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceStructuredContentsPageWithFilterStringEquals()
+	public void testGetSiteStructuredContentsPageWithFilterStringEquals()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -215,24 +208,22 @@ public abstract class BaseStructuredContentResourceTestCase {
 			return;
 		}
 
-		Long contentSpaceId =
-			testGetContentSpaceStructuredContentsPage_getContentSpaceId();
+		Long siteId = testGetSiteStructuredContentsPage_getSiteId();
 
 		StructuredContent structuredContent1 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, randomStructuredContent());
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, randomStructuredContent());
 
 		@SuppressWarnings("PMD.UnusedLocalVariable")
 		StructuredContent structuredContent2 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, randomStructuredContent());
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, randomStructuredContent());
 
 		for (EntityField entityField : entityFields) {
-			Page<StructuredContent> page =
-				invokeGetContentSpaceStructuredContentsPage(
-					contentSpaceId, null, null,
-					getFilterString(entityField, "eq", structuredContent1),
-					Pagination.of(1, 2), null);
+			Page<StructuredContent> page = invokeGetSiteStructuredContentsPage(
+				siteId, null, null,
+				getFilterString(entityField, "eq", structuredContent1),
+				Pagination.of(1, 2), null);
 
 			assertEquals(
 				Collections.singletonList(structuredContent1),
@@ -241,27 +232,25 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceStructuredContentsPageWithPagination()
+	public void testGetSiteStructuredContentsPageWithPagination()
 		throws Exception {
 
-		Long contentSpaceId =
-			testGetContentSpaceStructuredContentsPage_getContentSpaceId();
+		Long siteId = testGetSiteStructuredContentsPage_getSiteId();
 
 		StructuredContent structuredContent1 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, randomStructuredContent());
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, randomStructuredContent());
 
 		StructuredContent structuredContent2 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, randomStructuredContent());
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, randomStructuredContent());
 
 		StructuredContent structuredContent3 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, randomStructuredContent());
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, randomStructuredContent());
 
-		Page<StructuredContent> page1 =
-			invokeGetContentSpaceStructuredContentsPage(
-				contentSpaceId, null, null, null, Pagination.of(1, 2), null);
+		Page<StructuredContent> page1 = invokeGetSiteStructuredContentsPage(
+			siteId, null, null, null, Pagination.of(1, 2), null);
 
 		List<StructuredContent> structuredContents1 =
 			(List<StructuredContent>)page1.getItems();
@@ -269,9 +258,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 		Assert.assertEquals(
 			structuredContents1.toString(), 2, structuredContents1.size());
 
-		Page<StructuredContent> page2 =
-			invokeGetContentSpaceStructuredContentsPage(
-				contentSpaceId, null, null, null, Pagination.of(2, 2), null);
+		Page<StructuredContent> page2 = invokeGetSiteStructuredContentsPage(
+			siteId, null, null, null, Pagination.of(2, 2), null);
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -293,7 +281,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceStructuredContentsPageWithSortDateTime()
+	public void testGetSiteStructuredContentsPageWithSortDateTime()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -303,8 +291,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 			return;
 		}
 
-		Long contentSpaceId =
-			testGetContentSpaceStructuredContentsPage_getContentSpaceId();
+		Long siteId = testGetSiteStructuredContentsPage_getSiteId();
 
 		StructuredContent structuredContent1 = randomStructuredContent();
 		StructuredContent structuredContent2 = randomStructuredContent();
@@ -316,19 +303,19 @@ public abstract class BaseStructuredContentResourceTestCase {
 		}
 
 		structuredContent1 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, structuredContent1);
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, structuredContent1);
 
 		Thread.sleep(1000);
 
 		structuredContent2 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, structuredContent2);
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, structuredContent2);
 
 		for (EntityField entityField : entityFields) {
 			Page<StructuredContent> ascPage =
-				invokeGetContentSpaceStructuredContentsPage(
-					contentSpaceId, null, null, null, Pagination.of(1, 2),
+				invokeGetSiteStructuredContentsPage(
+					siteId, null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":asc");
 
 			assertEquals(
@@ -336,8 +323,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 				(List<StructuredContent>)ascPage.getItems());
 
 			Page<StructuredContent> descPage =
-				invokeGetContentSpaceStructuredContentsPage(
-					contentSpaceId, null, null, null, Pagination.of(1, 2),
+				invokeGetSiteStructuredContentsPage(
+					siteId, null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":desc");
 
 			assertEquals(
@@ -347,7 +334,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceStructuredContentsPageWithSortString()
+	public void testGetSiteStructuredContentsPageWithSortString()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -357,8 +344,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 			return;
 		}
 
-		Long contentSpaceId =
-			testGetContentSpaceStructuredContentsPage_getContentSpaceId();
+		Long siteId = testGetSiteStructuredContentsPage_getSiteId();
 
 		StructuredContent structuredContent1 = randomStructuredContent();
 		StructuredContent structuredContent2 = randomStructuredContent();
@@ -371,17 +357,17 @@ public abstract class BaseStructuredContentResourceTestCase {
 		}
 
 		structuredContent1 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, structuredContent1);
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, structuredContent1);
 
 		structuredContent2 =
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				contentSpaceId, structuredContent2);
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				siteId, structuredContent2);
 
 		for (EntityField entityField : entityFields) {
 			Page<StructuredContent> ascPage =
-				invokeGetContentSpaceStructuredContentsPage(
-					contentSpaceId, null, null, null, Pagination.of(1, 2),
+				invokeGetSiteStructuredContentsPage(
+					siteId, null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":asc");
 
 			assertEquals(
@@ -389,8 +375,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 				(List<StructuredContent>)ascPage.getItems());
 
 			Page<StructuredContent> descPage =
-				invokeGetContentSpaceStructuredContentsPage(
-					contentSpaceId, null, null, null, Pagination.of(1, 2),
+				invokeGetSiteStructuredContentsPage(
+					siteId, null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":desc");
 
 			assertEquals(
@@ -400,40 +386,36 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	protected StructuredContent
-			testGetContentSpaceStructuredContentsPage_addStructuredContent(
-				Long contentSpaceId, StructuredContent structuredContent)
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				Long siteId, StructuredContent structuredContent)
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long testGetContentSpaceStructuredContentsPage_getContentSpaceId()
+	protected Long testGetSiteStructuredContentsPage_getSiteId()
 		throws Exception {
 
 		return testGroup.getGroupId();
 	}
 
-	protected Long
-			testGetContentSpaceStructuredContentsPage_getIrrelevantContentSpaceId()
+	protected Long testGetSiteStructuredContentsPage_getIrrelevantSiteId()
 		throws Exception {
 
 		return irrelevantGroup.getGroupId();
 	}
 
-	protected Page<StructuredContent>
-			invokeGetContentSpaceStructuredContentsPage(
-				Long contentSpaceId, Boolean flatten, String search,
-				String filterString, Pagination pagination, String sortString)
+	protected Page<StructuredContent> invokeGetSiteStructuredContentsPage(
+			Long siteId, Boolean flatten, String search, String filterString,
+			Pagination pagination, String sortString)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/structured-contents",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/structured-contents", siteId);
 
 		location = HttpUtil.addParameter(location, "filter", filterString);
 
@@ -458,18 +440,16 @@ public abstract class BaseStructuredContentResourceTestCase {
 			});
 	}
 
-	protected Http.Response invokeGetContentSpaceStructuredContentsPageResponse(
-			Long contentSpaceId, Boolean flatten, String search,
-			String filterString, Pagination pagination, String sortString)
+	protected Http.Response invokeGetSiteStructuredContentsPageResponse(
+			Long siteId, Boolean flatten, String search, String filterString,
+			Pagination pagination, String sortString)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/structured-contents",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/structured-contents", siteId);
 
 		location = HttpUtil.addParameter(location, "filter", filterString);
 
@@ -488,11 +468,11 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testPostContentSpaceStructuredContent() throws Exception {
+	public void testPostSiteStructuredContent() throws Exception {
 		StructuredContent randomStructuredContent = randomStructuredContent();
 
 		StructuredContent postStructuredContent =
-			testPostContentSpaceStructuredContent_addStructuredContent(
+			testPostSiteStructuredContent_addStructuredContent(
 				randomStructuredContent);
 
 		assertEquals(randomStructuredContent, postStructuredContent);
@@ -500,7 +480,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	protected StructuredContent
-			testPostContentSpaceStructuredContent_addStructuredContent(
+			testPostSiteStructuredContent_addStructuredContent(
 				StructuredContent structuredContent)
 		throws Exception {
 
@@ -508,8 +488,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 			"This method needs to be implemented");
 	}
 
-	protected StructuredContent invokePostContentSpaceStructuredContent(
-			Long contentSpaceId, StructuredContent structuredContent)
+	protected StructuredContent invokePostSiteStructuredContent(
+			Long siteId, StructuredContent structuredContent)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -520,9 +500,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/structured-contents",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/structured-contents", siteId);
 
 		options.setLocation(location);
 
@@ -545,8 +523,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 		}
 	}
 
-	protected Http.Response invokePostContentSpaceStructuredContentResponse(
-			Long contentSpaceId, StructuredContent structuredContent)
+	protected Http.Response invokePostSiteStructuredContentResponse(
+			Long siteId, StructuredContent structuredContent)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -557,9 +535,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/structured-contents",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/structured-contents", siteId);
 
 		options.setLocation(location);
 
@@ -571,13 +547,13 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceStructuredContentByKey() throws Exception {
+	public void testGetSiteStructuredContentByKey() throws Exception {
 		StructuredContent postStructuredContent =
-			testGetContentSpaceStructuredContentByKey_addStructuredContent();
+			testGetSiteStructuredContentByKey_addStructuredContent();
 
 		StructuredContent getStructuredContent =
-			invokeGetContentSpaceStructuredContentByKey(
-				postStructuredContent.getContentSpaceId(),
+			invokeGetSiteStructuredContentByKey(
+				postStructuredContent.getSiteId(),
 				postStructuredContent.getKey());
 
 		assertEquals(postStructuredContent, getStructuredContent);
@@ -585,15 +561,15 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	protected StructuredContent
-			testGetContentSpaceStructuredContentByKey_addStructuredContent()
+			testGetSiteStructuredContentByKey_addStructuredContent()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected StructuredContent invokeGetContentSpaceStructuredContentByKey(
-			Long contentSpaceId, String key)
+	protected StructuredContent invokeGetSiteStructuredContentByKey(
+			Long siteId, String key)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -601,8 +577,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 		String location =
 			_resourceURL +
 				_toPath(
-					"/content-spaces/{contentSpaceId}/structured-contents/by-key/{key}",
-					contentSpaceId, key);
+					"/sites/{siteId}/structured-contents/by-key/{key}", siteId,
+					key);
 
 		options.setLocation(location);
 
@@ -623,8 +599,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 		}
 	}
 
-	protected Http.Response invokeGetContentSpaceStructuredContentByKeyResponse(
-			Long contentSpaceId, String key)
+	protected Http.Response invokeGetSiteStructuredContentByKeyResponse(
+			Long siteId, String key)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -632,8 +608,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 		String location =
 			_resourceURL +
 				_toPath(
-					"/content-spaces/{contentSpaceId}/structured-contents/by-key/{key}",
-					contentSpaceId, key);
+					"/sites/{siteId}/structured-contents/by-key/{key}", siteId,
+					key);
 
 		options.setLocation(location);
 
@@ -643,13 +619,13 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceStructuredContentByUuid() throws Exception {
+	public void testGetSiteStructuredContentByUuid() throws Exception {
 		StructuredContent postStructuredContent =
-			testGetContentSpaceStructuredContentByUuid_addStructuredContent();
+			testGetSiteStructuredContentByUuid_addStructuredContent();
 
 		StructuredContent getStructuredContent =
-			invokeGetContentSpaceStructuredContentByUuid(
-				postStructuredContent.getContentSpaceId(),
+			invokeGetSiteStructuredContentByUuid(
+				postStructuredContent.getSiteId(),
 				postStructuredContent.getUuid());
 
 		assertEquals(postStructuredContent, getStructuredContent);
@@ -657,15 +633,15 @@ public abstract class BaseStructuredContentResourceTestCase {
 	}
 
 	protected StructuredContent
-			testGetContentSpaceStructuredContentByUuid_addStructuredContent()
+			testGetSiteStructuredContentByUuid_addStructuredContent()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected StructuredContent invokeGetContentSpaceStructuredContentByUuid(
-			Long contentSpaceId, String uuid)
+	protected StructuredContent invokeGetSiteStructuredContentByUuid(
+			Long siteId, String uuid)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -673,8 +649,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 		String location =
 			_resourceURL +
 				_toPath(
-					"/content-spaces/{contentSpaceId}/structured-contents/by-uuid/{uuid}",
-					contentSpaceId, uuid);
+					"/sites/{siteId}/structured-contents/by-uuid/{uuid}",
+					siteId, uuid);
 
 		options.setLocation(location);
 
@@ -695,9 +671,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 		}
 	}
 
-	protected Http.Response
-			invokeGetContentSpaceStructuredContentByUuidResponse(
-				Long contentSpaceId, String uuid)
+	protected Http.Response invokeGetSiteStructuredContentByUuidResponse(
+			Long siteId, String uuid)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -705,8 +680,8 @@ public abstract class BaseStructuredContentResourceTestCase {
 		String location =
 			_resourceURL +
 				_toPath(
-					"/content-spaces/{contentSpaceId}/structured-contents/by-uuid/{uuid}",
-					contentSpaceId, uuid);
+					"/sites/{siteId}/structured-contents/by-uuid/{uuid}",
+					siteId, uuid);
 
 		options.setLocation(location);
 
@@ -2321,11 +2296,6 @@ public abstract class BaseStructuredContentResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
-		if (entityFieldName.equals("contentSpaceId")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
 		if (entityFieldName.equals("contentStructureId")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -2404,6 +2374,11 @@ public abstract class BaseStructuredContentResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("siteId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("taxonomyCategories")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -2442,7 +2417,6 @@ public abstract class BaseStructuredContentResourceTestCase {
 	protected StructuredContent randomStructuredContent() {
 		return new StructuredContent() {
 			{
-				contentSpaceId = RandomTestUtil.randomLong();
 				contentStructureId = RandomTestUtil.randomLong();
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
@@ -2452,6 +2426,7 @@ public abstract class BaseStructuredContentResourceTestCase {
 				id = RandomTestUtil.randomLong();
 				key = RandomTestUtil.randomString();
 				lastReviewed = RandomTestUtil.nextDate();
+				siteId = RandomTestUtil.randomLong();
 				title = RandomTestUtil.randomString();
 				uuid = RandomTestUtil.randomString();
 			}

@@ -66,11 +66,11 @@ public abstract class BaseKnowledgeBaseFolderResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
 		}
 	)
-	@Path("/content-spaces/{contentSpaceId}/knowledge-base-folders")
+	@Path("/sites/{siteId}/knowledge-base-folders")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "KnowledgeBaseFolder")})
-	public Page<KnowledgeBaseFolder> getContentSpaceKnowledgeBaseFoldersPage(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Page<KnowledgeBaseFolder> getSiteKnowledgeBaseFoldersPage(
+			@NotNull @PathParam("siteId") Long siteId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -80,11 +80,11 @@ public abstract class BaseKnowledgeBaseFolderResourceImpl
 	@Override
 	@Consumes("application/json")
 	@POST
-	@Path("/content-spaces/{contentSpaceId}/knowledge-base-folders")
+	@Path("/sites/{siteId}/knowledge-base-folders")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "KnowledgeBaseFolder")})
-	public KnowledgeBaseFolder postContentSpaceKnowledgeBaseFolder(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public KnowledgeBaseFolder postSiteKnowledgeBaseFolder(
+			@NotNull @PathParam("siteId") Long siteId,
 			KnowledgeBaseFolder knowledgeBaseFolder)
 		throws Exception {
 
@@ -130,11 +130,6 @@ public abstract class BaseKnowledgeBaseFolderResourceImpl
 		KnowledgeBaseFolder existingKnowledgeBaseFolder =
 			getKnowledgeBaseFolder(knowledgeBaseFolderId);
 
-		if (knowledgeBaseFolder.getContentSpaceId() != null) {
-			existingKnowledgeBaseFolder.setContentSpaceId(
-				knowledgeBaseFolder.getContentSpaceId());
-		}
-
 		if (knowledgeBaseFolder.getDateCreated() != null) {
 			existingKnowledgeBaseFolder.setDateCreated(
 				knowledgeBaseFolder.getDateCreated());
@@ -167,6 +162,11 @@ public abstract class BaseKnowledgeBaseFolderResourceImpl
 		if (knowledgeBaseFolder.getParentKnowledgeBaseFolderId() != null) {
 			existingKnowledgeBaseFolder.setParentKnowledgeBaseFolderId(
 				knowledgeBaseFolder.getParentKnowledgeBaseFolderId());
+		}
+
+		if (knowledgeBaseFolder.getSiteId() != null) {
+			existingKnowledgeBaseFolder.setSiteId(
+				knowledgeBaseFolder.getSiteId());
 		}
 
 		if (knowledgeBaseFolder.getViewableBy() != null) {

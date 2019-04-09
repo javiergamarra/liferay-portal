@@ -257,17 +257,16 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public BlogPosting postContentSpaceBlogPosting(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public BlogPosting postSiteBlogPosting(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("blogPosting") BlogPosting blogPosting)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_blogPostingResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			blogPostingResource ->
-				blogPostingResource.postContentSpaceBlogPosting(
-					contentSpaceId, blogPosting));
+			blogPostingResource -> blogPostingResource.postSiteBlogPosting(
+				siteId, blogPosting));
 	}
 
 	@GraphQLInvokeDetached
@@ -285,9 +284,9 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	@GraphQLName("postContentSpaceBlogPostingImageContentSpaceIdMultipartBody")
-	public BlogPostingImage postContentSpaceBlogPostingImage(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	@GraphQLName("postSiteBlogPostingImageSiteIdMultipartBody")
+	public BlogPostingImage postSiteBlogPostingImage(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("multipartBody") MultipartBody multipartBody)
 		throws Exception {
 
@@ -295,8 +294,8 @@ public class Mutation {
 			_blogPostingImageResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			blogPostingImageResource ->
-				blogPostingImageResource.postContentSpaceBlogPostingImage(
-					contentSpaceId, multipartBody));
+				blogPostingImageResource.postSiteBlogPostingImage(
+					siteId, multipartBody));
 	}
 
 	@GraphQLField
@@ -379,17 +378,17 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	@GraphQLName("postContentSpaceDocumentContentSpaceIdMultipartBody")
-	public Document postContentSpaceDocument(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	@GraphQLName("postSiteDocumentSiteIdMultipartBody")
+	public Document postSiteDocument(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("multipartBody") MultipartBody multipartBody)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_documentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			documentResource -> documentResource.postContentSpaceDocument(
-				contentSpaceId, multipartBody));
+			documentResource -> documentResource.postSiteDocument(
+				siteId, multipartBody));
 	}
 
 	@GraphQLField
@@ -486,8 +485,8 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public DocumentFolder postContentSpaceDocumentFolder(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public DocumentFolder postSiteDocumentFolder(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("documentFolder") DocumentFolder documentFolder)
 		throws Exception {
 
@@ -495,8 +494,8 @@ public class Mutation {
 			_documentFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			documentFolderResource ->
-				documentFolderResource.postContentSpaceDocumentFolder(
-					contentSpaceId, documentFolder));
+				documentFolderResource.postSiteDocumentFolder(
+					siteId, documentFolder));
 	}
 
 	@GraphQLInvokeDetached
@@ -555,8 +554,8 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public KnowledgeBaseArticle postContentSpaceKnowledgeBaseArticle(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public KnowledgeBaseArticle postSiteKnowledgeBaseArticle(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("knowledgeBaseArticle") KnowledgeBaseArticle
 				knowledgeBaseArticle)
 		throws Exception {
@@ -565,9 +564,8 @@ public class Mutation {
 			_knowledgeBaseArticleResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			knowledgeBaseArticleResource ->
-				knowledgeBaseArticleResource.
-					postContentSpaceKnowledgeBaseArticle(
-						contentSpaceId, knowledgeBaseArticle));
+				knowledgeBaseArticleResource.postSiteKnowledgeBaseArticle(
+					siteId, knowledgeBaseArticle));
 	}
 
 	@GraphQLInvokeDetached
@@ -727,8 +725,8 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public KnowledgeBaseFolder postContentSpaceKnowledgeBaseFolder(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public KnowledgeBaseFolder postSiteKnowledgeBaseFolder(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("knowledgeBaseFolder") KnowledgeBaseFolder
 				knowledgeBaseFolder)
 		throws Exception {
@@ -737,8 +735,8 @@ public class Mutation {
 			_knowledgeBaseFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			knowledgeBaseFolderResource ->
-				knowledgeBaseFolderResource.postContentSpaceKnowledgeBaseFolder(
-					contentSpaceId, knowledgeBaseFolder));
+				knowledgeBaseFolderResource.postSiteKnowledgeBaseFolder(
+					siteId, knowledgeBaseFolder));
 	}
 
 	@GraphQLInvokeDetached
@@ -976,8 +974,8 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public MessageBoardSection postContentSpaceMessageBoardSection(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public MessageBoardSection postSiteMessageBoardSection(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("messageBoardSection") MessageBoardSection
 				messageBoardSection)
 		throws Exception {
@@ -986,8 +984,8 @@ public class Mutation {
 			_messageBoardSectionResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			messageBoardSectionResource ->
-				messageBoardSectionResource.postContentSpaceMessageBoardSection(
-					contentSpaceId, messageBoardSection));
+				messageBoardSectionResource.postSiteMessageBoardSection(
+					siteId, messageBoardSection));
 	}
 
 	@GraphQLInvokeDetached
@@ -1053,8 +1051,8 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public MessageBoardThread postContentSpaceMessageBoardThread(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public MessageBoardThread postSiteMessageBoardThread(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("messageBoardThread") MessageBoardThread
 				messageBoardThread)
 		throws Exception {
@@ -1063,8 +1061,8 @@ public class Mutation {
 			_messageBoardThreadResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			messageBoardThreadResource ->
-				messageBoardThreadResource.postContentSpaceMessageBoardThread(
-					contentSpaceId, messageBoardThread));
+				messageBoardThreadResource.postSiteMessageBoardThread(
+					siteId, messageBoardThread));
 	}
 
 	@GraphQLField
@@ -1171,8 +1169,8 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public StructuredContent postContentSpaceStructuredContent(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public StructuredContent postSiteStructuredContent(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("structuredContent") StructuredContent
 				structuredContent)
 		throws Exception {
@@ -1181,8 +1179,8 @@ public class Mutation {
 			_structuredContentResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			structuredContentResource ->
-				structuredContentResource.postContentSpaceStructuredContent(
-					contentSpaceId, structuredContent));
+				structuredContentResource.postSiteStructuredContent(
+					siteId, structuredContent));
 	}
 
 	@GraphQLField
@@ -1290,8 +1288,8 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public StructuredContentFolder postContentSpaceStructuredContentFolder(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public StructuredContentFolder postSiteStructuredContentFolder(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("structuredContentFolder") StructuredContentFolder
 				structuredContentFolder)
 		throws Exception {
@@ -1300,9 +1298,8 @@ public class Mutation {
 			_structuredContentFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			structuredContentFolderResource ->
-				structuredContentFolderResource.
-					postContentSpaceStructuredContentFolder(
-						contentSpaceId, structuredContentFolder));
+				structuredContentFolderResource.postSiteStructuredContentFolder(
+					siteId, structuredContentFolder));
 	}
 
 	@GraphQLField

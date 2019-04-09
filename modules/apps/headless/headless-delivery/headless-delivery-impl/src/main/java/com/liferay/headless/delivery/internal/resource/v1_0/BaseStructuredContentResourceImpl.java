@@ -73,11 +73,11 @@ public abstract class BaseStructuredContentResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "sorts")
 		}
 	)
-	@Path("/content-spaces/{contentSpaceId}/structured-contents")
+	@Path("/sites/{siteId}/structured-contents")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "StructuredContent")})
-	public Page<StructuredContent> getContentSpaceStructuredContentsPage(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Page<StructuredContent> getSiteStructuredContentsPage(
+			@NotNull @PathParam("siteId") Long siteId,
 			@QueryParam("flatten") Boolean flatten,
 			@QueryParam("search") String search, @Context Filter filter,
 			@Context Pagination pagination, @Context Sort[] sorts)
@@ -89,11 +89,11 @@ public abstract class BaseStructuredContentResourceImpl
 	@Override
 	@Consumes("application/json")
 	@POST
-	@Path("/content-spaces/{contentSpaceId}/structured-contents")
+	@Path("/sites/{siteId}/structured-contents")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "StructuredContent")})
-	public StructuredContent postContentSpaceStructuredContent(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public StructuredContent postSiteStructuredContent(
+			@NotNull @PathParam("siteId") Long siteId,
 			StructuredContent structuredContent)
 		throws Exception {
 
@@ -102,11 +102,11 @@ public abstract class BaseStructuredContentResourceImpl
 
 	@Override
 	@GET
-	@Path("/content-spaces/{contentSpaceId}/structured-contents/by-key/{key}")
+	@Path("/sites/{siteId}/structured-contents/by-key/{key}")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "StructuredContent")})
-	public StructuredContent getContentSpaceStructuredContentByKey(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public StructuredContent getSiteStructuredContentByKey(
+			@NotNull @PathParam("siteId") Long siteId,
 			@NotNull @PathParam("key") String key)
 		throws Exception {
 
@@ -115,11 +115,11 @@ public abstract class BaseStructuredContentResourceImpl
 
 	@Override
 	@GET
-	@Path("/content-spaces/{contentSpaceId}/structured-contents/by-uuid/{uuid}")
+	@Path("/sites/{siteId}/structured-contents/by-uuid/{uuid}")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "StructuredContent")})
-	public StructuredContent getContentSpaceStructuredContentByUuid(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public StructuredContent getSiteStructuredContentByUuid(
+			@NotNull @PathParam("siteId") Long siteId,
 			@NotNull @PathParam("uuid") String uuid)
 		throws Exception {
 
@@ -232,11 +232,6 @@ public abstract class BaseStructuredContentResourceImpl
 				structuredContent.getAvailableLanguages());
 		}
 
-		if (structuredContent.getContentSpaceId() != null) {
-			existingStructuredContent.setContentSpaceId(
-				structuredContent.getContentSpaceId());
-		}
-
 		if (structuredContent.getContentStructureId() != null) {
 			existingStructuredContent.setContentStructureId(
 				structuredContent.getContentStructureId());
@@ -284,6 +279,10 @@ public abstract class BaseStructuredContentResourceImpl
 		if (structuredContent.getNumberOfComments() != null) {
 			existingStructuredContent.setNumberOfComments(
 				structuredContent.getNumberOfComments());
+		}
+
+		if (structuredContent.getSiteId() != null) {
+			existingStructuredContent.setSiteId(structuredContent.getSiteId());
 		}
 
 		if (structuredContent.getTaxonomyCategoryIds() != null) {

@@ -72,11 +72,11 @@ public abstract class BaseDocumentResourceImpl implements DocumentResource {
 			@Parameter(in = ParameterIn.QUERY, name = "sorts")
 		}
 	)
-	@Path("/content-spaces/{contentSpaceId}/documents")
+	@Path("/sites/{siteId}/documents")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "Document")})
-	public Page<Document> getContentSpaceDocumentsPage(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Page<Document> getSiteDocumentsPage(
+			@NotNull @PathParam("siteId") Long siteId,
 			@QueryParam("flatten") Boolean flatten,
 			@QueryParam("search") String search, @Context Filter filter,
 			@Context Pagination pagination, @Context Sort[] sorts)
@@ -88,11 +88,11 @@ public abstract class BaseDocumentResourceImpl implements DocumentResource {
 	@Override
 	@Consumes("multipart/form-data")
 	@POST
-	@Path("/content-spaces/{contentSpaceId}/documents")
+	@Path("/sites/{siteId}/documents")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "Document")})
-	public Document postContentSpaceDocument(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Document postSiteDocument(
+			@NotNull @PathParam("siteId") Long siteId,
 			MultipartBody multipartBody)
 		throws Exception {
 

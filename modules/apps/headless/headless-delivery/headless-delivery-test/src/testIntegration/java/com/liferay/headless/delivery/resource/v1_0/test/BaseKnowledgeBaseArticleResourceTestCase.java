@@ -113,24 +113,20 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceKnowledgeBaseArticlesPage()
-		throws Exception {
+	public void testGetSiteKnowledgeBaseArticlesPage() throws Exception {
+		Long siteId = testGetSiteKnowledgeBaseArticlesPage_getSiteId();
+		Long irrelevantSiteId =
+			testGetSiteKnowledgeBaseArticlesPage_getIrrelevantSiteId();
 
-		Long contentSpaceId =
-			testGetContentSpaceKnowledgeBaseArticlesPage_getContentSpaceId();
-		Long irrelevantContentSpaceId =
-			testGetContentSpaceKnowledgeBaseArticlesPage_getIrrelevantContentSpaceId();
-
-		if ((irrelevantContentSpaceId != null)) {
+		if ((irrelevantSiteId != null)) {
 			KnowledgeBaseArticle irrelevantKnowledgeBaseArticle =
-				testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-					irrelevantContentSpaceId,
-					randomIrrelevantKnowledgeBaseArticle());
+				testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+					irrelevantSiteId, randomIrrelevantKnowledgeBaseArticle());
 
 			Page<KnowledgeBaseArticle> page =
-				invokeGetContentSpaceKnowledgeBaseArticlesPage(
-					irrelevantContentSpaceId, null, null, null,
-					Pagination.of(1, 2), null);
+				invokeGetSiteKnowledgeBaseArticlesPage(
+					irrelevantSiteId, null, null, null, Pagination.of(1, 2),
+					null);
 
 			Assert.assertEquals(1, page.getTotalCount());
 
@@ -141,16 +137,16 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		}
 
 		KnowledgeBaseArticle knowledgeBaseArticle1 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, randomKnowledgeBaseArticle());
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, randomKnowledgeBaseArticle());
 
 		KnowledgeBaseArticle knowledgeBaseArticle2 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, randomKnowledgeBaseArticle());
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, randomKnowledgeBaseArticle());
 
 		Page<KnowledgeBaseArticle> page =
-			invokeGetContentSpaceKnowledgeBaseArticlesPage(
-				contentSpaceId, null, null, null, Pagination.of(1, 2), null);
+			invokeGetSiteKnowledgeBaseArticlesPage(
+				siteId, null, null, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -161,7 +157,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceKnowledgeBaseArticlesPageWithFilterDateTimeEquals()
+	public void testGetSiteKnowledgeBaseArticlesPageWithFilterDateTimeEquals()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -171,8 +167,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			return;
 		}
 
-		Long contentSpaceId =
-			testGetContentSpaceKnowledgeBaseArticlesPage_getContentSpaceId();
+		Long siteId = testGetSiteKnowledgeBaseArticlesPage_getSiteId();
 
 		KnowledgeBaseArticle knowledgeBaseArticle1 =
 			randomKnowledgeBaseArticle();
@@ -186,19 +181,19 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		}
 
 		knowledgeBaseArticle1 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, knowledgeBaseArticle1);
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, knowledgeBaseArticle1);
 
 		Thread.sleep(1000);
 
 		knowledgeBaseArticle2 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, knowledgeBaseArticle2);
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, knowledgeBaseArticle2);
 
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> page =
-				invokeGetContentSpaceKnowledgeBaseArticlesPage(
-					contentSpaceId, null, null,
+				invokeGetSiteKnowledgeBaseArticlesPage(
+					siteId, null, null,
 					getFilterString(entityField, "eq", knowledgeBaseArticle1),
 					Pagination.of(1, 2), null);
 
@@ -209,7 +204,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceKnowledgeBaseArticlesPageWithFilterStringEquals()
+	public void testGetSiteKnowledgeBaseArticlesPageWithFilterStringEquals()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -219,22 +214,21 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			return;
 		}
 
-		Long contentSpaceId =
-			testGetContentSpaceKnowledgeBaseArticlesPage_getContentSpaceId();
+		Long siteId = testGetSiteKnowledgeBaseArticlesPage_getSiteId();
 
 		KnowledgeBaseArticle knowledgeBaseArticle1 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, randomKnowledgeBaseArticle());
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, randomKnowledgeBaseArticle());
 
 		@SuppressWarnings("PMD.UnusedLocalVariable")
 		KnowledgeBaseArticle knowledgeBaseArticle2 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, randomKnowledgeBaseArticle());
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, randomKnowledgeBaseArticle());
 
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> page =
-				invokeGetContentSpaceKnowledgeBaseArticlesPage(
-					contentSpaceId, null, null,
+				invokeGetSiteKnowledgeBaseArticlesPage(
+					siteId, null, null,
 					getFilterString(entityField, "eq", knowledgeBaseArticle1),
 					Pagination.of(1, 2), null);
 
@@ -245,27 +239,26 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceKnowledgeBaseArticlesPageWithPagination()
+	public void testGetSiteKnowledgeBaseArticlesPageWithPagination()
 		throws Exception {
 
-		Long contentSpaceId =
-			testGetContentSpaceKnowledgeBaseArticlesPage_getContentSpaceId();
+		Long siteId = testGetSiteKnowledgeBaseArticlesPage_getSiteId();
 
 		KnowledgeBaseArticle knowledgeBaseArticle1 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, randomKnowledgeBaseArticle());
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, randomKnowledgeBaseArticle());
 
 		KnowledgeBaseArticle knowledgeBaseArticle2 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, randomKnowledgeBaseArticle());
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, randomKnowledgeBaseArticle());
 
 		KnowledgeBaseArticle knowledgeBaseArticle3 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, randomKnowledgeBaseArticle());
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, randomKnowledgeBaseArticle());
 
 		Page<KnowledgeBaseArticle> page1 =
-			invokeGetContentSpaceKnowledgeBaseArticlesPage(
-				contentSpaceId, null, null, null, Pagination.of(1, 2), null);
+			invokeGetSiteKnowledgeBaseArticlesPage(
+				siteId, null, null, null, Pagination.of(1, 2), null);
 
 		List<KnowledgeBaseArticle> knowledgeBaseArticles1 =
 			(List<KnowledgeBaseArticle>)page1.getItems();
@@ -275,8 +268,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			knowledgeBaseArticles1.size());
 
 		Page<KnowledgeBaseArticle> page2 =
-			invokeGetContentSpaceKnowledgeBaseArticlesPage(
-				contentSpaceId, null, null, null, Pagination.of(2, 2), null);
+			invokeGetSiteKnowledgeBaseArticlesPage(
+				siteId, null, null, null, Pagination.of(2, 2), null);
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -300,7 +293,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceKnowledgeBaseArticlesPageWithSortDateTime()
+	public void testGetSiteKnowledgeBaseArticlesPageWithSortDateTime()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -310,8 +303,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			return;
 		}
 
-		Long contentSpaceId =
-			testGetContentSpaceKnowledgeBaseArticlesPage_getContentSpaceId();
+		Long siteId = testGetSiteKnowledgeBaseArticlesPage_getSiteId();
 
 		KnowledgeBaseArticle knowledgeBaseArticle1 =
 			randomKnowledgeBaseArticle();
@@ -325,19 +317,19 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		}
 
 		knowledgeBaseArticle1 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, knowledgeBaseArticle1);
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, knowledgeBaseArticle1);
 
 		Thread.sleep(1000);
 
 		knowledgeBaseArticle2 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, knowledgeBaseArticle2);
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, knowledgeBaseArticle2);
 
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> ascPage =
-				invokeGetContentSpaceKnowledgeBaseArticlesPage(
-					contentSpaceId, null, null, null, Pagination.of(1, 2),
+				invokeGetSiteKnowledgeBaseArticlesPage(
+					siteId, null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":asc");
 
 			assertEquals(
@@ -345,8 +337,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 				(List<KnowledgeBaseArticle>)ascPage.getItems());
 
 			Page<KnowledgeBaseArticle> descPage =
-				invokeGetContentSpaceKnowledgeBaseArticlesPage(
-					contentSpaceId, null, null, null, Pagination.of(1, 2),
+				invokeGetSiteKnowledgeBaseArticlesPage(
+					siteId, null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":desc");
 
 			assertEquals(
@@ -356,7 +348,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceKnowledgeBaseArticlesPageWithSortString()
+	public void testGetSiteKnowledgeBaseArticlesPageWithSortString()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -366,8 +358,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			return;
 		}
 
-		Long contentSpaceId =
-			testGetContentSpaceKnowledgeBaseArticlesPage_getContentSpaceId();
+		Long siteId = testGetSiteKnowledgeBaseArticlesPage_getSiteId();
 
 		KnowledgeBaseArticle knowledgeBaseArticle1 =
 			randomKnowledgeBaseArticle();
@@ -382,17 +373,17 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		}
 
 		knowledgeBaseArticle1 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, knowledgeBaseArticle1);
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, knowledgeBaseArticle1);
 
 		knowledgeBaseArticle2 =
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				contentSpaceId, knowledgeBaseArticle2);
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				siteId, knowledgeBaseArticle2);
 
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> ascPage =
-				invokeGetContentSpaceKnowledgeBaseArticlesPage(
-					contentSpaceId, null, null, null, Pagination.of(1, 2),
+				invokeGetSiteKnowledgeBaseArticlesPage(
+					siteId, null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":asc");
 
 			assertEquals(
@@ -400,8 +391,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 				(List<KnowledgeBaseArticle>)ascPage.getItems());
 
 			Page<KnowledgeBaseArticle> descPage =
-				invokeGetContentSpaceKnowledgeBaseArticlesPage(
-					contentSpaceId, null, null, null, Pagination.of(1, 2),
+				invokeGetSiteKnowledgeBaseArticlesPage(
+					siteId, null, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":desc");
 
 			assertEquals(
@@ -411,41 +402,36 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	protected KnowledgeBaseArticle
-			testGetContentSpaceKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
-				Long contentSpaceId, KnowledgeBaseArticle knowledgeBaseArticle)
+			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
+				Long siteId, KnowledgeBaseArticle knowledgeBaseArticle)
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long
-			testGetContentSpaceKnowledgeBaseArticlesPage_getContentSpaceId()
+	protected Long testGetSiteKnowledgeBaseArticlesPage_getSiteId()
 		throws Exception {
 
 		return testGroup.getGroupId();
 	}
 
-	protected Long
-			testGetContentSpaceKnowledgeBaseArticlesPage_getIrrelevantContentSpaceId()
+	protected Long testGetSiteKnowledgeBaseArticlesPage_getIrrelevantSiteId()
 		throws Exception {
 
 		return irrelevantGroup.getGroupId();
 	}
 
-	protected Page<KnowledgeBaseArticle>
-			invokeGetContentSpaceKnowledgeBaseArticlesPage(
-				Long contentSpaceId, Boolean flatten, String search,
-				String filterString, Pagination pagination, String sortString)
+	protected Page<KnowledgeBaseArticle> invokeGetSiteKnowledgeBaseArticlesPage(
+			Long siteId, Boolean flatten, String search, String filterString,
+			Pagination pagination, String sortString)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/knowledge-base-articles",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/knowledge-base-articles", siteId);
 
 		location = HttpUtil.addParameter(location, "filter", filterString);
 
@@ -470,19 +456,16 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			});
 	}
 
-	protected Http.Response
-			invokeGetContentSpaceKnowledgeBaseArticlesPageResponse(
-				Long contentSpaceId, Boolean flatten, String search,
-				String filterString, Pagination pagination, String sortString)
+	protected Http.Response invokeGetSiteKnowledgeBaseArticlesPageResponse(
+			Long siteId, Boolean flatten, String search, String filterString,
+			Pagination pagination, String sortString)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/knowledge-base-articles",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/knowledge-base-articles", siteId);
 
 		location = HttpUtil.addParameter(location, "filter", filterString);
 
@@ -501,12 +484,12 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	@Test
-	public void testPostContentSpaceKnowledgeBaseArticle() throws Exception {
+	public void testPostSiteKnowledgeBaseArticle() throws Exception {
 		KnowledgeBaseArticle randomKnowledgeBaseArticle =
 			randomKnowledgeBaseArticle();
 
 		KnowledgeBaseArticle postKnowledgeBaseArticle =
-			testPostContentSpaceKnowledgeBaseArticle_addKnowledgeBaseArticle(
+			testPostSiteKnowledgeBaseArticle_addKnowledgeBaseArticle(
 				randomKnowledgeBaseArticle);
 
 		assertEquals(randomKnowledgeBaseArticle, postKnowledgeBaseArticle);
@@ -514,7 +497,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 	}
 
 	protected KnowledgeBaseArticle
-			testPostContentSpaceKnowledgeBaseArticle_addKnowledgeBaseArticle(
+			testPostSiteKnowledgeBaseArticle_addKnowledgeBaseArticle(
 				KnowledgeBaseArticle knowledgeBaseArticle)
 		throws Exception {
 
@@ -522,8 +505,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			"This method needs to be implemented");
 	}
 
-	protected KnowledgeBaseArticle invokePostContentSpaceKnowledgeBaseArticle(
-			Long contentSpaceId, KnowledgeBaseArticle knowledgeBaseArticle)
+	protected KnowledgeBaseArticle invokePostSiteKnowledgeBaseArticle(
+			Long siteId, KnowledgeBaseArticle knowledgeBaseArticle)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -534,9 +517,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/knowledge-base-articles",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/knowledge-base-articles", siteId);
 
 		options.setLocation(location);
 
@@ -559,8 +540,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		}
 	}
 
-	protected Http.Response invokePostContentSpaceKnowledgeBaseArticleResponse(
-			Long contentSpaceId, KnowledgeBaseArticle knowledgeBaseArticle)
+	protected Http.Response invokePostSiteKnowledgeBaseArticleResponse(
+			Long siteId, KnowledgeBaseArticle knowledgeBaseArticle)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -571,9 +552,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/knowledge-base-articles",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/knowledge-base-articles", siteId);
 
 		options.setLocation(location);
 
@@ -2273,11 +2252,6 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("contentSpaceId")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
 		if (entityFieldName.equals("creator")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -2352,6 +2326,11 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("siteId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("taxonomyCategories")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -2383,7 +2362,6 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		return new KnowledgeBaseArticle() {
 			{
 				articleBody = RandomTestUtil.randomString();
-				contentSpaceId = RandomTestUtil.randomLong();
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				description = RandomTestUtil.randomString();
@@ -2391,6 +2369,7 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 				friendlyUrlPath = RandomTestUtil.randomString();
 				id = RandomTestUtil.randomLong();
 				parentKnowledgeBaseFolderId = RandomTestUtil.randomLong();
+				siteId = RandomTestUtil.randomLong();
 				title = RandomTestUtil.randomString();
 			}
 		};

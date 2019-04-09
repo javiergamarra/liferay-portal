@@ -35,13 +35,13 @@ import javax.annotation.Generated;
 @Generated("")
 public interface KnowledgeBaseArticleResource {
 
-	public Page<KnowledgeBaseArticle> getContentSpaceKnowledgeBaseArticlesPage(
-			Long contentSpaceId, Boolean flatten, String search, Filter filter,
+	public Page<KnowledgeBaseArticle> getSiteKnowledgeBaseArticlesPage(
+			Long siteId, Boolean flatten, String search, Filter filter,
 			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public KnowledgeBaseArticle postContentSpaceKnowledgeBaseArticle(
-			Long contentSpaceId, KnowledgeBaseArticle knowledgeBaseArticle)
+	public KnowledgeBaseArticle postSiteKnowledgeBaseArticle(
+			Long siteId, KnowledgeBaseArticle knowledgeBaseArticle)
 		throws Exception;
 
 	public void deleteKnowledgeBaseArticle(Long knowledgeBaseArticleId)

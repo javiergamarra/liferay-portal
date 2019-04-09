@@ -35,21 +35,21 @@ import javax.annotation.Generated;
 @Generated("")
 public interface StructuredContentResource {
 
-	public Page<StructuredContent> getContentSpaceStructuredContentsPage(
-			Long contentSpaceId, Boolean flatten, String search, Filter filter,
+	public Page<StructuredContent> getSiteStructuredContentsPage(
+			Long siteId, Boolean flatten, String search, Filter filter,
 			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public StructuredContent postContentSpaceStructuredContent(
-			Long contentSpaceId, StructuredContent structuredContent)
+	public StructuredContent postSiteStructuredContent(
+			Long siteId, StructuredContent structuredContent)
 		throws Exception;
 
-	public StructuredContent getContentSpaceStructuredContentByKey(
-			Long contentSpaceId, String key)
+	public StructuredContent getSiteStructuredContentByKey(
+			Long siteId, String key)
 		throws Exception;
 
-	public StructuredContent getContentSpaceStructuredContentByUuid(
-			Long contentSpaceId, String uuid)
+	public StructuredContent getSiteStructuredContentByUuid(
+			Long siteId, String uuid)
 		throws Exception;
 
 	public Page<StructuredContent> getContentStructureStructuredContentsPage(

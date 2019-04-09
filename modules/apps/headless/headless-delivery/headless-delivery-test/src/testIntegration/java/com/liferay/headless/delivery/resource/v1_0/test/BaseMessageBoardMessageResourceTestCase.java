@@ -1778,11 +1778,6 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("contentSpaceId")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
 		if (entityFieldName.equals("creator")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -1842,6 +1837,11 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("siteId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("viewableBy")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -1856,13 +1856,13 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			{
 				anonymous = RandomTestUtil.randomBoolean();
 				articleBody = RandomTestUtil.randomString();
-				contentSpaceId = RandomTestUtil.randomLong();
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				encodingFormat = RandomTestUtil.randomString();
 				headline = RandomTestUtil.randomString();
 				id = RandomTestUtil.randomLong();
 				showAsAnswer = RandomTestUtil.randomBoolean();
+				siteId = RandomTestUtil.randomLong();
 			}
 		};
 	}

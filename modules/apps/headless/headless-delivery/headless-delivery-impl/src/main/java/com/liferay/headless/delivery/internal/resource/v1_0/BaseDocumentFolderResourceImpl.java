@@ -71,11 +71,11 @@ public abstract class BaseDocumentFolderResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "sorts")
 		}
 	)
-	@Path("/content-spaces/{contentSpaceId}/document-folders")
+	@Path("/sites/{siteId}/document-folders")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DocumentFolder")})
-	public Page<DocumentFolder> getContentSpaceDocumentFoldersPage(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Page<DocumentFolder> getSiteDocumentFoldersPage(
+			@NotNull @PathParam("siteId") Long siteId,
 			@QueryParam("flatten") Boolean flatten,
 			@QueryParam("search") String search, @Context Filter filter,
 			@Context Pagination pagination, @Context Sort[] sorts)
@@ -87,11 +87,11 @@ public abstract class BaseDocumentFolderResourceImpl
 	@Override
 	@Consumes("application/json")
 	@POST
-	@Path("/content-spaces/{contentSpaceId}/document-folders")
+	@Path("/sites/{siteId}/document-folders")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DocumentFolder")})
-	public DocumentFolder postContentSpaceDocumentFolder(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public DocumentFolder postSiteDocumentFolder(
+			@NotNull @PathParam("siteId") Long siteId,
 			DocumentFolder documentFolder)
 		throws Exception {
 
@@ -134,11 +134,6 @@ public abstract class BaseDocumentFolderResourceImpl
 		DocumentFolder existingDocumentFolder = getDocumentFolder(
 			documentFolderId);
 
-		if (documentFolder.getContentSpaceId() != null) {
-			existingDocumentFolder.setContentSpaceId(
-				documentFolder.getContentSpaceId());
-		}
-
 		if (documentFolder.getDateCreated() != null) {
 			existingDocumentFolder.setDateCreated(
 				documentFolder.getDateCreated());
@@ -166,6 +161,10 @@ public abstract class BaseDocumentFolderResourceImpl
 		if (documentFolder.getNumberOfDocuments() != null) {
 			existingDocumentFolder.setNumberOfDocuments(
 				documentFolder.getNumberOfDocuments());
+		}
+
+		if (documentFolder.getSiteId() != null) {
+			existingDocumentFolder.setSiteId(documentFolder.getSiteId());
 		}
 
 		if (documentFolder.getViewableBy() != null) {

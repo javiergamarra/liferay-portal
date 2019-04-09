@@ -34,13 +34,13 @@ import javax.annotation.Generated;
 @Generated("")
 public interface MessageBoardSectionResource {
 
-	public Page<MessageBoardSection> getContentSpaceMessageBoardSectionsPage(
-			Long contentSpaceId, Boolean flatten, String search, Filter filter,
+	public Page<MessageBoardSection> getSiteMessageBoardSectionsPage(
+			Long siteId, Boolean flatten, String search, Filter filter,
 			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public MessageBoardSection postContentSpaceMessageBoardSection(
-			Long contentSpaceId, MessageBoardSection messageBoardSection)
+	public MessageBoardSection postSiteMessageBoardSection(
+			Long siteId, MessageBoardSection messageBoardSection)
 		throws Exception;
 
 	public void deleteMessageBoardSection(Long messageBoardSectionId)

@@ -71,11 +71,11 @@ public abstract class BaseMessageBoardSectionResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "sorts")
 		}
 	)
-	@Path("/content-spaces/{contentSpaceId}/message-board-sections")
+	@Path("/sites/{siteId}/message-board-sections")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "MessageBoardSection")})
-	public Page<MessageBoardSection> getContentSpaceMessageBoardSectionsPage(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Page<MessageBoardSection> getSiteMessageBoardSectionsPage(
+			@NotNull @PathParam("siteId") Long siteId,
 			@QueryParam("flatten") Boolean flatten,
 			@QueryParam("search") String search, @Context Filter filter,
 			@Context Pagination pagination, @Context Sort[] sorts)
@@ -87,11 +87,11 @@ public abstract class BaseMessageBoardSectionResourceImpl
 	@Override
 	@Consumes("application/json")
 	@POST
-	@Path("/content-spaces/{contentSpaceId}/message-board-sections")
+	@Path("/sites/{siteId}/message-board-sections")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "MessageBoardSection")})
-	public MessageBoardSection postContentSpaceMessageBoardSection(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public MessageBoardSection postSiteMessageBoardSection(
+			@NotNull @PathParam("siteId") Long siteId,
 			MessageBoardSection messageBoardSection)
 		throws Exception {
 
@@ -137,11 +137,6 @@ public abstract class BaseMessageBoardSectionResourceImpl
 		MessageBoardSection existingMessageBoardSection =
 			getMessageBoardSection(messageBoardSectionId);
 
-		if (messageBoardSection.getContentSpaceId() != null) {
-			existingMessageBoardSection.setContentSpaceId(
-				messageBoardSection.getContentSpaceId());
-		}
-
 		if (messageBoardSection.getDateCreated() != null) {
 			existingMessageBoardSection.setDateCreated(
 				messageBoardSection.getDateCreated());
@@ -165,6 +160,11 @@ public abstract class BaseMessageBoardSectionResourceImpl
 		if (messageBoardSection.getNumberOfMessageBoardThreads() != null) {
 			existingMessageBoardSection.setNumberOfMessageBoardThreads(
 				messageBoardSection.getNumberOfMessageBoardThreads());
+		}
+
+		if (messageBoardSection.getSiteId() != null) {
+			existingMessageBoardSection.setSiteId(
+				messageBoardSection.getSiteId());
 		}
 
 		if (messageBoardSection.getTitle() != null) {

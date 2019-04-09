@@ -77,16 +77,16 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public Keyword postContentSpaceKeyword(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public Keyword postSiteKeyword(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("keyword") Keyword keyword)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_keywordResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			keywordResource -> keywordResource.postContentSpaceKeyword(
-				contentSpaceId, keyword));
+			keywordResource -> keywordResource.postSiteKeyword(
+				siteId, keyword));
 	}
 
 	@GraphQLInvokeDetached
@@ -185,8 +185,8 @@ public class Mutation {
 
 	@GraphQLField
 	@GraphQLInvokeDetached
-	public TaxonomyVocabulary postContentSpaceTaxonomyVocabulary(
-			@GraphQLName("contentSpaceId") Long contentSpaceId,
+	public TaxonomyVocabulary postSiteTaxonomyVocabulary(
+			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("taxonomyVocabulary") TaxonomyVocabulary
 				taxonomyVocabulary)
 		throws Exception {
@@ -195,8 +195,8 @@ public class Mutation {
 			_taxonomyVocabularyResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			taxonomyVocabularyResource ->
-				taxonomyVocabularyResource.postContentSpaceTaxonomyVocabulary(
-					contentSpaceId, taxonomyVocabulary));
+				taxonomyVocabularyResource.postSiteTaxonomyVocabulary(
+					siteId, taxonomyVocabulary));
 	}
 
 	@GraphQLInvokeDetached

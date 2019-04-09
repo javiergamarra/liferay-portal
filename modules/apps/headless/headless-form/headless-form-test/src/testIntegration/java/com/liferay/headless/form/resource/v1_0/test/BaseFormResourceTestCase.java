@@ -196,13 +196,14 @@ public abstract class BaseFormResourceTestCase {
 	protected Long testGetContentSpaceFormsPage_getContentSpaceId()
 		throws Exception {
 
-		return testGroup.getGroupId();
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	protected Long testGetContentSpaceFormsPage_getIrrelevantContentSpaceId()
 		throws Exception {
 
-		return irrelevantGroup.getGroupId();
+		return null;
 	}
 
 	protected Page<Form> invokeGetContentSpaceFormsPage(

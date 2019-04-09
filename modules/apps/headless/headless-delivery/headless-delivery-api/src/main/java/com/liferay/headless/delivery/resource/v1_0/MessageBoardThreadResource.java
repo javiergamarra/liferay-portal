@@ -35,13 +35,13 @@ import javax.annotation.Generated;
 @Generated("")
 public interface MessageBoardThreadResource {
 
-	public Page<MessageBoardThread> getContentSpaceMessageBoardThreadsPage(
-			Long contentSpaceId, Boolean flatten, String search, Filter filter,
+	public Page<MessageBoardThread> getSiteMessageBoardThreadsPage(
+			Long siteId, Boolean flatten, String search, Filter filter,
 			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public MessageBoardThread postContentSpaceMessageBoardThread(
-			Long contentSpaceId, MessageBoardThread messageBoardThread)
+	public MessageBoardThread postSiteMessageBoardThread(
+			Long siteId, MessageBoardThread messageBoardThread)
 		throws Exception;
 
 	public Page<MessageBoardThread>

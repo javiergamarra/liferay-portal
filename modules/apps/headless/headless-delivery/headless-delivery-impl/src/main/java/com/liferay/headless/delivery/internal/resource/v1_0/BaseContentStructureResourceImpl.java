@@ -66,11 +66,11 @@ public abstract class BaseContentStructureResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "sorts")
 		}
 	)
-	@Path("/content-spaces/{contentSpaceId}/content-structures")
+	@Path("/sites/{siteId}/content-structures")
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "ContentStructure")})
-	public Page<ContentStructure> getContentSpaceContentStructuresPage(
-			@NotNull @PathParam("contentSpaceId") Long contentSpaceId,
+	public Page<ContentStructure> getSiteContentStructuresPage(
+			@NotNull @PathParam("siteId") Long siteId,
 			@QueryParam("search") String search, @Context Filter filter,
 			@Context Pagination pagination, @Context Sort[] sorts)
 		throws Exception {

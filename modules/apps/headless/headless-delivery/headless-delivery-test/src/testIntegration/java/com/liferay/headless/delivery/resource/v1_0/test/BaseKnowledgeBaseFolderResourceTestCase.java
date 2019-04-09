@@ -109,21 +109,19 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceKnowledgeBaseFoldersPage() throws Exception {
-		Long contentSpaceId =
-			testGetContentSpaceKnowledgeBaseFoldersPage_getContentSpaceId();
-		Long irrelevantContentSpaceId =
-			testGetContentSpaceKnowledgeBaseFoldersPage_getIrrelevantContentSpaceId();
+	public void testGetSiteKnowledgeBaseFoldersPage() throws Exception {
+		Long siteId = testGetSiteKnowledgeBaseFoldersPage_getSiteId();
+		Long irrelevantSiteId =
+			testGetSiteKnowledgeBaseFoldersPage_getIrrelevantSiteId();
 
-		if ((irrelevantContentSpaceId != null)) {
+		if ((irrelevantSiteId != null)) {
 			KnowledgeBaseFolder irrelevantKnowledgeBaseFolder =
-				testGetContentSpaceKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
-					irrelevantContentSpaceId,
-					randomIrrelevantKnowledgeBaseFolder());
+				testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
+					irrelevantSiteId, randomIrrelevantKnowledgeBaseFolder());
 
 			Page<KnowledgeBaseFolder> page =
-				invokeGetContentSpaceKnowledgeBaseFoldersPage(
-					irrelevantContentSpaceId, Pagination.of(1, 2));
+				invokeGetSiteKnowledgeBaseFoldersPage(
+					irrelevantSiteId, Pagination.of(1, 2));
 
 			Assert.assertEquals(1, page.getTotalCount());
 
@@ -134,16 +132,15 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 		}
 
 		KnowledgeBaseFolder knowledgeBaseFolder1 =
-			testGetContentSpaceKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
-				contentSpaceId, randomKnowledgeBaseFolder());
+			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
+				siteId, randomKnowledgeBaseFolder());
 
 		KnowledgeBaseFolder knowledgeBaseFolder2 =
-			testGetContentSpaceKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
-				contentSpaceId, randomKnowledgeBaseFolder());
+			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
+				siteId, randomKnowledgeBaseFolder());
 
-		Page<KnowledgeBaseFolder> page =
-			invokeGetContentSpaceKnowledgeBaseFoldersPage(
-				contentSpaceId, Pagination.of(1, 2));
+		Page<KnowledgeBaseFolder> page = invokeGetSiteKnowledgeBaseFoldersPage(
+			siteId, Pagination.of(1, 2));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -154,27 +151,25 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentSpaceKnowledgeBaseFoldersPageWithPagination()
+	public void testGetSiteKnowledgeBaseFoldersPageWithPagination()
 		throws Exception {
 
-		Long contentSpaceId =
-			testGetContentSpaceKnowledgeBaseFoldersPage_getContentSpaceId();
+		Long siteId = testGetSiteKnowledgeBaseFoldersPage_getSiteId();
 
 		KnowledgeBaseFolder knowledgeBaseFolder1 =
-			testGetContentSpaceKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
-				contentSpaceId, randomKnowledgeBaseFolder());
+			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
+				siteId, randomKnowledgeBaseFolder());
 
 		KnowledgeBaseFolder knowledgeBaseFolder2 =
-			testGetContentSpaceKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
-				contentSpaceId, randomKnowledgeBaseFolder());
+			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
+				siteId, randomKnowledgeBaseFolder());
 
 		KnowledgeBaseFolder knowledgeBaseFolder3 =
-			testGetContentSpaceKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
-				contentSpaceId, randomKnowledgeBaseFolder());
+			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
+				siteId, randomKnowledgeBaseFolder());
 
-		Page<KnowledgeBaseFolder> page1 =
-			invokeGetContentSpaceKnowledgeBaseFoldersPage(
-				contentSpaceId, Pagination.of(1, 2));
+		Page<KnowledgeBaseFolder> page1 = invokeGetSiteKnowledgeBaseFoldersPage(
+			siteId, Pagination.of(1, 2));
 
 		List<KnowledgeBaseFolder> knowledgeBaseFolders1 =
 			(List<KnowledgeBaseFolder>)page1.getItems();
@@ -182,9 +177,8 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 		Assert.assertEquals(
 			knowledgeBaseFolders1.toString(), 2, knowledgeBaseFolders1.size());
 
-		Page<KnowledgeBaseFolder> page2 =
-			invokeGetContentSpaceKnowledgeBaseFoldersPage(
-				contentSpaceId, Pagination.of(2, 2));
+		Page<KnowledgeBaseFolder> page2 = invokeGetSiteKnowledgeBaseFoldersPage(
+			siteId, Pagination.of(2, 2));
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -207,40 +201,35 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 	}
 
 	protected KnowledgeBaseFolder
-			testGetContentSpaceKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
-				Long contentSpaceId, KnowledgeBaseFolder knowledgeBaseFolder)
+			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
+				Long siteId, KnowledgeBaseFolder knowledgeBaseFolder)
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long
-			testGetContentSpaceKnowledgeBaseFoldersPage_getContentSpaceId()
+	protected Long testGetSiteKnowledgeBaseFoldersPage_getSiteId()
 		throws Exception {
 
 		return testGroup.getGroupId();
 	}
 
-	protected Long
-			testGetContentSpaceKnowledgeBaseFoldersPage_getIrrelevantContentSpaceId()
+	protected Long testGetSiteKnowledgeBaseFoldersPage_getIrrelevantSiteId()
 		throws Exception {
 
 		return irrelevantGroup.getGroupId();
 	}
 
-	protected Page<KnowledgeBaseFolder>
-			invokeGetContentSpaceKnowledgeBaseFoldersPage(
-				Long contentSpaceId, Pagination pagination)
+	protected Page<KnowledgeBaseFolder> invokeGetSiteKnowledgeBaseFoldersPage(
+			Long siteId, Pagination pagination)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/knowledge-base-folders",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/knowledge-base-folders", siteId);
 
 		location = HttpUtil.addParameter(
 			location, "page", pagination.getPage());
@@ -261,18 +250,15 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			});
 	}
 
-	protected Http.Response
-			invokeGetContentSpaceKnowledgeBaseFoldersPageResponse(
-				Long contentSpaceId, Pagination pagination)
+	protected Http.Response invokeGetSiteKnowledgeBaseFoldersPageResponse(
+			Long siteId, Pagination pagination)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/knowledge-base-folders",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/knowledge-base-folders", siteId);
 
 		location = HttpUtil.addParameter(
 			location, "page", pagination.getPage());
@@ -287,12 +273,12 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 	}
 
 	@Test
-	public void testPostContentSpaceKnowledgeBaseFolder() throws Exception {
+	public void testPostSiteKnowledgeBaseFolder() throws Exception {
 		KnowledgeBaseFolder randomKnowledgeBaseFolder =
 			randomKnowledgeBaseFolder();
 
 		KnowledgeBaseFolder postKnowledgeBaseFolder =
-			testPostContentSpaceKnowledgeBaseFolder_addKnowledgeBaseFolder(
+			testPostSiteKnowledgeBaseFolder_addKnowledgeBaseFolder(
 				randomKnowledgeBaseFolder);
 
 		assertEquals(randomKnowledgeBaseFolder, postKnowledgeBaseFolder);
@@ -300,7 +286,7 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 	}
 
 	protected KnowledgeBaseFolder
-			testPostContentSpaceKnowledgeBaseFolder_addKnowledgeBaseFolder(
+			testPostSiteKnowledgeBaseFolder_addKnowledgeBaseFolder(
 				KnowledgeBaseFolder knowledgeBaseFolder)
 		throws Exception {
 
@@ -308,8 +294,8 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			"This method needs to be implemented");
 	}
 
-	protected KnowledgeBaseFolder invokePostContentSpaceKnowledgeBaseFolder(
-			Long contentSpaceId, KnowledgeBaseFolder knowledgeBaseFolder)
+	protected KnowledgeBaseFolder invokePostSiteKnowledgeBaseFolder(
+			Long siteId, KnowledgeBaseFolder knowledgeBaseFolder)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -320,9 +306,7 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/knowledge-base-folders",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/knowledge-base-folders", siteId);
 
 		options.setLocation(location);
 
@@ -345,8 +329,8 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 		}
 	}
 
-	protected Http.Response invokePostContentSpaceKnowledgeBaseFolderResponse(
-			Long contentSpaceId, KnowledgeBaseFolder knowledgeBaseFolder)
+	protected Http.Response invokePostSiteKnowledgeBaseFolderResponse(
+			Long siteId, KnowledgeBaseFolder knowledgeBaseFolder)
 		throws Exception {
 
 		Http.Options options = _createHttpOptions();
@@ -357,9 +341,7 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 
 		String location =
 			_resourceURL +
-				_toPath(
-					"/content-spaces/{contentSpaceId}/knowledge-base-folders",
-					contentSpaceId);
+				_toPath("/sites/{siteId}/knowledge-base-folders", siteId);
 
 		options.setLocation(location);
 
@@ -1105,11 +1087,6 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 		sb.append(operator);
 		sb.append(" ");
 
-		if (entityFieldName.equals("contentSpaceId")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
 		if (entityFieldName.equals("creator")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -1169,6 +1146,11 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("siteId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("viewableBy")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -1181,13 +1163,13 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 	protected KnowledgeBaseFolder randomKnowledgeBaseFolder() {
 		return new KnowledgeBaseFolder() {
 			{
-				contentSpaceId = RandomTestUtil.randomLong();
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				description = RandomTestUtil.randomString();
 				id = RandomTestUtil.randomLong();
 				name = RandomTestUtil.randomString();
 				parentKnowledgeBaseFolderId = RandomTestUtil.randomLong();
+				siteId = RandomTestUtil.randomLong();
 			}
 		};
 	}
