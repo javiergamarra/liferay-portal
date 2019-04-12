@@ -4,12 +4,15 @@ components:
             description: https://www.schema.org/AggregateRating
             properties:
                 bestRating:
+                    readOnly: true
                     type: number
                 ratingCount:
+                    readOnly: true
                     type: number
                 ratingValue:
                     type: number
                 worstRating:
+                    readOnly: true
                     type: number
             type: object
         BlogPosting:
@@ -17,17 +20,21 @@ components:
             properties:
                 aggregateRating:
                     $ref: "#/components/schemas/AggregateRating"
+                    readOnly: true
                 alternativeHeadline:
                     type: string
                 articleBody:
                     type: string
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 datePublished:
                     format: date-time
@@ -35,6 +42,7 @@ components:
                 description:
                     type: string
                 encodingFormat:
+                    readOnly: true
                     type: string
                 friendlyUrlPath:
                     type: string
@@ -42,6 +50,7 @@ components:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 image:
                     properties:
@@ -54,16 +63,17 @@ components:
                         imageId:
                             format: int64
                             type: integer
-                            writeOnly: true
                     type: object
                 keywords:
                     items:
                         type: string
                     type: array
                 numberOfComments:
+                    readOnly: true
                     type: number
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 taxonomyCategories:
                     items:
@@ -94,16 +104,20 @@ components:
             description: https://www.schema.org/BlogPostingImage
             properties:
                 contentUrl:
+                    readOnly: true
                     type: string
                 encodingFormat:
+                    readOnly: true
                     type: string
                 fileExtension:
                     readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 sizeInBytes:
+                    readOnly: true
                     type: number
                 title:
                     type: string
@@ -117,16 +131,21 @@ components:
             properties:
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 numberOfComments:
+                    readOnly: true
                     type: number
                 text:
                     type: string
@@ -136,10 +155,12 @@ components:
             properties:
                 contentUrl:
                     format: uri
+                    readOnly: true
                     type: string
                 description:
                     type: string
                 encodingFormat:
+                    readOnly: true
                     type: string
                 fileExtension:
                     readOnly: true
@@ -148,6 +169,7 @@ components:
                     format: int64
                     type: integer
                 sizeInBytes:
+                    readOnly: true
                     type: number
                 title:
                     type: string
@@ -156,10 +178,13 @@ components:
             description: https://www.schema.org/ContentField
             properties:
                 dataType:
+                    readOnly: true
                     type: string
                 inputControl:
+                    readOnly: true
                     type: string
                 label:
+                    readOnly: true
                     type: string
                 name:
                     type: string
@@ -168,6 +193,7 @@ components:
                         $ref: "#/components/schemas/ContentField"
                     type: array
                 repeatable:
+                    readOnly: true
                     type: boolean
                 value:
                     properties:
@@ -206,13 +232,17 @@ components:
             description: https://www.schema.org/ContentSetElement
             properties:
                 content:
+                    readOnly: true
                     type: object
                 contentType:
+                    readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 title:
+                    readOnly: true
                     type: string
         ContentStructure:
             description: https://www.schema.org/ContentStructure
@@ -220,48 +250,64 @@ components:
                 availableLanguages:
                     items:
                         type: string
+                    readOnly: true
                     type: array
                 contentStructureFields:
                     items:
                         $ref: "#/components/schemas/ContentStructureField"
+                    readOnly: true
                     type: array
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 description:
+                    readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 name:
+                    readOnly: true
                     type: string
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
             type: object
         ContentStructureField:
             description: https://www.schema.org/ContentStructureField
             properties:
                 dataType:
+                    readOnly: true
                     type: string
                 inputControl:
+                    readOnly: true
                     type: string
                 label:
+                    readOnly: true
                     type: string
                 localizable:
+                    readOnly: true
                     type: boolean
                 multiple:
+                    readOnly: true
                     type: boolean
                 name:
+                    readOnly: true
                     type: string
                 nestedContentStructureFields:
                     items:
                         $ref: "#/components/schemas/ContentStructureField"
+                    readOnly: true
                     type: array
                 options:
                     items:
@@ -271,35 +317,47 @@ components:
                             value:
                                 type: string
                         type: object
+                    readOnly: true
                     type: array
                 predefinedValue:
+                    readOnly: true
                     type: string
                 repeatable:
+                    readOnly: true
                     type: boolean
                 required:
+                    readOnly: true
                     type: boolean
                 showLabel:
+                    readOnly: true
                     type: boolean
             type: object
         Creator:
             description: https://www.schema.org/Creator
             properties:
                 additionalName:
+                    readOnly: true
                     type: string
                 familyName:
+                    readOnly: true
                     type: string
                 givenName:
+                    readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 image:
                     format: uri
+                    readOnly: true
                     type: string
                 name:
+                    readOnly: true
                     type: string
                 profileURL:
                     format: uri
+                    readOnly: true
                     type: string
             type: object
         Document:
@@ -321,40 +379,51 @@ components:
                             width:
                                 type: number
                         type: object
+                    readOnly: true
                     type: array
                 aggregateRating:
                     $ref: "#/components/schemas/AggregateRating"
+                    readOnly: true
                 contentUrl:
                     format: binary
+                    readOnly: true
                     type: string
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 description:
                     type: string
                 documentFolderId:
                     format: int64
                     type: integer
+                    readOnly: true
                 encodingFormat:
+                    readOnly: true
                     type: string
                 fileExtension:
                     readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 keywords:
                     items:
                         type: string
                     type: array
                 numberOfComments:
+                    readOnly: true
                     type: number
                 sizeInBytes:
+                    readOnly: true
                     type: number
                 taxonomyCategories:
                     items:
@@ -385,25 +454,32 @@ components:
             properties:
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 description:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 name:
                     type: string
                 numberOfDocumentFolders:
+                    readOnly: true
                     type: number
                 numberOfDocuments:
+                    readOnly: true
                     type: number
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 viewableBy:
                     enum: [Anyone, Members, Owner]
@@ -417,32 +493,40 @@ components:
             properties:
                 aggregateRating:
                     $ref: "#/components/schemas/AggregateRating"
+                    readOnly: true
                 articleBody:
                     type: string
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 description:
                     type: string
                 encodingFormat:
+                    readOnly: true
                     type: string
                 friendlyUrlPath:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 keywords:
                     items:
                         type: string
                     type: array
                 numberOfAttachments:
+                    readOnly: true
                     type: number
                 numberOfKnowledgeBaseArticles:
+                    readOnly: true
                     type: number
                 parentKnowledgeBaseFolder:
                     properties:
@@ -451,6 +535,7 @@ components:
                             type: integer
                         folderName:
                             type: string
+                    readOnly: true
                     type: object
                 parentKnowledgeBaseFolderId:
                     format: int64
@@ -458,6 +543,7 @@ components:
                     writeOnly: true
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 taxonomyCategories:
                     items:
@@ -489,16 +575,20 @@ components:
             description: https://www.schema.org/KnowledgeBaseAttachment
             properties:
                 contentUrl:
+                    readOnly: true
                     type: string
                 encodingFormat:
+                    readOnly: true
                     type: string
                 fileExtension:
                     readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 sizeInBytes:
+                    readOnly: true
                     type: number
                 title:
                     type: string
@@ -508,22 +598,28 @@ components:
             properties:
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 description:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 name:
                     type: string
                 numberOfKnowledgeBaseArticles:
+                    readOnly: true
                     type: number
                 numberOfKnowledgeBaseFolders:
+                    readOnly: true
                     type: number
                 parentKnowledgeBaseFolder:
                     properties:
@@ -532,6 +628,7 @@ components:
                             type: integer
                         folderName:
                             type: string
+                    readOnly: true
                     type: object
                 parentKnowledgeBaseFolderId:
                     format: int64
@@ -539,6 +636,7 @@ components:
                     writeOnly: true
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 viewableBy:
                     enum: [Anyone, Members, Owner]
@@ -551,16 +649,20 @@ components:
             description: https://www.schema.org/MessageBoardAttachment
             properties:
                 contentUrl:
+                    readOnly: true
                     type: string
                 encodingFormat:
+                    readOnly: true
                     type: string
                 fileExtension:
                     readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 sizeInBytes:
+                    readOnly: true
                     type: number
                 title:
                     type: string
@@ -570,24 +672,30 @@ components:
             properties:
                 aggregateRating:
                     $ref: "#/components/schemas/AggregateRating"
+                    readOnly: true
                 anonymous:
                     type: boolean
                 articleBody:
                     type: string
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 encodingFormat:
+                    readOnly: true
                     type: string
                 headline:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 keywords:
                     items:
@@ -603,6 +711,7 @@ components:
                     type: boolean
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 viewableBy:
                     enum: [Anyone, Members, Owner]
@@ -614,16 +723,20 @@ components:
             properties:
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 description:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 numberOfMessageBoardSections:
                     readOnly: true
@@ -633,6 +746,7 @@ components:
                     type: integer
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 title:
                     type: string
@@ -648,22 +762,28 @@ components:
             properties:
                 aggregateRating:
                     $ref: "#/components/schemas/AggregateRating"
+                    readOnly: true
                 articleBody:
                     type: string
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 encodingFormat:
+                    readOnly: true
                     type: string
                 headline:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 keywords:
                     items:
@@ -679,6 +799,7 @@ components:
                     type: boolean
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 threadType:
                     type: string
@@ -697,14 +818,18 @@ components:
                     type: number
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 ratingValue:
                     type: number
@@ -717,9 +842,11 @@ components:
             properties:
                 aggregateRating:
                     $ref: "#/components/schemas/AggregateRating"
+                    readOnly: true
                 availableLanguages:
                     items:
                         type: string
+                    readOnly: true
                     type: array
                 contentFields:
                     items:
@@ -730,11 +857,14 @@ components:
                     type: integer
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 datePublished:
                     format: date-time
@@ -745,17 +875,17 @@ components:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 key:
+                    readOnly: true
                     type: string
                 keywords:
                     items:
                         type: string
                     type: array
-                lastReviewed:
-                    format: date-time
-                    type: string
                 numberOfComments:
+                    readOnly: true
                     type: number
                 renderedContents:
                     description: https://www.schema.org/templates
@@ -767,9 +897,11 @@ components:
                             templateName:
                                 type: string
                         type: object
+                    readOnly: true
                     type: array
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 taxonomyCategories:
                     items:
@@ -780,6 +912,7 @@ components:
                             taxonomyCategoryName:
                                 type: string
                         type: object
+                    readOnly: true
                     type: array
                 taxonomyCategoryIds:
                     items:
@@ -790,6 +923,7 @@ components:
                 title:
                     type: string
                 uuid:
+                    readOnly: true
                     type: string
                 viewableBy:
                     enum: [Anyone, Members, Owner]
@@ -802,25 +936,32 @@ components:
             properties:
                 creator:
                     $ref: "#/components/schemas/Creator"
+                    readOnly: true
                 dateCreated:
                     format: date-time
+                    readOnly: true
                     type: string
                 dateModified:
                     format: date-time
+                    readOnly: true
                     type: string
                 description:
                     type: string
                 id:
                     format: int64
+                    readOnly: true
                     type: integer
                 name:
                     type: string
                 numberOfStructuredContentFolders:
+                    readOnly: true
                     type: number
                 numberOfStructuredContents:
+                    readOnly: true
                     type: number
                 siteId:
                     format: int64
+                    readOnly: true
                     type: integer
                 viewableBy:
                     enum: [Anyone, Members, Owner]
