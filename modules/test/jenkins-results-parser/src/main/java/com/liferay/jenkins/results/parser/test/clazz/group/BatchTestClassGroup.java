@@ -109,6 +109,13 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 		portalGitWorkingDirectory =
 			portalTestClassJob.getPortalGitWorkingDirectory();
 
+		String portalBranchName =
+			portalGitWorkingDirectory.getUpstreamBranchName();
+
+		if (portalBranchName.endsWith("-private")) {
+			testPrivatePortalBranch = true;
+		}
+
 		if (portalTestClassJob instanceof TestSuiteJob) {
 			TestSuiteJob testSuiteJob = (TestSuiteJob)portalTestClassJob;
 
@@ -381,6 +388,7 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 	protected final List<PathMatcher> includesPathMatchers = new ArrayList<>();
 	protected final Properties jobProperties;
 	protected final PortalGitWorkingDirectory portalGitWorkingDirectory;
+	protected boolean testPrivatePortalBranch;
 	protected boolean testReleaseBundle;
 	protected boolean testRelevantChanges;
 	protected boolean testRelevantIntegrationUnitOnly;

@@ -613,12 +613,21 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 		String propertyValue = getFirstPropertyValue(
 			"test.batch.class.names.excludes");
 
-		if (propertyValue != null) {
+		if (propertyValue == null) {
+			propertyValue = JenkinsResultsParserUtil.getProperty(
+				jobProperties, "test.class.names.excludes");
+		}
+
+		if (testPrivatePortalBranch) {
 			return propertyValue;
 		}
 
-		return JenkinsResultsParserUtil.getProperty(
-			jobProperties, "test.class.names.excludes");
+		if (propertyValue.isEmpty()) {
+			return _GLOB_MODULES_PRIVATE;
+		}
+
+		return JenkinsResultsParserUtil.combine(
+			propertyValue, ",", _GLOB_MODULES_PRIVATE);
 	}
 
 	private String _getTestClassNamesIncludesPropertyValue() {
@@ -731,6 +740,8 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 	private static final boolean _ENABLE_INCLUDE_AUTO_BALANCE_TESTS_DEFAULT =
 		false;
+
+	private static final String _GLOB_MODULES_PRIVATE = "modules/private/**";
 
 	private static final Pattern _packagePathPattern = Pattern.compile(
 		".*/(?<packagePath>com/.*)");
