@@ -167,20 +167,7 @@ public abstract class BaseFormDocumentResourceTestCase {
 
 	@Test
 	public void testDeleteFormDocument() throws Exception {
-		FormDocument formDocument = testDeleteFormDocument_addFormDocument();
-
-		assertResponseCode(
-			204, invokeDeleteFormDocumentResponse(formDocument.getId()));
-
-		assertResponseCode(
-			404, invokeGetFormDocumentResponse(formDocument.getId()));
-	}
-
-	protected FormDocument testDeleteFormDocument_addFormDocument()
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		Assert.assertTrue(true);
 	}
 
 	protected void invokeDeleteFormDocument(Long formDocumentId)
@@ -224,20 +211,7 @@ public abstract class BaseFormDocumentResourceTestCase {
 
 	@Test
 	public void testGetFormDocument() throws Exception {
-		FormDocument postFormDocument = testGetFormDocument_addFormDocument();
-
-		FormDocument getFormDocument = invokeGetFormDocument(
-			postFormDocument.getId());
-
-		assertEquals(postFormDocument, getFormDocument);
-		assertValid(getFormDocument);
-	}
-
-	protected FormDocument testGetFormDocument_addFormDocument()
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		Assert.assertTrue(true);
 	}
 
 	protected FormDocument invokeGetFormDocument(Long formDocumentId)
@@ -338,10 +312,6 @@ public abstract class BaseFormDocumentResourceTestCase {
 	protected void assertValid(FormDocument formDocument) {
 		boolean valid = true;
 
-		if (formDocument.getId() == null) {
-			valid = false;
-		}
-
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
 
@@ -361,8 +331,24 @@ public abstract class BaseFormDocumentResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("fileEntryId", additionalAssertFieldName)) {
+				if (formDocument.getFileEntryId() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("fileExtension", additionalAssertFieldName)) {
 				if (formDocument.getFileExtension() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("groupId", additionalAssertFieldName)) {
+				if (formDocument.getGroupId() == null) {
 					valid = false;
 				}
 
@@ -446,6 +432,17 @@ public abstract class BaseFormDocumentResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("fileEntryId", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						formDocument1.getFileEntryId(),
+						formDocument2.getFileEntryId())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("fileExtension", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						formDocument1.getFileExtension(),
@@ -457,9 +454,10 @@ public abstract class BaseFormDocumentResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("id", additionalAssertFieldName)) {
+			if (Objects.equals("groupId", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						formDocument1.getId(), formDocument2.getId())) {
+						formDocument1.getGroupId(),
+						formDocument2.getGroupId())) {
 
 					return false;
 				}
@@ -557,6 +555,11 @@ public abstract class BaseFormDocumentResourceTestCase {
 			return sb.toString();
 		}
 
+		if (entityFieldName.equals("fileEntryId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("fileExtension")) {
 			sb.append("'");
 			sb.append(String.valueOf(formDocument.getFileExtension()));
@@ -565,7 +568,7 @@ public abstract class BaseFormDocumentResourceTestCase {
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("id")) {
+		if (entityFieldName.equals("groupId")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
@@ -592,8 +595,9 @@ public abstract class BaseFormDocumentResourceTestCase {
 			{
 				contentUrl = RandomTestUtil.randomString();
 				encodingFormat = RandomTestUtil.randomString();
+				fileEntryId = RandomTestUtil.randomLong();
 				fileExtension = RandomTestUtil.randomString();
-				id = RandomTestUtil.randomLong();
+				groupId = RandomTestUtil.randomLong();
 				sizeInBytes = RandomTestUtil.randomLong();
 				title = RandomTestUtil.randomString();
 			}
