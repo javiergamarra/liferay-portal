@@ -72,6 +72,7 @@ public class SiteValidatorContainerRequestFilterTest {
 
 		properties.put("liferay.auth.verifier", true);
 		properties.put("liferay.oauth2", false);
+		properties.put("guest.allowed", true);
 		properties.put("osgi.jaxrs.application.base", "/test-vulcan");
 		properties.put(
 			"osgi.jaxrs.extension.select", "(osgi.jaxrs.name=Liferay.Vulcan)");
