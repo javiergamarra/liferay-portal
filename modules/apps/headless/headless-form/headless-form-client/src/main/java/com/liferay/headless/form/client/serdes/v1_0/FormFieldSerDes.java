@@ -14,8 +14,8 @@
 
 package com.liferay.headless.form.client.serdes.v1_0;
 
-import com.liferay.headless.form.client.dto.v1_0.Field;
-import com.liferay.headless.form.client.dto.v1_0.Option;
+import com.liferay.headless.form.client.dto.v1_0.FormField;
+import com.liferay.headless.form.client.dto.v1_0.FormFieldOption;
 import com.liferay.headless.form.client.json.BaseJSONParser;
 
 import java.util.HashMap;
@@ -32,22 +32,22 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class FieldSerDes {
+public class FormFieldSerDes {
 
-	public static Field toDTO(String json) {
-		FieldJSONParser fieldJSONParser = new FieldJSONParser();
+	public static FormField toDTO(String json) {
+		FormFieldJSONParser formFieldJSONParser = new FormFieldJSONParser();
 
-		return fieldJSONParser.parseToDTO(json);
+		return formFieldJSONParser.parseToDTO(json);
 	}
 
-	public static Field[] toDTOs(String json) {
-		FieldJSONParser fieldJSONParser = new FieldJSONParser();
+	public static FormField[] toDTOs(String json) {
+		FormFieldJSONParser formFieldJSONParser = new FormFieldJSONParser();
 
-		return fieldJSONParser.parseToDTOs(json);
+		return formFieldJSONParser.parseToDTOs(json);
 	}
 
-	public static String toJSON(Field field) {
-		if (field == null) {
+	public static String toJSON(FormField formField) {
+		if (formField == null) {
 			return "null";
 		}
 
@@ -55,17 +55,17 @@ public class FieldSerDes {
 
 		sb.append("{");
 
-		if (field.getAutocomplete() != null) {
+		if (formField.getAutocomplete() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"autocomplete\": ");
 
-			sb.append(field.getAutocomplete());
+			sb.append(formField.getAutocomplete());
 		}
 
-		if (field.getDataSourceType() != null) {
+		if (formField.getDataSourceType() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -74,12 +74,12 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getDataSourceType()));
+			sb.append(_escape(formField.getDataSourceType()));
 
 			sb.append("\"");
 		}
 
-		if (field.getDataType() != null) {
+		if (formField.getDataType() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -88,12 +88,12 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getDataType()));
+			sb.append(_escape(formField.getDataType()));
 
 			sb.append("\"");
 		}
 
-		if (field.getDisplayStyle() != null) {
+		if (formField.getDisplayStyle() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -102,62 +102,82 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getDisplayStyle()));
+			sb.append(_escape(formField.getDisplayStyle()));
 
 			sb.append("\"");
 		}
 
-		if (field.getGrid() != null) {
+		if (formField.getFormFieldOptions() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"formFieldOptions\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < formField.getFormFieldOptions().length; i++) {
+				sb.append(String.valueOf(formField.getFormFieldOptions()[i]));
+
+				if ((i + 1) < formField.getFormFieldOptions().length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
+		if (formField.getGrid() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"grid\": ");
 
-			sb.append(String.valueOf(field.getGrid()));
+			sb.append(String.valueOf(formField.getGrid()));
 		}
 
-		if (field.getHasFormRules() != null) {
+		if (formField.getHasFormRules() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"hasFormRules\": ");
 
-			sb.append(field.getHasFormRules());
+			sb.append(formField.getHasFormRules());
 		}
 
-		if (field.getId() != null) {
+		if (formField.getId() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"id\": ");
 
-			sb.append(field.getId());
+			sb.append(formField.getId());
 		}
 
-		if (field.getImmutable() != null) {
+		if (formField.getImmutable() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"immutable\": ");
 
-			sb.append(field.getImmutable());
+			sb.append(formField.getImmutable());
 		}
 
-		if (field.getInline() != null) {
+		if (formField.getInline() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"inline\": ");
 
-			sb.append(field.getInline());
+			sb.append(formField.getInline());
 		}
 
-		if (field.getInputControl() != null) {
+		if (formField.getInputControl() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -166,12 +186,12 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getInputControl()));
+			sb.append(_escape(formField.getInputControl()));
 
 			sb.append("\"");
 		}
 
-		if (field.getLabel() != null) {
+		if (formField.getLabel() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -180,32 +200,32 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getLabel()));
+			sb.append(_escape(formField.getLabel()));
 
 			sb.append("\"");
 		}
 
-		if (field.getLocalizable() != null) {
+		if (formField.getLocalizable() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"localizable\": ");
 
-			sb.append(field.getLocalizable());
+			sb.append(formField.getLocalizable());
 		}
 
-		if (field.getMultiple() != null) {
+		if (formField.getMultiple() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"multiple\": ");
 
-			sb.append(field.getMultiple());
+			sb.append(formField.getMultiple());
 		}
 
-		if (field.getName() != null) {
+		if (formField.getName() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -214,32 +234,12 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getName()));
+			sb.append(_escape(formField.getName()));
 
 			sb.append("\"");
 		}
 
-		if (field.getOptions() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"options\": ");
-
-			sb.append("[");
-
-			for (int i = 0; i < field.getOptions().length; i++) {
-				sb.append(String.valueOf(field.getOptions()[i]));
-
-				if ((i + 1) < field.getOptions().length) {
-					sb.append(", ");
-				}
-			}
-
-			sb.append("]");
-		}
-
-		if (field.getPlaceholder() != null) {
+		if (formField.getPlaceholder() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -248,12 +248,12 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getPlaceholder()));
+			sb.append(_escape(formField.getPlaceholder()));
 
 			sb.append("\"");
 		}
 
-		if (field.getPredefinedValue() != null) {
+		if (formField.getPredefinedValue() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -262,62 +262,62 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getPredefinedValue()));
+			sb.append(_escape(formField.getPredefinedValue()));
 
 			sb.append("\"");
 		}
 
-		if (field.getReadOnly() != null) {
+		if (formField.getReadOnly() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"readOnly\": ");
 
-			sb.append(field.getReadOnly());
+			sb.append(formField.getReadOnly());
 		}
 
-		if (field.getRepeatable() != null) {
+		if (formField.getRepeatable() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"repeatable\": ");
 
-			sb.append(field.getRepeatable());
+			sb.append(formField.getRepeatable());
 		}
 
-		if (field.getRequired() != null) {
+		if (formField.getRequired() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"required\": ");
 
-			sb.append(field.getRequired());
+			sb.append(formField.getRequired());
 		}
 
-		if (field.getShowAsSwitcher() != null) {
+		if (formField.getShowAsSwitcher() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"showAsSwitcher\": ");
 
-			sb.append(field.getShowAsSwitcher());
+			sb.append(formField.getShowAsSwitcher());
 		}
 
-		if (field.getShowLabel() != null) {
+		if (formField.getShowLabel() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"showLabel\": ");
 
-			sb.append(field.getShowLabel());
+			sb.append(formField.getShowLabel());
 		}
 
-		if (field.getStyle() != null) {
+		if (formField.getStyle() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -326,12 +326,12 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getStyle()));
+			sb.append(_escape(formField.getStyle()));
 
 			sb.append("\"");
 		}
 
-		if (field.getText() != null) {
+		if (formField.getText() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -340,12 +340,12 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getText()));
+			sb.append(_escape(formField.getText()));
 
 			sb.append("\"");
 		}
 
-		if (field.getTooltip() != null) {
+		if (formField.getTooltip() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -354,19 +354,19 @@ public class FieldSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(field.getTooltip()));
+			sb.append(_escape(formField.getTooltip()));
 
 			sb.append("\"");
 		}
 
-		if (field.getValidation() != null) {
+		if (formField.getValidation() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"validation\": ");
 
-			sb.append(String.valueOf(field.getValidation()));
+			sb.append(String.valueOf(formField.getValidation()));
 		}
 
 		sb.append("}");
@@ -375,201 +375,210 @@ public class FieldSerDes {
 	}
 
 	public static Map<String, Object> toMap(String json) {
-		FieldJSONParser fieldJSONParser = new FieldJSONParser();
+		FormFieldJSONParser formFieldJSONParser = new FormFieldJSONParser();
 
-		return fieldJSONParser.parseToMap(json);
+		return formFieldJSONParser.parseToMap(json);
 	}
 
-	public static Map<String, String> toMap(Field field) {
-		if (field == null) {
+	public static Map<String, String> toMap(FormField formField) {
+		if (formField == null) {
 			return null;
 		}
 
 		Map<String, String> map = new HashMap<>();
 
-		if (field.getAutocomplete() == null) {
+		if (formField.getAutocomplete() == null) {
 			map.put("autocomplete", null);
 		}
 		else {
-			map.put("autocomplete", String.valueOf(field.getAutocomplete()));
+			map.put(
+				"autocomplete", String.valueOf(formField.getAutocomplete()));
 		}
 
-		if (field.getDataSourceType() == null) {
+		if (formField.getDataSourceType() == null) {
 			map.put("dataSourceType", null);
 		}
 		else {
 			map.put(
-				"dataSourceType", String.valueOf(field.getDataSourceType()));
+				"dataSourceType",
+				String.valueOf(formField.getDataSourceType()));
 		}
 
-		if (field.getDataType() == null) {
+		if (formField.getDataType() == null) {
 			map.put("dataType", null);
 		}
 		else {
-			map.put("dataType", String.valueOf(field.getDataType()));
+			map.put("dataType", String.valueOf(formField.getDataType()));
 		}
 
-		if (field.getDisplayStyle() == null) {
+		if (formField.getDisplayStyle() == null) {
 			map.put("displayStyle", null);
 		}
 		else {
-			map.put("displayStyle", String.valueOf(field.getDisplayStyle()));
+			map.put(
+				"displayStyle", String.valueOf(formField.getDisplayStyle()));
 		}
 
-		if (field.getGrid() == null) {
+		if (formField.getFormFieldOptions() == null) {
+			map.put("formFieldOptions", null);
+		}
+		else {
+			map.put(
+				"formFieldOptions",
+				String.valueOf(formField.getFormFieldOptions()));
+		}
+
+		if (formField.getGrid() == null) {
 			map.put("grid", null);
 		}
 		else {
-			map.put("grid", String.valueOf(field.getGrid()));
+			map.put("grid", String.valueOf(formField.getGrid()));
 		}
 
-		if (field.getHasFormRules() == null) {
+		if (formField.getHasFormRules() == null) {
 			map.put("hasFormRules", null);
 		}
 		else {
-			map.put("hasFormRules", String.valueOf(field.getHasFormRules()));
+			map.put(
+				"hasFormRules", String.valueOf(formField.getHasFormRules()));
 		}
 
-		if (field.getId() == null) {
+		if (formField.getId() == null) {
 			map.put("id", null);
 		}
 		else {
-			map.put("id", String.valueOf(field.getId()));
+			map.put("id", String.valueOf(formField.getId()));
 		}
 
-		if (field.getImmutable() == null) {
+		if (formField.getImmutable() == null) {
 			map.put("immutable", null);
 		}
 		else {
-			map.put("immutable", String.valueOf(field.getImmutable()));
+			map.put("immutable", String.valueOf(formField.getImmutable()));
 		}
 
-		if (field.getInline() == null) {
+		if (formField.getInline() == null) {
 			map.put("inline", null);
 		}
 		else {
-			map.put("inline", String.valueOf(field.getInline()));
+			map.put("inline", String.valueOf(formField.getInline()));
 		}
 
-		if (field.getInputControl() == null) {
+		if (formField.getInputControl() == null) {
 			map.put("inputControl", null);
 		}
 		else {
-			map.put("inputControl", String.valueOf(field.getInputControl()));
+			map.put(
+				"inputControl", String.valueOf(formField.getInputControl()));
 		}
 
-		if (field.getLabel() == null) {
+		if (formField.getLabel() == null) {
 			map.put("label", null);
 		}
 		else {
-			map.put("label", String.valueOf(field.getLabel()));
+			map.put("label", String.valueOf(formField.getLabel()));
 		}
 
-		if (field.getLocalizable() == null) {
+		if (formField.getLocalizable() == null) {
 			map.put("localizable", null);
 		}
 		else {
-			map.put("localizable", String.valueOf(field.getLocalizable()));
+			map.put("localizable", String.valueOf(formField.getLocalizable()));
 		}
 
-		if (field.getMultiple() == null) {
+		if (formField.getMultiple() == null) {
 			map.put("multiple", null);
 		}
 		else {
-			map.put("multiple", String.valueOf(field.getMultiple()));
+			map.put("multiple", String.valueOf(formField.getMultiple()));
 		}
 
-		if (field.getName() == null) {
+		if (formField.getName() == null) {
 			map.put("name", null);
 		}
 		else {
-			map.put("name", String.valueOf(field.getName()));
+			map.put("name", String.valueOf(formField.getName()));
 		}
 
-		if (field.getOptions() == null) {
-			map.put("options", null);
-		}
-		else {
-			map.put("options", String.valueOf(field.getOptions()));
-		}
-
-		if (field.getPlaceholder() == null) {
+		if (formField.getPlaceholder() == null) {
 			map.put("placeholder", null);
 		}
 		else {
-			map.put("placeholder", String.valueOf(field.getPlaceholder()));
+			map.put("placeholder", String.valueOf(formField.getPlaceholder()));
 		}
 
-		if (field.getPredefinedValue() == null) {
+		if (formField.getPredefinedValue() == null) {
 			map.put("predefinedValue", null);
 		}
 		else {
 			map.put(
-				"predefinedValue", String.valueOf(field.getPredefinedValue()));
+				"predefinedValue",
+				String.valueOf(formField.getPredefinedValue()));
 		}
 
-		if (field.getReadOnly() == null) {
+		if (formField.getReadOnly() == null) {
 			map.put("readOnly", null);
 		}
 		else {
-			map.put("readOnly", String.valueOf(field.getReadOnly()));
+			map.put("readOnly", String.valueOf(formField.getReadOnly()));
 		}
 
-		if (field.getRepeatable() == null) {
+		if (formField.getRepeatable() == null) {
 			map.put("repeatable", null);
 		}
 		else {
-			map.put("repeatable", String.valueOf(field.getRepeatable()));
+			map.put("repeatable", String.valueOf(formField.getRepeatable()));
 		}
 
-		if (field.getRequired() == null) {
+		if (formField.getRequired() == null) {
 			map.put("required", null);
 		}
 		else {
-			map.put("required", String.valueOf(field.getRequired()));
+			map.put("required", String.valueOf(formField.getRequired()));
 		}
 
-		if (field.getShowAsSwitcher() == null) {
+		if (formField.getShowAsSwitcher() == null) {
 			map.put("showAsSwitcher", null);
 		}
 		else {
 			map.put(
-				"showAsSwitcher", String.valueOf(field.getShowAsSwitcher()));
+				"showAsSwitcher",
+				String.valueOf(formField.getShowAsSwitcher()));
 		}
 
-		if (field.getShowLabel() == null) {
+		if (formField.getShowLabel() == null) {
 			map.put("showLabel", null);
 		}
 		else {
-			map.put("showLabel", String.valueOf(field.getShowLabel()));
+			map.put("showLabel", String.valueOf(formField.getShowLabel()));
 		}
 
-		if (field.getStyle() == null) {
+		if (formField.getStyle() == null) {
 			map.put("style", null);
 		}
 		else {
-			map.put("style", String.valueOf(field.getStyle()));
+			map.put("style", String.valueOf(formField.getStyle()));
 		}
 
-		if (field.getText() == null) {
+		if (formField.getText() == null) {
 			map.put("text", null);
 		}
 		else {
-			map.put("text", String.valueOf(field.getText()));
+			map.put("text", String.valueOf(formField.getText()));
 		}
 
-		if (field.getTooltip() == null) {
+		if (formField.getTooltip() == null) {
 			map.put("tooltip", null);
 		}
 		else {
-			map.put("tooltip", String.valueOf(field.getTooltip()));
+			map.put("tooltip", String.valueOf(formField.getTooltip()));
 		}
 
-		if (field.getValidation() == null) {
+		if (formField.getValidation() == null) {
 			map.put("validation", null);
 		}
 		else {
-			map.put("validation", String.valueOf(field.getValidation()));
+			map.put("validation", String.valueOf(formField.getValidation()));
 		}
 
 		return map;
@@ -610,159 +619,160 @@ public class FieldSerDes {
 		return sb.toString();
 	}
 
-	private static class FieldJSONParser extends BaseJSONParser<Field> {
+	private static class FormFieldJSONParser extends BaseJSONParser<FormField> {
 
 		@Override
-		protected Field createDTO() {
-			return new Field();
+		protected FormField createDTO() {
+			return new FormField();
 		}
 
 		@Override
-		protected Field[] createDTOArray(int size) {
-			return new Field[size];
+		protected FormField[] createDTOArray(int size) {
+			return new FormField[size];
 		}
 
 		@Override
 		protected void setField(
-			Field field, String jsonParserFieldName,
+			FormField formField, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
 			if (Objects.equals(jsonParserFieldName, "autocomplete")) {
 				if (jsonParserFieldValue != null) {
-					field.setAutocomplete((Boolean)jsonParserFieldValue);
+					formField.setAutocomplete((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "dataSourceType")) {
 				if (jsonParserFieldValue != null) {
-					field.setDataSourceType((String)jsonParserFieldValue);
+					formField.setDataSourceType((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "dataType")) {
 				if (jsonParserFieldValue != null) {
-					field.setDataType((String)jsonParserFieldValue);
+					formField.setDataType((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "displayStyle")) {
 				if (jsonParserFieldValue != null) {
-					field.setDisplayStyle((String)jsonParserFieldValue);
+					formField.setDisplayStyle((String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "formFieldOptions")) {
+				if (jsonParserFieldValue != null) {
+					formField.setFormFieldOptions(
+						Stream.of(
+							toStrings((Object[])jsonParserFieldValue)
+						).map(
+							object -> FormFieldOptionSerDes.toDTO(
+								(String)object)
+						).toArray(
+							size -> new FormFieldOption[size]
+						));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "grid")) {
 				if (jsonParserFieldValue != null) {
-					field.setGrid(
+					formField.setGrid(
 						GridSerDes.toDTO((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "hasFormRules")) {
 				if (jsonParserFieldValue != null) {
-					field.setHasFormRules((Boolean)jsonParserFieldValue);
+					formField.setHasFormRules((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "id")) {
 				if (jsonParserFieldValue != null) {
-					field.setId(Long.valueOf((String)jsonParserFieldValue));
+					formField.setId(Long.valueOf((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "immutable")) {
 				if (jsonParserFieldValue != null) {
-					field.setImmutable((Boolean)jsonParserFieldValue);
+					formField.setImmutable((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "inline")) {
 				if (jsonParserFieldValue != null) {
-					field.setInline((Boolean)jsonParserFieldValue);
+					formField.setInline((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "inputControl")) {
 				if (jsonParserFieldValue != null) {
-					field.setInputControl((String)jsonParserFieldValue);
+					formField.setInputControl((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "label")) {
 				if (jsonParserFieldValue != null) {
-					field.setLabel((String)jsonParserFieldValue);
+					formField.setLabel((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "localizable")) {
 				if (jsonParserFieldValue != null) {
-					field.setLocalizable((Boolean)jsonParserFieldValue);
+					formField.setLocalizable((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "multiple")) {
 				if (jsonParserFieldValue != null) {
-					field.setMultiple((Boolean)jsonParserFieldValue);
+					formField.setMultiple((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "name")) {
 				if (jsonParserFieldValue != null) {
-					field.setName((String)jsonParserFieldValue);
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "options")) {
-				if (jsonParserFieldValue != null) {
-					field.setOptions(
-						Stream.of(
-							toStrings((Object[])jsonParserFieldValue)
-						).map(
-							object -> OptionSerDes.toDTO((String)object)
-						).toArray(
-							size -> new Option[size]
-						));
+					formField.setName((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "placeholder")) {
 				if (jsonParserFieldValue != null) {
-					field.setPlaceholder((String)jsonParserFieldValue);
+					formField.setPlaceholder((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "predefinedValue")) {
 				if (jsonParserFieldValue != null) {
-					field.setPredefinedValue((String)jsonParserFieldValue);
+					formField.setPredefinedValue((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "readOnly")) {
 				if (jsonParserFieldValue != null) {
-					field.setReadOnly((Boolean)jsonParserFieldValue);
+					formField.setReadOnly((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "repeatable")) {
 				if (jsonParserFieldValue != null) {
-					field.setRepeatable((Boolean)jsonParserFieldValue);
+					formField.setRepeatable((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "required")) {
 				if (jsonParserFieldValue != null) {
-					field.setRequired((Boolean)jsonParserFieldValue);
+					formField.setRequired((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "showAsSwitcher")) {
 				if (jsonParserFieldValue != null) {
-					field.setShowAsSwitcher((Boolean)jsonParserFieldValue);
+					formField.setShowAsSwitcher((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "showLabel")) {
 				if (jsonParserFieldValue != null) {
-					field.setShowLabel((Boolean)jsonParserFieldValue);
+					formField.setShowLabel((Boolean)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "style")) {
 				if (jsonParserFieldValue != null) {
-					field.setStyle((String)jsonParserFieldValue);
+					formField.setStyle((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "text")) {
 				if (jsonParserFieldValue != null) {
-					field.setText((String)jsonParserFieldValue);
+					formField.setText((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "tooltip")) {
 				if (jsonParserFieldValue != null) {
-					field.setTooltip((String)jsonParserFieldValue);
+					formField.setTooltip((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "validation")) {
 				if (jsonParserFieldValue != null) {
-					field.setValidation(
+					formField.setValidation(
 						ValidationSerDes.toDTO((String)jsonParserFieldValue));
 				}
 			}

@@ -40,24 +40,26 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("Row")
+@GraphQLName("FormPageContext")
 @JsonFilter("Liferay.Vulcan")
-@XmlRootElement(name = "Row")
-public class Row {
+@XmlRootElement(name = "FormPageContext")
+public class FormPageContext {
 
 	@Schema
-	public Long getId() {
-		return id;
+	public Boolean getEnabled() {
+		return enabled;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	@JsonIgnore
-	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
+	public void setEnabled(
+		UnsafeSupplier<Boolean, Exception> enabledUnsafeSupplier) {
+
 		try {
-			id = idUnsafeSupplier.get();
+			enabled = enabledUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -69,23 +71,24 @@ public class Row {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Long id;
+	protected Boolean enabled;
 
-	@Schema
-	public String getLabel() {
-		return label;
+	@Schema(description = "https://www.schema.org/FormFieldContext")
+	public FormFieldContext[] getFormFieldContexts() {
+		return formFieldContexts;
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	public void setFormFieldContexts(FormFieldContext[] formFieldContexts) {
+		this.formFieldContexts = formFieldContexts;
 	}
 
 	@JsonIgnore
-	public void setLabel(
-		UnsafeSupplier<String, Exception> labelUnsafeSupplier) {
+	public void setFormFieldContexts(
+		UnsafeSupplier<FormFieldContext[], Exception>
+			formFieldContextsUnsafeSupplier) {
 
 		try {
-			label = labelUnsafeSupplier.get();
+			formFieldContexts = formFieldContextsUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -97,23 +100,27 @@ public class Row {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String label;
+	protected FormFieldContext[] formFieldContexts;
 
 	@Schema
-	public String getValue() {
-		return value;
+	public Boolean getShowRequiredFieldsWarning() {
+		return showRequiredFieldsWarning;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setShowRequiredFieldsWarning(
+		Boolean showRequiredFieldsWarning) {
+
+		this.showRequiredFieldsWarning = showRequiredFieldsWarning;
 	}
 
 	@JsonIgnore
-	public void setValue(
-		UnsafeSupplier<String, Exception> valueUnsafeSupplier) {
+	public void setShowRequiredFieldsWarning(
+		UnsafeSupplier<Boolean, Exception>
+			showRequiredFieldsWarningUnsafeSupplier) {
 
 		try {
-			value = valueUnsafeSupplier.get();
+			showRequiredFieldsWarning =
+				showRequiredFieldsWarningUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -125,7 +132,7 @@ public class Row {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String value;
+	protected Boolean showRequiredFieldsWarning;
 
 	@Override
 	public boolean equals(Object object) {
@@ -133,13 +140,13 @@ public class Row {
 			return true;
 		}
 
-		if (!(object instanceof Row)) {
+		if (!(object instanceof FormPageContext)) {
 			return false;
 		}
 
-		Row row = (Row)object;
+		FormPageContext formPageContext = (FormPageContext)object;
 
-		return Objects.equals(toString(), row.toString());
+		return Objects.equals(toString(), formPageContext.toString());
 	}
 
 	@Override
@@ -154,42 +161,44 @@ public class Row {
 
 		sb.append("{");
 
-		if (id != null) {
+		if (enabled != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"id\": ");
+			sb.append("\"enabled\": ");
 
-			sb.append(id);
+			sb.append(enabled);
 		}
 
-		if (label != null) {
+		if (formFieldContexts != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"label\": ");
+			sb.append("\"formFieldContexts\": ");
 
-			sb.append("\"");
+			sb.append("[");
 
-			sb.append(_escape(label));
+			for (int i = 0; i < formFieldContexts.length; i++) {
+				sb.append(String.valueOf(formFieldContexts[i]));
 
-			sb.append("\"");
+				if ((i + 1) < formFieldContexts.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
-		if (value != null) {
+		if (showRequiredFieldsWarning != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"value\": ");
+			sb.append("\"showRequiredFieldsWarning\": ");
 
-			sb.append("\"");
-
-			sb.append(_escape(value));
-
-			sb.append("\"");
+			sb.append(showRequiredFieldsWarning);
 		}
 
 		sb.append("}");

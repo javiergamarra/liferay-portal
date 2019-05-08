@@ -40,26 +40,27 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("FormLayoutPage")
+@GraphQLName("FormContext")
 @JsonFilter("Liferay.Vulcan")
-@XmlRootElement(name = "FormLayoutPage")
-public class FormLayoutPage {
+@XmlRootElement(name = "FormContext")
+public class FormContext {
 
-	@Schema(description = "https://www.schema.org/FormField")
-	public Field[] getFields() {
-		return fields;
+	@Schema(description = "https://www.schema.org/FormFieldValue")
+	public FormFieldValue[] getFormFieldValues() {
+		return formFieldValues;
 	}
 
-	public void setFields(Field[] fields) {
-		this.fields = fields;
+	public void setFormFieldValues(FormFieldValue[] formFieldValues) {
+		this.formFieldValues = formFieldValues;
 	}
 
 	@JsonIgnore
-	public void setFields(
-		UnsafeSupplier<Field[], Exception> fieldsUnsafeSupplier) {
+	public void setFormFieldValues(
+		UnsafeSupplier<FormFieldValue[], Exception>
+			formFieldValuesUnsafeSupplier) {
 
 		try {
-			fields = fieldsUnsafeSupplier.get();
+			formFieldValues = formFieldValuesUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -71,23 +72,52 @@ public class FormLayoutPage {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Field[] fields;
+	protected FormFieldValue[] formFieldValues;
+
+	@Schema(description = "https://www.schema.org/FormPageContext")
+	public FormPageContext[] getFormPageContexts() {
+		return formPageContexts;
+	}
+
+	public void setFormPageContexts(FormPageContext[] formPageContexts) {
+		this.formPageContexts = formPageContexts;
+	}
+
+	@JsonIgnore
+	public void setFormPageContexts(
+		UnsafeSupplier<FormPageContext[], Exception>
+			formPageContextsUnsafeSupplier) {
+
+		try {
+			formPageContexts = formPageContextsUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected FormPageContext[] formPageContexts;
 
 	@Schema
-	public String getHeadline() {
-		return headline;
+	public Boolean getReadOnly() {
+		return readOnly;
 	}
 
-	public void setHeadline(String headline) {
-		this.headline = headline;
+	public void setReadOnly(Boolean readOnly) {
+		this.readOnly = readOnly;
 	}
 
 	@JsonIgnore
-	public void setHeadline(
-		UnsafeSupplier<String, Exception> headlineUnsafeSupplier) {
+	public void setReadOnly(
+		UnsafeSupplier<Boolean, Exception> readOnlyUnsafeSupplier) {
 
 		try {
-			headline = headlineUnsafeSupplier.get();
+			readOnly = readOnlyUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -99,21 +129,27 @@ public class FormLayoutPage {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String headline;
+	protected Boolean readOnly;
 
 	@Schema
-	public Long getId() {
-		return id;
+	public Boolean getShowRequiredFieldsWarning() {
+		return showRequiredFieldsWarning;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setShowRequiredFieldsWarning(
+		Boolean showRequiredFieldsWarning) {
+
+		this.showRequiredFieldsWarning = showRequiredFieldsWarning;
 	}
 
 	@JsonIgnore
-	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
+	public void setShowRequiredFieldsWarning(
+		UnsafeSupplier<Boolean, Exception>
+			showRequiredFieldsWarningUnsafeSupplier) {
+
 		try {
-			id = idUnsafeSupplier.get();
+			showRequiredFieldsWarning =
+				showRequiredFieldsWarningUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -125,21 +161,23 @@ public class FormLayoutPage {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Long id;
+	protected Boolean showRequiredFieldsWarning;
 
 	@Schema
-	public String getText() {
-		return text;
+	public Boolean getShowSubmitButton() {
+		return showSubmitButton;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setShowSubmitButton(Boolean showSubmitButton) {
+		this.showSubmitButton = showSubmitButton;
 	}
 
 	@JsonIgnore
-	public void setText(UnsafeSupplier<String, Exception> textUnsafeSupplier) {
+	public void setShowSubmitButton(
+		UnsafeSupplier<Boolean, Exception> showSubmitButtonUnsafeSupplier) {
+
 		try {
-			text = textUnsafeSupplier.get();
+			showSubmitButton = showSubmitButtonUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -151,7 +189,7 @@ public class FormLayoutPage {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String text;
+	protected Boolean showSubmitButton;
 
 	@Override
 	public boolean equals(Object object) {
@@ -159,13 +197,13 @@ public class FormLayoutPage {
 			return true;
 		}
 
-		if (!(object instanceof FormLayoutPage)) {
+		if (!(object instanceof FormContext)) {
 			return false;
 		}
 
-		FormLayoutPage formLayoutPage = (FormLayoutPage)object;
+		FormContext formContext = (FormContext)object;
 
-		return Objects.equals(toString(), formLayoutPage.toString());
+		return Objects.equals(toString(), formContext.toString());
 	}
 
 	@Override
@@ -180,19 +218,19 @@ public class FormLayoutPage {
 
 		sb.append("{");
 
-		if (fields != null) {
+		if (formFieldValues != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"fields\": ");
+			sb.append("\"formFieldValues\": ");
 
 			sb.append("[");
 
-			for (int i = 0; i < fields.length; i++) {
-				sb.append(String.valueOf(fields[i]));
+			for (int i = 0; i < formFieldValues.length; i++) {
+				sb.append(String.valueOf(formFieldValues[i]));
 
-				if ((i + 1) < fields.length) {
+				if ((i + 1) < formFieldValues.length) {
 					sb.append(", ");
 				}
 			}
@@ -200,42 +238,54 @@ public class FormLayoutPage {
 			sb.append("]");
 		}
 
-		if (headline != null) {
+		if (formPageContexts != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"headline\": ");
+			sb.append("\"formPageContexts\": ");
 
-			sb.append("\"");
+			sb.append("[");
 
-			sb.append(_escape(headline));
+			for (int i = 0; i < formPageContexts.length; i++) {
+				sb.append(String.valueOf(formPageContexts[i]));
 
-			sb.append("\"");
+				if ((i + 1) < formPageContexts.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
-		if (id != null) {
+		if (readOnly != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"id\": ");
+			sb.append("\"readOnly\": ");
 
-			sb.append(id);
+			sb.append(readOnly);
 		}
 
-		if (text != null) {
+		if (showRequiredFieldsWarning != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"text\": ");
+			sb.append("\"showRequiredFieldsWarning\": ");
 
-			sb.append("\"");
+			sb.append(showRequiredFieldsWarning);
+		}
 
-			sb.append(_escape(text));
+		if (showSubmitButton != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
 
-			sb.append("\"");
+			sb.append("\"showSubmitButton\": ");
+
+			sb.append(showSubmitButton);
 		}
 
 		sb.append("}");

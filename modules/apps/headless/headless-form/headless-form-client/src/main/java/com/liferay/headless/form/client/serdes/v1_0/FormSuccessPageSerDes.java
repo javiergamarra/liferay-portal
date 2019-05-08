@@ -14,7 +14,7 @@
 
 package com.liferay.headless.form.client.serdes.v1_0;
 
-import com.liferay.headless.form.client.dto.v1_0.Row;
+import com.liferay.headless.form.client.dto.v1_0.FormSuccessPage;
 import com.liferay.headless.form.client.json.BaseJSONParser;
 
 import java.util.HashMap;
@@ -30,22 +30,24 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class RowSerDes {
+public class FormSuccessPageSerDes {
 
-	public static Row toDTO(String json) {
-		RowJSONParser rowJSONParser = new RowJSONParser();
+	public static FormSuccessPage toDTO(String json) {
+		FormSuccessPageJSONParser formSuccessPageJSONParser =
+			new FormSuccessPageJSONParser();
 
-		return rowJSONParser.parseToDTO(json);
+		return formSuccessPageJSONParser.parseToDTO(json);
 	}
 
-	public static Row[] toDTOs(String json) {
-		RowJSONParser rowJSONParser = new RowJSONParser();
+	public static FormSuccessPage[] toDTOs(String json) {
+		FormSuccessPageJSONParser formSuccessPageJSONParser =
+			new FormSuccessPageJSONParser();
 
-		return rowJSONParser.parseToDTOs(json);
+		return formSuccessPageJSONParser.parseToDTOs(json);
 	}
 
-	public static String toJSON(Row row) {
-		if (row == null) {
+	public static String toJSON(FormSuccessPage formSuccessPage) {
+		if (formSuccessPage == null) {
 			return "null";
 		}
 
@@ -53,42 +55,42 @@ public class RowSerDes {
 
 		sb.append("{");
 
-		if (row.getId() != null) {
+		if (formSuccessPage.getDescription() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"description\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(formSuccessPage.getDescription()));
+
+			sb.append("\"");
+		}
+
+		if (formSuccessPage.getHeadline() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"headline\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(formSuccessPage.getHeadline()));
+
+			sb.append("\"");
+		}
+
+		if (formSuccessPage.getId() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"id\": ");
 
-			sb.append(row.getId());
-		}
-
-		if (row.getLabel() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"label\": ");
-
-			sb.append("\"");
-
-			sb.append(_escape(row.getLabel()));
-
-			sb.append("\"");
-		}
-
-		if (row.getValue() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"value\": ");
-
-			sb.append("\"");
-
-			sb.append(_escape(row.getValue()));
-
-			sb.append("\"");
+			sb.append(formSuccessPage.getId());
 		}
 
 		sb.append("}");
@@ -97,37 +99,40 @@ public class RowSerDes {
 	}
 
 	public static Map<String, Object> toMap(String json) {
-		RowJSONParser rowJSONParser = new RowJSONParser();
+		FormSuccessPageJSONParser formSuccessPageJSONParser =
+			new FormSuccessPageJSONParser();
 
-		return rowJSONParser.parseToMap(json);
+		return formSuccessPageJSONParser.parseToMap(json);
 	}
 
-	public static Map<String, String> toMap(Row row) {
-		if (row == null) {
+	public static Map<String, String> toMap(FormSuccessPage formSuccessPage) {
+		if (formSuccessPage == null) {
 			return null;
 		}
 
 		Map<String, String> map = new HashMap<>();
 
-		if (row.getId() == null) {
+		if (formSuccessPage.getDescription() == null) {
+			map.put("description", null);
+		}
+		else {
+			map.put(
+				"description",
+				String.valueOf(formSuccessPage.getDescription()));
+		}
+
+		if (formSuccessPage.getHeadline() == null) {
+			map.put("headline", null);
+		}
+		else {
+			map.put("headline", String.valueOf(formSuccessPage.getHeadline()));
+		}
+
+		if (formSuccessPage.getId() == null) {
 			map.put("id", null);
 		}
 		else {
-			map.put("id", String.valueOf(row.getId()));
-		}
-
-		if (row.getLabel() == null) {
-			map.put("label", null);
-		}
-		else {
-			map.put("label", String.valueOf(row.getLabel()));
-		}
-
-		if (row.getValue() == null) {
-			map.put("value", null);
-		}
-		else {
-			map.put("value", String.valueOf(row.getValue()));
+			map.put("id", String.valueOf(formSuccessPage.getId()));
 		}
 
 		return map;
@@ -168,35 +173,39 @@ public class RowSerDes {
 		return sb.toString();
 	}
 
-	private static class RowJSONParser extends BaseJSONParser<Row> {
+	private static class FormSuccessPageJSONParser
+		extends BaseJSONParser<FormSuccessPage> {
 
 		@Override
-		protected Row createDTO() {
-			return new Row();
+		protected FormSuccessPage createDTO() {
+			return new FormSuccessPage();
 		}
 
 		@Override
-		protected Row[] createDTOArray(int size) {
-			return new Row[size];
+		protected FormSuccessPage[] createDTOArray(int size) {
+			return new FormSuccessPage[size];
 		}
 
 		@Override
 		protected void setField(
-			Row row, String jsonParserFieldName, Object jsonParserFieldValue) {
+			FormSuccessPage formSuccessPage, String jsonParserFieldName,
+			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "id")) {
+			if (Objects.equals(jsonParserFieldName, "description")) {
 				if (jsonParserFieldValue != null) {
-					row.setId(Long.valueOf((String)jsonParserFieldValue));
+					formSuccessPage.setDescription(
+						(String)jsonParserFieldValue);
 				}
 			}
-			else if (Objects.equals(jsonParserFieldName, "label")) {
+			else if (Objects.equals(jsonParserFieldName, "headline")) {
 				if (jsonParserFieldValue != null) {
-					row.setLabel((String)jsonParserFieldValue);
+					formSuccessPage.setHeadline((String)jsonParserFieldValue);
 				}
 			}
-			else if (Objects.equals(jsonParserFieldName, "value")) {
+			else if (Objects.equals(jsonParserFieldName, "id")) {
 				if (jsonParserFieldValue != null) {
-					row.setValue((String)jsonParserFieldValue);
+					formSuccessPage.setId(
+						Long.valueOf((String)jsonParserFieldValue));
 				}
 			}
 			else {

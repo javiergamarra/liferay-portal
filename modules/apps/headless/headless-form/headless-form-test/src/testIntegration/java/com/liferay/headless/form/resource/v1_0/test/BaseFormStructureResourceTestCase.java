@@ -486,18 +486,16 @@ public abstract class BaseFormStructureResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("formLayoutPages", additionalAssertFieldName)) {
-				if (formStructure.getFormLayoutPages() == null) {
+			if (Objects.equals("formPages", additionalAssertFieldName)) {
+				if (formStructure.getFormPages() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals(
-					"formSuccessPageSettings", additionalAssertFieldName)) {
-
-				if (formStructure.getFormSuccessPageSettings() == null) {
+			if (Objects.equals("formSuccessPage", additionalAssertFieldName)) {
+				if (formStructure.getFormSuccessPage() == null) {
 					valid = false;
 				}
 
@@ -614,10 +612,10 @@ public abstract class BaseFormStructureResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("formLayoutPages", additionalAssertFieldName)) {
+			if (Objects.equals("formPages", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						formStructure1.getFormLayoutPages(),
-						formStructure2.getFormLayoutPages())) {
+						formStructure1.getFormPages(),
+						formStructure2.getFormPages())) {
 
 					return false;
 				}
@@ -625,12 +623,10 @@ public abstract class BaseFormStructureResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals(
-					"formSuccessPageSettings", additionalAssertFieldName)) {
-
+			if (Objects.equals("formSuccessPage", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						formStructure1.getFormSuccessPageSettings(),
-						formStructure2.getFormSuccessPageSettings())) {
+						formStructure1.getFormSuccessPage(),
+						formStructure2.getFormSuccessPage())) {
 
 					return false;
 				}
@@ -795,12 +791,12 @@ public abstract class BaseFormStructureResourceTestCase {
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("formLayoutPages")) {
+		if (entityFieldName.equals("formPages")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
 
-		if (entityFieldName.equals("formSuccessPageSettings")) {
+		if (entityFieldName.equals("formSuccessPage")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}

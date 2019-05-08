@@ -134,52 +134,48 @@ public class FormStructure {
 
 	protected String description;
 
-	public FormLayoutPage[] getFormLayoutPages() {
-		return formLayoutPages;
+	public FormPage[] getFormPages() {
+		return formPages;
 	}
 
-	public void setFormLayoutPages(FormLayoutPage[] formLayoutPages) {
-		this.formLayoutPages = formLayoutPages;
+	public void setFormPages(FormPage[] formPages) {
+		this.formPages = formPages;
 	}
 
-	public void setFormLayoutPages(
-		UnsafeSupplier<FormLayoutPage[], Exception>
-			formLayoutPagesUnsafeSupplier) {
+	public void setFormPages(
+		UnsafeSupplier<FormPage[], Exception> formPagesUnsafeSupplier) {
 
 		try {
-			formLayoutPages = formLayoutPagesUnsafeSupplier.get();
+			formPages = formPagesUnsafeSupplier.get();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected FormLayoutPage[] formLayoutPages;
+	protected FormPage[] formPages;
 
-	public FormSuccessPageSettings getFormSuccessPageSettings() {
-		return formSuccessPageSettings;
+	public FormSuccessPage getFormSuccessPage() {
+		return formSuccessPage;
 	}
 
-	public void setFormSuccessPageSettings(
-		FormSuccessPageSettings formSuccessPageSettings) {
-
-		this.formSuccessPageSettings = formSuccessPageSettings;
+	public void setFormSuccessPage(FormSuccessPage formSuccessPage) {
+		this.formSuccessPage = formSuccessPage;
 	}
 
-	public void setFormSuccessPageSettings(
-		UnsafeSupplier<FormSuccessPageSettings, Exception>
-			formSuccessPageSettingsUnsafeSupplier) {
+	public void setFormSuccessPage(
+		UnsafeSupplier<FormSuccessPage, Exception>
+			formSuccessPageUnsafeSupplier) {
 
 		try {
-			formSuccessPageSettings =
-				formSuccessPageSettingsUnsafeSupplier.get();
+			formSuccessPage = formSuccessPageUnsafeSupplier.get();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected FormSuccessPageSettings formSuccessPageSettings;
+	protected FormSuccessPage formSuccessPage;
 
 	public Long getId() {
 		return id;

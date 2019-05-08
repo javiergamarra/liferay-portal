@@ -14,7 +14,7 @@
 
 package com.liferay.headless.form.client.serdes.v1_0;
 
-import com.liferay.headless.form.client.dto.v1_0.Option;
+import com.liferay.headless.form.client.dto.v1_0.FormFieldOption;
 import com.liferay.headless.form.client.json.BaseJSONParser;
 
 import java.util.HashMap;
@@ -30,22 +30,24 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class OptionSerDes {
+public class FormFieldOptionSerDes {
 
-	public static Option toDTO(String json) {
-		OptionJSONParser optionJSONParser = new OptionJSONParser();
+	public static FormFieldOption toDTO(String json) {
+		FormFieldOptionJSONParser formFieldOptionJSONParser =
+			new FormFieldOptionJSONParser();
 
-		return optionJSONParser.parseToDTO(json);
+		return formFieldOptionJSONParser.parseToDTO(json);
 	}
 
-	public static Option[] toDTOs(String json) {
-		OptionJSONParser optionJSONParser = new OptionJSONParser();
+	public static FormFieldOption[] toDTOs(String json) {
+		FormFieldOptionJSONParser formFieldOptionJSONParser =
+			new FormFieldOptionJSONParser();
 
-		return optionJSONParser.parseToDTOs(json);
+		return formFieldOptionJSONParser.parseToDTOs(json);
 	}
 
-	public static String toJSON(Option option) {
-		if (option == null) {
+	public static String toJSON(FormFieldOption formFieldOption) {
+		if (formFieldOption == null) {
 			return "null";
 		}
 
@@ -53,17 +55,17 @@ public class OptionSerDes {
 
 		sb.append("{");
 
-		if (option.getId() != null) {
+		if (formFieldOption.getId() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"id\": ");
 
-			sb.append(option.getId());
+			sb.append(formFieldOption.getId());
 		}
 
-		if (option.getLabel() != null) {
+		if (formFieldOption.getLabel() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -72,12 +74,12 @@ public class OptionSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(option.getLabel()));
+			sb.append(_escape(formFieldOption.getLabel()));
 
 			sb.append("\"");
 		}
 
-		if (option.getValue() != null) {
+		if (formFieldOption.getValue() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -86,7 +88,7 @@ public class OptionSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(option.getValue()));
+			sb.append(_escape(formFieldOption.getValue()));
 
 			sb.append("\"");
 		}
@@ -97,37 +99,38 @@ public class OptionSerDes {
 	}
 
 	public static Map<String, Object> toMap(String json) {
-		OptionJSONParser optionJSONParser = new OptionJSONParser();
+		FormFieldOptionJSONParser formFieldOptionJSONParser =
+			new FormFieldOptionJSONParser();
 
-		return optionJSONParser.parseToMap(json);
+		return formFieldOptionJSONParser.parseToMap(json);
 	}
 
-	public static Map<String, String> toMap(Option option) {
-		if (option == null) {
+	public static Map<String, String> toMap(FormFieldOption formFieldOption) {
+		if (formFieldOption == null) {
 			return null;
 		}
 
 		Map<String, String> map = new HashMap<>();
 
-		if (option.getId() == null) {
+		if (formFieldOption.getId() == null) {
 			map.put("id", null);
 		}
 		else {
-			map.put("id", String.valueOf(option.getId()));
+			map.put("id", String.valueOf(formFieldOption.getId()));
 		}
 
-		if (option.getLabel() == null) {
+		if (formFieldOption.getLabel() == null) {
 			map.put("label", null);
 		}
 		else {
-			map.put("label", String.valueOf(option.getLabel()));
+			map.put("label", String.valueOf(formFieldOption.getLabel()));
 		}
 
-		if (option.getValue() == null) {
+		if (formFieldOption.getValue() == null) {
 			map.put("value", null);
 		}
 		else {
-			map.put("value", String.valueOf(option.getValue()));
+			map.put("value", String.valueOf(formFieldOption.getValue()));
 		}
 
 		return map;
@@ -168,36 +171,38 @@ public class OptionSerDes {
 		return sb.toString();
 	}
 
-	private static class OptionJSONParser extends BaseJSONParser<Option> {
+	private static class FormFieldOptionJSONParser
+		extends BaseJSONParser<FormFieldOption> {
 
 		@Override
-		protected Option createDTO() {
-			return new Option();
+		protected FormFieldOption createDTO() {
+			return new FormFieldOption();
 		}
 
 		@Override
-		protected Option[] createDTOArray(int size) {
-			return new Option[size];
+		protected FormFieldOption[] createDTOArray(int size) {
+			return new FormFieldOption[size];
 		}
 
 		@Override
 		protected void setField(
-			Option option, String jsonParserFieldName,
+			FormFieldOption formFieldOption, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
 			if (Objects.equals(jsonParserFieldName, "id")) {
 				if (jsonParserFieldValue != null) {
-					option.setId(Long.valueOf((String)jsonParserFieldValue));
+					formFieldOption.setId(
+						Long.valueOf((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "label")) {
 				if (jsonParserFieldValue != null) {
-					option.setLabel((String)jsonParserFieldValue);
+					formFieldOption.setLabel((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "value")) {
 				if (jsonParserFieldValue != null) {
-					option.setValue((String)jsonParserFieldValue);
+					formFieldOption.setValue((String)jsonParserFieldValue);
 				}
 			}
 			else {

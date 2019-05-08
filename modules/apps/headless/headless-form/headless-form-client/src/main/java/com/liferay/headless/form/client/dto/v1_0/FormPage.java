@@ -15,7 +15,7 @@
 package com.liferay.headless.form.client.dto.v1_0;
 
 import com.liferay.headless.form.client.function.UnsafeSupplier;
-import com.liferay.headless.form.client.serdes.v1_0.FormLayoutPageSerDes;
+import com.liferay.headless.form.client.serdes.v1_0.FormPageSerDes;
 
 import java.util.Objects;
 
@@ -26,28 +26,28 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class FormLayoutPage {
+public class FormPage {
 
-	public Field[] getFields() {
-		return fields;
+	public FormField[] getFormFields() {
+		return formFields;
 	}
 
-	public void setFields(Field[] fields) {
-		this.fields = fields;
+	public void setFormFields(FormField[] formFields) {
+		this.formFields = formFields;
 	}
 
-	public void setFields(
-		UnsafeSupplier<Field[], Exception> fieldsUnsafeSupplier) {
+	public void setFormFields(
+		UnsafeSupplier<FormField[], Exception> formFieldsUnsafeSupplier) {
 
 		try {
-			fields = fieldsUnsafeSupplier.get();
+			formFields = formFieldsUnsafeSupplier.get();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected Field[] fields;
+	protected FormField[] formFields;
 
 	public String getHeadline() {
 		return headline;
@@ -114,13 +114,13 @@ public class FormLayoutPage {
 			return true;
 		}
 
-		if (!(object instanceof FormLayoutPage)) {
+		if (!(object instanceof FormPage)) {
 			return false;
 		}
 
-		FormLayoutPage formLayoutPage = (FormLayoutPage)object;
+		FormPage formPage = (FormPage)object;
 
-		return Objects.equals(toString(), formLayoutPage.toString());
+		return Objects.equals(toString(), formPage.toString());
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class FormLayoutPage {
 	}
 
 	public String toString() {
-		return FormLayoutPageSerDes.toJSON(this);
+		return FormPageSerDes.toJSON(this);
 	}
 
 }

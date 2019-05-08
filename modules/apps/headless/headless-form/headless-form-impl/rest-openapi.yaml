@@ -71,6 +71,56 @@ components:
                     type: integer
                     writeOnly: true
             type: object
+        FormContext:
+            description: https://www.schema.org/FormContext
+            properties:
+                formFieldValues:
+                    description: https://www.schema.org/FormFieldValue
+                    items:
+                        $ref: "#/components/schemas/FormFieldValue"
+                    type: array
+                formPageContexts:
+                    description: https://www.schema.org/FormPageContext
+                    items:
+                        properties:
+                            enabled:
+                                type: boolean
+                            formFieldContexts:
+                                description: https://www.schema.org/FormFieldContext
+                                items:
+                                    properties:
+                                        evaluable:
+                                            type: boolean
+                                        formFieldOptions:
+                                            items:
+                                                $ref: "#/components/schemas/FormFieldOption"
+                                            type: array
+                                        name:
+                                            type: string
+                                        readOnly:
+                                            type: boolean
+                                        required:
+                                            type: boolean
+                                        valid:
+                                            type: boolean
+                                        value:
+                                            type: string
+                                        valueChanged:
+                                            type: boolean
+                                        visible:
+                                            type: boolean
+                                    type: object
+                                type: array
+                            showRequiredFieldsWarning:
+                                type: boolean
+                        type: object
+                    type: array
+                readOnly:
+                    type: boolean
+                showRequiredFieldsWarning:
+                    type: boolean
+                showSubmitButton:
+                    type: boolean
         FormDocument:
             description: https://www.schema.org/FormDocument
             properties:
@@ -103,6 +153,123 @@ components:
                 title:
                     type: string
             type: object
+        FormField:
+            description: https://www.schema.org/FormField
+            items:
+                properties:
+                    autocomplete:
+                        type: boolean
+                    dataSourceType:
+                        type: string
+                    dataType:
+                        type: string
+                    displayStyle:
+                        type: string
+                    formFieldOptions:
+                        items:
+                            $ref: "#/components/schemas/FormFieldOption"
+                        type: array
+                    grid:
+                        properties:
+                            columns:
+                                items:
+                                    $ref: "#/components/schemas/FormFieldOption"
+                                type: array
+                            id:
+                                format: int64
+                                type: integer
+                            rows:
+                                items:
+                                    $ref: "#/components/schemas/FormFieldOption"
+                                type: array
+                        type: object
+                    hasFormRules:
+                        type: boolean
+                    id:
+                        format: int64
+                        type: integer
+                    immutable:
+                        type: boolean
+                    inline:
+                        type: boolean
+                    inputControl:
+                        type: string
+                    label:
+                        type: string
+                    localizable:
+                        type: boolean
+                    multiple:
+                        type: boolean
+                    name:
+                        type: string
+                    placeholder:
+                        type: string
+                    predefinedValue:
+                        type: string
+                    readOnly:
+                        type: boolean
+                    repeatable:
+                        type: boolean
+                    required:
+                        type: boolean
+                    showAsSwitcher:
+                        type: boolean
+                    showLabel:
+                        type: boolean
+                    style:
+                        type: string
+                    text:
+                        type: string
+                    tooltip:
+                        type: string
+                    validation:
+                        description: https://www.schema.org/FormFieldValidation
+                        properties:
+                            errorMessage:
+                                type: string
+                            expression:
+                                type: string
+                            id:
+                                format: int64
+                                type: integer
+                        type: object
+                type: object
+            type: array
+        FormFieldOption:
+            description: https://www.schema.org/FormFieldOption
+            items:
+                properties:
+                    id:
+                        format: int64
+                        type: integer
+                    label:
+                        type: string
+                    value:
+                        type: string
+                type: object
+            type: array
+        FormFieldValue:
+            description: https://www.schema.org/FormFieldValue
+            items:
+                properties:
+                    formDocument:
+                        allOf:
+                            - $ref: "#/components/schemas/FormDocument"
+                        readOnly: true
+                    formDocumentId:
+                        format: int64
+                        type: integer
+                        writeOnly: true
+                    id:
+                        format: int64
+                        readOnly: true
+                        type: integer
+                    name:
+                        type: string
+                    value:
+                        type: string
+                type: object
+            type: array
         FormRecord:
             description: https://www.schema.org/FormRecord
             properties:
@@ -127,26 +294,8 @@ components:
                         - $ref: "#/components/schemas/Form"
                     readOnly: true
                 formFieldValues:
-                    description: https://www.schema.org/FormFieldValue
                     items:
-                        properties:
-                            formDocument:
-                                allOf:
-                                    - $ref: "#/components/schemas/FormDocument"
-                                readOnly: true
-                            formDocumentId:
-                                format: int64
-                                type: integer
-                                writeOnly: true
-                            id:
-                                format: int64
-                                readOnly: true
-                                type: integer
-                            name:
-                                type: string
-                            value:
-                                type: string
-                        type: object
+                        $ref: "#/components/schemas/FormFieldValue"
                     type: array
                 formId:
                     format: int64
@@ -174,119 +323,13 @@ components:
                     type: string
                 description:
                     type: string
-                formLayoutPages:
-                    description: https://www.schema.org/FormLayoutPage
+                formPages:
+                    description: https://www.schema.org/FormPage
                     items:
                         properties:
-                            fields:
-                                description: https://www.schema.org/FormField
+                            formFields:
                                 items:
-                                    properties:
-                                        autocomplete:
-                                            type: boolean
-                                        dataSourceType:
-                                            type: string
-                                        dataType:
-                                            type: string
-                                        displayStyle:
-                                            type: string
-                                        grid:
-                                            description: https://www.schema.org/FormFieldProperties
-                                            properties:
-                                                columns:
-                                                    description: https://www.schema.org/FormFieldOption
-                                                    items:
-                                                        properties:
-                                                            id:
-                                                                format: int64
-                                                                type: integer
-                                                            label:
-                                                                type: string
-                                                            value:
-                                                                type: string
-                                                        type: object
-                                                    type: array
-                                                id:
-                                                    format: int64
-                                                    type: integer
-                                                rows:
-                                                    description: https://www.schema.org/FormFieldOption
-                                                    items:
-                                                        properties:
-                                                            id:
-                                                                format: int64
-                                                                type: integer
-                                                            label:
-                                                                type: string
-                                                            value:
-                                                                type: string
-                                                        type: object
-                                                    type: array
-                                            type: object
-                                        hasFormRules:
-                                            type: boolean
-                                        id:
-                                            format: int64
-                                            type: integer
-                                        immutable:
-                                            type: boolean
-                                        inline:
-                                            type: boolean
-                                        inputControl:
-                                            type: string
-                                        label:
-                                            type: string
-                                        localizable:
-                                            type: boolean
-                                        multiple:
-                                            type: boolean
-                                        name:
-                                            type: string
-                                        options:
-                                            description: https://www.schema.org/FormFieldOption
-                                            items:
-                                                properties:
-                                                    id:
-                                                        format: int64
-                                                        type: integer
-                                                    label:
-                                                        type: string
-                                                    value:
-                                                        type: string
-                                                type: object
-                                            type: array
-                                        placeholder:
-                                            type: string
-                                        predefinedValue:
-                                            type: string
-                                        readOnly:
-                                            type: boolean
-                                        repeatable:
-                                            type: boolean
-                                        required:
-                                            type: boolean
-                                        showAsSwitcher:
-                                            type: boolean
-                                        showLabel:
-                                            type: boolean
-                                        style:
-                                            type: string
-                                        text:
-                                            type: string
-                                        tooltip:
-                                            type: string
-                                        validation:
-                                            description: https://www.schema.org/FormFieldProperties
-                                            properties:
-                                                errorMessage:
-                                                    type: string
-                                                expression:
-                                                    type: string
-                                                id:
-                                                    format: int64
-                                                    type: integer
-                                            type: object
-                                    type: object
+                                    $ref: "#/components/schemas/FormField"
                                 type: array
                             headline:
                                 type: string
@@ -297,8 +340,8 @@ components:
                                 type: string
                         type: object
                     type: array
-                formSuccessPageSettings:
-                    description: https://www.schema.org/FormSuccessPageSettings
+                formSuccessPage:
+                    description: https://www.schema.org/FormSuccessPage
                     properties:
                         description:
                             type: string
@@ -311,8 +354,16 @@ components:
                 id:
                     format: int64
                     type: integer
+                id:
+                    format: int64
+                    type: integer
                 name:
                     type: string
+                name:
+                    type: string
+                siteId:
+                    format: int64
+                    type: integer
                 siteId:
                     format: int64
                     type: integer
@@ -472,19 +523,19 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Form"
+                            $ref: "#/components/schemas/FormContext"
                     application/xml:
                         schema:
-                            $ref: "#/components/schemas/Form"
+                            $ref: "#/components/schemas/FormContext"
             responses:
                 200:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Form"
+                                $ref: "#/components/schemas/FormContext"
                         application/xml:
                             schema:
-                                $ref: "#/components/schemas/Form"
+                                $ref: "#/components/schemas/FormContext"
                     description: ""
             tags: ["Form"]
     "/forms/{formId}/form-document":

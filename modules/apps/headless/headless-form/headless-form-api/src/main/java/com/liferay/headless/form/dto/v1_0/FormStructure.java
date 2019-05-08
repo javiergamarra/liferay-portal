@@ -189,22 +189,21 @@ public class FormStructure {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String description;
 
-	@Schema(description = "https://www.schema.org/FormLayoutPage")
-	public FormLayoutPage[] getFormLayoutPages() {
-		return formLayoutPages;
+	@Schema(description = "https://www.schema.org/FormPage")
+	public FormPage[] getFormPages() {
+		return formPages;
 	}
 
-	public void setFormLayoutPages(FormLayoutPage[] formLayoutPages) {
-		this.formLayoutPages = formLayoutPages;
+	public void setFormPages(FormPage[] formPages) {
+		this.formPages = formPages;
 	}
 
 	@JsonIgnore
-	public void setFormLayoutPages(
-		UnsafeSupplier<FormLayoutPage[], Exception>
-			formLayoutPagesUnsafeSupplier) {
+	public void setFormPages(
+		UnsafeSupplier<FormPage[], Exception> formPagesUnsafeSupplier) {
 
 		try {
-			formLayoutPages = formLayoutPagesUnsafeSupplier.get();
+			formPages = formPagesUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -216,27 +215,24 @@ public class FormStructure {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected FormLayoutPage[] formLayoutPages;
+	protected FormPage[] formPages;
 
-	@Schema(description = "https://www.schema.org/FormSuccessPageSettings")
-	public FormSuccessPageSettings getFormSuccessPageSettings() {
-		return formSuccessPageSettings;
+	@Schema(description = "https://www.schema.org/FormSuccessPage")
+	public FormSuccessPage getFormSuccessPage() {
+		return formSuccessPage;
 	}
 
-	public void setFormSuccessPageSettings(
-		FormSuccessPageSettings formSuccessPageSettings) {
-
-		this.formSuccessPageSettings = formSuccessPageSettings;
+	public void setFormSuccessPage(FormSuccessPage formSuccessPage) {
+		this.formSuccessPage = formSuccessPage;
 	}
 
 	@JsonIgnore
-	public void setFormSuccessPageSettings(
-		UnsafeSupplier<FormSuccessPageSettings, Exception>
-			formSuccessPageSettingsUnsafeSupplier) {
+	public void setFormSuccessPage(
+		UnsafeSupplier<FormSuccessPage, Exception>
+			formSuccessPageUnsafeSupplier) {
 
 		try {
-			formSuccessPageSettings =
-				formSuccessPageSettingsUnsafeSupplier.get();
+			formSuccessPage = formSuccessPageUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -248,7 +244,7 @@ public class FormStructure {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected FormSuccessPageSettings formSuccessPageSettings;
+	protected FormSuccessPage formSuccessPage;
 
 	@Schema
 	public Long getId() {
@@ -436,19 +432,19 @@ public class FormStructure {
 			sb.append("\"");
 		}
 
-		if (formLayoutPages != null) {
+		if (formPages != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"formLayoutPages\": ");
+			sb.append("\"formPages\": ");
 
 			sb.append("[");
 
-			for (int i = 0; i < formLayoutPages.length; i++) {
-				sb.append(String.valueOf(formLayoutPages[i]));
+			for (int i = 0; i < formPages.length; i++) {
+				sb.append(String.valueOf(formPages[i]));
 
-				if ((i + 1) < formLayoutPages.length) {
+				if ((i + 1) < formPages.length) {
 					sb.append(", ");
 				}
 			}
@@ -456,14 +452,14 @@ public class FormStructure {
 			sb.append("]");
 		}
 
-		if (formSuccessPageSettings != null) {
+		if (formSuccessPage != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"formSuccessPageSettings\": ");
+			sb.append("\"formSuccessPage\": ");
 
-			sb.append(String.valueOf(formSuccessPageSettings));
+			sb.append(String.valueOf(formSuccessPage));
 		}
 
 		if (id != null) {

@@ -14,7 +14,7 @@
 
 package com.liferay.headless.form.client.serdes.v1_0;
 
-import com.liferay.headless.form.client.dto.v1_0.FormLayoutPage;
+import com.liferay.headless.form.client.dto.v1_0.FormPage;
 import com.liferay.headless.form.client.dto.v1_0.FormStructure;
 import com.liferay.headless.form.client.json.BaseJSONParser;
 
@@ -144,22 +144,19 @@ public class FormStructureSerDes {
 			sb.append("\"");
 		}
 
-		if (formStructure.getFormLayoutPages() != null) {
+		if (formStructure.getFormPages() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"formLayoutPages\": ");
+			sb.append("\"formPages\": ");
 
 			sb.append("[");
 
-			for (int i = 0; i < formStructure.getFormLayoutPages().length;
-				 i++) {
+			for (int i = 0; i < formStructure.getFormPages().length; i++) {
+				sb.append(String.valueOf(formStructure.getFormPages()[i]));
 
-				sb.append(
-					String.valueOf(formStructure.getFormLayoutPages()[i]));
-
-				if ((i + 1) < formStructure.getFormLayoutPages().length) {
+				if ((i + 1) < formStructure.getFormPages().length) {
 					sb.append(", ");
 				}
 			}
@@ -167,15 +164,14 @@ public class FormStructureSerDes {
 			sb.append("]");
 		}
 
-		if (formStructure.getFormSuccessPageSettings() != null) {
+		if (formStructure.getFormSuccessPage() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"formSuccessPageSettings\": ");
+			sb.append("\"formSuccessPage\": ");
 
-			sb.append(
-				String.valueOf(formStructure.getFormSuccessPageSettings()));
+			sb.append(String.valueOf(formStructure.getFormSuccessPage()));
 		}
 
 		if (formStructure.getId() != null) {
@@ -266,22 +262,20 @@ public class FormStructureSerDes {
 				"description", String.valueOf(formStructure.getDescription()));
 		}
 
-		if (formStructure.getFormLayoutPages() == null) {
-			map.put("formLayoutPages", null);
+		if (formStructure.getFormPages() == null) {
+			map.put("formPages", null);
 		}
 		else {
-			map.put(
-				"formLayoutPages",
-				String.valueOf(formStructure.getFormLayoutPages()));
+			map.put("formPages", String.valueOf(formStructure.getFormPages()));
 		}
 
-		if (formStructure.getFormSuccessPageSettings() == null) {
-			map.put("formSuccessPageSettings", null);
+		if (formStructure.getFormSuccessPage() == null) {
+			map.put("formSuccessPage", null);
 		}
 		else {
 			map.put(
-				"formSuccessPageSettings",
-				String.valueOf(formStructure.getFormSuccessPageSettings()));
+				"formSuccessPage",
+				String.valueOf(formStructure.getFormSuccessPage()));
 		}
 
 		if (formStructure.getId() == null) {
@@ -390,24 +384,22 @@ public class FormStructureSerDes {
 					formStructure.setDescription((String)jsonParserFieldValue);
 				}
 			}
-			else if (Objects.equals(jsonParserFieldName, "formLayoutPages")) {
+			else if (Objects.equals(jsonParserFieldName, "formPages")) {
 				if (jsonParserFieldValue != null) {
-					formStructure.setFormLayoutPages(
+					formStructure.setFormPages(
 						Stream.of(
 							toStrings((Object[])jsonParserFieldValue)
 						).map(
-							object -> FormLayoutPageSerDes.toDTO((String)object)
+							object -> FormPageSerDes.toDTO((String)object)
 						).toArray(
-							size -> new FormLayoutPage[size]
+							size -> new FormPage[size]
 						));
 				}
 			}
-			else if (Objects.equals(
-						jsonParserFieldName, "formSuccessPageSettings")) {
-
+			else if (Objects.equals(jsonParserFieldName, "formSuccessPage")) {
 				if (jsonParserFieldValue != null) {
-					formStructure.setFormSuccessPageSettings(
-						FormSuccessPageSettingsSerDes.toDTO(
+					formStructure.setFormSuccessPage(
+						FormSuccessPageSerDes.toDTO(
 							(String)jsonParserFieldValue));
 				}
 			}

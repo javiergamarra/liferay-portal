@@ -15,7 +15,7 @@
 package com.liferay.headless.form.client.dto.v1_0;
 
 import com.liferay.headless.form.client.function.UnsafeSupplier;
-import com.liferay.headless.form.client.serdes.v1_0.RowSerDes;
+import com.liferay.headless.form.client.serdes.v1_0.FormFieldOptionSerDes;
 
 import java.util.Objects;
 
@@ -26,7 +26,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class Row {
+public class FormFieldOption {
 
 	public Long getId() {
 		return id;
@@ -95,13 +95,13 @@ public class Row {
 			return true;
 		}
 
-		if (!(object instanceof Row)) {
+		if (!(object instanceof FormFieldOption)) {
 			return false;
 		}
 
-		Row row = (Row)object;
+		FormFieldOption formFieldOption = (FormFieldOption)object;
 
-		return Objects.equals(toString(), row.toString());
+		return Objects.equals(toString(), formFieldOption.toString());
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class Row {
 	}
 
 	public String toString() {
-		return RowSerDes.toJSON(this);
+		return FormFieldOptionSerDes.toJSON(this);
 	}
 
 }

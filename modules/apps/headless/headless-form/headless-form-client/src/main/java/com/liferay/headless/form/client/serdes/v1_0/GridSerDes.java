@@ -14,9 +14,8 @@
 
 package com.liferay.headless.form.client.serdes.v1_0;
 
-import com.liferay.headless.form.client.dto.v1_0.Column;
+import com.liferay.headless.form.client.dto.v1_0.FormFieldOption;
 import com.liferay.headless.form.client.dto.v1_0.Grid;
-import com.liferay.headless.form.client.dto.v1_0.Row;
 import com.liferay.headless.form.client.json.BaseJSONParser;
 
 import java.util.HashMap;
@@ -206,9 +205,10 @@ public class GridSerDes {
 						Stream.of(
 							toStrings((Object[])jsonParserFieldValue)
 						).map(
-							object -> ColumnSerDes.toDTO((String)object)
+							object -> FormFieldOptionSerDes.toDTO(
+								(String)object)
 						).toArray(
-							size -> new Column[size]
+							size -> new FormFieldOption[size]
 						));
 				}
 			}
@@ -223,9 +223,10 @@ public class GridSerDes {
 						Stream.of(
 							toStrings((Object[])jsonParserFieldValue)
 						).map(
-							object -> RowSerDes.toDTO((String)object)
+							object -> FormFieldOptionSerDes.toDTO(
+								(String)object)
 						).toArray(
-							size -> new Row[size]
+							size -> new FormFieldOption[size]
 						));
 				}
 			}

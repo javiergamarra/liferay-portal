@@ -45,18 +45,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Grid")
 public class Grid {
 
-	@Schema(description = "https://www.schema.org/FormFieldOption")
-	public Column[] getColumns() {
+	@Schema
+	public FormFieldOption[] getColumns() {
 		return columns;
 	}
 
-	public void setColumns(Column[] columns) {
+	public void setColumns(FormFieldOption[] columns) {
 		this.columns = columns;
 	}
 
 	@JsonIgnore
 	public void setColumns(
-		UnsafeSupplier<Column[], Exception> columnsUnsafeSupplier) {
+		UnsafeSupplier<FormFieldOption[], Exception> columnsUnsafeSupplier) {
 
 		try {
 			columns = columnsUnsafeSupplier.get();
@@ -71,7 +71,7 @@ public class Grid {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Column[] columns;
+	protected FormFieldOption[] columns;
 
 	@Schema
 	public Long getId() {
@@ -99,17 +99,19 @@ public class Grid {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long id;
 
-	@Schema(description = "https://www.schema.org/FormFieldOption")
-	public Row[] getRows() {
+	@Schema
+	public FormFieldOption[] getRows() {
 		return rows;
 	}
 
-	public void setRows(Row[] rows) {
+	public void setRows(FormFieldOption[] rows) {
 		this.rows = rows;
 	}
 
 	@JsonIgnore
-	public void setRows(UnsafeSupplier<Row[], Exception> rowsUnsafeSupplier) {
+	public void setRows(
+		UnsafeSupplier<FormFieldOption[], Exception> rowsUnsafeSupplier) {
+
 		try {
 			rows = rowsUnsafeSupplier.get();
 		}
@@ -123,7 +125,7 @@ public class Grid {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Row[] rows;
+	protected FormFieldOption[] rows;
 
 	@Override
 	public boolean equals(Object object) {
