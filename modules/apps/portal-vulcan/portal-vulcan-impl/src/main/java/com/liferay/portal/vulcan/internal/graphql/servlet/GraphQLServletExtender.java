@@ -14,6 +14,7 @@
 
 package com.liferay.portal.vulcan.internal.graphql.servlet;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.vulcan.graphql.servlet.ServletData;
 
@@ -44,6 +45,8 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.http.context.ServletContextHelper;
+import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -126,12 +129,29 @@ public class GraphQLServletExtender {
 	private GraphQLObjectHandler _graphQLObjectHandler;
 	private ServiceTracker<?, ?> _serviceTracker;
 
+	private static class Tracked {
+
+		public Tracked(
+			ServiceRegistration<ServletContextHelper>
+				servletContextHelperServiceRegistration,
+			ServiceRegistration<Servlet> servletServiceRegistration) {
+
+			_servletContextHelperServiceRegistration =
+				servletContextHelperServiceRegistration;
+			_servletServiceRegistration = servletServiceRegistration;
+		}
+
+		private final ServiceRegistration<ServletContextHelper>
+			_servletContextHelperServiceRegistration;
+		private final ServiceRegistration<Servlet> _servletServiceRegistration;
+
+	}
+
 	private class ServletDataServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
-			<ServletData, ServiceRegistration<Servlet>> {
+		implements ServiceTrackerCustomizer<ServletData, Tracked> {
 
 		@Override
-		public ServiceRegistration<Servlet> addingService(
+		public Tracked addingService(
 			ServiceReference<ServletData> serviceReference) {
 
 			// Schema
@@ -167,32 +187,58 @@ public class GraphQLServletExtender {
 
 			String path = servletData.getPath();
 
-			properties.put("osgi.http.whiteboard.context.path", path);
-
 			Class<? extends ServletData> clazz = servletData.getClass();
 
 			properties.put(
-				"osgi.http.whiteboard.servlet.name", clazz.getName());
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_NAME,
+				clazz.getName());
+			properties.put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_PATH, path);
+			properties.put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_FILTER_SERVLET,
+				"GraphQL");
+
+			ServiceRegistration<ServletContextHelper>
+				servletContextHelperServiceRegistration =
+					_bundleContext.registerService(
+						ServletContextHelper.class,
+						new ServletContextHelper() {
+						},
+						properties);
+
+			properties = new HashMapDictionary<>();
 
 			properties.put(
-				"osgi.http.whiteboard.servlet.pattern", path.concat("/*"));
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
+				StringBundler.concat(
+					"(osgi.http.whiteboard.context.name=", clazz.getName(),
+					")"));
+			properties.put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME,
+				"GraphQL");
+			properties.put(
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN, "/*");
 
-			return _bundleContext.registerService(
-				Servlet.class, servlet, properties);
+			ServiceRegistration<Servlet> servletServiceRegistration =
+				_bundleContext.registerService(
+					Servlet.class, servlet, properties);
+
+			return new Tracked(
+				servletContextHelperServiceRegistration,
+				servletServiceRegistration);
 		}
 
 		@Override
 		public void modifiedService(
-			ServiceReference<ServletData> serviceReference,
-			ServiceRegistration<Servlet> serviceRegistration) {
+			ServiceReference<ServletData> serviceReference, Tracked tracked) {
 		}
 
 		@Override
 		public void removedService(
-			ServiceReference<ServletData> serviceReference,
-			ServiceRegistration<Servlet> serviceRegistration) {
+			ServiceReference<ServletData> serviceReference, Tracked tracked) {
 
-			serviceRegistration.unregister();
+			tracked._servletContextHelperServiceRegistration.unregister();
+			tracked._servletServiceRegistration.unregister();
 
 			_bundleContext.ungetService(serviceReference);
 		}
