@@ -33,7 +33,8 @@ public interface ${schemaName}Resource {
 		public ${javaMethodSignature.returnType} ${javaMethodSignature.methodName}(${freeMarkerTool.getResourceParameters(javaMethodSignature.javaMethodParameters, javaMethodSignature.operation, false)}) throws Exception;
 	</#list>
 
-	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage);
+	public default void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
+	}
 
 	public void setContextCompany(Company contextCompany);
 
