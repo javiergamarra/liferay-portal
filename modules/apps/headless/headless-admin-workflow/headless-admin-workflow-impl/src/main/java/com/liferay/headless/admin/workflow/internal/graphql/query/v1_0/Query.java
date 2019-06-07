@@ -20,6 +20,7 @@ import com.liferay.headless.admin.workflow.resource.v1_0.WorkflowLogResource;
 import com.liferay.headless.admin.workflow.resource.v1_0.WorkflowTaskResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
@@ -196,9 +197,7 @@ public class Query {
 		throws Exception {
 
 		workflowTaskResource.setAcceptLanguage(_acceptLanguage);
-		workflowTaskResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		workflowTaskResource.setContextCompany(_company);
 	}
 
 	private static ComponentServiceObjects<WorkflowLogResource>
@@ -207,5 +206,6 @@ public class Query {
 		_workflowTaskResourceComponentServiceObjects;
 
 	private AcceptLanguage _acceptLanguage;
+	private Company _company;
 
 }
