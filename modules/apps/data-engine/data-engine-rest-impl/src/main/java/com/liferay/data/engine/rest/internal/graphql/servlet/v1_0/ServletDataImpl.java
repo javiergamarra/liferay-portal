@@ -66,8 +66,8 @@ public class ServletDataImpl implements ServletData {
 	}
 
 	@Override
-	public String getPath() {
-		return "/data-engine-graphql/v1_0";
+	public String getName() {
+		return "data_engine";
 	}
 
 	@Override

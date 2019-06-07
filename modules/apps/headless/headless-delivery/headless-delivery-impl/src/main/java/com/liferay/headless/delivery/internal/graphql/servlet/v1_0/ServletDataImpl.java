@@ -125,8 +125,8 @@ public class ServletDataImpl implements ServletData {
 	}
 
 	@Override
-	public String getPath() {
-		return "/headless-delivery-graphql/v1_0";
+	public String getName() {
+		return "delivery";
 	}
 
 	@Override

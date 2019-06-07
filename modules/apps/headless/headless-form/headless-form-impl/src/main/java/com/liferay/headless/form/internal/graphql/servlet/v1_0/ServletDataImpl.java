@@ -67,8 +67,8 @@ public class ServletDataImpl implements ServletData {
 	}
 
 	@Override
-	public String getPath() {
-		return "/headless-form-graphql/v1_0";
+	public String getName() {
+		return "form";
 	}
 
 	@Override

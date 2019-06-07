@@ -51,8 +51,8 @@ public class ServletDataImpl implements ServletData {
 	}
 
 	@Override
-	public String getPath() {
-		return "/change-tracking-graphql/v1_0";
+	public String getName() {
+		return "change_tracking";
 	}
 
 	@Override

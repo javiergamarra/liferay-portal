@@ -25,7 +25,7 @@ public interface ServletData {
 
 	public Object getMutation();
 
-	public String getPath();
+	public String getName();
 
 	public Object getQuery();
 

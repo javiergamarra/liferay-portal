@@ -64,8 +64,8 @@ public class ServletDataImpl implements ServletData {
 	}
 
 	@Override
-	public String getPath() {
-		return "/headless-admin-taxonomy-graphql/v1_0";
+	public String getName() {
+		return "admin_taxonomy";
 	}
 
 	@Override

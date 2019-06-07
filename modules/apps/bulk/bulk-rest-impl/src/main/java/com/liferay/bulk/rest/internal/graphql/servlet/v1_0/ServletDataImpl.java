@@ -61,8 +61,8 @@ public class ServletDataImpl implements ServletData {
 	}
 
 	@Override
-	public String getPath() {
-		return "/bulk-graphql/v1_0";
+	public String getName() {
+		return "bulk";
 	}
 
 	@Override
