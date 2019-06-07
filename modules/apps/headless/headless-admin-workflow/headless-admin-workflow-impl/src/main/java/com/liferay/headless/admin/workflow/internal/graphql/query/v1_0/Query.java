@@ -22,6 +22,7 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -194,6 +195,7 @@ public class Query {
 			WorkflowTaskResource workflowTaskResource)
 		throws Exception {
 
+		workflowTaskResource.setAcceptLanguage(_acceptLanguage);
 		workflowTaskResource.setContextCompany(
 			CompanyLocalServiceUtil.getCompany(
 				CompanyThreadLocal.getCompanyId()));
@@ -203,5 +205,7 @@ public class Query {
 		_workflowLogResourceComponentServiceObjects;
 	private static ComponentServiceObjects<WorkflowTaskResource>
 		_workflowTaskResourceComponentServiceObjects;
+
+	private AcceptLanguage _acceptLanguage;
 
 }

@@ -24,6 +24,7 @@ import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -152,6 +153,7 @@ public class Mutation {
 			WorkflowTaskResource workflowTaskResource)
 		throws Exception {
 
+		workflowTaskResource.setAcceptLanguage(_acceptLanguage);
 		workflowTaskResource.setContextCompany(
 			CompanyLocalServiceUtil.getCompany(
 				CompanyThreadLocal.getCompanyId()));
@@ -159,5 +161,7 @@ public class Mutation {
 
 	private static ComponentServiceObjects<WorkflowTaskResource>
 		_workflowTaskResourceComponentServiceObjects;
+
+	private AcceptLanguage _acceptLanguage;
 
 }

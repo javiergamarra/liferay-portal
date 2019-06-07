@@ -202,6 +202,10 @@ public abstract class BaseWorkflowTaskResourceImpl
 		return new WorkflowTask();
 	}
 
+	public void setAcceptLanguage(AcceptLanguage acceptLanguage) {
+		this.contextAcceptLanguage = acceptLanguage;
+	}
+
 	public void setContextCompany(Company contextCompany) {
 		this.contextCompany = contextCompany;
 	}
