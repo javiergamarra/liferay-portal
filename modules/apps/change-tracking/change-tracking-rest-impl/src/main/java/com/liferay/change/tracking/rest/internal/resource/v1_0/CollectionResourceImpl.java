@@ -115,20 +115,20 @@ public class CollectionResourceImpl extends BaseCollectionResourceImpl {
 		catch (PortalException pe) {
 			if (pe instanceof CTCollectionDescriptionCTEngineException) {
 				throw new CannotCreateCollectionException(
-					"The collection description is too long");
+					"The collection description is too long", pe);
 			}
 			else if (pe instanceof CTCollectionNameCTEngineException) {
 				if (Validator.isNull(pe.getMessage())) {
 					throw new CannotCreateCollectionException(
-						"The collection name is too short");
+						"The collection name is too short", pe);
 				}
 
 				throw new CannotCreateCollectionException(
-					"The collection name is too long");
+					"The collection name is too long", pe);
 			}
 			else {
 				throw new CannotCreateCollectionException(
-					"Unable to create collection");
+					"Unable to create collection", pe);
 			}
 		}
 	}

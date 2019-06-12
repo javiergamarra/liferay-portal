@@ -161,6 +161,30 @@ paths:
                             schema:
                                 type: string
                     description: ""
+                460:
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                    description: ""
+                461:
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                    description: ""
+                462:
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                    description: ""
+                463:
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                    description: ""
             tags: ["Collection"]
     "/collections/{collectionId}":
         delete:

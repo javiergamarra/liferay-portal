@@ -23,4 +23,8 @@ public class CannotCreateCollectionException extends Exception {
 		super(message);
 	}
 
+	public CannotCreateCollectionException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }

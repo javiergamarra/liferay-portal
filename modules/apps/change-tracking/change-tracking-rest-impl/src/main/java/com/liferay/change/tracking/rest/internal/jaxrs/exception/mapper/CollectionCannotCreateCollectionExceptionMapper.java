@@ -14,7 +14,10 @@
 
 package com.liferay.change.tracking.rest.internal.jaxrs.exception.mapper;
 
+import com.liferay.change.tracking.engine.exception.CTCollectionDescriptionCTEngineException;
+import com.liferay.change.tracking.engine.exception.CTCollectionNameCTEngineException;
 import com.liferay.change.tracking.rest.internal.jaxrs.exception.CannotCreateCollectionException;
+import com.liferay.portal.kernel.util.Validator;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,8 +41,26 @@ public class CollectionCannotCreateCollectionExceptionMapper
 
 	@Override
 	public Response toResponse(CannotCreateCollectionException ccce) {
+		Throwable throwable = ccce.getCause();
+
+		Response.Status status = Response.Status.fromStatusCode(460);
+
+		if (throwable != null) {
+			if (throwable instanceof CTCollectionDescriptionCTEngineException) {
+				status = Response.Status.fromStatusCode(461);
+			}
+			else if (throwable instanceof CTCollectionNameCTEngineException) {
+				if (Validator.isNull(throwable.getMessage())) {
+					status = Response.Status.fromStatusCode(462);
+				}
+				else {
+					status = Response.Status.fromStatusCode(463);
+				}
+			}
+		}
+
 		return Response.status(
-			Response.Status.BAD_REQUEST
+			status
 		).type(
 			MediaType.TEXT_PLAIN
 		).entity(
