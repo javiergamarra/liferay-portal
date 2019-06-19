@@ -17,6 +17,7 @@ package com.liferay.headless.delivery.resource.v1_0.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.headless.delivery.client.dto.v1_0.Document;
+import com.liferay.headless.delivery.client.dto.v1_0.Rating;
 import com.liferay.headless.delivery.client.http.HttpInvoker;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -37,6 +39,61 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class DocumentResourceTest extends BaseDocumentResourceTestCase {
+
+	@Test
+	public void testGetDocumentMyRating() throws Exception {
+		Document postDocument = testGetDocument_addDocument();
+
+		Rating randomRating = randomRating();
+
+		Rating postRating = testPostDocumentMyRating_addMyRating(
+			postDocument.getId(), randomRating);
+
+		Rating getRating = documentResource.getDocumentMyRating(
+			postDocument.getId());
+
+		assertEquals(postRating, getRating);
+		assertValid(getRating);
+	}
+
+	@Test
+	public void testPostDocumentMyRating() throws Exception {
+		Document randomDocument = randomDocument();
+
+		Map<String, File> multipartFiles = getMultipartFiles();
+
+		Document postDocument = testPostSiteDocument_addDocument(
+			randomDocument, multipartFiles);
+
+		Rating randomRating = randomRating();
+
+		Rating postRating = testPostDocumentMyRating_addMyRating(
+			postDocument.getId(), randomRating);
+
+		Assert.assertTrue(equals(randomRating, postRating));
+	}
+
+	@Test
+	public void testPutDocumentMyRating() throws Exception {
+		Document postDocument = testPutDocument_addDocument();
+
+		testPostDocumentMyRating_addMyRating(
+			postDocument.getId(), randomRating());
+
+		Rating randomRating = randomRating();
+
+		Rating putRating = documentResource.putDocumentMyRating(
+			postDocument.getId(), randomRating);
+
+		assertEquals(randomRating, putRating);
+		assertValid(putRating);
+
+		Rating getRating = documentResource.getDocumentMyRating(
+			postDocument.getId());
+
+		assertEquals(randomRating, getRating);
+		assertValid(getRating);
+	}
 
 	@Override
 	protected void assertValid(
@@ -92,6 +149,13 @@ public class DocumentResourceTest extends BaseDocumentResourceTestCase {
 			RandomTestUtil.randomString(), serviceContext);
 
 		return folder.getFolderId();
+	}
+
+	protected Rating testPostDocumentMyRating_addMyRating(
+			long documentId, Rating rating)
+		throws Exception {
+
+		return documentResource.postDocumentMyRating(documentId, rating);
 	}
 
 	private String _read(String url) throws Exception {
