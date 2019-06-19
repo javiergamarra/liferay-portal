@@ -16,13 +16,16 @@ package com.liferay.headless.delivery.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.headless.delivery.client.dto.v1_0.MessageBoardThread;
+import com.liferay.headless.delivery.client.dto.v1_0.Rating;
 import com.liferay.message.boards.model.MBCategory;
 import com.liferay.message.boards.service.MBCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -45,6 +48,73 @@ public class MessageBoardThreadResourceTest
 			UserLocalServiceUtil.getDefaultUserId(testGroup.getCompanyId()),
 			testGroup.getGroupId(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), serviceContext);
+	}
+
+	@Test
+	public void testGetMessageBoardThreadMyRating() throws Exception {
+		MessageBoardThread postMessageBoardThread =
+			testPutMessageBoardThread_addMessageBoardThread();
+
+		testPostMessageBoardThreadMyRating_addMyRating(
+			postMessageBoardThread.getId(), randomRating());
+
+		Rating randomRating = randomRating();
+
+		Rating putRating =
+			messageBoardThreadResource.putMessageBoardThreadMyRating(
+				postMessageBoardThread.getId(), randomRating);
+
+		assertEquals(randomRating, putRating);
+		assertValid(putRating);
+
+		Rating getRating =
+			messageBoardThreadResource.getMessageBoardThreadMyRating(
+				postMessageBoardThread.getId());
+
+		assertEquals(randomRating, getRating);
+		assertValid(getRating);
+	}
+
+	@Test
+	public void testPostMessageBoardThreadMyRating() throws Exception {
+		MessageBoardThread randomMessageBoardThread =
+			randomMessageBoardThread();
+
+		MessageBoardThread postMessageBoardThread =
+			testPostSiteMessageBoardThread_addMessageBoardThread(
+				randomMessageBoardThread);
+
+		Rating randomRating = randomRating();
+
+		Rating postRating = testPostMessageBoardThreadMyRating_addMyRating(
+			postMessageBoardThread.getId(), randomRating);
+
+		Assert.assertTrue(equals(randomRating, postRating));
+	}
+
+	@Test
+	public void testPutMessageBoardThreadMyRating() throws Exception {
+		MessageBoardThread postMessageBoardThread =
+			testPutMessageBoardThread_addMessageBoardThread();
+
+		testPostMessageBoardThreadMyRating_addMyRating(
+			postMessageBoardThread.getId(), randomRating());
+
+		Rating randomRating = randomRating();
+
+		Rating putRating =
+			messageBoardThreadResource.putMessageBoardThreadMyRating(
+				postMessageBoardThread.getId(), randomRating);
+
+		assertEquals(randomRating, putRating);
+		assertValid(putRating);
+
+		Rating getRating =
+			messageBoardThreadResource.getMessageBoardThreadMyRating(
+				postMessageBoardThread.getId());
+
+		assertEquals(randomRating, getRating);
+		assertValid(getRating);
 	}
 
 	@Override
@@ -72,6 +142,14 @@ public class MessageBoardThreadResourceTest
 		testGetMessageBoardSectionMessageBoardThreadsPage_getMessageBoardSectionId() {
 
 		return _mbCategory.getCategoryId();
+	}
+
+	protected Rating testPostMessageBoardThreadMyRating_addMyRating(
+			long messageBoardThreadId, Rating rating)
+		throws Exception {
+
+		return messageBoardThreadResource.postMessageBoardThreadMyRating(
+			messageBoardThreadId, rating);
 	}
 
 	private MBCategory _mbCategory;
