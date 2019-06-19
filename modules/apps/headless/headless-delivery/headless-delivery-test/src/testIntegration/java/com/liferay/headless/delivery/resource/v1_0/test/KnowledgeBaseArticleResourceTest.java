@@ -15,6 +15,8 @@
 package com.liferay.headless.delivery.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.headless.delivery.client.dto.v1_0.KnowledgeBaseArticle;
+import com.liferay.headless.delivery.client.dto.v1_0.Rating;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.model.KBFolder;
 import com.liferay.knowledge.base.service.KBArticleLocalServiceUtil;
@@ -24,7 +26,9 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -49,6 +53,66 @@ public class KnowledgeBaseArticleResourceTest
 			PortalUtil.getClassNameId(KBFolder.class.getName()), 0,
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			serviceContext);
+	}
+
+	@Test
+	public void testGetKnowledgeBaseArticleMyRating() throws Exception {
+		KnowledgeBaseArticle postKnowledgeBaseArticle =
+			testGetKnowledgeBaseArticle_addKnowledgeBaseArticle();
+
+		Rating randomRating = randomRating();
+
+		Rating postRating = testPostKnowledgeBaseArticleMyRating_addMyRating(
+			postKnowledgeBaseArticle.getId(), randomRating);
+
+		Rating getRating =
+			knowledgeBaseArticleResource.getKnowledgeBaseArticleMyRating(
+				postKnowledgeBaseArticle.getId());
+
+		assertEquals(postRating, getRating);
+		assertValid(getRating);
+	}
+
+	@Test
+	public void testPostKnowledgeBaseArticleMyRating() throws Exception {
+		KnowledgeBaseArticle randomKnowledgeBaseArticle =
+			randomKnowledgeBaseArticle();
+
+		KnowledgeBaseArticle postKnowledgeBaseArticle =
+			testPostSiteKnowledgeBaseArticle_addKnowledgeBaseArticle(
+				randomKnowledgeBaseArticle);
+
+		Rating randomRating = randomRating();
+
+		Rating postRating = testPostKnowledgeBaseArticleMyRating_addMyRating(
+			postKnowledgeBaseArticle.getId(), randomRating);
+
+		Assert.assertTrue(equals(randomRating, postRating));
+	}
+
+	@Test
+	public void testPutKnowledgeBaseArticleMyRating() throws Exception {
+		KnowledgeBaseArticle postKnowledgeBaseArticle =
+			testPutKnowledgeBaseArticle_addKnowledgeBaseArticle();
+
+		testPostKnowledgeBaseArticleMyRating_addMyRating(
+			postKnowledgeBaseArticle.getId(), randomRating());
+
+		Rating randomRating = randomRating();
+
+		Rating putRating =
+			knowledgeBaseArticleResource.putKnowledgeBaseArticleMyRating(
+				postKnowledgeBaseArticle.getId(), randomRating);
+
+		assertEquals(randomRating, putRating);
+		assertValid(putRating);
+
+		Rating getRating =
+			knowledgeBaseArticleResource.getKnowledgeBaseArticleMyRating(
+				postKnowledgeBaseArticle.getId());
+
+		assertEquals(randomRating, getRating);
+		assertValid(getRating);
 	}
 
 	@Override
@@ -80,6 +144,14 @@ public class KnowledgeBaseArticleResourceTest
 		testGetKnowledgeBaseFolderKnowledgeBaseArticlesPage_getKnowledgeBaseFolderId() {
 
 		return _kbFolder.getKbFolderId();
+	}
+
+	protected Rating testPostKnowledgeBaseArticleMyRating_addMyRating(
+			long knowledgeBaseArticleId, Rating rating)
+		throws Exception {
+
+		return knowledgeBaseArticleResource.postKnowledgeBaseArticleMyRating(
+			knowledgeBaseArticleId, rating);
 	}
 
 	private KBFolder _kbFolder;
