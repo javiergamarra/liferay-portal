@@ -262,7 +262,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 			<#else>
 				@Test
 				public void test${javaMethodSignature.methodName?cap_first}() throws Exception {
-					<#if freeMarkerTool.hasQueryParameter(javaMethodSignature)>
+
 						Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
 						<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -292,7 +292,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 						);
 
 						Assert.assertEquals(0, page.getTotalCount());
-					</#if>
 
 					<#list javaMethodSignature.pathJavaMethodParameters as javaMethodParameter>
 						${javaMethodParameter.parameterType} ${javaMethodParameter.parameterName} = test${javaMethodSignature.methodName?cap_first}_get${javaMethodParameter.parameterName?cap_first}();
@@ -315,10 +314,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 							</#list>
 
 							randomIrrelevant${schemaName}());
-
-							<#if !freeMarkerTool.hasQueryParameter(javaMethodSignature)>
-								Page<${schemaName}>
-							</#if>
 
 							page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -360,10 +355,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 					</#list>
 
 					random${schemaName}());
-
-					<#if !freeMarkerTool.hasQueryParameter(javaMethodSignature)>
-						Page<${schemaName}>
-					</#if>
 
 					page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
