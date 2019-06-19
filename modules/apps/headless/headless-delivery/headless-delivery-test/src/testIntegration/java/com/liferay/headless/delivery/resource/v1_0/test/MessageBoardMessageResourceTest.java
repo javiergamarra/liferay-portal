@@ -16,6 +16,7 @@ package com.liferay.headless.delivery.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.headless.delivery.client.dto.v1_0.MessageBoardMessage;
+import com.liferay.headless.delivery.client.dto.v1_0.Rating;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.test.util.MBTestUtil;
@@ -23,7 +24,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -48,6 +51,66 @@ public class MessageBoardMessageResourceTest
 			RandomTestUtil.randomString(), RandomTestUtil.randomString());
 
 		_mbThread = mbMessage.getThread();
+	}
+
+	@Test
+	public void testGetMessageBoardMessageMyRating() throws Exception {
+		MessageBoardMessage postMessageBoardMessage =
+			testGetMessageBoardMessage_addMessageBoardMessage();
+
+		Rating randomRating = randomRating();
+
+		Rating postRating = testPostMessageBoardMessageMyRating_addMyRating(
+			postMessageBoardMessage.getId(), randomRating);
+
+		Rating getRating =
+			messageBoardMessageResource.getMessageBoardMessageMyRating(
+				postMessageBoardMessage.getId());
+
+		assertEquals(postRating, getRating);
+		assertValid(getRating);
+	}
+
+	@Test
+	public void testPostMessageBoardMessageMyRating() throws Exception {
+		MessageBoardMessage randomMessageBoardMessage =
+			randomMessageBoardMessage();
+
+		MessageBoardMessage postMessageBoardMessage =
+			testPostMessageBoardMessageMessageBoardMessage_addMessageBoardMessage(
+				randomMessageBoardMessage);
+
+		Rating randomRating = randomRating();
+
+		Rating postRating = testPostMessageBoardMessageMyRating_addMyRating(
+			postMessageBoardMessage.getId(), randomRating);
+
+		Assert.assertTrue(equals(randomRating, postRating));
+	}
+
+	@Test
+	public void testPutMessageBoardMessageMyRating() throws Exception {
+		MessageBoardMessage postMessageBoardMessage =
+			testPutMessageBoardMessage_addMessageBoardMessage();
+
+		testPostMessageBoardMessageMyRating_addMyRating(
+			postMessageBoardMessage.getId(), randomRating());
+
+		Rating randomRating = randomRating();
+
+		Rating putRating =
+			messageBoardMessageResource.putMessageBoardMessageMyRating(
+				postMessageBoardMessage.getId(), randomRating);
+
+		assertEquals(randomRating, putRating);
+		assertValid(putRating);
+
+		Rating getRating =
+			messageBoardMessageResource.getMessageBoardMessageMyRating(
+				postMessageBoardMessage.getId());
+
+		assertEquals(randomRating, getRating);
+		assertValid(getRating);
 	}
 
 	@Override
@@ -113,6 +176,14 @@ public class MessageBoardMessageResourceTest
 			postMessageBoardThreadMessageBoardMessage(
 				testGetMessageBoardThreadMessageBoardMessagesPage_getMessageBoardThreadId(),
 				randomMessageBoardMessage());
+	}
+
+	protected Rating testPostMessageBoardMessageMyRating_addMyRating(
+			long messageBoardMessageId, Rating rating)
+		throws Exception {
+
+		return messageBoardMessageResource.postMessageBoardMessageMyRating(
+			messageBoardMessageId, rating);
 	}
 
 	@Override
