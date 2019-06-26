@@ -28,6 +28,7 @@ import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
 import com.liferay.data.engine.rest.client.resource.v1_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.client.serdes.v1_0.DataDefinitionSerDes;
+import com.liferay.petra.function.UnsafeTriConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -50,6 +51,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -60,6 +62,7 @@ import javax.annotation.Generated;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang.time.DateUtils;
 
@@ -276,7 +279,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		Page<DataDefinition> page =
 			dataDefinitionResource.getSiteDataDefinitionsPage(
 				testGetSiteDataDefinitionsPage_getSiteId(),
-				RandomTestUtil.randomString(), Pagination.of(1, 2));
+				RandomTestUtil.randomString(), Pagination.of(1, 2), null);
 
 		Assert.assertEquals(0, page.getTotalCount());
 
@@ -290,7 +293,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 					irrelevantSiteId, randomIrrelevantDataDefinition());
 
 			page = dataDefinitionResource.getSiteDataDefinitionsPage(
-				irrelevantSiteId, null, Pagination.of(1, 2));
+				irrelevantSiteId, null, Pagination.of(1, 2), null);
 
 			Assert.assertEquals(1, page.getTotalCount());
 
@@ -309,7 +312,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 				siteId, randomDataDefinition());
 
 		page = dataDefinitionResource.getSiteDataDefinitionsPage(
-			siteId, null, Pagination.of(1, 2));
+			siteId, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -339,7 +342,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 		Page<DataDefinition> page1 =
 			dataDefinitionResource.getSiteDataDefinitionsPage(
-				siteId, null, Pagination.of(1, 2));
+				siteId, null, Pagination.of(1, 2), null);
 
 		List<DataDefinition> dataDefinitions1 =
 			(List<DataDefinition>)page1.getItems();
@@ -349,7 +352,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 		Page<DataDefinition> page2 =
 			dataDefinitionResource.getSiteDataDefinitionsPage(
-				siteId, null, Pagination.of(2, 2));
+				siteId, null, Pagination.of(2, 2), null);
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -361,11 +364,102 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 		Page<DataDefinition> page3 =
 			dataDefinitionResource.getSiteDataDefinitionsPage(
-				siteId, null, Pagination.of(1, 3));
+				siteId, null, Pagination.of(1, 3), null);
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(dataDefinition1, dataDefinition2, dataDefinition3),
 			(List<DataDefinition>)page3.getItems());
+	}
+
+	@Test
+	public void testGetSiteDataDefinitionsPageWithSortDateTime()
+		throws Exception {
+
+		testGetSiteDataDefinitionsPageWithSort(
+			EntityField.Type.DATE_TIME,
+			(entityField, dataDefinition1, dataDefinition2) -> {
+				BeanUtils.setProperty(
+					dataDefinition1, entityField.getName(),
+					DateUtils.addMinutes(new Date(), -2));
+			});
+	}
+
+	@Test
+	public void testGetSiteDataDefinitionsPageWithSortInteger()
+		throws Exception {
+
+		testGetSiteDataDefinitionsPageWithSort(
+			EntityField.Type.INTEGER,
+			(entityField, dataDefinition1, dataDefinition2) -> {
+				BeanUtils.setProperty(
+					dataDefinition1, entityField.getName(), 0);
+				BeanUtils.setProperty(
+					dataDefinition2, entityField.getName(), 1);
+			});
+	}
+
+	@Test
+	public void testGetSiteDataDefinitionsPageWithSortString()
+		throws Exception {
+
+		testGetSiteDataDefinitionsPageWithSort(
+			EntityField.Type.STRING,
+			(entityField, dataDefinition1, dataDefinition2) -> {
+				BeanUtils.setProperty(
+					dataDefinition1, entityField.getName(), "Aaa");
+				BeanUtils.setProperty(
+					dataDefinition2, entityField.getName(), "Bbb");
+			});
+	}
+
+	protected void testGetSiteDataDefinitionsPageWithSort(
+			EntityField.Type type,
+			UnsafeTriConsumer
+				<EntityField, DataDefinition, DataDefinition, Exception>
+					unsafeTriConsumer)
+		throws Exception {
+
+		List<EntityField> entityFields = getEntityFields(type);
+
+		if (entityFields.isEmpty()) {
+			return;
+		}
+
+		Long siteId = testGetSiteDataDefinitionsPage_getSiteId();
+
+		DataDefinition dataDefinition1 = randomDataDefinition();
+		DataDefinition dataDefinition2 = randomDataDefinition();
+
+		for (EntityField entityField : entityFields) {
+			unsafeTriConsumer.accept(
+				entityField, dataDefinition1, dataDefinition2);
+		}
+
+		dataDefinition1 = testGetSiteDataDefinitionsPage_addDataDefinition(
+			siteId, dataDefinition1);
+
+		dataDefinition2 = testGetSiteDataDefinitionsPage_addDataDefinition(
+			siteId, dataDefinition2);
+
+		for (EntityField entityField : entityFields) {
+			Page<DataDefinition> ascPage =
+				dataDefinitionResource.getSiteDataDefinitionsPage(
+					siteId, null, Pagination.of(1, 2),
+					entityField.getName() + ":asc");
+
+			assertEquals(
+				Arrays.asList(dataDefinition1, dataDefinition2),
+				(List<DataDefinition>)ascPage.getItems());
+
+			Page<DataDefinition> descPage =
+				dataDefinitionResource.getSiteDataDefinitionsPage(
+					siteId, null, Pagination.of(1, 2),
+					entityField.getName() + ":desc");
+
+			assertEquals(
+				Arrays.asList(dataDefinition2, dataDefinition1),
+				(List<DataDefinition>)descPage.getItems());
+		}
 	}
 
 	protected DataDefinition testGetSiteDataDefinitionsPage_addDataDefinition(

@@ -26,6 +26,7 @@ import com.liferay.data.engine.rest.resource.v1_0.DataRecordResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
@@ -92,7 +93,7 @@ public class Query {
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("keywords") String keywords,
 			@GraphQLName("pageSize") int pageSize,
-			@GraphQLName("page") int page)
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -100,7 +101,7 @@ public class Query {
 			this::_populateResourceContext,
 			dataDefinitionResource -> new DataDefinitionPage(
 				dataDefinitionResource.getSiteDataDefinitionsPage(
-					siteId, keywords, Pagination.of(page, pageSize))));
+					siteId, keywords, Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
