@@ -40,7 +40,7 @@ String segmentsExperimentRootId = renderResponse.getNamespace() + "-segments-exp
 				createSegmentsExperimentURL: '<%= segmentsExperimentDisplayContext.getCreateSegmentsExperimentURL() %>',
 				createSegmentsVariantURL: '<%= segmentsExperimentDisplayContext.getCreateSegmentsVariantURL() %>',
 				deleteSegmentsVariantURL: '<%= segmentsExperimentDisplayContext.getDeleteSegmentsVariantURL() %>',
-				editSegmentsExperimentURL: '/segments.segmentsexperiment/update-segments-experiment',
+				editSegmentsExperimentURL: '<%= segmentsExperimentDisplayContext.getEditSegmentsExperimentURL() %>',
 				editSegmentsVariantURL: '<%= segmentsExperimentDisplayContext.getEditSegmentsVariantURL() %>'
 			},
 			namespace: '<portlet:namespace />',
