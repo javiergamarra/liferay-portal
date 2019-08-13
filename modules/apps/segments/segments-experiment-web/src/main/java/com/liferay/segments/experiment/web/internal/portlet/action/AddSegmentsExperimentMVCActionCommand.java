@@ -35,7 +35,6 @@ import com.liferay.segments.constants.SegmentsPortletKeys;
 import com.liferay.segments.experiment.web.internal.util.SegmentsExperimentUtil;
 import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.model.SegmentsExperimentRel;
-import com.liferay.segments.service.SegmentsExperienceService;
 import com.liferay.segments.service.SegmentsExperimentRelService;
 import com.liferay.segments.service.SegmentsExperimentService;
 
@@ -144,9 +143,6 @@ public class AddSegmentsExperimentMVCActionCommand
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private SegmentsExperienceService _segmentsExperienceService;
 
 	@Reference
 	private SegmentsExperimentRelService _segmentsExperimentRelService;
