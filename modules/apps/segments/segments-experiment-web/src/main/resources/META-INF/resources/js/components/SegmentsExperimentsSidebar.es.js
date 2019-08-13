@@ -191,29 +191,42 @@ function SegmentsExperimentsSidebar({
 	}
 
 	function _handleExperimentEdition(segmentsExperiment) {
-		Liferay.Service(
-			endpoints.editSegmentsExperimentURL,
-			{
-				description: segmentsExperiment.description,
-				goal: segmentsExperiment.goal,
-				goalTarget: '',
-				name: segmentsExperiment.name,
-				segmentsExperimentId: segmentsExperiment.segmentsExperimentId
-			},
-			function _successCallback(response) {
+		const body = {
+			description: segmentsExperiment.description,
+			goal: segmentsExperiment.goal,
+			goalTarget: '',
+			name: segmentsExperiment.name,
+			segmentsExperimentId: segmentsExperiment.segmentsExperimentId
+		};
+
+		fetch(endpoints.editSegmentsExperimentURL, {
+			body: getFormData(body, namespace),
+			credentials: 'include',
+			method: 'POST'
+		})
+			.then(response => response.json())
+			.then(objectResponse => {
+				if (objectResponse.error) throw objectResponse.error;
+				return objectResponse;
+			})
+			.then(function _successCallback(objectResponse) {
+				const {segmentsExperiment} = objectResponse;
+
 				setEditionModal({
 					active: false
 				});
 
 				setSegmentsExperiment({
-					description: response.description,
+					description: segmentsExperiment.description,
 					goal: segmentsExperiment.goal,
-					name: response.name,
-					segmentsExperienceId: response.segmentsExperienceId,
-					segmentsExperimentId: response.segmentsExperimentId
+					name: segmentsExperiment.name,
+					segmentsExperienceId:
+						segmentsExperiment.segmentsExperienceId,
+					segmentsExperimentId:
+						segmentsExperiment.segmentsExperimentId
 				});
-			},
-			function _errorCallback() {
+			})
+			.catch(function _errorCallback() {
 				setEditionModal({
 					active: true,
 					description: segmentsExperiment.description,
@@ -224,8 +237,7 @@ function SegmentsExperimentsSidebar({
 					segmentsExperimentId:
 						segmentsExperiment.segmentsExperimentId
 				});
-			}
-		);
+			});
 	}
 
 	function _handleSelectSegmentsExperience(segmentsExperienceId) {
