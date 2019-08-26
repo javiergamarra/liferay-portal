@@ -27,7 +27,6 @@
 		<column name="ddmStructureLayoutId" type="long" />
 		<column name="deDataListViewId" type="long" />
 		<column localized="true" name="name" type="String" />
-		<column name="settings" type="String" />
 		<column name="status" type="int" />
 
 		<!-- Finder methods -->
@@ -50,6 +49,24 @@
 		<!-- References -->
 
 		<reference entity="User" package-path="com.liferay.portal" />
+	</entity>
+	<entity local-service="true" name="AppBuilderAppDeployment" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="appBuilderAppDeploymentId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="appBuilderAppId" type="long" />
+		<column name="deploymentType" type="String" />
+		<column name="settings" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="AppBuilderAppId" return-type="Collection">
+			<finder-column name="appBuilderAppId" />
+		</finder>
 	</entity>
 	<exceptions>
 		<exception>AppBuilderAppStatus</exception>

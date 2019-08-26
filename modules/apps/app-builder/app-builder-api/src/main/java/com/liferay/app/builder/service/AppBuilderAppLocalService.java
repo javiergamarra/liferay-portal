@@ -78,7 +78,7 @@ public interface AppBuilderAppLocalService
 	public AppBuilderApp addAppBuilderApp(
 			long groupId, long companyId, long userId, long ddmStructureId,
 			long ddmStructureLayoutId, long deDataListViewId,
-			Map<Locale, String> nameMap, String settings, int status)
+			Map<Locale, String> nameMap, int status)
 		throws PortalException;
 
 	/**
@@ -321,7 +321,7 @@ public interface AppBuilderAppLocalService
 	public AppBuilderApp updateAppBuilderApp(
 			long userId, long appBuilderAppId, long ddmStructureId,
 			long ddmStructureLayoutId, long deDataListViewId,
-			Map<Locale, String> nameMap, String settings, int status)
+			Map<Locale, String> nameMap, int status)
 		throws PortalException;
 
 }
