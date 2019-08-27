@@ -155,7 +155,8 @@ public class DataDefinitionResourceTest
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
 		return new String[] {
-			"availableLanguageIds", "defaultLanguageId", "name", "userId"
+			"availableLanguageIds", "dataDefinitionFields", "defaultLanguageId",
+			"name", "userId"
 		};
 	}
 
