@@ -20,6 +20,7 @@ import com.liferay.data.engine.rest.client.dto.v1_0.DataDefinitionField;
 import com.liferay.data.engine.rest.client.dto.v1_0.DataDefinitionPermission;
 import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
+import com.liferay.data.engine.rest.resource.v1_0.test.util.DataDefinitionFieldUtil;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -94,6 +95,21 @@ public class DataDefinitionResourceTest
 					roleNames = new String[] {role.getName()};
 				}
 			});
+	}
+
+	@Test
+	public void testPostDataDefintionWithAllFieldTypes() throws Exception {
+		DataDefinition dataDefinition = _createDataDefinition(
+			RandomTestUtil.randomString(), RandomTestUtil.randomString());
+
+		dataDefinition.setDataDefinitionFields(
+			DataDefinitionFieldUtil.createAllDataDefinitionFieldTypes());
+
+		DataDefinition postDataDefinition =
+			testPostSiteDataDefinition_addDataDefinition(dataDefinition);
+
+		assertEquals(dataDefinition, postDataDefinition);
+		assertValid(postDataDefinition);
 	}
 
 	@Override
