@@ -18,10 +18,16 @@ import com.liferay.headless.admin.user.dto.v1_0.Site;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.CreatorUtil;
 import com.liferay.headless.admin.user.resource.v1_0.SiteResource;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.comparator.GroupIdComparator;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -48,6 +54,47 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 		return _toSite(_groupService.getGroup(siteId));
 	}
 
+	@Override
+	public Site getSiteByUrl(String url) throws Exception {
+		Group group = _groupLocalService.getFriendlyURLGroup(
+			contextCompany.getCompanyId(), "/" + url);
+
+		GroupPermissionUtil.check(
+			PermissionThreadLocal.getPermissionChecker(), group,
+			ActionKeys.VIEW);
+
+		return _toSite(group);
+	}
+
+	@Override
+	public Page<Site> getSitesPage(Pagination pagination) {
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		if (permissionChecker.isCompanyAdmin(contextCompany.getCompanyId())) {
+			return Page.of(
+				transform(
+					_groupLocalService.getActiveGroups(
+						contextCompany.getCompanyId(), true, true,
+						pagination.getStartPosition(),
+						pagination.getEndPosition(),
+						new GroupIdComparator(true)),
+					this::_toSite),
+				pagination,
+				_groupLocalService.getActiveGroupsCount(
+					contextCompany.getCompanyId(), true, true));
+		}
+
+		return Page.of(
+			transform(
+				_groupLocalService.getUserGroups(
+					contextUser.getUserId(), pagination.getStartPosition(),
+					pagination.getEndPosition()),
+				this::_toSite),
+			pagination,
+			_groupLocalService.getUserGroupsCount(contextUser.getUserId()));
+	}
+
 	private Site _toSite(Group group) throws Exception {
 		return new Site() {
 			{
@@ -69,6 +116,9 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 			}
 		};
 	}
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private GroupService _groupService;
