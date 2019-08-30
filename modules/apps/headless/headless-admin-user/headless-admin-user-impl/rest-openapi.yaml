@@ -1077,6 +1077,51 @@ paths:
                                 type: array
                     description: ""
             tags: ["SegmentUser"]
+    "/sites":
+        get:
+            operationId: getSitesPage
+            parameters:
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Site"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Site"
+                                type: array
+                    description: ""
+    "/sites/by-url/{url}":
+        get:
+            operationId: getSiteByUrl
+            parameters:
+                - in: path
+                  name: url
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Site"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Site"
+                    description: ""
     "/sites/{siteId}":
         get:
             operationId: getSite
