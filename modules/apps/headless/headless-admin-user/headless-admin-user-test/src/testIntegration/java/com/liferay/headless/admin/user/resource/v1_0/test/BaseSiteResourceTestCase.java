@@ -203,6 +203,26 @@ public abstract class BaseSiteResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	@Test
+	public void testGetSitesPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
+	public void testGetSiteByUrl() throws Exception {
+		Site postSite = testGetSiteByUrl_addSite();
+
+		Site getSite = siteResource.getSiteByUrl(postSite.getUrl());
+
+		assertEquals(postSite, getSite);
+		assertValid(getSite);
+	}
+
+	protected Site testGetSiteByUrl_addSite() throws Exception {
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

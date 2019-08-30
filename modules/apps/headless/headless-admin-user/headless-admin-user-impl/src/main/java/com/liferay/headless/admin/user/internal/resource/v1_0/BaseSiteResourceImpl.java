@@ -94,6 +94,46 @@ public abstract class BaseSiteResourceImpl implements SiteResource {
 		return new Site();
 	}
 
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/sites'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@GET
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.QUERY, name = "page"),
+			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
+		}
+	)
+	@Path("/sites")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {})
+	public Page<Site> getSitesPage(@Context Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/sites/by-url/{url}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@GET
+	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "url")})
+	@Path("/sites/by-url/{url}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {})
+	public Site getSiteByUrl(
+			@NotNull @Parameter(hidden = true) @PathParam("url") String url)
+		throws Exception {
+
+		return new Site();
+	}
+
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
 		this.contextAcceptLanguage = contextAcceptLanguage;
 	}

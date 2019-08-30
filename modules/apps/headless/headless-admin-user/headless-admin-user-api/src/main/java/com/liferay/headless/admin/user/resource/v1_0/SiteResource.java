@@ -47,6 +47,10 @@ public interface SiteResource {
 
 	public Site getSite(Long siteId) throws Exception;
 
+	public Page<Site> getSitesPage(Pagination pagination) throws Exception;
+
+	public Site getSiteByUrl(String url) throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}
