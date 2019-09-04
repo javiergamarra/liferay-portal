@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
+import com.liferay.portal.kernel.service.permission.GroupPermission;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.comparator.GroupIdComparator;
@@ -59,7 +59,7 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 		Group group = _groupLocalService.getFriendlyURLGroup(
 			contextCompany.getCompanyId(), "/" + url);
 
-		GroupPermissionUtil.check(
+		_groupPermission.check(
 			PermissionThreadLocal.getPermissionChecker(), group,
 			ActionKeys.VIEW);
 
@@ -119,6 +119,9 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private GroupPermission _groupPermission;
 
 	@Reference
 	private GroupService _groupService;
