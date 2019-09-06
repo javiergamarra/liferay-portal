@@ -70,6 +70,7 @@ import javax.ws.rs.core.FeatureContext;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -146,6 +147,11 @@ public class VulcanFeature implements Feature {
 		featureContext.register(new UserContextProvider(_portal));
 
 		return false;
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 	}
 
 	private void _registerConfiguration(FeatureContext featureContext)
