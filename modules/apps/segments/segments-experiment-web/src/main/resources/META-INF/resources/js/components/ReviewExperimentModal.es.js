@@ -33,8 +33,18 @@ function ReviewExperimentModal({onRun, variants, visible, setVisible}) {
 		INITIAL_CONFIDENCE_LEVEL
 	);
 	const [draftVariants, setDraftVariants] = useState(
-		variants.map(variant => {
-			return {...variant, split: parseInt(100 / variants.length, 10)};
+		variants.map((variant, index) => {
+			const splitValue = parseInt(100 / variants.length, 10);
+
+			let split;
+
+			if (index === variants.length - 1) {
+				split = 100 - splitValue * (variants.length - 1);
+			} else {
+				split = splitValue;
+			}
+
+			return {...variant, split};
 		})
 	);
 
