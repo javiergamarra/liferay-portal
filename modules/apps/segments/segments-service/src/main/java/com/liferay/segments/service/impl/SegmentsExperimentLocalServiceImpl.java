@@ -570,7 +570,7 @@ public class SegmentsExperimentLocalServiceImpl
 
 		if (segmentsExperienceIdSplitsSum != 1) {
 			throw new SegmentsExperimentRelSplitException(
-				"Segments experiment rel splits must add up to " + 1);
+				"Segments experiment rel splits must add up to 1");
 		}
 	}
 
