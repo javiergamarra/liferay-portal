@@ -23,6 +23,7 @@ import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -39,11 +40,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -53,6 +57,38 @@ import javax.ws.rs.core.UriInfo;
 @Generated("")
 @Path("/v1.0")
 public abstract class BaseTaskResourceImpl implements TaskResource {
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-batch-engine/v1.0/import/{taskId}/'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes("multipart/form-data")
+	@DELETE
+	@Operation(description = "Uploads a new file for deleting items in batch.")
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "className"),
+			@Parameter(in = ParameterIn.PATH, name = "version"),
+			@Parameter(in = ParameterIn.QUERY, name = "callbackURL")
+		}
+	)
+	@Path("/import/{taskId}/")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "Task")})
+	public Task deleteImportTask(
+			@NotNull @Parameter(hidden = true) @PathParam("className") String
+				className,
+			@NotNull @Parameter(hidden = true) @PathParam("version") String
+				version,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
+			MultipartBody multipartBody)
+		throws Exception {
+
+		return new Task();
+	}
 
 	/**
 	 * Invoke this method with the command line:
@@ -79,11 +115,15 @@ public abstract class BaseTaskResourceImpl implements TaskResource {
 	 */
 	@Override
 	@Consumes("multipart/form-data")
+	@Operation(
+		description = "Uploads a new file for creating new items in batch."
+	)
 	@POST
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "className"),
-			@Parameter(in = ParameterIn.PATH, name = "version")
+			@Parameter(in = ParameterIn.PATH, name = "version"),
+			@Parameter(in = ParameterIn.QUERY, name = "callbackURL")
 		}
 	)
 	@Path("/import/{taskId}/")
@@ -94,6 +134,40 @@ public abstract class BaseTaskResourceImpl implements TaskResource {
 				className,
 			@NotNull @Parameter(hidden = true) @PathParam("version") String
 				version,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
+			MultipartBody multipartBody)
+		throws Exception {
+
+		return new Task();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PUT' 'http://localhost:8080/o/headless-batch-engine/v1.0/import/{taskId}/'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes("multipart/form-data")
+	@Operation(description = "Uploads a new file for updating items in batch.")
+	@PUT
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "className"),
+			@Parameter(in = ParameterIn.PATH, name = "version"),
+			@Parameter(in = ParameterIn.QUERY, name = "callbackURL")
+		}
+	)
+	@Path("/import/{taskId}/")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "Task")})
+	public Task putImportTask(
+			@NotNull @Parameter(hidden = true) @PathParam("className") String
+				className,
+			@NotNull @Parameter(hidden = true) @PathParam("version") String
+				version,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			MultipartBody multipartBody)
 		throws Exception {
 

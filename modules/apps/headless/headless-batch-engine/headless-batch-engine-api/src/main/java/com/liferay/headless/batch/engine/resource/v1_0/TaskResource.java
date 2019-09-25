@@ -41,10 +41,21 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface TaskResource {
 
+	public Task deleteImportTask(
+			String className, String version, String callbackURL,
+			MultipartBody multipartBody)
+		throws Exception;
+
 	public Task getImportTask(Long taskId) throws Exception;
 
 	public Task postImportTask(
-			String className, String version, MultipartBody multipartBody)
+			String className, String version, String callbackURL,
+			MultipartBody multipartBody)
+		throws Exception;
+
+	public Task putImportTask(
+			String className, String version, String callbackURL,
+			MultipartBody multipartBody)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

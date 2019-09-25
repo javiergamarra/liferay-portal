@@ -46,7 +46,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Task")
 public class Task {
 
-	@Schema
+	@Schema(
+		description = "The item class name for which data will be processed in batch."
+	)
 	public String getClassName() {
 		return className;
 	}
@@ -75,7 +77,7 @@ public class Task {
 	protected String className;
 
 	@DecimalMin("0")
-	@Schema
+	@Schema(description = "The end time of task operation.")
 	public Long getEndTime() {
 		return endTime;
 	}
@@ -103,7 +105,9 @@ public class Task {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long endTime;
 
-	@Schema
+	@Schema(
+		description = "The error message in case of task's failed execution."
+	)
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -131,7 +135,7 @@ public class Task {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String errorMessage;
 
-	@Schema
+	@Schema(description = "The status of task's execution.")
 	public String getExecuteStatus() {
 		return executeStatus;
 	}
@@ -160,7 +164,7 @@ public class Task {
 	protected String executeStatus;
 
 	@DecimalMin("0")
-	@Schema
+	@Schema(description = "The task's ID.")
 	public Long getId() {
 		return id;
 	}
@@ -186,7 +190,7 @@ public class Task {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long id;
 
-	@Schema
+	@Schema(description = "The operation of task.")
 	public String getOperation() {
 		return operation;
 	}
@@ -215,7 +219,7 @@ public class Task {
 	protected String operation;
 
 	@DecimalMin("0")
-	@Schema
+	@Schema(description = "The start time of task operation.")
 	public Long getStartTime() {
 		return startTime;
 	}
@@ -243,7 +247,7 @@ public class Task {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long startTime;
 
-	@Schema
+	@Schema(description = "The version of item class.")
 	public String getVersion() {
 		return version;
 	}
