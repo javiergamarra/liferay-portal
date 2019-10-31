@@ -379,7 +379,8 @@ public class FreeMarkerTool {
 
 			sb.append(StringUtil.upperCaseFirstLetter(parameterName));
 
-			sb.append(StringUtil.upperCaseFirstLetter(schemaName));
+			sb.append(StringUtil.upperCaseFirstLetter(
+				TextFormatter.formatPlural(schemaName)));
 
 			if (!Objects.equals(
 					javaMethodSignature.getMethodName(), sb.toString())) {
