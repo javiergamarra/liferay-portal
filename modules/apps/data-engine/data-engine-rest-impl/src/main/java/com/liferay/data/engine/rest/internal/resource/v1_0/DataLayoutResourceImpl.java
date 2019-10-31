@@ -249,7 +249,7 @@ public class DataLayoutResourceImpl
 	}
 
 	@Override
-	public DataLayout postDataDefinitionDataLayout(
+	public DataLayout postDataDefinitionDataLayouts(
 			Long dataDefinitionId, DataLayout dataLayout)
 		throws Exception {
 
@@ -328,7 +328,7 @@ public class DataLayoutResourceImpl
 	}
 
 	@Override
-	public void postSiteDataLayoutPermission(
+	public void postSiteDataLayoutPermissions(
 			Long siteId, String operation,
 			DataLayoutPermission dataLayoutPermission)
 		throws Exception {
