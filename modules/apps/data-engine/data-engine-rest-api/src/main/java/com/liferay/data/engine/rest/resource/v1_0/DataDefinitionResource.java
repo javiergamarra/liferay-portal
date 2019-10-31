@@ -44,7 +44,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface DataDefinitionResource {
 
-	public String getDataDefinitionDataDefinitionFieldFieldType()
+	public String getDataDefinitionDataDefinitionFieldFieldTypes()
 		throws Exception;
 
 	public void deleteDataDefinition(Long dataDefinitionId) throws Exception;
@@ -56,16 +56,16 @@ public interface DataDefinitionResource {
 			Long dataDefinitionId, DataDefinition dataDefinition)
 		throws Exception;
 
-	public String getDataDefinitionDataDefinitionFieldLink(
+	public String getDataDefinitionDataDefinitionFieldLinks(
 			Long dataDefinitionId, String fieldName)
 		throws Exception;
 
-	public void postDataDefinitionDataDefinitionPermission(
+	public void postDataDefinitionDataDefinitionPermissions(
 			Long dataDefinitionId, String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception;
 
-	public void postSiteDataDefinitionPermission(
+	public void postSiteDataDefinitionPermissions(
 			Long siteId, String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception;
@@ -74,7 +74,7 @@ public interface DataDefinitionResource {
 			Long siteId, String keywords, Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public DataDefinition postSiteDataDefinition(
+	public DataDefinition postSiteDataDefinitions(
 			Long siteId, DataDefinition dataDefinition)
 		throws Exception;
 
