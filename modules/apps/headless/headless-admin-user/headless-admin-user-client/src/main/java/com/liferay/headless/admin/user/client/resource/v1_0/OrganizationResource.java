@@ -39,6 +39,12 @@ public interface OrganizationResource {
 		return new Builder();
 	}
 
+	public void deleteOrganization(Long[] organizationIds) throws Exception;
+
+	public HttpInvoker.HttpResponse deleteOrganizationHttpResponse(
+			Long[] organizationIds)
+		throws Exception;
+
 	public Page<Organization> getOrganizationsPage(
 			Boolean flatten, String search, String filterString,
 			Pagination pagination, String sortString)
@@ -47,6 +53,30 @@ public interface OrganizationResource {
 	public HttpInvoker.HttpResponse getOrganizationsPageHttpResponse(
 			Boolean flatten, String search, String filterString,
 			Pagination pagination, String sortString)
+		throws Exception;
+
+	public Page<Long> patchOrganizationsPage(Organization[] organizations)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse patchOrganizationsPageHttpResponse(
+			Organization[] organizations)
+		throws Exception;
+
+	public Page<Organization> postOrganizationsPage(
+			String comments, String country, String name,
+			Long parentOrganizationId, String region, String type)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse postOrganizationsPageHttpResponse(
+			String comments, String country, String name,
+			Long parentOrganizationId, String region, String type)
+		throws Exception;
+
+	public Page<Long> putOrganizationsPage(Organization[] organizations)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse putOrganizationsPageHttpResponse(
+			Organization[] organizations)
 		throws Exception;
 
 	public Organization getOrganization(Long organizationId) throws Exception;
@@ -122,6 +152,64 @@ public interface OrganizationResource {
 	public static class OrganizationResourceImpl
 		implements OrganizationResource {
 
+		public void deleteOrganization(Long[] organizationIds)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				deleteOrganizationHttpResponse(organizationIds);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+		}
+
+		public HttpInvoker.HttpResponse deleteOrganizationHttpResponse(
+				Long[] organizationIds)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.DELETE);
+
+			if (organizationIds != null) {
+				for (int i = 0; i < organizationIds.length; i++) {
+					httpInvoker.parameter(
+						"organizationIds", String.valueOf(organizationIds[i]));
+				}
+			}
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/headless-admin-user/v1.0/organizations");
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
 		public Page<Organization> getOrganizationsPage(
 				Boolean flatten, String search, String filterString,
 				Pagination pagination, String sortString)
@@ -190,6 +278,202 @@ public interface OrganizationResource {
 			if (sortString != null) {
 				httpInvoker.parameter("sort", sortString);
 			}
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/headless-admin-user/v1.0/organizations");
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public Page<Long> patchOrganizationsPage(Organization[] organizations)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				patchOrganizationsPageHttpResponse(organizations);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			return Page.of(content, OrganizationSerDes::toDTO);
+		}
+
+		public HttpInvoker.HttpResponse patchOrganizationsPageHttpResponse(
+				Organization[] organizations)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(organizations.toString(), "application/json");
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.PATCH);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/headless-admin-user/v1.0/organizations");
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public Page<Organization> postOrganizationsPage(
+				String comments, String country, String name,
+				Long parentOrganizationId, String region, String type)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				postOrganizationsPageHttpResponse(
+					comments, country, name, parentOrganizationId, region,
+					type);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			return Page.of(content, OrganizationSerDes::toDTO);
+		}
+
+		public HttpInvoker.HttpResponse postOrganizationsPageHttpResponse(
+				String comments, String country, String name,
+				Long parentOrganizationId, String region, String type)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(type.toString(), "application/json");
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.POST);
+
+			if (comments != null) {
+				httpInvoker.parameter("comments", String.valueOf(comments));
+			}
+
+			if (country != null) {
+				httpInvoker.parameter("country", String.valueOf(country));
+			}
+
+			if (name != null) {
+				httpInvoker.parameter("name", String.valueOf(name));
+			}
+
+			if (parentOrganizationId != null) {
+				httpInvoker.parameter(
+					"parentOrganizationId",
+					String.valueOf(parentOrganizationId));
+			}
+
+			if (region != null) {
+				httpInvoker.parameter("region", String.valueOf(region));
+			}
+
+			if (type != null) {
+				httpInvoker.parameter("type", String.valueOf(type));
+			}
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/headless-admin-user/v1.0/organizations");
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public Page<Long> putOrganizationsPage(Organization[] organizations)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				putOrganizationsPageHttpResponse(organizations);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			return Page.of(content, OrganizationSerDes::toDTO);
+		}
+
+		public HttpInvoker.HttpResponse putOrganizationsPageHttpResponse(
+				Organization[] organizations)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(organizations.toString(), "application/json");
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.PUT);
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +

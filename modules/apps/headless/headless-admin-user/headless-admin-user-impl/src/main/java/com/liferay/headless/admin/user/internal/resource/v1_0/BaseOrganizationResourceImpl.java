@@ -43,7 +43,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.validation.constraints.NotNull;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -59,6 +64,26 @@ import javax.ws.rs.core.UriInfo;
 @Path("/v1.0")
 public abstract class BaseOrganizationResourceImpl
 	implements OrganizationResource {
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@DELETE
+	@Operation(description = "Deletes multiple organizations")
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.QUERY, name = "organizationIds")}
+	)
+	@Path("/organizations")
+	@Produces("application/json")
+	@Tags(value = {@Tag(name = "Organization")})
+	public void deleteOrganization(
+			@NotNull @Parameter(hidden = true) @QueryParam("organizationIds")
+				Long[] organizationIds)
+		throws Exception {
+	}
 
 	/**
 	 * Invoke this method with the command line:
@@ -88,6 +113,80 @@ public abstract class BaseOrganizationResourceImpl
 			@Parameter(hidden = true) @QueryParam("search") String search,
 			@Context Filter filter, @Context Pagination pagination,
 			@Context Sort[] sorts)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PATCH' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes({"application/json", "application/xml"})
+	@Operation(
+		description = "Updates the organizations. Only the fields in the request body are updated. All others are left unchanged."
+	)
+	@PATCH
+	@Path("/organizations")
+	@Produces("application/json")
+	@Tags(value = {@Tag(name = "Organization")})
+	public Page<Long> patchOrganizationsPage(Organization[] organizations)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Operation(description = "Creates a new organization")
+	@POST
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.QUERY, name = "comments"),
+			@Parameter(in = ParameterIn.QUERY, name = "country"),
+			@Parameter(in = ParameterIn.QUERY, name = "name"),
+			@Parameter(in = ParameterIn.QUERY, name = "parentOrganizationId"),
+			@Parameter(in = ParameterIn.QUERY, name = "region"),
+			@Parameter(in = ParameterIn.QUERY, name = "type")
+		}
+	)
+	@Path("/organizations")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "Organization")})
+	public Page<Organization> postOrganizationsPage(
+			@Parameter(hidden = true) @QueryParam("comments") String comments,
+			@Parameter(hidden = true) @QueryParam("country") String country,
+			@NotNull @Parameter(hidden = true) @QueryParam("name") String name,
+			@Parameter(hidden = true) @QueryParam("parentOrganizationId") Long
+				parentOrganizationId,
+			@Parameter(hidden = true) @QueryParam("region") String region,
+			@Parameter(hidden = true) @QueryParam("type") String type)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PUT' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes({"application/json", "application/xml"})
+	@Operation(
+		description = "Replaces the organizations with the information found in the request body. Any missing fields are deleted unless they are required."
+	)
+	@PUT
+	@Path("/organizations")
+	@Produces("application/json")
+	@Tags(value = {@Tag(name = "Organization")})
+	public Page<Long> putOrganizationsPage(Organization[] organizations)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

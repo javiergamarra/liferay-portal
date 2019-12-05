@@ -47,6 +47,8 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.test.log.CaptureAppender;
+import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
@@ -74,6 +76,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Level;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -199,6 +202,73 @@ public abstract class BaseOrganizationResourceTestCase {
 	}
 
 	@Test
+	public void testDeleteOrganization() throws Exception {
+		Organization organization = testDeleteOrganization_addOrganization();
+
+		assertHttpResponseStatusCode(
+			204, organizationResource.deleteOrganizationHttpResponse(null));
+
+		assertHttpResponseStatusCode(
+			404, organizationResource.getOrganizationHttpResponse(null));
+
+		assertHttpResponseStatusCode(
+			404, organizationResource.getOrganizationHttpResponse(null));
+	}
+
+	protected Organization testDeleteOrganization_addOrganization()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testGraphQLDeleteOrganization() throws Exception {
+		Organization organization = testGraphQLOrganization_addOrganization();
+
+		GraphQLField graphQLField = new GraphQLField(
+			"mutation",
+			new GraphQLField(
+				"deleteOrganization",
+				new HashMap<String, Object>() {
+					{
+						put("organizationId", organization.getId());
+					}
+				}));
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			invoke(graphQLField.toString()));
+
+		JSONObject dataJSONObject = jsonObject.getJSONObject("data");
+
+		Assert.assertTrue(dataJSONObject.getBoolean("deleteOrganization"));
+
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					"graphql.execution.SimpleDataFetcherExceptionHandler",
+					Level.WARN)) {
+
+			graphQLField = new GraphQLField(
+				"query",
+				new GraphQLField(
+					"organization",
+					new HashMap<String, Object>() {
+						{
+							put("organizationId", organization.getId());
+						}
+					},
+					new GraphQLField("id")));
+
+			jsonObject = JSONFactoryUtil.createJSONObject(
+				invoke(graphQLField.toString()));
+
+			JSONArray errorsJSONArray = jsonObject.getJSONArray("errors");
+
+			Assert.assertTrue(errorsJSONArray.length() > 0);
+		}
+	}
+
+	@Test
 	public void testGetOrganizationsPage() throws Exception {
 		Page<Organization> page = organizationResource.getOrganizationsPage(
 			null, RandomTestUtil.randomString(), null, Pagination.of(1, 2),
@@ -221,6 +291,10 @@ public abstract class BaseOrganizationResourceTestCase {
 			Arrays.asList(organization1, organization2),
 			(List<Organization>)page.getItems());
 		assertValid(page);
+
+		organizationResource.deleteOrganization(null);
+
+		organizationResource.deleteOrganization(null);
 	}
 
 	@Test
@@ -475,6 +549,21 @@ public abstract class BaseOrganizationResourceTestCase {
 	}
 
 	@Test
+	public void testPatchOrganizationsPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
+	public void testPostOrganizationsPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
+	public void testPutOrganizationsPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
 	public void testGetOrganization() throws Exception {
 		Organization postOrganization = testGetOrganization_addOrganization();
 
@@ -569,6 +658,10 @@ public abstract class BaseOrganizationResourceTestCase {
 			Arrays.asList(organization1, organization2),
 			(List<Organization>)page.getItems());
 		assertValid(page);
+
+		organizationResource.deleteOrganization(null);
+
+		organizationResource.deleteOrganization(null);
 	}
 
 	@Test

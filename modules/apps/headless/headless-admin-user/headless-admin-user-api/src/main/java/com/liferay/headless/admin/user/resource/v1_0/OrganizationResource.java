@@ -44,9 +44,22 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface OrganizationResource {
 
+	public void deleteOrganization(Long[] organizationIds) throws Exception;
+
 	public Page<Organization> getOrganizationsPage(
 			Boolean flatten, String search, Filter filter,
 			Pagination pagination, Sort[] sorts)
+		throws Exception;
+
+	public Page<Long> patchOrganizationsPage(Organization[] organizations)
+		throws Exception;
+
+	public Page<Organization> postOrganizationsPage(
+			String comments, String country, String name,
+			Long parentOrganizationId, String region, String type)
+		throws Exception;
+
+	public Page<Long> putOrganizationsPage(Organization[] organizations)
 		throws Exception;
 
 	public Organization getOrganization(Long organizationId) throws Exception;

@@ -949,6 +949,7 @@ paths:
         delete:
             description:
                 Deletes multiple organizations
+            operationId: deleteOrganization
             parameters:
                 - in: query
                   name: organizationIds
@@ -1014,9 +1015,15 @@ paths:
             description:
                 Updates the organizations. Only the fields in the request body
                 are updated. All others are left unchanged.
+            operationId: patchOrganizationsPage
             requestBody:
                 content:
                     application/json:
+                        schema:
+                            items:
+                                $ref: "#/components/schemas/Organization"
+                            type: array
+                    application/xml:
                         schema:
                             items:
                                 $ref: "#/components/schemas/Organization"
@@ -1036,6 +1043,7 @@ paths:
         post:
             description:
                 Creates a new organization
+            operationId: postOrganizationsPage
             parameters:
                 - in: query
                   name: comments
@@ -1070,6 +1078,10 @@ paths:
                             schema:
                                 items:
                                     $ref: "#/components/schemas/Organization"
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Organization"
                     description:
                         "Organization successfully created"
             tags: ["Organization"]
@@ -1078,9 +1090,15 @@ paths:
                 Replaces the organizations with the information found in the
                 request body. Any missing fields are deleted unless they are
                 required.
+            operationId: putOrganizationsPage
             requestBody:
                 content:
                     application/json:
+                        schema:
+                            items:
+                                $ref: "#/components/schemas/Organization"
+                            type: array
+                    application/xml:
                         schema:
                             items:
                                 $ref: "#/components/schemas/Organization"
@@ -1138,6 +1156,9 @@ paths:
                     application/json:
                         schema:
                             $ref: "#/components/schemas/Organization"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Organization"
             responses:
                 200:
                     content:
@@ -1162,6 +1183,9 @@ paths:
             requestBody:
                 content:
                     application/json:
+                        schema:
+                            $ref: "#/components/schemas/Organization"
+                    application/xml:
                         schema:
                             $ref: "#/components/schemas/Organization"
             responses:
