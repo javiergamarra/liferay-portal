@@ -118,6 +118,19 @@ public class UserTestUtil {
 		return organizationUser;
 	}
 
+	public static User addUser(String emailAddress, String password)
+		throws Exception {
+		return addUser(
+			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+			password,emailAddress,RandomTestUtil.randomString(
+				NumericStringRandomizerBumper.INSTANCE,
+				UniqueStringRandomizerBumper.INSTANCE),
+			LocaleUtil.getDefault(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(),
+			new long[] {TestPropsValues.getGroupId()},
+			ServiceContextTestUtil.getServiceContext());
+	}
+
 	public static User addUser() throws Exception {
 		return addUser(
 			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
@@ -244,7 +257,7 @@ public class UserTestUtil {
 			return user;
 		}
 
-		boolean autoPassword = true;
+		boolean autoPassword = false;
 		String password1 = password;
 		String password2 = password;
 		long facebookId = 0;
