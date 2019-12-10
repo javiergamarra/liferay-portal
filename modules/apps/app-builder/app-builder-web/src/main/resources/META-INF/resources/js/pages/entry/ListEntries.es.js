@@ -124,6 +124,7 @@ const ListEntries = withRouter(({history, location}) => {
 				}
 				columns={columns.map(column => ({
 					key: column,
+					sortable: true,
 					value: getFieldLabel(dataDefinition, column)
 				}))}
 				emptyState={{
