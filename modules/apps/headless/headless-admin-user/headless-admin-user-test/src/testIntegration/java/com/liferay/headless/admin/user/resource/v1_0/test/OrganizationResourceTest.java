@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 
 import java.util.ArrayList;
@@ -46,6 +47,13 @@ public class OrganizationResourceTest extends BaseOrganizationResourceTestCase {
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
 		return new String[] {"name"};
+	}
+
+	@Override
+	protected Organization testDeleteOrganization_addOrganization()
+		throws Exception {
+
+		return _toOrganization(OrganizationTestUtil.addOrganization());
 	}
 
 	@Override
