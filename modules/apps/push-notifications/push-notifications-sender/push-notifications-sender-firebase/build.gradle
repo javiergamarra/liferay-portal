@@ -1,12 +1,52 @@
 dependencies {
+
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.9.10"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.9.10"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.9.10.1"
+
+	compileInclude group: "com.google.api", name: "api-common", version: "1.8.1"
+	compileInclude group: "com.google.api", name: "gax", version: "1.51.0"
+	compileInclude group: "com.google.api", name: "gax-grpc", version: "1.51.0"
+	compileInclude group: "com.google.api-client", name: "google-api-client", version: "1.30.6"
+	compileInclude group: "com.google.api-client", name: "google-api-client-gson", version: "1.30.6"
+	compileInclude group: "com.google.auth", name: "google-auth-library-credentials", version: "0.18.0"
+	compileInclude group: "com.google.auth", name: "google-auth-library-oauth2-http", version: "0.18.0"
+	compileInclude group: "com.google.cloud", name: "google-cloud-core", version: "1.91.3"
+	compileInclude group: "com.google.cloud", name: "google-cloud-firestore", version: "1.32.0"
 	compileInclude group: "com.google.code.gson", name: "gson", version: "2.8.0"
+	compileInclude group: "com.google.firebase", name: "firebase-admin", version: "6.11.0"
+	compileInclude group: "com.google.guava", name: "guava", version: "27.1-jre"
+	compileInclude group: "com.google.http-client", name: "google-http-client", version: "1.33.0"
+	compileInclude group: "com.google.http-client", name: "google-http-client-gson", version: "1.19.0"
+	compileInclude group: "com.google.http-client", name: "google-http-client-jackson2", version: "1.33.0"
+	compileInclude group: "com.google.oauth-client", name: "google-oauth-client", version: "1.30.4"
 	compileInclude group: "com.liferay.mobile", name: "fcm-client", version: "0.3.0"
 	compileInclude group: "com.squareup.okhttp3", name: "okhttp", version: "3.5.0"
 	compileInclude group: "com.squareup.okio", name: "okio", version: "1.11.0"
+	compileInclude group: "io.grpc", name: "grpc-context", version: "1.25.0"
+	compileInclude group: "io.netty", name: "netty-buffer", version: "4.1.43.Final"
+	compileInclude group: "io.netty", name: "netty-codec", version: "4.1.43.Final"
+	compileInclude group: "io.netty", name: "netty-codec-http", version: "4.1.43.Final"
+	compileInclude group: "io.netty", name: "netty-common", version: "4.1.43.Final"
+	compileInclude group: "io.netty", name: "netty-handler", version: "4.1.43.Final"
+	compileInclude group: "io.netty", name: "netty-resolver", version: "4.1.43.Final"
+	compileInclude group: "io.netty", name: "netty-tcnative", version: "2.0.28.Final"
+	compileInclude group: "io.netty", name: "netty-transport", version: "4.1.43.Final"
+	compileInclude group: "io.opencensus", name: "opencensus-api", version: "0.24.0"
+	compileInclude group: "io.opencensus", name: "opencensus-contrib-http-util", version: "0.24.0"
+	compileInclude group: 'io.opencensus', name: 'opencensus-contrib-grpc-util', version: '0.11.1'
+	compileInclude group: 'com.google.cloud', name: 'google-cloud-core-grpc', version: '1.91.3'
+	compileInclude group: 'com.google.cloud', name: 'google-cloud-storage', version: '1.102.0'
+	compileInclude group: 'com.google.cloud', name: 'google-cloud-core-http', version: '1.91.3'
+
+
 
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bnd.annotation", version: "4.2.0"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+//	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
-	compileOnly project(":apps:push-notifications:push-notifications-api")
-	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")
+//	compileOnly project(":apps:push-notifications:push-notifications-api")
+	compileOnly group: "com.liferay", name: "com.liferay.push.notifications.api", version: "2.0.0"
+//	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")
+	compileOnly group: "com.liferay", name: "com.liferay.portal.configuration.metatype.api", version: "1.0.0"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "3.0.0"
 }

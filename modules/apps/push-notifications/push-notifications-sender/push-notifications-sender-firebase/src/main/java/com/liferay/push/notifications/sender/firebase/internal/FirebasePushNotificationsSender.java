@@ -14,6 +14,13 @@
 
 package com.liferay.push.notifications.sender.firebase.internal;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.AndroidConfig;
+import com.google.firebase.messaging.AndroidFcmOptions;
+import com.google.firebase.messaging.BatchResponse;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.MulticastMessage;
 import com.liferay.mobile.fcm.Message;
 import com.liferay.mobile.fcm.Notification;
 import com.liferay.mobile.fcm.Sender;
@@ -21,22 +28,23 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.push.notifications.constants.PushNotificationsConstants;
 import com.liferay.push.notifications.exception.PushNotificationsException;
 import com.liferay.push.notifications.sender.PushNotificationsSender;
 import com.liferay.push.notifications.sender.firebase.internal.configuration.FirebasePushNotificationsSenderConfiguration;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Bruno Farache
@@ -59,10 +67,10 @@ public class FirebasePushNotificationsSender
 		if (_sender == null) {
 			throw new PushNotificationsException(
 				"Firebase push notifications sender is not configured " +
-					"properly");
+				"properly");
 		}
 
-		_sender.send(buildMessage(tokens, payloadJSONObject));
+		buildMessage(tokens, payloadJSONObject);
 	}
 
 	@Activate
@@ -86,17 +94,17 @@ public class FirebasePushNotificationsSender
 	protected Message buildMessage(
 		List<String> tokens, JSONObject payloadJSONObject) {
 
-		Message.Builder builder = new Message.Builder();
-
-		boolean silent = payloadJSONObject.getBoolean(
-			PushNotificationsConstants.KEY_SILENT);
-
-		if (silent) {
-			builder.contentAvailable(silent);
-		}
-
-		builder.notification(buildNotification(payloadJSONObject));
-		builder.to(tokens);
+//		Message.Builder builder = new Message.Builder();
+//
+//		boolean silent = payloadJSONObject.getBoolean(
+//			PushNotificationsConstants.KEY_SILENT);
+//
+//		if (silent) {
+//			builder.contentAvailable(silent);
+//		}
+//
+//		builder.notification(buildNotification(payloadJSONObject));
+//		builder.to(tokens);
 
 		JSONObject newPayloadJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -116,17 +124,75 @@ public class FirebasePushNotificationsSender
 				newPayloadJSONObject.put(key, payloadJSONObject.get(key));
 			}
 		}
+//
+//		if (newPayloadJSONObject.length() > 0) {
+//
+//			HashMap<String, String> data = new HashMap<>();
+//			data.put(
+//				PushNotificationsConstants.KEY_PAYLOAD,
+//				newPayloadJSONObject.toString());
+//
+//			builder.data(data);
+//		}
 
-		if (newPayloadJSONObject.length() > 0) {
-			Map<String, String> data = HashMapBuilder.put(
-				PushNotificationsConstants.KEY_PAYLOAD,
-				newPayloadJSONObject.toString()
-			).build();
+		_sendFirebaseNotification(
+			tokens, payloadJSONObject, newPayloadJSONObject);
 
-			builder.data(data);
+		return null;
+	}
+
+	private void _sendFirebaseNotification(
+		List<String> tokens, JSONObject payloadJSONObject,
+		JSONObject newPayloadJSONObject) {
+
+		MulticastMessage.Builder firebaseBuilder = MulticastMessage.builder(
+		).setNotification(
+			com.google.firebase.messaging.Notification.builder()
+				.setTitle(payloadJSONObject.getString(
+					"title"))
+				.setBody(payloadJSONObject.getString(
+					PushNotificationsConstants.KEY_BODY))
+				.build()
+		).addAllTokens(
+			tokens
+		).setAndroidConfig(
+			AndroidConfig.builder()
+				.setFcmOptions(
+					AndroidFcmOptions.builder().setAnalyticsLabel(
+						"LiferayFirebase").build()
+				).build()
+		);
+
+		Iterator<String> keys = newPayloadJSONObject.keys();
+
+		while (keys.hasNext()) {
+			String next = keys.next();
+			firebaseBuilder.putData(next, newPayloadJSONObject.getString(next));
 		}
 
-		return builder.build();
+		MulticastMessage message =
+			firebaseBuilder.build();
+
+		try {
+			if (FirebaseApp.getApps() == null ||
+				FirebaseApp.getApps().isEmpty()) {
+				FirebaseApp.initializeApp();
+			}
+			FirebaseMessaging instance = FirebaseMessaging.getInstance();
+
+			BatchResponse batchResponse = instance.sendMulticast(message);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Firebase Message Sent: " +
+						   batchResponse.getSuccessCount() + ", errors: " +
+						   batchResponse.getFailureCount());
+			}
+		}
+		catch (FirebaseMessagingException fme) {
+			if (_log.isErrorEnabled()) {
+				_log.error("Error sending Firebase Message", fme);
+			}
+		}
 	}
 
 	protected Notification buildNotification(JSONObject payloadJSONObject) {
@@ -174,34 +240,10 @@ public class FirebasePushNotificationsSender
 		}
 
 		String title = payloadJSONObject.getString(
-			PushNotificationsConstants.KEY_TITLE);
+			"title");
 
 		if (Validator.isNotNull(title)) {
 			builder.title(title);
-		}
-
-		JSONArray titleLocalizedArgumentsJSONArray =
-			payloadJSONObject.getJSONArray(
-				PushNotificationsConstants.KEY_TITLE_LOCALIZED_ARGUMENTS);
-
-		if (titleLocalizedArgumentsJSONArray != null) {
-			List<String> localizedArguments = new ArrayList<>();
-
-			for (int i = 0; i < titleLocalizedArgumentsJSONArray.length();
-				 i++) {
-
-				localizedArguments.add(
-					titleLocalizedArgumentsJSONArray.getString(i));
-			}
-
-			builder.titleLocalizationArguments(localizedArguments);
-		}
-
-		String titleLocalizedKey = payloadJSONObject.getString(
-			PushNotificationsConstants.KEY_TITLE_LOCALIZED);
-
-		if (Validator.isNotNull(titleLocalizedKey)) {
-			builder.titleLocalizationKey(titleLocalizedKey);
 		}
 
 		return builder.build();
@@ -215,5 +257,8 @@ public class FirebasePushNotificationsSender
 	private volatile FirebasePushNotificationsSenderConfiguration
 		_firebasePushNotificationsSenderConfiguration;
 	private volatile Sender _sender;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FirebasePushNotificationsSender.class);
 
 }
