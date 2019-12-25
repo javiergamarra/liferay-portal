@@ -60,7 +60,7 @@ public abstract class BaseExperimentResourceImpl implements ExperimentResource {
 		value = {@Parameter(in = ParameterIn.PATH, name = "experimentId")}
 	)
 	@Path("/experiments/{experimentId}")
-	@Produces("application/json")
+	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Experiment")})
 	public void deleteExperiment(
 			@NotNull @Parameter(hidden = true) @PathParam("experimentId") String

@@ -116,7 +116,7 @@ public abstract class BaseSLAResourceImpl implements SLAResource {
 	@DELETE
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "slaId")})
 	@Path("/slas/{slaId}")
-	@Produces("application/json")
+	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "SLA")})
 	public void deleteSLA(
 			@NotNull @Parameter(hidden = true) @PathParam("slaId") Long slaId)

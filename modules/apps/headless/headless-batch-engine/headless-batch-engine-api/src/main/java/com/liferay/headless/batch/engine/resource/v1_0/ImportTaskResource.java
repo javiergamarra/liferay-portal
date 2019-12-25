@@ -40,13 +40,26 @@ import org.osgi.annotation.versioning.ProviderType;
 public interface ImportTaskResource {
 
 	public ImportTask deleteImportTask(
+			String className, String version, String callbackURL, Object object)
+		throws Exception;
+
+	public ImportTask deleteImportTask(
 			String className, String version, String callbackURL,
 			MultipartBody multipartBody)
 		throws Exception;
 
 	public ImportTask postImportTask(
 			String className, String version, String callbackURL,
+			String fieldNameMapping, Object object)
+		throws Exception;
+
+	public ImportTask postImportTask(
+			String className, String version, String callbackURL,
 			String fieldNameMapping, MultipartBody multipartBody)
+		throws Exception;
+
+	public ImportTask putImportTask(
+			String className, String version, String callbackURL, Object object)
 		throws Exception;
 
 	public ImportTask putImportTask(

@@ -38,7 +38,12 @@ const ALIGNMENTS_MAP = {
 	'top-right': Align.TopRight
 };
 
-export default function FloatingToolbar({buttons, item, itemRef}) {
+export default function FloatingToolbar({
+	buttons,
+	item,
+	itemRef,
+	onButtonClick
+}) {
 	const isActive = useIsActive();
 	const popoverRef = useRef(null);
 	const show = isActive(item.itemId);
@@ -80,11 +85,17 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 						<FloatingToolbarButton
 							active={button.panelId === activeConfigurationPanel}
 							key={button.panelId}
-							onClick={panelId => {
-								if (activeConfigurationPanel === panelId) {
-									setActiveConfigurationPanel(null);
-								} else {
-									setActiveConfigurationPanel(panelId);
+							onClick={(id, panelId) => {
+								if (onButtonClick) {
+									onButtonClick(id);
+								}
+
+								if (panelId) {
+									if (activeConfigurationPanel === panelId) {
+										setActiveConfigurationPanel(null);
+									} else {
+										setActiveConfigurationPanel(panelId);
+									}
 								}
 							}}
 							{...button}
@@ -105,7 +116,7 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 	);
 }
 
-function FloatingToolbarButton({active, icon, onClick, panelId}) {
+function FloatingToolbarButton({active, icon, id, onClick, panelId}) {
 	return (
 		<ClayButtonWithIcon
 			borderless
@@ -113,7 +124,7 @@ function FloatingToolbarButton({active, icon, onClick, panelId}) {
 			displayType="secondary"
 			onClick={() => {
 				if (onClick) {
-					onClick(panelId);
+					onClick(id, panelId);
 				}
 			}}
 			small

@@ -19,7 +19,9 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Víctor Galán
@@ -34,9 +36,18 @@ public class LayoutStructure {
 		_mainItemId = mainItemId;
 	}
 
+	public void addFragmentLayoutStructureItem(
+		long fragmentEntryLinkId, String parentItemId, int position) {
+
+		addLayoutStructureItem(
+			JSONUtil.put("fragmentEntryLinkId", fragmentEntryLinkId),
+			String.valueOf(UUID.randomUUID()), "fragment", parentItemId,
+			position);
+	}
+
 	public void addLayoutStructureItem(
-		JSONObject itemConfigJSONObject, String itemId, String parentItemId,
-		String itemType, int position) {
+		JSONObject itemConfigJSONObject, String itemId, String itemType,
+		String parentItemId, int position) {
 
 		LayoutStructureItem layoutStructureItem = new LayoutStructureItem(
 			itemConfigJSONObject, itemId, parentItemId, itemType);
@@ -73,6 +84,30 @@ public class LayoutStructure {
 			_layoutStructureItems.get(parentItemId);
 
 		parentLayoutStructureItem.deleteChildrenItem(itemId);
+	}
+
+	public void duplicateLayoutStructureItem(
+		long fragmentEntryLinkId, String itemId) {
+
+		LayoutStructureItem layoutStructureItem = getLayoutStructureItem(
+			itemId);
+
+		LayoutStructureItem parentLayoutStructureItem = getLayoutStructureItem(
+			layoutStructureItem.getParentItemId());
+
+		List<String> childrenItemIds =
+			parentLayoutStructureItem.getChildrenItemIds();
+
+		addLayoutStructureItem(
+			JSONUtil.put("fragmentEntryLinkId", fragmentEntryLinkId),
+			String.valueOf(UUID.randomUUID()),
+			layoutStructureItem.getItemType(),
+			layoutStructureItem.getParentItemId(),
+			childrenItemIds.indexOf(itemId) + 1);
+	}
+
+	public LayoutStructureItem getLayoutStructureItem(String itemId) {
+		return _layoutStructureItems.get(itemId);
 	}
 
 	public void moveLayoutStructureItem(

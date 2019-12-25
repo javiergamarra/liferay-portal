@@ -54,7 +54,6 @@ import com.liferay.segments.constants.SegmentsExperienceConstants;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -128,7 +127,7 @@ public class AddFragmentEntryLinkReactMVCActionCommand
 
 		long groupId = ParamUtil.getLong(actionRequest, "groupId");
 		String fragmentEntryKey = ParamUtil.getString(
-			actionRequest, "fragmentKey");
+			actionRequest, "fragmentEntryKey");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			actionRequest);
@@ -178,16 +177,15 @@ public class AddFragmentEntryLinkReactMVCActionCommand
 		long segmentsExperienceId = ParamUtil.getLong(
 			actionRequest, "segmentsExperienceId",
 			SegmentsExperienceConstants.ID_DEFAULT);
-		String parentItemId = ParamUtil.getString(actionRequest, "parentId");
+		String parentItemId = ParamUtil.getString(
+			actionRequest, "parentItemId");
 		int position = ParamUtil.getInteger(actionRequest, "position");
 
 		return LayoutStructureUtil.updateLayoutPageTemplateData(
 			themeDisplay.getScopeGroupId(), segmentsExperienceId,
 			themeDisplay.getPlid(),
-			layoutStructure -> layoutStructure.addLayoutStructureItem(
-				JSONUtil.put("fragmentEntryLinkId", fragmentEntryLinkId),
-				String.valueOf(UUID.randomUUID()), parentItemId, "fragment",
-				position));
+			layoutStructure -> layoutStructure.addFragmentLayoutStructureItem(
+				fragmentEntryLinkId, parentItemId, position));
 	}
 
 	private FragmentEntry _getFragmentEntry(

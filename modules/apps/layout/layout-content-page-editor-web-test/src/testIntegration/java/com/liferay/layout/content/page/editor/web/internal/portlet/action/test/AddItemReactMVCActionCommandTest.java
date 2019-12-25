@@ -101,18 +101,13 @@ public class AddItemReactMVCActionCommandTest {
 		String newItemType = RandomTestUtil.randomString();
 
 		actionRequest.addParameter(
-			"classNameId",
-			String.valueOf(_portal.getClassNameId(Layout.class)));
-		actionRequest.addParameter(
-			"classPK", String.valueOf(_layout.getPlid()));
-		actionRequest.addParameter(
-			"config",
+			"itemConfig",
 			String.valueOf(
 				JSONUtil.put("someConfig", RandomTestUtil.randomString())));
 		actionRequest.addParameter("itemId", newItemId);
-		actionRequest.addParameter("parentId", "root");
+		actionRequest.addParameter("itemType", newItemType);
+		actionRequest.addParameter("parentItemId", "root");
 		actionRequest.addParameter("position", "0");
-		actionRequest.addParameter("type", newItemType);
 
 		JSONObject jsonObject = ReflectionTestUtil.invoke(
 			_mvcActionCommand, "addItemToLayoutData",
@@ -122,14 +117,14 @@ public class AddItemReactMVCActionCommandTest {
 
 		JSONObject newItemJSONObject = itemsJSONObject.getJSONObject(newItemId);
 
-		Assert.assertEquals(newItemId, newItemJSONObject.getString("itemId"));
-		Assert.assertEquals(newItemType, newItemJSONObject.getString("type"));
-		Assert.assertEquals("root", newItemJSONObject.getString("parentId"));
-
 		JSONObject newItemConfigJSONObject = newItemJSONObject.getJSONObject(
 			"config");
 
 		Assert.assertTrue(newItemConfigJSONObject.has("someConfig"));
+
+		Assert.assertEquals(newItemId, newItemJSONObject.getString("itemId"));
+		Assert.assertEquals(newItemType, newItemJSONObject.getString("type"));
+		Assert.assertEquals("root", newItemJSONObject.getString("parentId"));
 
 		JSONObject rootItemJSONObject = itemsJSONObject.getJSONObject("root");
 
@@ -151,15 +146,11 @@ public class AddItemReactMVCActionCommandTest {
 
 		String newItemId = RandomTestUtil.randomString();
 
-		actionRequest.addParameter(
-			"classNameId",
-			String.valueOf(_portal.getClassNameId(Layout.class)));
-		actionRequest.addParameter(
-			"classPK", String.valueOf(_layout.getPlid()));
 		actionRequest.addParameter("itemId", newItemId);
-		actionRequest.addParameter("parentId", "root");
+
+		actionRequest.addParameter("itemType", RandomTestUtil.randomString());
+		actionRequest.addParameter("parentItemId", "root");
 		actionRequest.addParameter("position", "1");
-		actionRequest.addParameter("type", RandomTestUtil.randomString());
 
 		JSONObject jsonObject = ReflectionTestUtil.invoke(
 			_mvcActionCommand, "addItemToLayoutData",

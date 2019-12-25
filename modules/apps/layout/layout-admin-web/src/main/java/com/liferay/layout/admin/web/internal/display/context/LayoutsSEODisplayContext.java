@@ -33,6 +33,7 @@ import com.liferay.layout.seo.model.LayoutSEOEntry;
 import com.liferay.layout.seo.model.LayoutSEOSite;
 import com.liferay.layout.seo.service.LayoutSEOEntryLocalServiceUtil;
 import com.liferay.layout.seo.service.LayoutSEOSiteLocalService;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -42,6 +43,7 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -146,7 +148,7 @@ public class LayoutsSEODisplayContext {
 			(layoutSEOSite.getOpenGraphImageFileEntryId() == 0) ||
 			!layoutSEOSite.isOpenGraphEnabled()) {
 
-			return null;
+			return StringPool.BLANK;
 		}
 
 		try {
@@ -158,7 +160,7 @@ public class LayoutsSEODisplayContext {
 		catch (PortalException pe) {
 			_log.error(pe, pe);
 
-			return null;
+			return StringPool.BLANK;
 		}
 	}
 
@@ -203,6 +205,50 @@ public class LayoutsSEODisplayContext {
 		}
 
 		return _layoutId;
+	}
+
+	public String getOpenGraphImageTitle() {
+		LayoutSEOEntry layoutSEOEntry = getSelLayoutSEOEntry();
+
+		if ((layoutSEOEntry == null) ||
+			(layoutSEOEntry.getOpenGraphImageFileEntryId() == 0)) {
+
+			return StringPool.BLANK;
+		}
+
+		try {
+			FileEntry fileEntry = _dlAppService.getFileEntry(
+				layoutSEOEntry.getOpenGraphImageFileEntryId());
+
+			return fileEntry.getTitle();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return StringPool.BLANK;
+		}
+	}
+
+	public String getOpenGraphImageURL() {
+		LayoutSEOEntry layoutSEOEntry = getSelLayoutSEOEntry();
+
+		if ((layoutSEOEntry == null) ||
+			(layoutSEOEntry.getOpenGraphImageFileEntryId() == 0)) {
+
+			return StringPool.BLANK;
+		}
+
+		try {
+			return _dlurlHelper.getImagePreviewURL(
+				_dlAppService.getFileEntry(
+					layoutSEOEntry.getOpenGraphImageFileEntryId()),
+				_themeDisplay);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return StringPool.BLANK;
+		}
 	}
 
 	public String getPageTitle() throws PortalException {

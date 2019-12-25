@@ -1,15 +1,15 @@
 apply plugin: "com.liferay.target.platform"
 
-dependencies {
-	targetPlatformBoms group: "com.liferay.portal", name: "release.portal.bom", version: "7.1.3"
-	targetPlatformBoms group: "com.liferay.portal", name: "release.portal.bom.compile.only", version: "7.1.3"
-	targetPlatformBoms group: "com.liferay.portal", name: "release.portal.bom.third.party", version: "7.1.3"
-
-	targetPlatformDistro group: "com.liferay.portal", name: "release.portal.distro", version: "7.1.3"
-}
-
 task checkRule
 task runGradleTest
+
+allprojects {
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
 
 checkRule {
 	doLast {
@@ -17,6 +17,14 @@ checkRule {
 
 		assert resolveTask == null
 	}
+}
+
+dependencies {
+	targetPlatformBoms group: "com.liferay.portal", name: "release.portal.bom", version: "7.2.1"
+	targetPlatformBoms group: "com.liferay.portal", name: "release.portal.bom.compile.only", version: "7.2.1"
+	targetPlatformBoms group: "com.liferay.portal", name: "release.portal.bom.third.party", version: "7.2.1"
+
+	targetPlatformDistro group: "com.liferay.portal", name: "release.portal.distro", version: "7.2.1"
 }
 
 runGradleTest {

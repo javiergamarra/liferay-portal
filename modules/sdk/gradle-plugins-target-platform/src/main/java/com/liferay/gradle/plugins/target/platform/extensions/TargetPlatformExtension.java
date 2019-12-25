@@ -133,6 +133,14 @@ public class TargetPlatformExtension {
 			});
 	}
 
+	/**
+	 * @deprecated
+	 *
+	 * Now that this plugin uses native Gradle 5 BOM support,
+	 * we automatically add to all configurations, so calling
+	 * this method has no effect.
+	 */
+	@Deprecated
 	public TargetPlatformExtension applyToConfiguration(
 		Iterable<?> configurationNames) {
 
@@ -141,12 +149,20 @@ public class TargetPlatformExtension {
 				_project,
 				TargetPlatformPlugin.TARGET_PLATFORM_BOMS_CONFIGURATION_NAME);
 
-		TargetPlatformPluginUtil.configureDependencyManagement(
-			_project, targetPlatformBomsConfiguration, configurationNames);
+		TargetPlatformPluginUtil.configureTargetPlatform(
+			_project, targetPlatformBomsConfiguration);
 
 		return this;
 	}
 
+	/**
+	 * @deprecated
+	 *
+	 * Now that this plugin uses native Gradle 5 BOM support,
+	 * we automatically add to all configurations, so calling
+	 * this method has no effect.
+	 */
+	@Deprecated
 	public TargetPlatformExtension applyToConfiguration(
 		Object... configurationNames) {
 
@@ -199,6 +215,7 @@ public class TargetPlatformExtension {
 		_onlyIfSpec.and(onlyIfClosure);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setOnlyIf(Spec<Project> onlyIfSpec) {
 		_onlyIfSpec = new AndSpec<>(onlyIfSpec);
 	}
@@ -209,6 +226,7 @@ public class TargetPlatformExtension {
 		_resolveOnlyIfSpec.and(resolveOnlyIfClosure);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setResolveOnlyIf(Spec<Project> resolveOnlyIfSpec) {
 		_resolveOnlyIfSpec = new AndSpec<>(resolveOnlyIfSpec);
 	}
@@ -223,6 +241,7 @@ public class TargetPlatformExtension {
 		setSubprojects(Arrays.asList(subprojects));
 	}
 
+	@SuppressWarnings("unchecked")
 	public TargetPlatformExtension subprojects(Iterable<Project> subprojects) {
 		GUtil.addToCollection(_subprojects, subprojects);
 

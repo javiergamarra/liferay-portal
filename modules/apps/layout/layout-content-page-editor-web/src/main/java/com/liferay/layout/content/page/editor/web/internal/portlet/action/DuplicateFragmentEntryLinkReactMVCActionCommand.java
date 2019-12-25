@@ -76,7 +76,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + ContentPageEditorPortletKeys.CONTENT_PAGE_EDITOR_PORTLET,
-		"mvc.command.name=/content_layout/duplicate_fragment_entry_link"
+		"mvc.command.name=/content_layout/duplicate_fragment_entry_link_react"
 	},
 	service = MVCActionCommand.class
 )
@@ -106,18 +106,13 @@ public class DuplicateFragmentEntryLinkReactMVCActionCommand
 		long segmentsExperienceId = ParamUtil.getLong(
 			actionRequest, "segmentsExperienceId",
 			SegmentsExperienceConstants.ID_DEFAULT);
-		String parentItemId = ParamUtil.getString(actionRequest, "parentId");
-		String itemType = ParamUtil.getString(actionRequest, "type");
-		int position = ParamUtil.getInteger(actionRequest, "position");
+		String itemId = ParamUtil.getString(actionRequest, "itemId");
 
 		return LayoutStructureUtil.updateLayoutPageTemplateData(
 			themeDisplay.getScopeGroupId(), segmentsExperienceId,
 			themeDisplay.getPlid(),
-			layoutStructure -> layoutStructure.addLayoutStructureItem(
-				JSONFactoryUtil.createJSONObject(
-					fragmentEntryLink.getConfiguration()),
-				String.valueOf(fragmentEntryLink.getFragmentEntryLinkId()),
-				parentItemId, itemType, position));
+			layoutStructure -> layoutStructure.duplicateLayoutStructureItem(
+				fragmentEntryLink.getFragmentEntryLinkId(), itemId));
 	}
 
 	private void _copyPortletPreferences(

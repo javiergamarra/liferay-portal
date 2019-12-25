@@ -62,6 +62,43 @@ public abstract class BaseImportTaskResourceImpl implements ImportTaskResource {
 	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-batch-engine/v1.0/import-task/{className}/{version}'  -u 'test@liferay.com:test'
 	 */
 	@Override
+	@Consumes(
+		{
+			"application/json", "application/x-ndjson", "application/xml",
+			"text/csv"
+		}
+	)
+	@DELETE
+	@Operation(description = "Uploads a new file for deleting items in batch.")
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "className"),
+			@Parameter(in = ParameterIn.PATH, name = "version"),
+			@Parameter(in = ParameterIn.QUERY, name = "callbackURL")
+		}
+	)
+	@Path("/import-task/{className}/{version}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ImportTask")})
+	public ImportTask deleteImportTask(
+			@NotNull @Parameter(hidden = true) @PathParam("className") String
+				className,
+			@NotNull @Parameter(hidden = true) @PathParam("version") String
+				version,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
+			Object object)
+		throws Exception {
+
+		return new ImportTask();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-batch-engine/v1.0/import-task/{className}/{version}'  -u 'test@liferay.com:test'
+	 */
+	@Override
 	@Consumes("multipart/form-data")
 	@DELETE
 	@Operation(description = "Uploads a new file for deleting items in batch.")
@@ -83,6 +120,48 @@ public abstract class BaseImportTaskResourceImpl implements ImportTaskResource {
 			@Parameter(hidden = true) @QueryParam("callbackURL") String
 				callbackURL,
 			MultipartBody multipartBody)
+		throws Exception {
+
+		return new ImportTask();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-batch-engine/v1.0/import-task/{className}/{version}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes(
+		{
+			"application/json", "application/x-ndjson", "application/xml",
+			"text/csv"
+		}
+	)
+	@Operation(
+		description = "Uploads a new file for creating new items in batch."
+	)
+	@POST
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "className"),
+			@Parameter(in = ParameterIn.PATH, name = "version"),
+			@Parameter(in = ParameterIn.QUERY, name = "callbackURL"),
+			@Parameter(in = ParameterIn.QUERY, name = "fieldNameMapping")
+		}
+	)
+	@Path("/import-task/{className}/{version}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ImportTask")})
+	public ImportTask postImportTask(
+			@NotNull @Parameter(hidden = true) @PathParam("className") String
+				className,
+			@NotNull @Parameter(hidden = true) @PathParam("version") String
+				version,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
+			@Parameter(hidden = true) @QueryParam("fieldNameMapping") String
+				fieldNameMapping,
+			Object object)
 		throws Exception {
 
 		return new ImportTask();
@@ -120,6 +199,43 @@ public abstract class BaseImportTaskResourceImpl implements ImportTaskResource {
 			@Parameter(hidden = true) @QueryParam("fieldNameMapping") String
 				fieldNameMapping,
 			MultipartBody multipartBody)
+		throws Exception {
+
+		return new ImportTask();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PUT' 'http://localhost:8080/o/headless-batch-engine/v1.0/import-task/{className}/{version}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes(
+		{
+			"application/json", "application/x-ndjson", "application/xml",
+			"text/csv"
+		}
+	)
+	@Operation(description = "Uploads a new file for updating items in batch.")
+	@PUT
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "className"),
+			@Parameter(in = ParameterIn.PATH, name = "version"),
+			@Parameter(in = ParameterIn.QUERY, name = "callbackURL")
+		}
+	)
+	@Path("/import-task/{className}/{version}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ImportTask")})
+	public ImportTask putImportTask(
+			@NotNull @Parameter(hidden = true) @PathParam("className") String
+				className,
+			@NotNull @Parameter(hidden = true) @PathParam("version") String
+				version,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
+			Object object)
 		throws Exception {
 
 		return new ImportTask();

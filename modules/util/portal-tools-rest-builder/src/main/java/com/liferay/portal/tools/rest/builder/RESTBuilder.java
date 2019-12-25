@@ -883,26 +883,6 @@ public class RESTBuilder {
 			return s;
 		}
 
-		Content content = contents.get("application/json");
-
-		String reference = null;
-
-		if (content.getSchema() != null) {
-			Schema schema = content.getSchema();
-
-			reference = schema.getReference();
-
-			if (schema.getItems() != null) {
-				Items items = schema.getItems();
-
-				reference = items.getReference();
-			}
-		}
-
-		if (reference == null) {
-			return s;
-		}
-
 		StringBuilder sb = new StringBuilder();
 
 		int x = s.lastIndexOf("\n", s.indexOf("application/json", index)) + 1;
@@ -1103,12 +1083,22 @@ public class RESTBuilder {
 		Map<String, Schema> schemas = components.getSchemas();
 
 		for (String schemaName : schemas.keySet()) {
+			Set<String> methodNames = new HashSet<>();
+
 			List<JavaMethodSignature> javaMethodSignatures =
 				freeMarkerTool.getResourceJavaMethodSignatures(
 					_configYAML, openAPIYAML, schemaName);
 
 			for (JavaMethodSignature javaMethodSignature :
 					javaMethodSignatures) {
+
+				String methodName = javaMethodSignature.getMethodName();
+
+				if (methodNames.contains(methodName)) {
+					continue;
+				}
+
+				methodNames.add(methodName);
 
 				int x = s.indexOf(
 					StringUtil.quote(javaMethodSignature.getPath(), '"') + ":");
@@ -1157,7 +1147,7 @@ public class RESTBuilder {
 				sb.append(s.substring(0, z + 1));
 				sb.append(leadingWhiteSpace);
 				sb.append("operationId: ");
-				sb.append(javaMethodSignature.getMethodName());
+				sb.append(methodName);
 				sb.append("\n");
 				sb.append(s.substring(z + 1));
 

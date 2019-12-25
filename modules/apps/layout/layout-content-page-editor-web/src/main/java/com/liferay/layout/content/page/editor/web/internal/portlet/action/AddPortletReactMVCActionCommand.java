@@ -58,8 +58,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
 import com.liferay.segments.util.SegmentsExperiencePortletUtil;
 
-import java.util.UUID;
-
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
@@ -94,7 +92,7 @@ public class AddPortletReactMVCActionCommand
 	}
 
 	protected JSONObject addFragmentEntryLinkToLayoutData(
-			ActionRequest actionRequest, FragmentEntryLink fragmentEntryLink)
+			ActionRequest actionRequest, long fragmentEntryLinkId)
 		throws PortalException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
@@ -103,18 +101,15 @@ public class AddPortletReactMVCActionCommand
 		long segmentsExperienceId = ParamUtil.getLong(
 			actionRequest, "segmentsExperienceId",
 			SegmentsExperienceConstants.ID_DEFAULT);
-		String parentItemId = ParamUtil.getString(actionRequest, "parentId");
+		String parentItemId = ParamUtil.getString(
+			actionRequest, "parentItemId");
 		int position = ParamUtil.getInteger(actionRequest, "position");
 
 		return LayoutStructureUtil.updateLayoutPageTemplateData(
 			themeDisplay.getScopeGroupId(), segmentsExperienceId,
 			themeDisplay.getPlid(),
-			layoutStructure -> layoutStructure.addLayoutStructureItem(
-				JSONUtil.put(
-					"fragmentEntryLinkId",
-					fragmentEntryLink.getFragmentEntryLinkId()),
-				String.valueOf(UUID.randomUUID()), parentItemId, "fragment",
-				position));
+			layoutStructure -> layoutStructure.addFragmentLayoutStructureItem(
+				fragmentEntryLinkId, parentItemId, position));
 	}
 
 	@Override
@@ -225,7 +220,7 @@ public class AddPortletReactMVCActionCommand
 		);
 
 		JSONObject layoutDataJSONObject = addFragmentEntryLinkToLayoutData(
-			actionRequest, fragmentEntryLink);
+			actionRequest, fragmentEntryLink.getFragmentEntryLinkId());
 
 		return JSONUtil.put(
 			"fragmentEntryLink", jsonObject

@@ -24,27 +24,20 @@ SiteNavigationMenuItemItemSelectorViewDisplayContext siteNavigationMenuItemItemS
 	<c:when test="<%= siteNavigationMenuItemItemSelectorViewDisplayContext.isShowSelectSiteNavigationMenuItem() %>">
 
 		<%
-		Portlet portlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(), portletDisplay.getId());
+		Map<String, Object> data = new HashMap<>();
+
+		data.put("itemSelectorSaveEvent", siteNavigationMenuItemItemSelectorViewDisplayContext.getItemSelectedEventName());
+		data.put("namespace", liferayPortletResponse.getNamespace());
+		data.put("nodes", siteNavigationMenuItemItemSelectorViewDisplayContext.getSiteNavigationMenuItemsJSONArray());
+		data.put("pathThemeImages", themeDisplay.getPathThemeImages());
 		%>
 
-		<liferay-util:html-top>
-			<link href="<%= PortalUtil.getStaticResourceURL(request, application.getContextPath() + "/css/main.css", portlet.getTimestamp()) %>" rel="stylesheet" type="text/css" />
-		</liferay-util:html-top>
-
-		<%
-		Map<String, Object> context = new HashMap<>();
-
-		context.put("itemSelectorSaveEvent", siteNavigationMenuItemItemSelectorViewDisplayContext.getItemSelectedEventName());
-		context.put("namespace", liferayPortletResponse.getNamespace());
-		context.put("nodes", siteNavigationMenuItemItemSelectorViewDisplayContext.getSiteNavigationMenuItemsJSONArray());
-		context.put("pathThemeImages", themeDisplay.getPathThemeImages());
-		%>
-
-		<soy:component-renderer
-			context="<%= context %>"
-			module="js/SelectSiteNavigationMenuItem.es"
-			templateNamespace="com.liferay.site.navigation.item.selector.web.SelectSiteNavigationMenuItem.render"
-		/>
+		<div class="select-site-navigation-menu-item">
+			<react:component
+				data="<%= data %>"
+				module="js/SelectSiteNavigationMenuItem.es"
+			/>
+		</div>
 	</c:when>
 	<c:otherwise>
 		<liferay-frontend:empty-result-message

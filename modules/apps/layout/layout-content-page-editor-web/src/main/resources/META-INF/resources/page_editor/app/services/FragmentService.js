@@ -25,16 +25,16 @@ export default {
 	 * Adds a new Fragment to the current layout
 	 * @param {object} options
 	 * @param {object} options.config Application config
-	 * @param {string} options.fragmentGroupId GroupId that wraps the Fragment
-	 * @param {string} options.fragmentKey Key of the Fragment
+	 * @param {string} options.groupId GroupId that wraps the Fragment
+	 * @param {string} options.fragmentEntryKey Key of the Fragment
 	 * @param {string} options.segmentsExperienceId Current segmentsExperienceId
 	 * @return {Promise<FragmentEntryLink>} Created FragmentEntryLink
 	 */
 	addFragmentEntryLink({
 		config,
-		fragmentGroupId,
-		fragmentKey,
-		parentId,
+		fragmentEntryKey,
+		groupId,
+		parentItemId,
 		position,
 		segmentsExperienceId
 	}) {
@@ -43,10 +43,33 @@ export default {
 		return serviceFetch(config, addFragmentEntryLinkURL, {
 			classNameId,
 			classPK,
-			fragmentGroupId,
-			fragmentKey,
-			parentId,
+			fragmentEntryKey,
+			groupId,
+			parentItemId,
 			position,
+			segmentsExperienceId
+		});
+	},
+
+	/**
+	 * Duplicates a fragmentEntryLink
+	 * @param {object} options
+	 * @param {object} options.config Application config
+	 * @param {string} options.fragmentEntryLinkId Id of the fragmentEntryLink
+	 * @param {string} options.itemId id of the item
+	 * @param {string} options.segmentsExperienceId Experience id
+	 */
+	duplicateFragmentEntryLink({
+		config,
+		fragmentEntryLinkId,
+		itemId,
+		segmentsExperienceId
+	}) {
+		const {duplicateFragmentEntryLinkURL} = config;
+
+		return serviceFetch(config, duplicateFragmentEntryLinkURL, {
+			fragmentEntryLinkId,
+			itemId,
 			segmentsExperienceId
 		});
 	},

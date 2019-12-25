@@ -227,7 +227,24 @@ paths:
                       type: string
             requestBody:
                 content:
+                    application/json:
+                        schema:
+                            type: object
+                    application/x-ndjson:
+                        schema:
+                            type: object
+                    application/xml:
+                        schema:
+                            type: object
                     multipart/form-data:
+                        schema:
+                            properties:
+                                file:
+                                    format: binary
+                                    type: string
+                    text/csv:
+                        schema:
+                            type: object
                 required: true
             responses:
                 202:
@@ -266,12 +283,24 @@ paths:
                       type: string
             requestBody:
                 content:
+                    application/json:
+                        schema:
+                            type: object
+                    application/x-ndjson:
+                        schema:
+                            type: object
+                    application/xml:
+                        schema:
+                            type: object
                     multipart/form-data:
                         schema:
                             properties:
                                 file:
                                     format: binary
                                     type: string
+                    text/csv:
+                        schema:
+                            type: object
                 required: true
             responses:
                 202:
@@ -306,12 +335,24 @@ paths:
                       type: string
             requestBody:
                 content:
+                    application/json:
+                        schema:
+                            type: object
+                    application/x-ndjson:
+                        schema:
+                            type: object
+                    application/xml:
+                        schema:
+                            type: object
                     multipart/form-data:
                         schema:
                             properties:
                                 file:
                                     format: binary
                                     type: string
+                    text/csv:
+                        schema:
+                            type: object
                 required: true
             responses:
                 202:

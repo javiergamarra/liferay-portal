@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Javadoc Formatter
 Bundle-SymbolicName: com.liferay.javadoc.formatter
-Bundle-Version: 1.0.35
+Bundle-Version: 1.0.36
 Import-Package:\
 	!org.apache.maven.plugin.*,\
 	!org.apache.tools.ant.*,\
@@ -8,6 +8,7 @@ Import-Package:\
 	*
 Main-Class: com.liferay.javadoc.formatter.JavadocFormatter
 -includeresource:\
+	@com.liferay.petra.lang-[0-9.]*.jar!/com/liferay/petra/lang/CentralizedThreadLocal.class,\
 	@com.liferay.petra.string-[0-9.]*.jar!/com/liferay/petra/string/CharPool.class,\
 	@com.liferay.petra.string-[0-9.]*.jar!/com/liferay/petra/string/StringPool.class,\
 	@com.liferay.petra.xml-[0-9.]*.jar!/com/liferay/petra/xml/Dom4jUtil.class,\

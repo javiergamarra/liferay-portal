@@ -61,7 +61,7 @@ import javax.ws.rs.core.UriInfo;
 public abstract class Base${schemaName}ResourceImpl implements ${schemaName}Resource {
 
 	<#assign
-		javaMethodSignatures = freeMarkerTool.getResourceTestCaseJavaMethodSignatures(configYAML, openAPIYAML, schemaName)
+		javaMethodSignatures = freeMarkerTool.getResourceJavaMethodSignatures(configYAML, openAPIYAML, schemaName)
 	/>
 
 	<#list javaMethodSignatures as javaMethodSignature>
