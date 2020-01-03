@@ -26,6 +26,7 @@ import com.liferay.headless.delivery.resource.v1_0.DocumentResource;
 import com.liferay.headless.delivery.resource.v1_0.KnowledgeBaseArticleResource;
 import com.liferay.headless.delivery.resource.v1_0.KnowledgeBaseAttachmentResource;
 import com.liferay.headless.delivery.resource.v1_0.KnowledgeBaseFolderResource;
+import com.liferay.headless.delivery.resource.v1_0.LayoutResource;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardAttachmentResource;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardMessageResource;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardSectionResource;
@@ -112,6 +113,8 @@ public class ServletDataImpl implements ServletData {
 			_knowledgeBaseAttachmentResourceComponentServiceObjects);
 		Query.setKnowledgeBaseFolderResourceComponentServiceObjects(
 			_knowledgeBaseFolderResourceComponentServiceObjects);
+		Query.setLayoutResourceComponentServiceObjects(
+			_layoutResourceComponentServiceObjects);
 		Query.setMessageBoardAttachmentResourceComponentServiceObjects(
 			_messageBoardAttachmentResourceComponentServiceObjects);
 		Query.setMessageBoardMessageResourceComponentServiceObjects(
@@ -224,6 +227,10 @@ public class ServletDataImpl implements ServletData {
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ContentStructureResource>
 		_contentStructureResourceComponentServiceObjects;
+
+	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
+	private ComponentServiceObjects<LayoutResource>
+		_layoutResourceComponentServiceObjects;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<NavigationMenuResource>

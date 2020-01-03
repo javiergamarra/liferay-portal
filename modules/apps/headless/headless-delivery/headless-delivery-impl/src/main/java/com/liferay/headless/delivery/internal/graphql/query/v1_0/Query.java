@@ -24,6 +24,7 @@ import com.liferay.headless.delivery.dto.v1_0.DocumentFolder;
 import com.liferay.headless.delivery.dto.v1_0.KnowledgeBaseArticle;
 import com.liferay.headless.delivery.dto.v1_0.KnowledgeBaseAttachment;
 import com.liferay.headless.delivery.dto.v1_0.KnowledgeBaseFolder;
+import com.liferay.headless.delivery.dto.v1_0.Layout;
 import com.liferay.headless.delivery.dto.v1_0.MessageBoardAttachment;
 import com.liferay.headless.delivery.dto.v1_0.MessageBoardMessage;
 import com.liferay.headless.delivery.dto.v1_0.MessageBoardSection;
@@ -45,6 +46,7 @@ import com.liferay.headless.delivery.resource.v1_0.DocumentResource;
 import com.liferay.headless.delivery.resource.v1_0.KnowledgeBaseArticleResource;
 import com.liferay.headless.delivery.resource.v1_0.KnowledgeBaseAttachmentResource;
 import com.liferay.headless.delivery.resource.v1_0.KnowledgeBaseFolderResource;
+import com.liferay.headless.delivery.resource.v1_0.LayoutResource;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardAttachmentResource;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardMessageResource;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardSectionResource;
@@ -167,6 +169,14 @@ public class Query {
 
 		_knowledgeBaseFolderResourceComponentServiceObjects =
 			knowledgeBaseFolderResourceComponentServiceObjects;
+	}
+
+	public static void setLayoutResourceComponentServiceObjects(
+		ComponentServiceObjects<LayoutResource>
+			layoutResourceComponentServiceObjects) {
+
+		_layoutResourceComponentServiceObjects =
+			layoutResourceComponentServiceObjects;
 	}
 
 	public static void setMessageBoardAttachmentResourceComponentServiceObjects(
@@ -1017,6 +1027,26 @@ public class Query {
 			this::_populateResourceContext,
 			knowledgeBaseFolderResource -> new KnowledgeBaseFolderPage(
 				knowledgeBaseFolderResource.getSiteKnowledgeBaseFoldersPage(
+					Long.valueOf(siteKey), Pagination.of(page, pageSize))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {layouts(page: ___, pageSize: ___, siteKey: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "")
+	public LayoutPage layouts(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_layoutResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			layoutResource -> new LayoutPage(
+				layoutResource.getSiteLayoutsPage(
 					Long.valueOf(siteKey), Pagination.of(page, pageSize))));
 	}
 
@@ -3191,6 +3221,34 @@ public class Query {
 
 	}
 
+	@GraphQLName("LayoutPage")
+	public class LayoutPage {
+
+		public LayoutPage(Page layoutPage) {
+			items = layoutPage.getItems();
+			lastPage = layoutPage.getLastPage();
+			page = layoutPage.getPage();
+			pageSize = layoutPage.getPageSize();
+			totalCount = layoutPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<Layout> items;
+
+		@GraphQLField
+		protected long lastPage;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
 	@GraphQLName("MessageBoardAttachmentPage")
 	public class MessageBoardAttachmentPage {
 
@@ -3663,6 +3721,17 @@ public class Query {
 		knowledgeBaseFolderResource.setContextUser(_user);
 	}
 
+	private void _populateResourceContext(LayoutResource layoutResource)
+		throws Exception {
+
+		layoutResource.setContextAcceptLanguage(_acceptLanguage);
+		layoutResource.setContextCompany(_company);
+		layoutResource.setContextHttpServletRequest(_httpServletRequest);
+		layoutResource.setContextHttpServletResponse(_httpServletResponse);
+		layoutResource.setContextUriInfo(_uriInfo);
+		layoutResource.setContextUser(_user);
+	}
+
 	private void _populateResourceContext(
 			MessageBoardAttachmentResource messageBoardAttachmentResource)
 		throws Exception {
@@ -3819,6 +3888,8 @@ public class Query {
 		_knowledgeBaseAttachmentResourceComponentServiceObjects;
 	private static ComponentServiceObjects<KnowledgeBaseFolderResource>
 		_knowledgeBaseFolderResourceComponentServiceObjects;
+	private static ComponentServiceObjects<LayoutResource>
+		_layoutResourceComponentServiceObjects;
 	private static ComponentServiceObjects<MessageBoardAttachmentResource>
 		_messageBoardAttachmentResourceComponentServiceObjects;
 	private static ComponentServiceObjects<MessageBoardMessageResource>
