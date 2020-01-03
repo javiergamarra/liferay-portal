@@ -910,6 +910,38 @@ components:
             required:
                 - name
             type: object
+        FragmentEntryLink:
+            description:
+                ""
+            properties:
+                configuration:
+                    type: object
+                content:
+                    type: string
+                css:
+                    type: string
+                dateCreated:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                dateModified:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                description:
+                    type: string
+                editableValues:
+                    type: object
+                html:
+                    type: string
+                id:
+                    format: int64
+                    readOnly: true
+                    type: integer
+                js:
+                    type: string
+                name:
+                    type: string
         KnowledgeBaseArticle:
             description:
                 Represents a Knowledge Base article (`KBArticle`), the main entity in the Knowledge Base API.
@@ -1191,6 +1223,57 @@ components:
                     writeOnly: true
             required:
                 - name
+            type: object
+        Layout:
+            description:
+                ""
+            properties:
+                columns:
+                    items:
+                        type: string
+                    type: array
+                creator:
+                    allOf:
+                        - $ref: "#/components/schemas/Creator"
+                    readOnly: true
+                dateCreated:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                dateModified:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                description:
+                    type: string
+                fragmentEntryLinks:
+                    items:
+                        $ref: "#/component/schemas/FragmentEntryLink"
+                    type: array
+                friendlyURL:
+                    type: string
+                id:
+                    format: int64
+                    readOnly: true
+                    type: integer
+                keywords:
+                    type: string
+                layoutData:
+                    type: object
+                layoutTemplateId:
+                    type: string
+                layouts:
+                    items:
+                        $ref: "#/components/schemas/Layout"
+                    type: array
+                name:
+                    type: string
+                siteId:
+                    format: int64
+                    readOnly: true
+                    type: integer
+                type:
+                    type: string
             type: object
         MessageBoardAttachment:
             description:
@@ -5963,6 +6046,42 @@ paths:
                     description:
                         ""
             tags: ["KnowledgeBaseFolder"]
+    "/sites/{siteId}/layouts":
+        get:
+            description:
+                ""
+            operationId: getSiteLayoutsPage
+            parameters:
+                - in: path
+                  name: siteId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Layout"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Layout"
+                                type: array
+                    description:
+                        ""
+            tags: ["Layout"]
     "/sites/{siteId}/message-board-messages":
         # @review
         get:
