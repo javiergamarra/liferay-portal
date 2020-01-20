@@ -62,6 +62,10 @@ components:
                             description:
                                 The field's content for simple types.
                             type: object
+                        data_i18n:
+                            additionalProperties:
+                                type: object
+                            type: object
                         geo:
                             description:
                                 A point determined by latitude and longitude.
@@ -377,6 +381,11 @@ components:
                         The role's description.
                     readOnly: true
                     type: string
+                description_i18n:
+                    additionalProperties:
+                        type: string
+                    readOnly: true
+                    type: object
                 id:
                     description:
                         The role's ID.
@@ -388,6 +397,11 @@ components:
                         The role's name.
                     readOnly: true
                     type: string
+                name_i18n:
+                    additionalProperties:
+                        type: string
+                    readOnly: true
+                    type: object
                 roleType:
                     description:
                         The role's type.
@@ -410,6 +424,11 @@ components:
                         The role's name.
                     readOnly: true
                     type: string
+                name_i18n:
+                    additionalProperties:
+                        type: string
+                    readOnly: true
+                    type: object
             type: object
         Segment:
             description:
@@ -499,6 +518,10 @@ components:
                     $ref: "#/components/schemas/Creator"
                 description:
                     type: string
+                description_i18n:
+                    additionalProperties:
+                        type: string
+                    type: object
                 friendlyUrlPath:
                     type: string
                 id:
@@ -510,6 +533,10 @@ components:
                     type: string
                 name:
                     type: string
+                name_i18n:
+                    additionalProperties:
+                        type: string
+                    type: object
                 parentSiteId:
                     format: int64
                     type: integer
@@ -533,6 +560,11 @@ components:
                         The site's name.
                     readOnly: true
                     type: string
+                name_i18n:
+                    additionalProperties:
+                        type: string
+                    readOnly: true
+                    type: object
             type: object
         Subscription:
             properties:
