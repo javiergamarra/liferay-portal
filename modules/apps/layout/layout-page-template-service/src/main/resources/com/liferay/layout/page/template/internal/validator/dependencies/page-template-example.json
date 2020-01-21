@@ -50,9 +50,9 @@
                 "paddingHorizontal": 4,
                 "paddingBottom": 4,
                 "paddingTop": 4,
-                "type": "Fluid"
+                "containerType": "Fluid"
             },
-            "type": "Container"
+            "type": "Section"
         },
         {
             "pageFragments": [
@@ -221,7 +221,7 @@
                 "paddingHorizontal": 3,
                 "paddingVertical": 3
             },
-            "type": "Container"
+            "type": "Section"
         },
         {
             "pageFragments": [
@@ -255,7 +255,7 @@
                 "paddingHorizontal": 3,
                 "paddingVertical": 3
             },
-            "type": "Container"
+            "type": "Section"
         },
         {
             "pageFragments": [
@@ -282,7 +282,7 @@
                 "paddingHorizontal": 3,
                 "paddingVertical": 3
             },
-            "type": "Container"
+            "type": "Section"
         }
     ],
     "creator": {
