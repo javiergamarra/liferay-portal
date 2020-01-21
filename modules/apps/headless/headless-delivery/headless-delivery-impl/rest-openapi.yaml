@@ -1785,9 +1785,6 @@ components:
                         type: integer
                     type: array
                     writeOnly: true
-                type:
-                    enum: [Content]
-                    type: string
                 uuid:
                     description:
                         A valid external identifier to reference this structured content.
