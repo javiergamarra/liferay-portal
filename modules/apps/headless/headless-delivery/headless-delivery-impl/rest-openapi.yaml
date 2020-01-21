@@ -1760,10 +1760,6 @@ components:
                             type: object
                         masterPage:
                             properties:
-                                id:
-                                    format: int64
-                                    readOnly: true
-                                    type: integer
                                 name:
                                     type: string
                             type: object
