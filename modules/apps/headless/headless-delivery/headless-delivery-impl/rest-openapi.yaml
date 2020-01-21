@@ -1708,7 +1708,7 @@ components:
                 type:
                     enum: [Column, Fragment, Row, Section]
                     type: string
-        PageTemplate:
+        PageDefinition:
             description:
                 ""
             properties:
@@ -6477,10 +6477,10 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/PageTemplate"
+                                $ref: "#/components/schemas/PageDefinition"
                         application/xml:
                             schema:
-                                $ref: "#/components/schemas/PageTemplate"
+                                $ref: "#/components/schemas/PageDefinition"
                     description:
                         ""
             tags: ["PageTemplate"]
