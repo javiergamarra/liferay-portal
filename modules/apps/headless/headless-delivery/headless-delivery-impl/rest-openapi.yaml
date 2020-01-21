@@ -1693,7 +1693,7 @@ components:
                     type: string
                 url:
                     type: string
-        PageFragment:
+        PageElement:
             properties:
                 definition:
                     oneOf:
@@ -1701,9 +1701,9 @@ components:
                         - $ref: "#/components/schemas/FragmentDefinition"
                         - $ref: "#/components/schemas/RowDefinition"
                         - $ref: "#/components/schemas/SectionDefinition"
-                pageFragments:
+                pageElements:
                     items:
-                        $ref: "#/components/schemas/PageFragment"
+                        $ref: "#/components/schemas/PageElement"
                     type: array
                 type:
                     enum: [Column, Fragment, Row, Section]
@@ -1739,9 +1739,9 @@ components:
                     type: array
                 name:
                     type: string
-                pageFragments:
+                pageElements:
                     items:
-                        $ref: "#/components/schemas/PageFragment"
+                        $ref: "#/components/schemas/PageElement"
                     type: array
                 settings:
                     properties:
