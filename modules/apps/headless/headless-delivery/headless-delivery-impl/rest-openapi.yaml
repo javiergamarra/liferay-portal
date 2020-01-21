@@ -936,6 +936,26 @@ components:
             required:
                 - name
             type: object
+        FragmentContentFieldHTML:
+            properties:
+                html:
+                    oneOf:
+                        - $ref: "#/components/schemas/InlineValue"
+                        - $ref: "#/components/schemas/MappedValue"
+            type: object
+        FragmentContentFieldImage:
+            properties:
+                image:
+                    allOf:
+                        - $ref: "#/components/schemas/FragmentImage"
+            type: object
+        FragmentContentFieldText:
+            properties:
+                text:
+                    oneOf:
+                        - $ref: "#/components/schemas/InlineValue"
+                        - $ref: "#/components/schemas/MappedValue"
+            type: object
         FragmentDefinition:
             properties:
                 backgroundImages:
@@ -950,6 +970,12 @@ components:
                 contentFields:
                     items:
                         properties:
+                            allOf:
+                                oneOf:
+                                    - $ref: "#/components/schemas/FragmentContentFieldHTML"
+                                    - $ref: "#/components/schemas/FragmentContentFieldImage"
+                                    - $ref: "#/components/schemas/FragmentContentFieldText"
+                                type: object
                             id:
                                 type: string
                             link:
@@ -960,10 +986,6 @@ components:
                                     target:
                                         enum: [Blank, Self]
                                         type: string
-                            text:
-                                oneOf:
-                                    - $ref: "#/components/schemas/InlineValue"
-                                    - $ref: "#/components/schemas/MappedValue"
                             type:
                                 type: string
                         type: object
