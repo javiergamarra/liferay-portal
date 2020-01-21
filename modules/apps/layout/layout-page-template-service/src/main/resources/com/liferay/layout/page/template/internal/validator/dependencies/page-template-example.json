@@ -63,36 +63,6 @@
                                 {
                                     "pageFragments": [],
                                     "definition": {
-                                        "backgroundImages": [
-                                            {
-                                                "id": "banner-left",
-                                                "title": {
-                                                    "value": "My title",
-                                                    "value_i18n": {
-                                                        "en-US": "My title"
-                                                    }
-                                                },
-                                                "url" : {
-                                                    "value": "http://blogs.rivetlogic.com/wp-content/uploads/2017/08/Liferay-DXP-features.png",
-                                                    "value_i18n": {
-                                                        "en-US": "http://blogs.rivetlogic.com/wp-content/uploads/2017/08/Liferay-DXP-features.png"
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "id": "banner-right",
-                                                "title": {
-                                                    "fieldId": "displayPageURL",
-                                                    "classNameId": "28701",
-                                                    "classPK": "36620"
-                                                },
-                                                "url" : {
-                                                    "fieldId": "displayPageURL",
-                                                    "classNameId": "28701",
-                                                    "classPK": "36620"
-                                                }
-                                            }
-                                        ],
                                         "fragmentConfig": {
                                             "textAlign": "center",
                                             "bottomSpacing": "5",
@@ -143,6 +113,38 @@
                                                         "value_i18n": {
                                                             "en-US": "http://blogs.rivetlogic.com/wp-content/uploads/2017/08/Liferay-DXP-features.png"
                                                         }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "banner-left",
+                                                "backgroundImage" : {
+                                                  "title": {
+                                                        "value": "My title",
+                                                        "value_i18n": {
+                                                            "en-US": "My title"
+                                                        }
+                                                    },
+                                                    "url" : {
+                                                        "value": "http://blogs.rivetlogic.com/wp-content/uploads/2017/08/Liferay-DXP-features.png",
+                                                        "value_i18n": {
+                                                            "en-US": "http://blogs.rivetlogic.com/wp-content/uploads/2017/08/Liferay-DXP-features.png"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "banner-right",
+                                                "backgroundImage" : {
+                                                     "title": {
+                                                        "fieldId": "displayPageURL",
+                                                        "classNameId": "28701",
+                                                        "classPK": "36620"
+                                                    },
+                                                    "url" : {
+                                                        "fieldId": "displayPageURL",
+                                                        "classNameId": "28701",
+                                                        "classPK": "36620"
                                                     }
                                                 }
                                             },
