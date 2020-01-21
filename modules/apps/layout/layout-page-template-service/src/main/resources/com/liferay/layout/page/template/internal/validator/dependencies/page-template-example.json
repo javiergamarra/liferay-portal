@@ -1,8 +1,8 @@
 {
     "collectionName": "c1",
-    "pageFragments": [
+    "pageElements": [
         {
-            "pageFragments": [],
+            "pageElements": [],
             "definition": {
                 "fragmentConfig": {},
                 "contentFields": [],
@@ -12,18 +12,18 @@
             "type": "Fragment"
         },
         {
-            "pageFragments": [
+            "pageElements": [
                 {
-                    "pageFragments": [
+                    "pageElements": [
                         {
-                            "pageFragments": [],
+                            "pageElements": [],
                             "definition": {
                                 "size": 8
                             },
                             "type": "Column"
                         },
                         {
-                            "pageFragments": [],
+                            "pageElements": [],
                             "definition": {
                                 "size": 4
                             },
@@ -55,13 +55,13 @@
             "type": "Section"
         },
         {
-            "pageFragments": [
+            "pageElements": [
                 {
-                    "pageFragments": [
+                    "pageElements": [
                         {
-                            "pageFragments": [
+                            "pageElements": [
                                 {
-                                    "pageFragments": [],
+                                    "pageElements": [],
                                     "definition": {
                                         "fragmentConfig": {
                                             "textAlign": "center",
@@ -202,7 +202,7 @@
                             "type": "Column"
                         },
                         {
-                            "pageFragments": [],
+                            "pageElements": [],
                             "definition": {
                                 "size": 6
                             },
@@ -224,11 +224,11 @@
             "type": "Section"
         },
         {
-            "pageFragments": [
+            "pageElements": [
                 {
-                    "pageFragments": [
+                    "pageElements": [
                         {
-                            "pageFragments": [
+                            "pageElements": [
                             ],
                             "definition": {
                                 "size": 12
@@ -258,11 +258,11 @@
             "type": "Section"
         },
         {
-            "pageFragments": [
+            "pageElements": [
                 {
-                    "pageFragments": [
+                    "pageElements": [
                         {
-                            "pageFragments": [
+                            "pageElements": [
                             ],
                             "definition": {
                                 "size": 12
@@ -307,7 +307,9 @@
         "colorSchemeName": "Day",
         "css": "",
         "javascript": "",
-        "masterPageName": "My master page 1",
+        "masterPage": {
+            "name" : "My master page 1"
+        },
         "themeName": "Westeros Bank",
         "themeSettings": {
             "lfr-theme:regular:show-global-menu-on": "big-screens",
@@ -316,7 +318,6 @@
         }
     },
     "name": "pt1",
-    "type": "Content",
     "siteId": 20119,
     "uuid": "38a9eb4e-cd50-fbf5-d921-915481e051c4"
 }
