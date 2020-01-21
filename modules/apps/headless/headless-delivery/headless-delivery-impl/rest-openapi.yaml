@@ -986,8 +986,6 @@ components:
                                     target:
                                         enum: [Blank, Self]
                                         type: string
-                            type:
-                                type: string
                         type: object
                     type: array
                 fragmentCollectionName:
