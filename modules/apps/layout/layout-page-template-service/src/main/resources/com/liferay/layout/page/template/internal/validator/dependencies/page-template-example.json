@@ -113,6 +113,40 @@
                                                 }
                                             },
                                             {
+                                                "id": "01-intro",
+                                                "html": {
+                                                    "value": "\n\t\t<h1>\n\t\t\tMy HTML Example\n\t\t</h1>\n\n\t\t<p>\n\t\t\tMy  paragraph is a <strong>self-contained</strong> unit of a discourse in writing dealing with a particular point or <em>idea</em>. Paragraphs are usually an expected part of formal writing, used to organize longer prose.\n\t\t</p>\n\t\t\n\t\t<h2>\n\t\t    My second heading\n\t\t</h2>\n\t",
+                                                    "value_i18n": {
+                                                        "en-US": "\n\t\t<h1>\n\t\t\tMy HTML Example\n\t\t</h1>\n\n\t\t<p>\n\t\t\tMy  paragraph is a <strong>self-contained</strong> unit of a discourse in writing dealing with a particular point or <em>idea</em>. Paragraphs are usually an expected part of formal writing, used to organize longer prose.\n\t\t</p>\n\t\t\n\t\t<h2>\n\t\t    My second heading\n\t\t</h2>\n\t"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "id": "02-intro",
+                                                "html": {
+                                                    "fieldId": "content",
+                                                    "classNameId": "28701",
+                                                    "classPK": "36620"
+                                                }
+                                            },
+                                            {
+                                                "id": "image-01",
+                                                "image" : {
+                                                    "title": {
+                                                        "value": "My image",
+                                                        "value_i18n": {
+                                                            "en-US": "My image"
+                                                            }
+                                                    },
+                                                    "url" : {
+                                                        "value": "http://blogs.rivetlogic.com/wp-content/uploads/2017/08/Liferay-DXP-features.png",
+                                                        "value_i18n": {
+                                                            "en-US": "http://blogs.rivetlogic.com/wp-content/uploads/2017/08/Liferay-DXP-features.png"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
                                                 "id": "02-subtitle",
                                                 "text": {
                                                     "value": "My subtitle",
