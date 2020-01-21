@@ -956,6 +956,10 @@ components:
                                 oneOf:
                                     - $ref: "#/components/schemas/InlineLink"
                                     - $ref: "#/components/schemas/MappedValue"
+                                properties:
+                                    target:
+                                        enum: [Blank, Self]
+                                        type: string
                             text:
                                 oneOf:
                                     - $ref: "#/components/schemas/InlineValue"
@@ -987,9 +991,6 @@ components:
         InlineLink:
             properties:
                 href:
-                    type: string
-                target:
-                    enum: [Blank, Self]
                     type: string
             type: object
         InlineValue:
