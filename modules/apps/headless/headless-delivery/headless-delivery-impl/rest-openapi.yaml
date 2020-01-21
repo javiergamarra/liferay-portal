@@ -298,7 +298,7 @@ components:
                 paddingTop:
                     format: int32
                     type: integer
-                type:
+                containerType:
                     enum: [Fixed, Fluid]
                     type: string
             type: object
