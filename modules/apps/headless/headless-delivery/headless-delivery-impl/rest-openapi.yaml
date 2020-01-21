@@ -283,25 +283,6 @@ components:
                         The comment's text content.
                     type: string
             type: object
-        SectionDefinition:
-            properties:
-                backgroundColorCssClass:
-                    type: string
-                backgroundImage:
-                    $ref: "#/components/schemas/FragmentImage"
-                paddingBottom:
-                    format: int32
-                    type: integer
-                paddingHorizontal:
-                    format: int32
-                    type: integer
-                paddingTop:
-                    format: int32
-                    type: integer
-                containerType:
-                    enum: [Fixed, Fluid]
-                    type: string
-            type: object
         ContentDocument:
             description:
                 Represents a document (binary data and metadata) associated with structured content. Properties follow
@@ -936,18 +917,18 @@ components:
             required:
                 - name
             type: object
+        FragmentContentFieldBackgroundImage:
+            properties:
+                backgroundImage:
+                    allOf:
+                        - $ref: "#/components/schemas/FragmentImage"
+            type: object
         FragmentContentFieldHTML:
             properties:
                 html:
                     oneOf:
                         - $ref: "#/components/schemas/InlineValue"
                         - $ref: "#/components/schemas/MappedValue"
-            type: object
-        FragmentContentFieldBackgroundImage:
-            properties:
-                backgroundImage:
-                    allOf:
-                        - $ref: "#/components/schemas/FragmentImage"
             type: object
         FragmentContentFieldImage:
             properties:
@@ -969,8 +950,8 @@ components:
                         properties:
                             allOf:
                                 oneOf:
-                                    - $ref: "#/components/schemas/FragmentContentFieldHTML"
                                     - $ref: "#/components/schemas/FragmentContentFieldBackgroundImage"
+                                    - $ref: "#/components/schemas/FragmentContentFieldHTML"
                                     - $ref: "#/components/schemas/FragmentContentFieldImage"
                                     - $ref: "#/components/schemas/FragmentContentFieldText"
                                 type: object
@@ -1717,9 +1698,9 @@ components:
                 definition:
                     oneOf:
                         - $ref: "#/components/schemas/ColumnDefinition"
-                        - $ref: "#/components/schemas/SectionDefinition"
                         - $ref: "#/components/schemas/FragmentDefinition"
                         - $ref: "#/components/schemas/RowDefinition"
+                        - $ref: "#/components/schemas/SectionDefinition"
                 pageFragments:
                     items:
                         $ref: "#/components/schemas/PageFragment"
@@ -1893,6 +1874,25 @@ components:
                 gutters:
                     type: boolean
                 numberOfColumns:
+                    format: int32
+                    type: integer
+            type: object
+        SectionDefinition:
+            properties:
+                backgroundColorCssClass:
+                    type: string
+                backgroundImage:
+                    $ref: "#/components/schemas/FragmentImage"
+                containerType:
+                    enum: [Fixed, Fluid]
+                    type: string
+                paddingBottom:
+                    format: int32
+                    type: integer
+                paddingHorizontal:
+                    format: int32
+                    type: integer
+                paddingTop:
                     format: int32
                     type: integer
             type: object
