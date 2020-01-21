@@ -123,7 +123,8 @@
                                                 "link" : {
                                                     "fieldId": "displayPageURL",
                                                     "classNameId": "28701",
-                                                    "classPK": "36620"
+                                                    "classPK": "36620",
+                                                    "target": "Blank"
                                                 }
                                             },
                                             {
@@ -149,7 +150,8 @@
                                                 "link" : {
                                                     "fieldId": "displayPageURL",
                                                     "classNameId": "28701",
-                                                    "classPK": "36620"
+                                                    "classPK": "36620",
+                                                    "target": "Blank"
                                                 }
                                             }
                                         ]
