@@ -1693,21 +1693,6 @@ components:
                     type: string
                 url:
                     type: string
-        PageElement:
-            properties:
-                definition:
-                    oneOf:
-                        - $ref: "#/components/schemas/ColumnDefinition"
-                        - $ref: "#/components/schemas/FragmentDefinition"
-                        - $ref: "#/components/schemas/RowDefinition"
-                        - $ref: "#/components/schemas/SectionDefinition"
-                pageElements:
-                    items:
-                        $ref: "#/components/schemas/PageElement"
-                    type: array
-                type:
-                    enum: [Column, Fragment, Row, Section]
-                    type: string
         PageDefinition:
             description:
                 ""
@@ -1787,6 +1772,21 @@ components:
                     readOnly: true
                     type: string
             type: object
+        PageElement:
+            properties:
+                definition:
+                    oneOf:
+                        - $ref: "#/components/schemas/ColumnDefinition"
+                        - $ref: "#/components/schemas/FragmentDefinition"
+                        - $ref: "#/components/schemas/RowDefinition"
+                        - $ref: "#/components/schemas/SectionDefinition"
+                pageElements:
+                    items:
+                        $ref: "#/components/schemas/PageElement"
+                    type: array
+                type:
+                    enum: [Column, Fragment, Row, Section]
+                    type: string
         Rating:
             description:
                 Represents a rating/score received by any kind of asset. Properties follow the
