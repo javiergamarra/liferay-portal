@@ -528,6 +528,7 @@ public class OrganizationResourceImpl
 			{
 				comment = organization.getComments();
 				customFields = CustomFieldsUtil.toCustomFields(
+					contextAcceptLanguage.isAcceptAllLanguages(),
 					com.liferay.portal.kernel.model.Organization.class.
 						getName(),
 					organization.getOrganizationId(),
