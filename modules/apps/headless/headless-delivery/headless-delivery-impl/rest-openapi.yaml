@@ -283,7 +283,7 @@ components:
                         The comment's text content.
                     type: string
             type: object
-        ContainerDefinition:
+        SectionDefinition:
             properties:
                 backgroundColorCssClass:
                     type: string
@@ -1717,7 +1717,7 @@ components:
                 definition:
                     oneOf:
                         - $ref: "#/components/schemas/ColumnDefinition"
-                        - $ref: "#/components/schemas/ContainerDefinition"
+                        - $ref: "#/components/schemas/SectionDefinition"
                         - $ref: "#/components/schemas/FragmentDefinition"
                         - $ref: "#/components/schemas/RowDefinition"
                 pageFragments:
@@ -1725,7 +1725,7 @@ components:
                         $ref: "#/components/schemas/PageFragment"
                     type: array
                 type:
-                    enum: [Column, Container, Fragment, Row]
+                    enum: [Column, Fragment, Row, Section]
                     type: string
         PageTemplate:
             description:
