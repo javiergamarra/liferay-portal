@@ -29,6 +29,7 @@ import com.liferay.headless.delivery.dto.v1_0.MessageBoardMessage;
 import com.liferay.headless.delivery.dto.v1_0.MessageBoardSection;
 import com.liferay.headless.delivery.dto.v1_0.MessageBoardThread;
 import com.liferay.headless.delivery.dto.v1_0.NavigationMenu;
+import com.liferay.headless.delivery.dto.v1_0.PageDefinition;
 import com.liferay.headless.delivery.dto.v1_0.Rating;
 import com.liferay.headless.delivery.dto.v1_0.StructuredContent;
 import com.liferay.headless.delivery.dto.v1_0.StructuredContentFolder;
@@ -50,6 +51,7 @@ import com.liferay.headless.delivery.resource.v1_0.MessageBoardMessageResource;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardSectionResource;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardThreadResource;
 import com.liferay.headless.delivery.resource.v1_0.NavigationMenuResource;
+import com.liferay.headless.delivery.resource.v1_0.PageDefinitionResource;
 import com.liferay.headless.delivery.resource.v1_0.StructuredContentFolderResource;
 import com.liferay.headless.delivery.resource.v1_0.StructuredContentResource;
 import com.liferay.headless.delivery.resource.v1_0.WikiNodeResource;
@@ -207,6 +209,14 @@ public class Query {
 
 		_navigationMenuResourceComponentServiceObjects =
 			navigationMenuResourceComponentServiceObjects;
+	}
+
+	public static void setPageDefinitionResourceComponentServiceObjects(
+		ComponentServiceObjects<PageDefinitionResource>
+			pageDefinitionResourceComponentServiceObjects) {
+
+		_pageDefinitionResourceComponentServiceObjects =
+			pageDefinitionResourceComponentServiceObjects;
 	}
 
 	public static void setStructuredContentResourceComponentServiceObjects(
@@ -1450,6 +1460,23 @@ public class Query {
 			navigationMenuResource -> new NavigationMenuPage(
 				navigationMenuResource.getSiteNavigationMenusPage(
 					Long.valueOf(siteKey), Pagination.of(page, pageSize))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {pageTemplate(pageTemplateId: ___){collectionName, creator, dateCreated, dateModified, friendlyURLPath, id, keywords, name, pageElements, settings, taxonomyCategories, taxonomyCategoryIds, uuid}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Retrieve the page template.")
+	public PageDefinition pageTemplate(
+			@GraphQLName("pageTemplateId") Long pageTemplateId)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_pageDefinitionResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			pageDefinitionResource -> pageDefinitionResource.getPageTemplate(
+				pageTemplateId));
 	}
 
 	/**
@@ -3417,6 +3444,38 @@ public class Query {
 
 	}
 
+	@GraphQLName("PageDefinitionPage")
+	public class PageDefinitionPage {
+
+		public PageDefinitionPage(Page pageDefinitionPage) {
+			actions = pageDefinitionPage.getActions();
+			items = pageDefinitionPage.getItems();
+			lastPage = pageDefinitionPage.getLastPage();
+			page = pageDefinitionPage.getPage();
+			pageSize = pageDefinitionPage.getPageSize();
+			totalCount = pageDefinitionPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected Map<String, Map> actions;
+
+		@GraphQLField
+		protected java.util.Collection<PageDefinition> items;
+
+		@GraphQLField
+		protected long lastPage;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
 	@GraphQLName("StructuredContentPage")
 	public class StructuredContentPage {
 
@@ -3801,6 +3860,20 @@ public class Query {
 	}
 
 	private void _populateResourceContext(
+			PageDefinitionResource pageDefinitionResource)
+		throws Exception {
+
+		pageDefinitionResource.setContextAcceptLanguage(_acceptLanguage);
+		pageDefinitionResource.setContextCompany(_company);
+		pageDefinitionResource.setContextHttpServletRequest(
+			_httpServletRequest);
+		pageDefinitionResource.setContextHttpServletResponse(
+			_httpServletResponse);
+		pageDefinitionResource.setContextUriInfo(_uriInfo);
+		pageDefinitionResource.setContextUser(_user);
+	}
+
+	private void _populateResourceContext(
 			StructuredContentResource structuredContentResource)
 		throws Exception {
 
@@ -3895,6 +3968,8 @@ public class Query {
 		_messageBoardThreadResourceComponentServiceObjects;
 	private static ComponentServiceObjects<NavigationMenuResource>
 		_navigationMenuResourceComponentServiceObjects;
+	private static ComponentServiceObjects<PageDefinitionResource>
+		_pageDefinitionResourceComponentServiceObjects;
 	private static ComponentServiceObjects<StructuredContentResource>
 		_structuredContentResourceComponentServiceObjects;
 	private static ComponentServiceObjects<StructuredContentFolderResource>
