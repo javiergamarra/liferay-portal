@@ -14,9 +14,16 @@
 
 package com.liferay.headless.delivery.internal.resource.v1_0;
 
+import com.liferay.headless.delivery.dto.v1_0.PageDefinition;
+import com.liferay.headless.delivery.internal.dto.v1_0.converter.PageDefinitionDTOConverter;
 import com.liferay.headless.delivery.resource.v1_0.PageDefinitionResource;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
+import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
+import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
 /**
@@ -27,4 +34,35 @@ import org.osgi.service.component.annotations.ServiceScope;
 	scope = ServiceScope.PROTOTYPE, service = PageDefinitionResource.class
 )
 public class PageDefinitionResourceImpl extends BasePageDefinitionResourceImpl {
+
+	@Override
+	public PageDefinition getPageTemplate(Long pageTemplateId)
+		throws Exception {
+
+		return _toPageDefinition(
+			_layoutPageTemplateEntryService.fetchLayoutPageTemplateEntry(
+				pageTemplateId));
+	}
+
+	private PageDefinition _toPageDefinition(
+			LayoutPageTemplateEntry layoutPageTemplateEntry)
+		throws Exception {
+
+		return _pageDefinitionDTOConverter.toDTO(
+			new DefaultDTOConverterContext(
+				_dtoConverterRegistry,
+				layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
+				contextAcceptLanguage.getPreferredLocale(), contextUriInfo,
+				contextUser));
+	}
+
+	@Reference
+	private DTOConverterRegistry _dtoConverterRegistry;
+
+	@Reference
+	private LayoutPageTemplateEntryService _layoutPageTemplateEntryService;
+
+	@Reference
+	private PageDefinitionDTOConverter _pageDefinitionDTOConverter;
+
 }
