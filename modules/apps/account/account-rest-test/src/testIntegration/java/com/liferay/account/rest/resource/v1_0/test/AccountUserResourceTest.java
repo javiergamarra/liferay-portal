@@ -49,6 +49,22 @@ import org.junit.runner.RunWith;
 public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 
 	@Override
+	protected AccountUser randomAccountUser() throws Exception {
+		return new AccountUser() {
+			{
+				emailAddress = RandomTestUtil.randomString() + "@liferay.com";
+				firstName = RandomTestUtil.randomString();
+				id = RandomTestUtil.randomLong();
+				lastName = RandomTestUtil.randomString();
+				middleName = RandomTestUtil.randomString();
+				prefix = RandomTestUtil.randomString();
+				screenName = RandomTestUtil.randomString();
+				suffix = RandomTestUtil.randomString();
+			}
+		};
+	}
+
+	@Override
 	protected AccountUser testGetAccountUsersPage_addAccountUser(
 			Long accountId, AccountUser accountUser)
 		throws Exception {
