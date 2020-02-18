@@ -32,14 +32,23 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.test.rule.Inject;
 
+import java.lang.reflect.Method;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.beanutils.BeanUtils;
+
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -47,6 +56,44 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
+
+	@Override
+	@Test
+	public void testGetAccountUsersPageWithSortString() throws Exception {
+		testGetAccountUsersPageWithSort(
+			EntityField.Type.STRING,
+			(entityField, accountUser1, accountUser2) -> {
+				Class<?> clazz = accountUser1.getClass();
+
+				String entityFieldName = entityField.getName();
+
+				Method method = clazz.getMethod(
+					"get" + StringUtil.upperCaseFirstLetter(entityFieldName));
+
+				Class<?> returnType = method.getReturnType();
+
+				if (returnType.isAssignableFrom(Map.class)) {
+					BeanUtils.setProperty(
+						accountUser1, entityField.getName(),
+						Collections.singletonMap("Aaa", "Aaa"));
+					BeanUtils.setProperty(
+						accountUser2, entityField.getName(),
+						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityFieldName.startsWith("email")) {
+					BeanUtils.setProperty(
+						accountUser1, entityField.getName(), "Aaa@liferay.com");
+					BeanUtils.setProperty(
+						accountUser2, entityField.getName(), "Bbb@liferay.com");
+				}
+				else {
+					BeanUtils.setProperty(
+						accountUser1, entityField.getName(), "Aaa");
+					BeanUtils.setProperty(
+						accountUser2, entityField.getName(), "Bbb");
+				}
+			});
+	}
 
 	@Override
 	protected AccountUser randomAccountUser() throws Exception {
