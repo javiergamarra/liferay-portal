@@ -96,6 +96,11 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 	}
 
 	@Override
+	protected String[] getAdditionalAssertFieldNames() {
+		return new String[] {"screenName", "emailAddress"};
+	}
+
+	@Override
 	protected AccountUser randomAccountUser() throws Exception {
 		return new AccountUser() {
 			{
