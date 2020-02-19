@@ -1,6 +1,5 @@
 package com.liferay.portal.vulcan.batch;
 
-import com.liferay.batch.engine.BatchEngineTaskItemDelegate;
 import com.liferay.batch.engine.pagination.Page;
 import com.liferay.batch.engine.pagination.Pagination;
 import com.liferay.portal.kernel.model.Company;
@@ -14,8 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public interface VulcanBatchEngineTaskItemDelegate<T> extends
-	BatchEngineTaskItemDelegate<T> {
+public interface VulcanBatchEngineTaskItemDelegate<T> {
 
 	public default void create(
 		Collection<T> items, Map<String, Serializable> parameters)
