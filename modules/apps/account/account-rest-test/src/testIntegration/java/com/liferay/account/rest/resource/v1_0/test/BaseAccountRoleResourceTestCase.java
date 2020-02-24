@@ -199,6 +199,46 @@ public abstract class BaseAccountRoleResourceTestCase {
 	}
 
 	@Test
+	public void testUnassignAccountRole() throws Exception {
+		AccountRole accountRole = testUnassignAccountRole_addAccountRole();
+
+		assertHttpResponseStatusCode(
+			204,
+			accountRoleResource.unassignAccountRoleHttpResponse(
+				null, null, null));
+	}
+
+	protected AccountRole testUnassignAccountRole_addAccountRole()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testAssignAccountRole() throws Exception {
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		AccountRole accountRole = testAssignAccountRole_addAccountRole();
+
+		assertHttpResponseStatusCode(
+			204,
+			accountRoleResource.assignAccountRoleHttpResponse(
+				null, null, null));
+
+		assertHttpResponseStatusCode(
+			404,
+			accountRoleResource.assignAccountRoleHttpResponse(
+				null, null, null));
+	}
+
+	protected AccountRole testAssignAccountRole_addAccountRole()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
 	public void testGetAccountRolesPage() throws Exception {
 		Page<AccountRole> page = accountRoleResource.getAccountRolesPage(
 			testGetAccountRolesPage_getAccountId(),

@@ -57,6 +57,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -77,6 +78,66 @@ import javax.ws.rs.core.UriInfo;
 public abstract class BaseAccountRoleResourceImpl
 	implements AccountRoleResource, EntityModelResource,
 			   VulcanBatchEngineTaskItemDelegate<AccountRole> {
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'DELETE' 'http://localhost:8080/o/account-rest/v1.0/accounts/assign-account-role'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@DELETE
+	@Operation(
+		description = "Removes a link between an account user and an account role"
+	)
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.QUERY, name = "accountId"),
+			@Parameter(in = ParameterIn.QUERY, name = "accountRoleId"),
+			@Parameter(in = ParameterIn.QUERY, name = "accountUserId")
+		}
+	)
+	@Path("/accounts/assign-account-role")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "AccountRole")})
+	public void unassignAccountRole(
+			@NotNull @Parameter(hidden = true) @QueryParam("accountId") Long
+				accountId,
+			@NotNull @Parameter(hidden = true) @QueryParam("accountRoleId") Long
+				accountRoleId,
+			@NotNull @Parameter(hidden = true) @QueryParam("accountUserId") Long
+				accountUserId)
+		throws Exception {
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/assign-account-role'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Operation(
+		description = "Creates a link between an account user and an account role"
+	)
+	@POST
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.QUERY, name = "accountId"),
+			@Parameter(in = ParameterIn.QUERY, name = "accountRoleId"),
+			@Parameter(in = ParameterIn.QUERY, name = "accountUserId")
+		}
+	)
+	@Path("/accounts/assign-account-role")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "AccountRole")})
+	public void assignAccountRole(
+			@NotNull @Parameter(hidden = true) @QueryParam("accountId") Long
+				accountId,
+			@NotNull @Parameter(hidden = true) @QueryParam("accountRoleId") Long
+				accountRoleId,
+			@NotNull @Parameter(hidden = true) @QueryParam("accountUserId") Long
+				accountUserId)
+		throws Exception {
+	}
 
 	/**
 	 * Invoke this method with the command line:

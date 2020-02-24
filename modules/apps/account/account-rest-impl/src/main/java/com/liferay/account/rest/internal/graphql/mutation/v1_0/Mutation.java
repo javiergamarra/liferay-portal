@@ -157,6 +157,42 @@ public class Mutation {
 				callbackURL, object));
 	}
 
+	@GraphQLField(
+		description = "Removes a link between an account user and an account role"
+	)
+	public boolean unassignAccountRole(
+			@GraphQLName("accountId") Long accountId,
+			@GraphQLName("accountRoleId") Long accountRoleId,
+			@GraphQLName("accountUserId") Long accountUserId)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_accountRoleResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			accountRoleResource -> accountRoleResource.unassignAccountRole(
+				accountId, accountRoleId, accountUserId));
+
+		return true;
+	}
+
+	@GraphQLField(
+		description = "Creates a link between an account user and an account role"
+	)
+	public boolean assignAccountRole(
+			@GraphQLName("accountId") Long accountId,
+			@GraphQLName("accountRoleId") Long accountRoleId,
+			@GraphQLName("accountUserId") Long accountUserId)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_accountRoleResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			accountRoleResource -> accountRoleResource.assignAccountRole(
+				accountId, accountRoleId, accountUserId));
+
+		return true;
+	}
+
 	@GraphQLField(description = "Adds a role for the account")
 	public AccountRole createAccountRole(
 			@GraphQLName("accountId") Long accountId,

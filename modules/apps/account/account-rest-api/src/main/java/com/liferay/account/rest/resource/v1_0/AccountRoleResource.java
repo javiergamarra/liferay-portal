@@ -41,6 +41,14 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface AccountRoleResource {
 
+	public void unassignAccountRole(
+			Long accountId, Long accountRoleId, Long accountUserId)
+		throws Exception;
+
+	public void assignAccountRole(
+			Long accountId, Long accountRoleId, Long accountUserId)
+		throws Exception;
+
 	public Page<AccountRole> getAccountRolesPage(
 			Long accountId, String keywords, Pagination pagination,
 			Sort[] sorts)
