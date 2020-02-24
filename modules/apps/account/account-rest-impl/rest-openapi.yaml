@@ -161,6 +161,73 @@ paths:
                     description:
                         "Account successfully created"
             tags: ["Account"]
+    "/accounts/assign-account-role":
+        delete:
+            # @review
+            description:
+                Removes a link between an account user and an account role
+            operationId: unassignAccountRole
+            parameters:
+                - in: query
+                  name: accountId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: accountRoleId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: accountUserId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                204:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+                    # @review
+                    description:
+                        ""
+            tags: ["AccountRole"]
+        post:
+            # @review
+            description:
+                Creates a link between an account user and an account role
+            operationId: assignAccountRole
+            parameters:
+                - in: query
+                  name: accountId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: accountRoleId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: accountUserId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+                    # @review
+                    description:
+                        ""
+            tags: ["AccountRole"]
     "/accounts/{accountId}":
         delete:
             # @review
