@@ -55,95 +55,108 @@ export default ({
 		).length > 0;
 
 	return (
-		<section>
+		<section className="c-mt-5 c-mx-auto col-xl-10">
 			{loading ? (
 				<ClayLoadingIndicator />
 			) : (
 				questions.items &&
 				questions.items.map(question => (
-					<div className={'question-row'} key={question.id}>
-						<div className="autofit-padded autofit-row">
+					<div
+						className={'c-mt-4 c-p-3 question-row'}
+						key={question.id}
+					>
+						<div className="autofit-padded-no-gutter autofit-row">
 							<div className="autofit-col autofit-col-expand">
-								<div className="autofit-section">
-									<h2>
-										<Link to={'/questions/' + question.id}>
-											{question.headline}
-										</Link>
-									</h2>
-								</div>
+								{/* {question.category} */}
 							</div>
+
 							<div className="autofit-col">
-								<p>
-									<QuestionBadge
-										symbol="caret-top"
-										value={
-											question.aggregateRating &&
-											question.aggregateRating.ratingCount
-										}
-									/>
-
-									<QuestionBadge
-										symbol="view"
-										value={question.viewCount}
-									/>
-
-									<QuestionBadge
-										className={
-											hasValidAnswer(question)
-												? 'question-accepted-badge'
-												: ''
-										}
-										symbol={
-											hasValidAnswer(question)
-												? 'check-circle-full'
-												: 'message'
-										}
-										value={
-											question.messageBoardMessages.items
-												.length
-										}
-									/>
-								</p>
-							</div>
-						</div>
-						<div className="autofit-padded autofit-row">
-							<div className="autofit-col autofit-col-expand">
-								<p className="text-truncate">
-									<ArticleBodyRenderer {...question} />
-								</p>
-							</div>
-						</div>
-
-						<div className="autofit-padded autofit-row autofit-row-center">
-							<div className="autofit-col autofit-col-expand">
-								<div>
-									<UserIcon
-										fullName={question.creator.name}
-										portraitURL={question.creator.image}
-										size="sm"
-										userId={String(question.creator.id)}
-									/>
-									<span>
-										<Link
-											to={
-												'/questions/creator/' +
-												question.creator.id
+								<ul className="question-list">
+									<li>
+										<QuestionBadge
+											symbol="caret-top"
+											value={
+												question.aggregateRating &&
+												question.aggregateRating
+													.ratingCount
 											}
-										>
-											<strong>
-												{' ' + question.creator.name}
-											</strong>
-										</Link>
-									</span>
-									<span>
-										{' - ' +
+										/>
+									</li>
+
+									<li>
+										<QuestionBadge
+											symbol="view"
+											value={question.viewCount}
+										/>
+									</li>
+
+									<li>
+										<QuestionBadge
+											className={
+												hasValidAnswer(question)
+													? 'question-badge-success'
+													: ''
+											}
+											symbol={
+												hasValidAnswer(question)
+													? 'check-circle-full'
+													: 'message'
+											}
+											value={
+												question.messageBoardMessages
+													.items.length
+											}
+										/>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<Link
+							className="question-title stretched-link"
+							to={'/questions/' + question.id}
+						>
+							<h2 className="c-mb-0 stretched-link-layer">
+								{question.headline}
+							</h2>
+						</Link>
+
+						<p className="c-mb-0 c-mt-3 stretched-link-layer text-truncate">
+							<ArticleBodyRenderer {...question} />
+						</p>
+
+						<div className="autofit-padded-no-gutters autofit-row autofit-row-center c-mt-3">
+							<div className="autofit-col autofit-col-expand">
+								<div className="autofit-row autofit-row-center">
+									<Link
+										className="question-user stretched-link-layer"
+										to={
+											'/questions/creator/' +
+											question.creator.id
+										}
+									>
+										<UserIcon
+											fullName={question.creator.name}
+											portraitURL={question.creator.image}
+											size="sm"
+											userId={String(question.creator.id)}
+										/>
+
+										<strong className="c-ml-2">
+											{question.creator.name}
+										</strong>
+									</Link>
+
+									<span className="c-ml-2 stretched-link-layer">
+										{'- ' +
 											dateToInternationalHuman(
 												question.dateModified
 											)}
 									</span>
 								</div>
 							</div>
-							<div>
+
+							<div className="autofit-col">
 								<TagList tags={question.keywords} />
 							</div>
 						</div>

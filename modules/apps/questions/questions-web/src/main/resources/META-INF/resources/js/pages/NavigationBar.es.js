@@ -30,7 +30,7 @@ export default withRouter(({history, location}) => {
 	const isActive = value => location.pathname.includes('/' + value);
 
 	return (
-		<div className="autofit-padded autofit-row navigation-bar">
+		<div className="autofit-padded-no-gutters autofit-row autofit-row-center">
 			<div className="autofit-col autofit-col-expand">
 				<ClayNavigationBar triggerLabel="Questions">
 					<ClayNavigationBar.Item
@@ -41,6 +41,7 @@ export default withRouter(({history, location}) => {
 							{Liferay.Language.get('questions')}
 						</ClayLink>
 					</ClayNavigationBar.Item>
+
 					<ClayNavigationBar.Item
 						active={isActive('tags')}
 						onClick={() => navigate('/tags')}
@@ -51,6 +52,7 @@ export default withRouter(({history, location}) => {
 					</ClayNavigationBar.Item>
 				</ClayNavigationBar>
 			</div>
+
 			<div className="autofit-col">
 				{context.canCreateThread && (
 					<ClayButton
