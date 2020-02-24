@@ -65,6 +65,14 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	}
 
 	@Override
+	protected AccountRole testAssignAccountRole_addAccountRole()
+		throws Exception {
+
+		return accountRoleResource.postAccountRole(
+			_getAccountId(), randomAccountRole());
+	}
+
+	@Override
 	protected AccountRole testGetAccountRolesPage_addAccountRole(
 			Long accountId, AccountRole accountRole)
 		throws Exception {
@@ -99,6 +107,14 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 
 		return accountRoleResource.postAccountRole(
 			_getAccountId(), accountRole);
+	}
+
+	@Override
+	protected AccountRole testUnassignAccountRole_addAccountRole()
+		throws Exception {
+
+		return accountRoleResource.postAccountRole(
+			_getAccountId(), randomAccountRole());
 	}
 
 	private Account _addAccount() throws Exception {
