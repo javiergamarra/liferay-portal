@@ -202,11 +202,11 @@ public abstract class BaseNodeResourceImpl
 
 	protected Map<String, String> addAction(
 		String actionName, Long id, String methodName, String permissionName,
-		Long siteId) {
+		Long ownerId, Long siteId) {
 
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, permissionName,
-			contextScopeChecker, siteId, contextUriInfo);
+			contextScopeChecker, ownerId, siteId, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(
@@ -214,7 +214,7 @@ public abstract class BaseNodeResourceImpl
 		Long siteId) {
 
 		return addAction(
-			actionName, siteId, methodName, permissionName, siteId);
+			actionName, siteId, methodName, permissionName, null, siteId);
 	}
 
 	protected void preparePatch(Node node, Node existingNode) {
