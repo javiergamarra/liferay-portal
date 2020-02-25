@@ -168,6 +168,30 @@ public class MessageBoardMessage implements Cloneable {
 
 	protected Creator creator;
 
+	public CreatorDetailedInfo getCreatorDetailedInfo() {
+		return creatorDetailedInfo;
+	}
+
+	public void setCreatorDetailedInfo(
+		CreatorDetailedInfo creatorDetailedInfo) {
+
+		this.creatorDetailedInfo = creatorDetailedInfo;
+	}
+
+	public void setCreatorDetailedInfo(
+		UnsafeSupplier<CreatorDetailedInfo, Exception>
+			creatorDetailedInfoUnsafeSupplier) {
+
+		try {
+			creatorDetailedInfo = creatorDetailedInfoUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected CreatorDetailedInfo creatorDetailedInfo;
+
 	public CustomField[] getCustomFields() {
 		return customFields;
 	}

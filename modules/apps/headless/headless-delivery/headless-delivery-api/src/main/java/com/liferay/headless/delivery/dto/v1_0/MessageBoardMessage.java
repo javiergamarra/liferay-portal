@@ -237,6 +237,38 @@ public class MessageBoardMessage {
 
 	@Schema
 	@Valid
+	public CreatorDetailedInfo getCreatorDetailedInfo() {
+		return creatorDetailedInfo;
+	}
+
+	public void setCreatorDetailedInfo(
+		CreatorDetailedInfo creatorDetailedInfo) {
+
+		this.creatorDetailedInfo = creatorDetailedInfo;
+	}
+
+	@JsonIgnore
+	public void setCreatorDetailedInfo(
+		UnsafeSupplier<CreatorDetailedInfo, Exception>
+			creatorDetailedInfoUnsafeSupplier) {
+
+		try {
+			creatorDetailedInfo = creatorDetailedInfoUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected CreatorDetailedInfo creatorDetailedInfo;
+
+	@Schema
+	@Valid
 	public CustomField[] getCustomFields() {
 		return customFields;
 	}
@@ -838,6 +870,16 @@ public class MessageBoardMessage {
 			sb.append("\"creator\": ");
 
 			sb.append(String.valueOf(creator));
+		}
+
+		if (creatorDetailedInfo != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"creatorDetailedInfo\": ");
+
+			sb.append(String.valueOf(creatorDetailedInfo));
 		}
 
 		if (customFields != null) {
