@@ -251,6 +251,7 @@ export const getMessages = (
               messageBoardThreadMessageBoardMessages(messageBoardThreadId: ${parentMessageBoardMessageId}, page: ${page}, pageSize: ${pageSize}, sort: ${'showAsAnswer:desc,' +
 		sort}){
                 items {
+                	actions
                     aggregateRating {
                         ratingAverage
                         ratingCount
@@ -261,14 +262,17 @@ export const getMessages = (
                         id
                         name
                     }
+                    encodingFormat
                     id
                     messageBoardMessages {
                         items {
+                        	actions
                             articleBody
                             creator {
                                 id
                                 name
                             }
+                            encodingFormat
                             id
                             showAsAnswer
                         }

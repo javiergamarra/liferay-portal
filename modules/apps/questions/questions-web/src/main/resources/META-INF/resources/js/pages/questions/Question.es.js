@@ -15,6 +15,8 @@
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import ClayLink from '@clayui/link';
+import ClayNavigationBar from '@clayui/navigation-bar';
 import {ClayPaginationWithBasicItems} from '@clayui/pagination';
 import {Editor} from 'frontend-editor-ckeditor-web';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
@@ -30,6 +32,7 @@ import Subscription from '../../components/Subscription.es';
 import TagList from '../../components/TagList.es';
 import {
 	createAnswer,
+	getMessages,
 	getThread,
 	markAsAnswerMessageBoardMessage
 } from '../../utils/client.es';
@@ -52,6 +55,7 @@ export default ({
 	const [articleBody, setArticleBody] = useState();
 	const [page, setPage] = useState(1);
 	const [question, setQuestion] = useState();
+	const [filter, setFilter] = useState('active');
 
 	useEffect(() => {
 		loadThread();
@@ -104,6 +108,43 @@ export default ({
 		},
 		[answers]
 	);
+
+	const filterBy = filterBy => {
+		let promise;
+		if (filterBy === 'votes') {
+			promise = getMessages(
+				question.id,
+				'dateModified:desc',
+				1,
+				100
+			).then(answers =>
+				answers.sort((answer1, answer2) => {
+					if (!answer1.aggregateRating || answer2.showAsAnswer) {
+						return 1;
+					}
+					if (!answer2.aggregateRating || answer1.showAsAnswer) {
+						return -1;
+					}
+
+					return (
+						answer2.aggregateRating.ratingValue -
+						answer1.aggregateRating.ratingValue
+					);
+				})
+			);
+		}
+		else if (filterBy === 'active') {
+			promise = getMessages(question.id, 'dateModified:desc');
+		}
+		else {
+			promise = getMessages(question.id, 'dateModified:asc');
+		}
+
+		promise.then(x => {
+			setFilter(filterBy);
+			setAnswers(x);
+		});
+	};
 
 	return (
 		<section>
@@ -200,6 +241,42 @@ export default ({
 						<h3 className="subtitle">
 							{answers.length} {Liferay.Language.get('answers')}
 						</h3>
+
+						<ClayNavigationBar triggerLabel="Active">
+							<ClayNavigationBar.Item
+								active={filter === 'active'}
+							>
+								<ClayLink
+									className="nav-link"
+									displayType="unstyled"
+									onClick={() => filterBy('active')}
+								>
+									{Liferay.Language.get('active')}
+								</ClayLink>
+							</ClayNavigationBar.Item>
+
+							<ClayNavigationBar.Item
+								active={filter === 'oldest'}
+							>
+								<ClayLink
+									className="nav-link"
+									displayType="unstyled"
+									onClick={() => filterBy('oldest')}
+								>
+									{Liferay.Language.get('oldest')}
+								</ClayLink>
+							</ClayNavigationBar.Item>
+
+							<ClayNavigationBar.Item active={filter === 'votes'}>
+								<ClayLink
+									className="nav-link"
+									displayType="unstyled"
+									onClick={() => filterBy('votes')}
+								>
+									{Liferay.Language.get('votes')}
+								</ClayLink>
+							</ClayNavigationBar.Item>
+						</ClayNavigationBar>
 
 						{answers.map(answer => (
 							<Answer
