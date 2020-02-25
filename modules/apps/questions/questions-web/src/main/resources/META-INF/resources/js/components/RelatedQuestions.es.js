@@ -39,7 +39,7 @@ export default ({question}) => {
 
 	return (
 		<>
-			<h3>Related Questions</h3>
+			<h3 className="c-mt-5">Related Questions</h3>
 			<hr />
 
 			{!!relatedQuestions.length && (
