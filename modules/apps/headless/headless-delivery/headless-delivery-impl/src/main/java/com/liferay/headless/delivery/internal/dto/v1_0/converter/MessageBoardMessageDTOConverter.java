@@ -18,8 +18,10 @@ import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetLinkLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
+import com.liferay.headless.delivery.dto.v1_0.CreatorDetailedInfo;
 import com.liferay.headless.delivery.dto.v1_0.MessageBoardMessage;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.AggregateRatingUtil;
+import com.liferay.headless.delivery.internal.dto.v1_0.util.CreatorDetailedInfoUtil;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.CreatorUtil;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.CustomFieldsUtil;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.RelatedContentUtil;
@@ -27,6 +29,8 @@ import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.service.MBMessageService;
+import com.liferay.message.boards.service.MBStatsUserLocalService;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -60,6 +64,8 @@ public class MessageBoardMessageDTOConverter
 
 		MBMessage mbMessage = _mbMessageService.getMessage(
 			(Long)dtoConverterContext.getId());
+
+		User user = _userLocalService.getUserById(mbMessage.getUserId());
 
 		return new MessageBoardMessage() {
 			{
@@ -100,6 +106,18 @@ public class MessageBoardMessageDTOConverter
 					mbMessage.getCompanyId(), dtoConverterContext.getUserId(),
 					MBThread.class.getName(), mbMessage.getThreadId());
 
+				setCreatorDetailedInfo(
+					() -> {
+						if (mbMessage.isAnonymous() || user == null || user.isDefaultUser()) {
+							return null;
+						}
+
+						return CreatorDetailedInfoUtil.toCreatorDetailedInfoUtil(
+							_mbStatsUserLocalService,
+							dtoConverterContext.getLocale().toString(),
+							user);
+					}
+				);
 				setCreator(
 					() -> {
 						if (mbMessage.isAnonymous()) {
@@ -108,8 +126,7 @@ public class MessageBoardMessageDTOConverter
 
 						return CreatorUtil.toCreator(
 							_portal,
-							_userLocalService.getUserById(
-								mbMessage.getUserId()));
+							user);
 					});
 				setParentMessageBoardMessageId(
 					() -> {
@@ -128,6 +145,9 @@ public class MessageBoardMessageDTOConverter
 
 	@Reference
 	private AssetLinkLocalService _assetLinkLocalService;
+
+	@Reference
+	private MBStatsUserLocalService _mbStatsUserLocalService;
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;
