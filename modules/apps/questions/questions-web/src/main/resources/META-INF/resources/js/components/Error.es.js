@@ -16,9 +16,11 @@ import ClayAlert from '@clayui/alert';
 import React from 'react';
 
 export default ({error: {message, title}}) => (
-	<ClayAlert.ToastContainer>
-		<ClayAlert displayType="danger" title={title}>
-			{message}
-		</ClayAlert>
-	</ClayAlert.ToastContainer>
+	<>
+		{title && (<ClayAlert.ToastContainer>
+			<ClayAlert displayType="danger" title={title}>
+				{message}
+			</ClayAlert>
+		</ClayAlert.ToastContainer>)}
+	</>
 );
