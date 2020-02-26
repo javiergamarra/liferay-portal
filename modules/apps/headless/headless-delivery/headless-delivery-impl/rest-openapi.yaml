@@ -667,36 +667,41 @@ components:
                     readOnly: true
                     type: string
             type: object
-        CreatorDetailedInfo:
+        MessageCreator:
             # @review
             description:
-                Detailed info of the creator.
+                Message creator information
             properties:
                 joinDate:
+                    # @review
                     description:
-                        Join date of the author
+                        The author's join date.
                     format: date-time
                     readOnly: true
                     type: string
                 lastPostDate:
+                    # @review
                     description:
-                        Last post created by the author
+                        The author's last post date.
                     format: date-time
                     readOnly: true
                     type: string
                 name:
+                    # @review
                     description:
                         The author's full name.
                     readOnly: true
                     type: string
                 postsNumber:
+                    # @review
                     description:
-                        Number of posts publicated by the author.
+                        Number of messages posted by the author.
                     readOnly: true
                     type: integer
                 rank:
+                    # @review
                     description:
-                        The rank of the author.
+                        The author's rank.
                     readOnly: true
                     type: string
             type: object
@@ -1418,12 +1423,10 @@ components:
                     type: string
                 creator:
                     allOf:
-                        - $ref: "#/components/schemas/Creator"
+                        - $ref: "#/components/schemas/MessageCreator"
                     description:
                         The message's author.
                     readOnly: true
-                creatorDetailedInfo:
-                    $ref: "#/components/schemas/CreatorDetailedInfo"
                 customFields:
                     items:
                         $ref: "#/components/schemas/CustomField"
