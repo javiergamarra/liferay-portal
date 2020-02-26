@@ -106,14 +106,15 @@ public class MessageBoardMessageDTOConverter
 
 				setCreator(
 					() -> {
-						if (mbMessage.isAnonymous() || user == null || user.isDefaultUser()) {
+						if (mbMessage.isAnonymous() || (user == null) ||
+							user.isDefaultUser()) {
+
 							return null;
 						}
 
 						return MessageCreatorUtil.toMessageCreator(
 							_mbStatsUserLocalService,
-							dtoConverterContext.getLocale().toString(),
-							user);
+							dtoConverterContext.getLocale(), user);
 					});
 				setParentMessageBoardMessageId(
 					() -> {
@@ -134,9 +135,6 @@ public class MessageBoardMessageDTOConverter
 	private AssetLinkLocalService _assetLinkLocalService;
 
 	@Reference
-	private MBStatsUserLocalService _mbStatsUserLocalService;
-
-	@Reference
 	private AssetTagLocalService _assetTagLocalService;
 
 	@Reference
@@ -144,6 +142,9 @@ public class MessageBoardMessageDTOConverter
 
 	@Reference
 	private MBMessageService _mbMessageService;
+
+	@Reference
+	private MBStatsUserLocalService _mbStatsUserLocalService;
 
 	@Reference
 	private Portal _portal;

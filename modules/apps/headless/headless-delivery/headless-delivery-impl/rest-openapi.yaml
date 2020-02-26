@@ -667,44 +667,6 @@ components:
                     readOnly: true
                     type: string
             type: object
-        MessageCreator:
-            # @review
-            description:
-                Message creator information
-            properties:
-                joinDate:
-                    # @review
-                    description:
-                        The author's join date.
-                    format: date-time
-                    readOnly: true
-                    type: string
-                lastPostDate:
-                    # @review
-                    description:
-                        The author's last post date.
-                    format: date-time
-                    readOnly: true
-                    type: string
-                name:
-                    # @review
-                    description:
-                        The author's full name.
-                    readOnly: true
-                    type: string
-                postsNumber:
-                    # @review
-                    description:
-                        Number of messages posted by the author.
-                    readOnly: true
-                    type: integer
-                rank:
-                    # @review
-                    description:
-                        The author's rank.
-                    readOnly: true
-                    type: string
-            type: object
         CustomField:
             # @review
             description:
@@ -1714,6 +1676,44 @@ components:
                     writeOnly: true
             required:
                 - headline
+            type: object
+        MessageCreator:
+            # @review
+            description:
+                Message creator information
+            properties:
+                joinDate:
+                    # @review
+                    description:
+                        The author's join date.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                lastPostDate:
+                    # @review
+                    description:
+                        The author's last post date.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                name:
+                    # @review
+                    description:
+                        The author's full name.
+                    readOnly: true
+                    type: string
+                postsNumber:
+                    # @review
+                    description:
+                        Number of messages posted by the author.
+                    readOnly: true
+                    type: integer
+                rank:
+                    # @review
+                    description:
+                        The author's rank.
+                    readOnly: true
+                    type: string
             type: object
         NavigationMenu:
             description:
