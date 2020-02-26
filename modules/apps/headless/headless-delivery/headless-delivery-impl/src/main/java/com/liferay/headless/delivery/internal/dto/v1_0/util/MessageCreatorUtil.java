@@ -9,9 +9,9 @@ import com.liferay.portal.kernel.model.User;
 /**
  * @author Luis Miguel Barcos
  */
-public class CreatorDetailedInfoUtil {
+public class MessageCreatorUtil {
 
-	public static MessageCreator toCreatorDetailedInfoUtil(
+	public static MessageCreator toMessageCreator(
 		MBStatsUserLocalService mbStatsUserLocalService,
 		String languageId,
 		User user) throws PortalException {

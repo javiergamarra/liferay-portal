@@ -18,12 +18,10 @@ import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetLinkLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
-import com.liferay.headless.delivery.dto.v1_0.CreatorDetailedInfo;
 import com.liferay.headless.delivery.dto.v1_0.MessageBoardMessage;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.AggregateRatingUtil;
-import com.liferay.headless.delivery.internal.dto.v1_0.util.CreatorDetailedInfoUtil;
-import com.liferay.headless.delivery.internal.dto.v1_0.util.CreatorUtil;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.CustomFieldsUtil;
+import com.liferay.headless.delivery.internal.dto.v1_0.util.MessageCreatorUtil;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.RelatedContentUtil;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBThread;
@@ -106,26 +104,15 @@ public class MessageBoardMessageDTOConverter
 					mbMessage.getCompanyId(), dtoConverterContext.getUserId(),
 					MBThread.class.getName(), mbMessage.getThreadId());
 
-				setCreatorDetailedInfo(
+				setCreator(
 					() -> {
 						if (mbMessage.isAnonymous() || user == null || user.isDefaultUser()) {
 							return null;
 						}
 
-						return CreatorDetailedInfoUtil.toCreatorDetailedInfoUtil(
+						return MessageCreatorUtil.toMessageCreator(
 							_mbStatsUserLocalService,
 							dtoConverterContext.getLocale().toString(),
-							user);
-					}
-				);
-				setCreator(
-					() -> {
-						if (mbMessage.isAnonymous()) {
-							return null;
-						}
-
-						return CreatorUtil.toCreator(
-							_portal,
 							user);
 					});
 				setParentMessageBoardMessageId(
