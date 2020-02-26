@@ -53,7 +53,7 @@ export default () => {
 													Liferay.Language.get(
 														'used-x-times'
 													),
-													[tag.keywordUsageCount]
+													[tag.taxonomyCategoryUsageCount]
 												)}
 											</ClayCard.Description>
 											<ClayCard.Description displayType="text">
