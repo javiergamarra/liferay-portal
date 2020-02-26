@@ -208,17 +208,17 @@ public class MessageBoardMessage {
 
 	@Schema(description = "The message's author.")
 	@Valid
-	public Creator getCreator() {
+	public MessageCreator getCreator() {
 		return creator;
 	}
 
-	public void setCreator(Creator creator) {
+	public void setCreator(MessageCreator creator) {
 		this.creator = creator;
 	}
 
 	@JsonIgnore
 	public void setCreator(
-		UnsafeSupplier<Creator, Exception> creatorUnsafeSupplier) {
+		UnsafeSupplier<MessageCreator, Exception> creatorUnsafeSupplier) {
 
 		try {
 			creator = creatorUnsafeSupplier.get();
@@ -233,39 +233,7 @@ public class MessageBoardMessage {
 
 	@GraphQLField(description = "The message's author.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	protected Creator creator;
-
-	@Schema
-	@Valid
-	public CreatorDetailedInfo getCreatorDetailedInfo() {
-		return creatorDetailedInfo;
-	}
-
-	public void setCreatorDetailedInfo(
-		CreatorDetailedInfo creatorDetailedInfo) {
-
-		this.creatorDetailedInfo = creatorDetailedInfo;
-	}
-
-	@JsonIgnore
-	public void setCreatorDetailedInfo(
-		UnsafeSupplier<CreatorDetailedInfo, Exception>
-			creatorDetailedInfoUnsafeSupplier) {
-
-		try {
-			creatorDetailedInfo = creatorDetailedInfoUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected CreatorDetailedInfo creatorDetailedInfo;
+	protected MessageCreator creator;
 
 	@Schema
 	@Valid
@@ -870,16 +838,6 @@ public class MessageBoardMessage {
 			sb.append("\"creator\": ");
 
 			sb.append(String.valueOf(creator));
-		}
-
-		if (creatorDetailedInfo != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"creatorDetailedInfo\": ");
-
-			sb.append(String.valueOf(creatorDetailedInfo));
 		}
 
 		if (customFields != null) {

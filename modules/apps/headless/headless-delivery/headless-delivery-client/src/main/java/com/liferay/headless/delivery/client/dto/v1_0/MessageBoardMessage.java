@@ -147,16 +147,16 @@ public class MessageBoardMessage implements Cloneable {
 
 	protected String articleBody;
 
-	public Creator getCreator() {
+	public MessageCreator getCreator() {
 		return creator;
 	}
 
-	public void setCreator(Creator creator) {
+	public void setCreator(MessageCreator creator) {
 		this.creator = creator;
 	}
 
 	public void setCreator(
-		UnsafeSupplier<Creator, Exception> creatorUnsafeSupplier) {
+		UnsafeSupplier<MessageCreator, Exception> creatorUnsafeSupplier) {
 
 		try {
 			creator = creatorUnsafeSupplier.get();
@@ -166,31 +166,7 @@ public class MessageBoardMessage implements Cloneable {
 		}
 	}
 
-	protected Creator creator;
-
-	public CreatorDetailedInfo getCreatorDetailedInfo() {
-		return creatorDetailedInfo;
-	}
-
-	public void setCreatorDetailedInfo(
-		CreatorDetailedInfo creatorDetailedInfo) {
-
-		this.creatorDetailedInfo = creatorDetailedInfo;
-	}
-
-	public void setCreatorDetailedInfo(
-		UnsafeSupplier<CreatorDetailedInfo, Exception>
-			creatorDetailedInfoUnsafeSupplier) {
-
-		try {
-			creatorDetailedInfo = creatorDetailedInfoUnsafeSupplier.get();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	protected CreatorDetailedInfo creatorDetailedInfo;
+	protected MessageCreator creator;
 
 	public CustomField[] getCustomFields() {
 		return customFields;

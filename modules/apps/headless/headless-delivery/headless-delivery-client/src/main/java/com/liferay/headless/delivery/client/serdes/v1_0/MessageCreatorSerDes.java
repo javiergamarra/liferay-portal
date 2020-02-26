@@ -14,7 +14,7 @@
 
 package com.liferay.headless.delivery.client.serdes.v1_0;
 
-import com.liferay.headless.delivery.client.dto.v1_0.CreatorDetailedInfo;
+import com.liferay.headless.delivery.client.dto.v1_0.MessageCreator;
 import com.liferay.headless.delivery.client.json.BaseJSONParser;
 
 import java.text.DateFormat;
@@ -33,24 +33,24 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class CreatorDetailedInfoSerDes {
+public class MessageCreatorSerDes {
 
-	public static CreatorDetailedInfo toDTO(String json) {
-		CreatorDetailedInfoJSONParser creatorDetailedInfoJSONParser =
-			new CreatorDetailedInfoJSONParser();
+	public static MessageCreator toDTO(String json) {
+		MessageCreatorJSONParser messageCreatorJSONParser =
+			new MessageCreatorJSONParser();
 
-		return creatorDetailedInfoJSONParser.parseToDTO(json);
+		return messageCreatorJSONParser.parseToDTO(json);
 	}
 
-	public static CreatorDetailedInfo[] toDTOs(String json) {
-		CreatorDetailedInfoJSONParser creatorDetailedInfoJSONParser =
-			new CreatorDetailedInfoJSONParser();
+	public static MessageCreator[] toDTOs(String json) {
+		MessageCreatorJSONParser messageCreatorJSONParser =
+			new MessageCreatorJSONParser();
 
-		return creatorDetailedInfoJSONParser.parseToDTOs(json);
+		return messageCreatorJSONParser.parseToDTOs(json);
 	}
 
-	public static String toJSON(CreatorDetailedInfo creatorDetailedInfo) {
-		if (creatorDetailedInfo == null) {
+	public static String toJSON(MessageCreator messageCreator) {
+		if (messageCreator == null) {
 			return "null";
 		}
 
@@ -61,7 +61,7 @@ public class CreatorDetailedInfoSerDes {
 		DateFormat liferayToJSONDateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-		if (creatorDetailedInfo.getJoinDate() != null) {
+		if (messageCreator.getJoinDate() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -71,13 +71,12 @@ public class CreatorDetailedInfoSerDes {
 			sb.append("\"");
 
 			sb.append(
-				liferayToJSONDateFormat.format(
-					creatorDetailedInfo.getJoinDate()));
+				liferayToJSONDateFormat.format(messageCreator.getJoinDate()));
 
 			sb.append("\"");
 		}
 
-		if (creatorDetailedInfo.getLastPostDate() != null) {
+		if (messageCreator.getLastPostDate() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -88,12 +87,12 @@ public class CreatorDetailedInfoSerDes {
 
 			sb.append(
 				liferayToJSONDateFormat.format(
-					creatorDetailedInfo.getLastPostDate()));
+					messageCreator.getLastPostDate()));
 
 			sb.append("\"");
 		}
 
-		if (creatorDetailedInfo.getName() != null) {
+		if (messageCreator.getName() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -102,22 +101,22 @@ public class CreatorDetailedInfoSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(creatorDetailedInfo.getName()));
+			sb.append(_escape(messageCreator.getName()));
 
 			sb.append("\"");
 		}
 
-		if (creatorDetailedInfo.getPostsNumber() != null) {
+		if (messageCreator.getPostsNumber() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"postsNumber\": ");
 
-			sb.append(creatorDetailedInfo.getPostsNumber());
+			sb.append(messageCreator.getPostsNumber());
 		}
 
-		if (creatorDetailedInfo.getRank() != null) {
+		if (messageCreator.getRank() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -126,7 +125,7 @@ public class CreatorDetailedInfoSerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(creatorDetailedInfo.getRank()));
+			sb.append(_escape(messageCreator.getRank()));
 
 			sb.append("\"");
 		}
@@ -137,16 +136,14 @@ public class CreatorDetailedInfoSerDes {
 	}
 
 	public static Map<String, Object> toMap(String json) {
-		CreatorDetailedInfoJSONParser creatorDetailedInfoJSONParser =
-			new CreatorDetailedInfoJSONParser();
+		MessageCreatorJSONParser messageCreatorJSONParser =
+			new MessageCreatorJSONParser();
 
-		return creatorDetailedInfoJSONParser.parseToMap(json);
+		return messageCreatorJSONParser.parseToMap(json);
 	}
 
-	public static Map<String, String> toMap(
-		CreatorDetailedInfo creatorDetailedInfo) {
-
-		if (creatorDetailedInfo == null) {
+	public static Map<String, String> toMap(MessageCreator messageCreator) {
+		if (messageCreator == null) {
 			return null;
 		}
 
@@ -157,83 +154,81 @@ public class CreatorDetailedInfoSerDes {
 
 		map.put(
 			"joinDate",
-			liferayToJSONDateFormat.format(creatorDetailedInfo.getJoinDate()));
+			liferayToJSONDateFormat.format(messageCreator.getJoinDate()));
 
 		map.put(
 			"lastPostDate",
-			liferayToJSONDateFormat.format(
-				creatorDetailedInfo.getLastPostDate()));
+			liferayToJSONDateFormat.format(messageCreator.getLastPostDate()));
 
-		if (creatorDetailedInfo.getName() == null) {
+		if (messageCreator.getName() == null) {
 			map.put("name", null);
 		}
 		else {
-			map.put("name", String.valueOf(creatorDetailedInfo.getName()));
+			map.put("name", String.valueOf(messageCreator.getName()));
 		}
 
-		if (creatorDetailedInfo.getPostsNumber() == null) {
+		if (messageCreator.getPostsNumber() == null) {
 			map.put("postsNumber", null);
 		}
 		else {
 			map.put(
-				"postsNumber",
-				String.valueOf(creatorDetailedInfo.getPostsNumber()));
+				"postsNumber", String.valueOf(messageCreator.getPostsNumber()));
 		}
 
-		if (creatorDetailedInfo.getRank() == null) {
+		if (messageCreator.getRank() == null) {
 			map.put("rank", null);
 		}
 		else {
-			map.put("rank", String.valueOf(creatorDetailedInfo.getRank()));
+			map.put("rank", String.valueOf(messageCreator.getRank()));
 		}
 
 		return map;
 	}
 
-	public static class CreatorDetailedInfoJSONParser
-		extends BaseJSONParser<CreatorDetailedInfo> {
+	public static class MessageCreatorJSONParser
+		extends BaseJSONParser<MessageCreator> {
 
 		@Override
-		protected CreatorDetailedInfo createDTO() {
-			return new CreatorDetailedInfo();
+		protected MessageCreator createDTO() {
+			return new MessageCreator();
 		}
 
 		@Override
-		protected CreatorDetailedInfo[] createDTOArray(int size) {
-			return new CreatorDetailedInfo[size];
+		protected MessageCreator[] createDTOArray(int size) {
+			return new MessageCreator[size];
 		}
 
 		@Override
 		protected void setField(
-			CreatorDetailedInfo creatorDetailedInfo, String jsonParserFieldName,
+			MessageCreator messageCreator, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
 			if (Objects.equals(jsonParserFieldName, "joinDate")) {
 				if (jsonParserFieldValue != null) {
-					creatorDetailedInfo.setJoinDate(
+					messageCreator.setJoinDate(
 						toDate((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "lastPostDate")) {
 				if (jsonParserFieldValue != null) {
-					creatorDetailedInfo.setLastPostDate(
+					messageCreator.setLastPostDate(
 						toDate((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "name")) {
 				if (jsonParserFieldValue != null) {
-					creatorDetailedInfo.setName((String)jsonParserFieldValue);
+					messageCreator.setName((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "postsNumber")) {
 				if (jsonParserFieldValue != null) {
-					creatorDetailedInfo.setPostsNumber(
+					messageCreator.setPostsNumber(
 						Integer.valueOf((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "rank")) {
 				if (jsonParserFieldValue != null) {
-					creatorDetailedInfo.setRank((String)jsonParserFieldValue);
+					messageCreator.setRank((String)jsonParserFieldValue);
 				}
 			}
 			else {

@@ -15,7 +15,7 @@
 package com.liferay.headless.delivery.client.dto.v1_0;
 
 import com.liferay.headless.delivery.client.function.UnsafeSupplier;
-import com.liferay.headless.delivery.client.serdes.v1_0.CreatorDetailedInfoSerDes;
+import com.liferay.headless.delivery.client.serdes.v1_0.MessageCreatorSerDes;
 
 import java.util.Date;
 import java.util.Objects;
@@ -27,7 +27,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class CreatorDetailedInfo implements Cloneable {
+public class MessageCreator implements Cloneable {
 
 	public Date getJoinDate() {
 		return joinDate;
@@ -131,8 +131,8 @@ public class CreatorDetailedInfo implements Cloneable {
 	protected String rank;
 
 	@Override
-	public CreatorDetailedInfo clone() throws CloneNotSupportedException {
-		return (CreatorDetailedInfo)super.clone();
+	public MessageCreator clone() throws CloneNotSupportedException {
+		return (MessageCreator)super.clone();
 	}
 
 	@Override
@@ -141,13 +141,13 @@ public class CreatorDetailedInfo implements Cloneable {
 			return true;
 		}
 
-		if (!(object instanceof CreatorDetailedInfo)) {
+		if (!(object instanceof MessageCreator)) {
 			return false;
 		}
 
-		CreatorDetailedInfo creatorDetailedInfo = (CreatorDetailedInfo)object;
+		MessageCreator messageCreator = (MessageCreator)object;
 
-		return Objects.equals(toString(), creatorDetailedInfo.toString());
+		return Objects.equals(toString(), messageCreator.toString());
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class CreatorDetailedInfo implements Cloneable {
 	}
 
 	public String toString() {
-		return CreatorDetailedInfoSerDes.toJSON(this);
+		return MessageCreatorSerDes.toJSON(this);
 	}
 
 }

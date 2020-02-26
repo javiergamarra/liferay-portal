@@ -43,12 +43,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("CreatorDetailedInfo")
+@GraphQLName("MessageCreator")
 @JsonFilter("Liferay.Vulcan")
-@XmlRootElement(name = "CreatorDetailedInfo")
-public class CreatorDetailedInfo {
+@XmlRootElement(name = "MessageCreator")
+public class MessageCreator {
 
-	@Schema(description = "Join date of the author")
+	@Schema(description = "The author's join date.")
 	public Date getJoinDate() {
 		return joinDate;
 	}
@@ -72,11 +72,11 @@ public class CreatorDetailedInfo {
 		}
 	}
 
-	@GraphQLField(description = "Join date of the author")
+	@GraphQLField(description = "The author's join date.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Date joinDate;
 
-	@Schema(description = "Last post created by the author")
+	@Schema(description = "The author's last post date.")
 	public Date getLastPostDate() {
 		return lastPostDate;
 	}
@@ -100,7 +100,7 @@ public class CreatorDetailedInfo {
 		}
 	}
 
-	@GraphQLField(description = "Last post created by the author")
+	@GraphQLField(description = "The author's last post date.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Date lastPostDate;
 
@@ -130,7 +130,7 @@ public class CreatorDetailedInfo {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String name;
 
-	@Schema(description = "Number of posts publicated by the author.")
+	@Schema(description = "Number of messages posted by the author.")
 	public Integer getPostsNumber() {
 		return postsNumber;
 	}
@@ -154,11 +154,11 @@ public class CreatorDetailedInfo {
 		}
 	}
 
-	@GraphQLField(description = "Number of posts publicated by the author.")
+	@GraphQLField(description = "Number of messages posted by the author.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Integer postsNumber;
 
-	@Schema(description = "The rank of the author.")
+	@Schema(description = "The author's rank.")
 	public String getRank() {
 		return rank;
 	}
@@ -180,7 +180,7 @@ public class CreatorDetailedInfo {
 		}
 	}
 
-	@GraphQLField(description = "The rank of the author.")
+	@GraphQLField(description = "The author's rank.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String rank;
 
@@ -190,13 +190,13 @@ public class CreatorDetailedInfo {
 			return true;
 		}
 
-		if (!(object instanceof CreatorDetailedInfo)) {
+		if (!(object instanceof MessageCreator)) {
 			return false;
 		}
 
-		CreatorDetailedInfo creatorDetailedInfo = (CreatorDetailedInfo)object;
+		MessageCreator messageCreator = (MessageCreator)object;
 
-		return Objects.equals(toString(), creatorDetailedInfo.toString());
+		return Objects.equals(toString(), messageCreator.toString());
 	}
 
 	@Override
@@ -286,7 +286,7 @@ public class CreatorDetailedInfo {
 	}
 
 	@Schema(
-		defaultValue = "com.liferay.headless.delivery.dto.v1_0.CreatorDetailedInfo",
+		defaultValue = "com.liferay.headless.delivery.dto.v1_0.MessageCreator",
 		name = "x-class-name"
 	)
 	public String xClassName;

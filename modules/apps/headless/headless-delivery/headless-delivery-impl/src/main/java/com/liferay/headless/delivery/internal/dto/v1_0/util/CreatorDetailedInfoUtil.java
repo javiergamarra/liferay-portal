@@ -1,6 +1,6 @@
 package com.liferay.headless.delivery.internal.dto.v1_0.util;
 
-import com.liferay.headless.delivery.dto.v1_0.CreatorDetailedInfo;
+import com.liferay.headless.delivery.dto.v1_0.MessageCreator;
 import com.liferay.message.boards.service.MBStatsUserLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.model.User;
  */
 public class CreatorDetailedInfoUtil {
 
-	public static CreatorDetailedInfo toCreatorDetailedInfoUtil(
+	public static MessageCreator toCreatorDetailedInfoUtil(
 		MBStatsUserLocalService mbStatsUserLocalService,
 		String languageId,
 		User user) throws PortalException {
@@ -20,7 +20,7 @@ public class CreatorDetailedInfoUtil {
 		String[] ranks = mbStatsUserLocalService.getUserRank(
 			user.getGroupId(), languageId, user.getUserId());
 
-		return new CreatorDetailedInfo(){
+		return new MessageCreator(){
 			{
 				name = user.getFullName();
 				postsNumber =
