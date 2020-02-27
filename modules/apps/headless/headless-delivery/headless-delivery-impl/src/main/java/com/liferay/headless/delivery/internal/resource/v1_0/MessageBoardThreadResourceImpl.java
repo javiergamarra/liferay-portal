@@ -150,7 +150,7 @@ public class MessageBoardThreadResourceImpl
 			messageBoardSectionId);
 
 		return _getSiteMessageBoardThreadsPage(
-			_getMessageBoardSectionListActions(mbCategory),
+			_getMessageBoardSectionMessageBoardThreadListActions(mbCategory),
 			booleanQuery -> {
 				BooleanFilter booleanFilter =
 					booleanQuery.getPreBooleanFilter();
@@ -211,7 +211,7 @@ public class MessageBoardThreadResourceImpl
 		throws Exception {
 
 		return _getSiteMessageBoardThreadsPage(
-			_getSiteListActions(siteId),
+			_getSiteMessageBoardThreadListActions(siteId),
 			booleanQuery -> {
 				BooleanFilter booleanFilter =
 					booleanQuery.getPreBooleanFilter();
@@ -364,30 +364,6 @@ public class MessageBoardThreadResourceImpl
 		return _toMessageBoardThread(mbMessage);
 	}
 
-	private Map<String, Map<String, String>> _getActions(MBMessage mbMessage) {
-		return HashMapBuilder.<String, Map<String, String>>put(
-			"delete", addAction("DELETE", mbMessage, "deleteMessageBoardThread")
-		).put(
-			"get", addAction("VIEW", mbMessage, "getMessageBoardThread")
-		).put(
-			"replace", addAction("UPDATE", mbMessage, "putMessageBoardThread")
-		).put(
-			"reply-to-thread",
-			ActionUtil.addAction(
-				"REPLY_TO_MESSAGE", MessageBoardMessageResourceImpl.class,
-				mbMessage.getMessageId(),
-				"postMessageBoardThreadMessageBoardMessage",
-				"com.liferay.message.boards", contextScopeChecker,
-				mbMessage.getUserId(), mbMessage.getGroupId(), contextUriInfo)
-		).put(
-			"subscribe",
-			addAction("UPDATE", mbMessage, "putMessageBoardThreadSubscribe")
-		).put(
-			"unsubscribe",
-			addAction("UPDATE", mbMessage, "putMessageBoardThreadUnsubscribe")
-		).build();
-	}
-
 	private DynamicQuery _getDynamicQuery(
 		Date dateCreated, Date dateModified, Pagination pagination,
 		Sort[] sorts) {
@@ -449,8 +425,9 @@ public class MessageBoardThreadResourceImpl
 			contextAcceptLanguage.getPreferredLocale());
 	}
 
-	private Map<String, Map<String, String>> _getMessageBoardSectionListActions(
-		MBCategory mbCategory) {
+	private Map<String, Map<String, String>>
+		_getMessageBoardSectionMessageBoardThreadListActions(
+			MBCategory mbCategory) {
 
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"create",
@@ -469,8 +446,34 @@ public class MessageBoardThreadResourceImpl
 		).build();
 	}
 
-	private Map<String, Map<String, String>> _getRatingActions(
-			RatingsEntry ratingsEntry)
+	private Map<String, Map<String, String>> _getMessageBoardThreadItemActions(
+		MBMessage mbMessage) {
+
+		return HashMapBuilder.<String, Map<String, String>>put(
+			"delete", addAction("DELETE", mbMessage, "deleteMessageBoardThread")
+		).put(
+			"get", addAction("VIEW", mbMessage, "getMessageBoardThread")
+		).put(
+			"replace", addAction("UPDATE", mbMessage, "putMessageBoardThread")
+		).put(
+			"reply-to-thread",
+			ActionUtil.addAction(
+				"REPLY_TO_MESSAGE", MessageBoardMessageResourceImpl.class,
+				mbMessage.getMessageId(),
+				"postMessageBoardThreadMessageBoardMessage",
+				"com.liferay.message.boards", contextScopeChecker,
+				mbMessage.getUserId(), mbMessage.getGroupId(), contextUriInfo)
+		).put(
+			"subscribe",
+			addAction("UPDATE", mbMessage, "putMessageBoardThreadSubscribe")
+		).put(
+			"unsubscribe",
+			addAction("UPDATE", mbMessage, "putMessageBoardThreadUnsubscribe")
+		).build();
+	}
+
+	private Map<String, Map<String, String>>
+			_getMessageBoardThreadRatingItemActions(RatingsEntry ratingsEntry)
 		throws Exception {
 
 		MBMessage mbMessage = _mbMessageService.getMessage(
@@ -490,17 +493,19 @@ public class MessageBoardThreadResourceImpl
 		).build();
 	}
 
-	private Map<String, Map<String, String>> _getSiteListActions(long groupId) {
+	private Map<String, Map<String, String>>
+		_getSiteMessageBoardThreadListActions(long siteId) {
+
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"create",
 			addAction(
 				"ADD_MESSAGE", "postSiteMessageBoardThread",
-				"com.liferay.message.boards", groupId)
+				"com.liferay.message.boards", siteId)
 		).put(
 			"get",
 			addAction(
 				"VIEW", "getSiteMessageBoardThreadsPage",
-				"com.liferay.message.boards", groupId)
+				"com.liferay.message.boards", siteId)
 		).build();
 	}
 
@@ -530,8 +535,8 @@ public class MessageBoardThreadResourceImpl
 		return new SPIRatingResource<>(
 			MBMessage.class.getName(), _ratingsEntryLocalService,
 			ratingsEntry -> RatingUtil.toRating(
-				_getRatingActions(ratingsEntry), _portal, ratingsEntry,
-				_userLocalService),
+				_getMessageBoardThreadRatingItemActions(ratingsEntry), _portal,
+				ratingsEntry, _userLocalService),
 			contextUser);
 	}
 
@@ -549,7 +554,7 @@ public class MessageBoardThreadResourceImpl
 
 		return new MessageBoardThread() {
 			{
-				actions = _getActions(mbMessage);
+				actions = _getMessageBoardThreadItemActions(mbMessage);
 				aggregateRating = AggregateRatingUtil.toAggregateRating(
 					_ratingsStatsLocalService.fetchStats(
 						MBMessage.class.getName(), mbMessage.getMessageId()));

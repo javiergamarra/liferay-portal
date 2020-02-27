@@ -82,11 +82,12 @@ public class DocumentFolderResourceImpl
 			Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
 
-		DocumentFolder parentDocumentFolder = _toDocumentFolder(
-			_dlAppService.getFolder(parentDocumentFolderId));
+		Folder folder = _dlAppService.getFolder(parentDocumentFolderId);
+
+		DocumentFolder parentDocumentFolder = _toDocumentFolder(folder);
 
 		return _getDocumentFoldersPage(
-			_getDocumentFolderListActions(parentDocumentFolder.getSiteId()),
+			_getDocumentFolderDocumentFolderListActions(folder),
 			parentDocumentFolder.getId(), parentDocumentFolder.getSiteId(),
 			flatten, search, filter, pagination, sorts);
 	}
@@ -113,8 +114,8 @@ public class DocumentFolderResourceImpl
 		}
 
 		return _getDocumentFoldersPage(
-			_getSiteListActions(siteId), documentFolderId, siteId, flatten,
-			search, filter, pagination, sorts);
+			_getSiteDocumentFolderListActions(siteId), documentFolderId, siteId,
+			flatten, search, filter, pagination, sorts);
 	}
 
 	@Override
@@ -206,7 +207,29 @@ public class DocumentFolderResourceImpl
 					siteId, documentFolder.getViewableByAsString())));
 	}
 
-	private Map<String, Map<String, String>> _getActions(Folder folder) {
+	private Map<String, Map<String, String>>
+		_getDocumentFolderDocumentFolderListActions(Folder folder) {
+
+		return HashMapBuilder.<String, Map<String, String>>put(
+			"create",
+			addAction(
+				"ADD_SUBFOLDER", folder.getFolderId(),
+				"postDocumentFolderDocumentFolder",
+				"com.liferay.document.library", folder.getUserId(),
+				folder.getGroupId())
+		).put(
+			"get",
+			addAction(
+				"VIEW", folder.getFolderId(),
+				"getDocumentFolderDocumentFoldersPage",
+				"com.liferay.document.library", folder.getUserId(),
+				folder.getGroupId())
+		).build();
+	}
+
+	private Map<String, Map<String, String>> _getDocumentFolderItemActions(
+		Folder folder) {
+
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"delete",
 			addAction(
@@ -244,22 +267,6 @@ public class DocumentFolderResourceImpl
 				"UPDATE", folder.getFolderId(), "patchDocumentFolder",
 				"com.liferay.document.library.kernel.model.DLFolder",
 				folder.getUserId(), folder.getGroupId())
-		).build();
-	}
-
-	private Map<String, Map<String, String>> _getDocumentFolderListActions(
-		Long groupId) {
-
-		return HashMapBuilder.<String, Map<String, String>>put(
-			"create",
-			addAction(
-				"ADD_SUBFOLDER", "postDocumentFolderDocumentFolder",
-				"com.liferay.document.library", groupId)
-		).put(
-			"get",
-			addAction(
-				"VIEW", "getDocumentFolderDocumentFoldersPage",
-				"com.liferay.document.library", groupId)
 		).build();
 	}
 
@@ -305,7 +312,9 @@ public class DocumentFolderResourceImpl
 					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))));
 	}
 
-	private Map<String, Map<String, String>> _getSiteListActions(Long siteId) {
+	private Map<String, Map<String, String>> _getSiteDocumentFolderListActions(
+		Long siteId) {
+
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"create",
 			addAction(
@@ -323,7 +332,7 @@ public class DocumentFolderResourceImpl
 		return _documentFolderDTOConverter.toDTO(
 			new DefaultDTOConverterContext(
 				contextAcceptLanguage.isAcceptAllLanguages(),
-				_getActions(folder), _dtoConverterRegistry,
+				_getDocumentFolderItemActions(folder), _dtoConverterRegistry,
 				folder.getFolderId(),
 				contextAcceptLanguage.getPreferredLocale(), contextUriInfo,
 				contextUser));

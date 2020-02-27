@@ -61,7 +61,6 @@ import com.liferay.portlet.asset.service.permission.AssetCategoryPermission;
 import java.sql.Timestamp;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -143,9 +142,7 @@ public class TaxonomyCategoryResourceImpl
 			parentTaxonomyCategoryId);
 
 		return _getCategoriesPage(
-			_getTaxonomyCategoryListActions(
-				assetCategory.getCategoryId(), assetCategory.getGroupId(),
-				assetCategory.getUserId()),
+			_getTaxonomyCategoryTaxonomyCategoryListActions(assetCategory),
 			booleanQuery -> {
 				BooleanFilter booleanFilter =
 					booleanQuery.getPreBooleanFilter();
@@ -169,7 +166,7 @@ public class TaxonomyCategoryResourceImpl
 			taxonomyVocabularyId);
 
 		return _getCategoriesPage(
-			_getTaxonomyVocabularyListActions(assetVocabulary),
+			_getTaxonomyVocabularyTaxonomyCategoryListActions(assetVocabulary),
 			booleanQuery -> {
 				BooleanFilter booleanFilter =
 					booleanQuery.getPreBooleanFilter();
@@ -323,27 +320,6 @@ public class TaxonomyCategoryResourceImpl
 		return _toTaxonomyCategory(assetCategory);
 	}
 
-	private Map<String, Map<String, String>> _getActions(
-		AssetCategory assetCategory) {
-
-		return HashMapBuilder.<String, Map<String, String>>put(
-			"add-category",
-			addAction(
-				"ADD_CATEGORY", assetCategory,
-				"postTaxonomyCategoryTaxonomyCategory")
-		).put(
-			"delete",
-			addAction("DELETE", assetCategory, "deleteTaxonomyCategory")
-		).put(
-			"get", addAction("VIEW", assetCategory, "getTaxonomyCategory")
-		).put(
-			"replace", addAction("UPDATE", assetCategory, "putTaxonomyCategory")
-		).put(
-			"update",
-			addAction("UPDATE", assetCategory, "patchTaxonomyCategory")
-		).build();
-	}
-
 	private AssetCategory _getAssetCategory(String taxonomyCategoryId)
 		throws Exception {
 
@@ -413,24 +389,51 @@ public class TaxonomyCategoryResourceImpl
 		return projectionList;
 	}
 
-	private Map<String, Map<String, String>> _getTaxonomyCategoryListActions(
-		long categoryId, long groupId, long userId) {
+	private Map<String, Map<String, String>> _getTaxonomyCategoryItemActions(
+		AssetCategory assetCategory) {
 
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"add-category",
 			addAction(
-				"ADD_CATEGORY", categoryId, AssetCategory.class.getName(),
-				"postTaxonomyCategoryTaxonomyCategory", userId, groupId)
+				"ADD_CATEGORY", assetCategory,
+				"postTaxonomyCategoryTaxonomyCategory")
 		).put(
-			"get",
-			addAction(
-				"VIEW", categoryId, AssetCategory.class.getName(),
-				"getTaxonomyCategoryTaxonomyCategoriesPage", userId, groupId)
+			"delete",
+			addAction("DELETE", assetCategory, "deleteTaxonomyCategory")
+		).put(
+			"get", addAction("VIEW", assetCategory, "getTaxonomyCategory")
+		).put(
+			"replace", addAction("UPDATE", assetCategory, "putTaxonomyCategory")
+		).put(
+			"update",
+			addAction("UPDATE", assetCategory, "patchTaxonomyCategory")
 		).build();
 	}
 
-	private Map<String, Map<String, String>> _getTaxonomyVocabularyListActions(
-		AssetVocabulary assetVocabulary) {
+	private Map<String, Map<String, String>>
+		_getTaxonomyCategoryTaxonomyCategoryListActions(
+			AssetCategory assetCategory) {
+
+		return HashMapBuilder.<String, Map<String, String>>put(
+			"add-category",
+			addAction(
+				"ADD_CATEGORY", assetCategory.getCategoryId(),
+				AssetCategory.class.getName(),
+				"postTaxonomyCategoryTaxonomyCategory",
+				assetCategory.getUserId(), assetCategory.getGroupId())
+		).put(
+			"get",
+			addAction(
+				"VIEW", assetCategory.getCategoryId(),
+				AssetCategory.class.getName(),
+				"getTaxonomyCategoryTaxonomyCategoriesPage",
+				assetCategory.getUserId(), assetCategory.getGroupId())
+		).build();
+	}
+
+	private Map<String, Map<String, String>>
+		_getTaxonomyVocabularyTaxonomyCategoryListActions(
+			AssetVocabulary assetVocabulary) {
 
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"add-category",
@@ -468,7 +471,8 @@ public class TaxonomyCategoryResourceImpl
 
 		return _taxonomyCategoryDTOConverter.toDTO(
 			new DefaultDTOConverterContext(
-				contextAcceptLanguage.isAcceptAllLanguages(), new HashMap<>(),
+				contextAcceptLanguage.isAcceptAllLanguages(),
+				_getTaxonomyCategoryItemActions(assetCategory),
 				_dtoConverterRegistry, assetCategory.getCategoryId(),
 				contextAcceptLanguage.getPreferredLocale(), contextUriInfo,
 				contextUser),

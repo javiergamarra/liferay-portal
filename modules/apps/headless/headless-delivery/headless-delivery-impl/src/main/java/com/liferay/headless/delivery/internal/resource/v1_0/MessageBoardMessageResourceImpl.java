@@ -118,8 +118,9 @@ public class MessageBoardMessageResourceImpl
 			parentMessageBoardMessageId);
 
 		return _getMessageBoardMessagesPage(
-			_getMessageBoardListActions(mbMessage), parentMessageBoardMessageId,
-			null, flatten, search, filter, pagination, sorts);
+			_getMessageBoardMessageMessageBoardMessageListActions(mbMessage),
+			parentMessageBoardMessageId, null, flatten, search, filter,
+			pagination, sorts);
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class MessageBoardMessageResourceImpl
 			messageBoardThreadId);
 
 		return _getMessageBoardMessagesPage(
-			_getMessageBoardThreadListActions(mbThread),
+			_getMessageBoardThreadMessageBoardMessageListActions(mbThread),
 			mbThread.getRootMessageId(), null, false, search, filter,
 			pagination, sorts);
 	}
@@ -154,8 +155,8 @@ public class MessageBoardMessageResourceImpl
 		throws Exception {
 
 		return _getMessageBoardMessagesPage(
-			_getSiteListActions(siteId), null, siteId, flatten, search, filter,
-			pagination, sorts);
+			_getSiteMessageBoardMessageListActions(siteId), null, siteId,
+			flatten, search, filter, pagination, sorts);
 	}
 
 	@Override
@@ -293,7 +294,18 @@ public class MessageBoardMessageResourceImpl
 		return _toMessageBoardMessage(mbMessage);
 	}
 
-	private Map<String, Map<String, String>> _getActions(MBMessage mbMessage) {
+	private Map<String, Serializable> _getExpandoBridgeAttributes(
+		MessageBoardMessage messageBoardMessage) {
+
+		return CustomFieldsUtil.toMap(
+			MBMessage.class.getName(), contextCompany.getCompanyId(),
+			messageBoardMessage.getCustomFields(),
+			contextAcceptLanguage.getPreferredLocale());
+	}
+
+	private Map<String, Map<String, String>> _getMessageBoardMessageItemActions(
+		MBMessage mbMessage) {
+
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"delete",
 			addAction("DELETE", mbMessage, "deleteMessageBoardMessage")
@@ -319,17 +331,9 @@ public class MessageBoardMessageResourceImpl
 		).build();
 	}
 
-	private Map<String, Serializable> _getExpandoBridgeAttributes(
-		MessageBoardMessage messageBoardMessage) {
-
-		return CustomFieldsUtil.toMap(
-			MBMessage.class.getName(), contextCompany.getCompanyId(),
-			messageBoardMessage.getCustomFields(),
-			contextAcceptLanguage.getPreferredLocale());
-	}
-
-	private Map<String, Map<String, String>> _getMessageBoardListActions(
-		MBMessage mbMessage) {
+	private Map<String, Map<String, String>>
+		_getMessageBoardMessageMessageBoardMessageListActions(
+			MBMessage mbMessage) {
 
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"get-child-messages",
@@ -345,6 +349,28 @@ public class MessageBoardMessageResourceImpl
 				"postMessageBoardMessageMessageBoardMessage",
 				"com.liferay.message.boards", mbMessage.getUserId(),
 				mbMessage.getGroupId())
+		).build();
+	}
+
+	private Map<String, Map<String, String>>
+			_getMessageBoardMessageRatingItemActions(RatingsEntry ratingsEntry)
+		throws Exception {
+
+		MBMessage mbMessage = _mbMessageService.getMessage(
+			ratingsEntry.getClassPK());
+
+		return HashMapBuilder.<String, Map<String, String>>put(
+			"create",
+			addAction("UPDATE", mbMessage, "postMessageBoardMessageMyRating")
+		).put(
+			"delete",
+			addAction("UPDATE", mbMessage, "deleteMessageBoardMessageMyRating")
+		).put(
+			"get",
+			addAction("VIEW", mbMessage, "getMessageBoardMessageMyRating")
+		).put(
+			"replace",
+			addAction("UPDATE", mbMessage, "putMessageBoardMessageMyRating")
 		).build();
 	}
 
@@ -412,8 +438,9 @@ public class MessageBoardMessageResourceImpl
 					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))));
 	}
 
-	private Map<String, Map<String, String>> _getMessageBoardThreadListActions(
-		MBThread mbThread) {
+	private Map<String, Map<String, String>>
+		_getMessageBoardThreadMessageBoardMessageListActions(
+			MBThread mbThread) {
 
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"create",
@@ -432,29 +459,9 @@ public class MessageBoardMessageResourceImpl
 		).build();
 	}
 
-	private Map<String, Map<String, String>> _getRatingActions(
-			RatingsEntry ratingsEntry)
-		throws Exception {
+	private Map<String, Map<String, String>>
+		_getSiteMessageBoardMessageListActions(long site) {
 
-		MBMessage mbMessage = _mbMessageService.getMessage(
-			ratingsEntry.getClassPK());
-
-		return HashMapBuilder.<String, Map<String, String>>put(
-			"create",
-			addAction("UPDATE", mbMessage, "postMessageBoardMessageMyRating")
-		).put(
-			"delete",
-			addAction("UPDATE", mbMessage, "deleteMessageBoardMessageMyRating")
-		).put(
-			"get",
-			addAction("VIEW", mbMessage, "getMessageBoardMessageMyRating")
-		).put(
-			"replace",
-			addAction("UPDATE", mbMessage, "putMessageBoardMessageMyRating")
-		).build();
-	}
-
-	private Map<String, Map<String, String>> _getSiteListActions(long site) {
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"get",
 			addAction(
@@ -467,8 +474,8 @@ public class MessageBoardMessageResourceImpl
 		return new SPIRatingResource<>(
 			MBMessage.class.getName(), _ratingsEntryLocalService,
 			ratingsEntry -> RatingUtil.toRating(
-				_getRatingActions(ratingsEntry), _portal, ratingsEntry,
-				_userLocalService),
+				_getMessageBoardMessageRatingItemActions(ratingsEntry), _portal,
+				ratingsEntry, _userLocalService),
 			contextUser);
 	}
 
@@ -477,8 +484,8 @@ public class MessageBoardMessageResourceImpl
 
 		return _messageBoardMessageDTOConverter.toDTO(
 			new DefaultDTOConverterContext(
-				false, _getActions(mbMessage), _dtoConverterRegistry,
-				mbMessage.getPrimaryKey(),
+				false, _getMessageBoardMessageItemActions(mbMessage),
+				_dtoConverterRegistry, mbMessage.getPrimaryKey(),
 				contextAcceptLanguage.getPreferredLocale(), contextUriInfo,
 				contextUser));
 	}
