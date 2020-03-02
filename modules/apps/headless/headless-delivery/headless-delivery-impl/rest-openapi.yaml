@@ -996,6 +996,9 @@ components:
                     type: integer
                 js:
                     type: string
+                key:
+                    readOnly: true
+                    type: string
                 name:
                     type: string
                 usageCount:
@@ -1023,6 +1026,9 @@ components:
                     format: int64
                     readOnly: true
                     type: integer
+                key:
+                    readOnly: true
+                    type: string
                 name:
                     type: string
                 siteId:
