@@ -964,35 +964,7 @@ components:
             required:
                 - name
             type: object
-        FragmentCollection:
-            description:
-                ""
-            properties:
-                creator:
-                    allOf:
-                        - $ref: "#/components/schemas/Creator"
-                    readOnly: true
-                dateCreated:
-                    format: date-time
-                    readOnly: true
-                    type: string
-                dateModified:
-                    format: date-time
-                    readOnly: true
-                    type: string
-                description:
-                    type: string
-                id:
-                    format: int64
-                    readOnly: true
-                    type: integer
-                name:
-                    type: string
-                siteId:
-                    format: int64
-                    readOnly: true
-                    type: integer
-        FragmentEntry:
+        Fragment:
             description:
                 ""
             properties:
@@ -1027,6 +999,34 @@ components:
                 name:
                     type: string
                 usageCount:
+                    readOnly: true
+                    type: integer
+        FragmentCollection:
+            description:
+                ""
+            properties:
+                creator:
+                    allOf:
+                        - $ref: "#/components/schemas/Creator"
+                    readOnly: true
+                dateCreated:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                dateModified:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                description:
+                    type: string
+                id:
+                    format: int64
+                    readOnly: true
+                    type: integer
+                name:
+                    type: string
+                siteId:
+                    format: int64
                     readOnly: true
                     type: integer
         FragmentField:
@@ -3802,11 +3802,11 @@ paths:
                     description:
                         ""
             tags: ["FragmentCollection"]
-    "/fragment-collections/{fragmentCollectionId}/fragment-entries":
+    "/fragment-collections/{fragmentCollectionId}/fragments":
         get:
             description:
                 ""
-            operationId: getFragmentCollectionFragmentEntriesPage
+            operationId: getFragmentCollectionFragmentsPage
             parameters:
                 - in: path
                   name: fragmentCollectionId
@@ -3828,24 +3828,24 @@ paths:
                         application/json:
                             schema:
                                 items:
-                                    $ref: "#/components/schemas/FragmentEntry"
+                                    $ref: "#/components/schemas/Fragment"
                                 type: array
                         application/xml:
                             schema:
                                 items:
-                                    $ref: "#/components/schemas/FragmentEntry"
+                                    $ref: "#/components/schemas/Fragment"
                                 type: array
                     description:
                         ""
-            tags: ["FragmentEntry"]
-    "/fragment-entries/{fragmentEntryId}":
+            tags: ["Fragment"]
+    "/fragments/{fragmentId}":
         get:
             description:
                 ""
-            operationId: getFragmentEntry
+            operationId: getFragment
             parameters:
                 - in: path
-                  name: fragmentEntryId
+                  name: fragmentId
                   required: true
                   schema:
                       format: int64
@@ -3855,13 +3855,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/FragmentEntry"
+                                $ref: "#/components/schemas/Fragment"
                         application/xml:
                             schema:
-                                $ref: "#/components/schemas/FragmentEntry"
+                                $ref: "#/components/schemas/Fragment"
                     description:
                         ""
-            tags: ["FragmentEntry"]
+            tags: ["Fragment"]
     "/knowledge-base-articles/{knowledgeBaseArticleId}":
         delete:
             description:
