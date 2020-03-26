@@ -1222,7 +1222,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 						graphQLField = new GraphQLField(
 							"query",
 							new GraphQLField(
-								"${schemaVarName}",
+								"${schemaName?uncap_first}",
 								new HashMap<String, Object>() {
 									{
 										put(
