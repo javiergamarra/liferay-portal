@@ -1448,6 +1448,10 @@ public abstract class Base${schemaName}ResourceTestCase {
 					<#list properties?keys as propertyName>
 						<#if randomDataTypes?seq_contains(properties[propertyName])>
 							if (Objects.equals("${propertyName}", additionalAssertFieldName)) {
+								if (sb.length() > 1) {
+									sb.append(", ");
+								}
+
 								sb.append(additionalAssertFieldName);
 								sb.append(": ");
 
@@ -1461,8 +1465,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 								else {
 									sb.append(value);
 								}
-
-								sb.append(", ");
 							}
 						</#if>
 					</#list>
