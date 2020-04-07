@@ -41,7 +41,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,7 +59,6 @@ public class SegmentResourceTest extends BaseSegmentResourceTestCase {
 		_user = UserTestUtil.addGroupUser(testGroup, RoleConstants.POWER_USER);
 	}
 
-	@Ignore
 	@Test
 	public void testGetSiteSegmentsPageWithDefaultPermissions()
 		throws Exception {
@@ -89,7 +87,6 @@ public class SegmentResourceTest extends BaseSegmentResourceTestCase {
 		assertValid(page);
 	}
 
-	@Ignore
 	@Test
 	public void testGetSiteSegmentsPageWithoutViewPermissions()
 		throws Exception {
