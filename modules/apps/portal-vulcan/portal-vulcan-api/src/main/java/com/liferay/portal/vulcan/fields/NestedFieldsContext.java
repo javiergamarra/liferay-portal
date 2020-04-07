@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.internal.fields;
+package com.liferay.portal.vulcan.fields;
 
 import java.util.List;
 
