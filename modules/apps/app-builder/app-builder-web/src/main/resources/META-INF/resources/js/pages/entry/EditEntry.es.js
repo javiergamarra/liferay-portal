@@ -54,9 +54,26 @@ export const EditEntry = ({
 
 			visitor.mapFields(({fieldName, localizable, value}) => {
 				if (localizable) {
-					dataRecord.dataRecordValues[fieldName] = {
-						[themeDisplay.getLanguageId()]: value,
-					};
+					if (
+						dataRecord.dataRecordValues[fieldName] &&
+						Array.isArray(
+							dataRecord.dataRecordValues[fieldName][
+								themeDisplay.getLanguageId()
+							]
+						) &&
+						dataRecord.dataRecordValues[fieldName][
+							themeDisplay.getLanguageId()
+						].length
+					) {
+						dataRecord.dataRecordValues[fieldName][
+							themeDisplay.getLanguageId()
+						].push(value);
+					}
+					else {
+						dataRecord.dataRecordValues[fieldName] = {
+							[themeDisplay.getLanguageId()]: [value],
+						};
+					}
 				}
 				else {
 					dataRecord.dataRecordValues[fieldName] = value;
