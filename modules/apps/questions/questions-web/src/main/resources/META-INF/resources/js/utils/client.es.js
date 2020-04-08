@@ -378,7 +378,7 @@ export const getThreads = ({
 	filter += ')';
 
 	if (taxonomyCategoryId) {
-		filter = `taxonomyCategoryId/any(x:x eq ${taxonomyCategoryId})`;
+		filter = `taxonomyCategoryIds/any(x:x eq ${taxonomyCategoryId})`;
 	}
 	else if (creatorId) {
 		filter = `creator/id eq ${creatorId}`;
