@@ -21,6 +21,8 @@ import com.liferay.headless.discovery.internal.dto.Resource;
 import com.liferay.headless.discovery.internal.dto.Resources;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.io.InputStream;
+
 import java.net.URI;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Providers;
 
@@ -103,6 +106,29 @@ public class HeadlessDiscoveryAPIApplication extends Application {
 
 	public Set<Object> getSingletons() {
 		return Collections.singleton(this);
+
+//		add curl example
+	}
+
+	@GET
+	@Produces("text/html")
+	public Response home() {
+		return Response.ok(
+			(StreamingOutput)streamingOutput -> {
+				Class<?> clazz = getClass();
+
+				ClassLoader classLoader = clazz.getClassLoader();
+
+				InputStream is = classLoader.getResourceAsStream("index.html");
+
+				byte[] buffer = new byte[1024];
+				int read;
+
+				while ((read = is.read(buffer)) != -1) {
+					streamingOutput.write(buffer, 0, read);
+				}
+			}
+		).build();
 	}
 
 	private Resource _getResource(
