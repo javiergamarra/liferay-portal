@@ -17,6 +17,7 @@ package com.liferay.headless.admin.user.resource.v1_0.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.headless.admin.user.client.dto.v1_0.SegmentUser;
 import com.liferay.headless.admin.user.client.pagination.Page;
+import com.liferay.headless.admin.user.client.pagination.Pagination;
 import com.liferay.headless.admin.user.client.problem.Problem;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -32,10 +33,10 @@ import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.test.util.SegmentsTestUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -55,10 +56,45 @@ public class SegmentUserResourceTest extends BaseSegmentUserResourceTestCase {
 		Assert.assertEquals(0, page.getTotalCount());
 	}
 
-	@Ignore
 	@Override
 	@Test
 	public void testGetSegmentUserAccountsPage() throws Exception {
+		Page<SegmentUser> page = segmentUserResource.getSegmentUserAccountsPage(
+			testGetSegmentUserAccountsPage_getSegmentId(), null);
+
+		Long segmentId = testGetSegmentUserAccountsPage_getSegmentId();
+
+		Long irrelevantSegmentId =
+			testGetSegmentUserAccountsPage_getIrrelevantSegmentId();
+
+		long totalCount = page.getTotalCount();
+
+		if (irrelevantSegmentId != null) {
+			SegmentUser irrelevantSegmentUser =
+				testGetSegmentUserAccountsPage_addSegmentUser(
+					irrelevantSegmentId, randomIrrelevantSegmentUser());
+
+			page = segmentUserResource.getSegmentUserAccountsPage(
+				irrelevantSegmentId, null);
+
+			Assert.assertEquals(totalCount, page.getTotalCount());
+
+			assertEquals(
+				Arrays.asList(irrelevantSegmentUser),
+				(List<SegmentUser>)page.getItems());
+			assertValid(page);
+		}
+
+		testGetSegmentUserAccountsPage_addSegmentUser(
+			segmentId, randomSegmentUser());
+		testGetSegmentUserAccountsPage_addSegmentUser(
+			segmentId, randomSegmentUser());
+
+		page = segmentUserResource.getSegmentUserAccountsPage(segmentId, null);
+
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
+
+		assertValid(page);
 	}
 
 	@Test(expected = Problem.ProblemException.class)
@@ -69,11 +105,38 @@ public class SegmentUserResourceTest extends BaseSegmentUserResourceTestCase {
 			RandomTestUtil.randomLong(), null);
 	}
 
-	@Ignore
-	@Override
 	@Test
 	public void testGetSegmentUserAccountsPageWithPagination()
 		throws Exception {
+
+		Long segmentId = testGetSegmentUserAccountsPage_getSegmentId();
+
+		testGetSegmentUserAccountsPage_addSegmentUser(
+			segmentId, randomSegmentUser());
+
+		testGetSegmentUserAccountsPage_addSegmentUser(
+			segmentId, randomSegmentUser());
+
+		testGetSegmentUserAccountsPage_addSegmentUser(
+			segmentId, randomSegmentUser());
+
+		Page<SegmentUser> page1 =
+			segmentUserResource.getSegmentUserAccountsPage(
+				segmentId, Pagination.of(1, 2));
+
+		List<SegmentUser> segmentUsers1 = (List<SegmentUser>)page1.getItems();
+
+		Assert.assertEquals(segmentUsers1.toString(), 2, segmentUsers1.size());
+
+		Page<SegmentUser> page2 =
+			segmentUserResource.getSegmentUserAccountsPage(
+				segmentId, Pagination.of(2, 2));
+
+		Assert.assertEquals(3, page2.getTotalCount());
+
+		List<SegmentUser> segmentUsers2 = (List<SegmentUser>)page2.getItems();
+
+		Assert.assertEquals(segmentUsers2.toString(), 1, segmentUsers2.size());
 	}
 
 	@Override
