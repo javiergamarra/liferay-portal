@@ -39,11 +39,11 @@ public class MessageBoardMessageEntityModel implements EntityModel {
 		_entityFieldsMap = EntityFieldsMapFactory.create(
 			new BooleanEntityField("showAsQuestion", locale -> "question"),
 			new CollectionEntityField(
-				new StringEntityField(
-					"keywords", locale -> "assetTagNames.raw")),
-			new CollectionEntityField(
 				new IntegerEntityField(
 					"taxonomyCategoryIds", locale -> "assetCategoryIds")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"keywords", locale -> "assetTagNames.raw")),
 			new ComplexEntityField(
 				"creator",
 				Collections.singletonList(
