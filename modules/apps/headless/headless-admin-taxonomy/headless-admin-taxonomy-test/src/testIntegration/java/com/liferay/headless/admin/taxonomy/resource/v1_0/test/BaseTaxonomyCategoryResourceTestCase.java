@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -66,6 +68,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -220,6 +223,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			testGetTaxonomyCategoryRankedPage_addTaxonomyCategory(
 				randomTaxonomyCategory());
 
+		reindex(taxonomyCategory1.getId(), taxonomyCategory2.getId());
+
 		page = taxonomyCategoryResource.getTaxonomyCategoryRankedPage(
 			null, Pagination.of(1, 2));
 
@@ -252,6 +257,10 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		TaxonomyCategory taxonomyCategory3 =
 			testGetTaxonomyCategoryRankedPage_addTaxonomyCategory(
 				randomTaxonomyCategory());
+
+		reindex(
+			taxonomyCategory1.getId(), taxonomyCategory2.getId(),
+			taxonomyCategory3.getId());
 
 		Page<TaxonomyCategory> page1 =
 			taxonomyCategoryResource.getTaxonomyCategoryRankedPage(
@@ -316,6 +325,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 					irrelevantParentTaxonomyCategoryId,
 					randomIrrelevantTaxonomyCategory());
 
+			reindex(irrelevantTaxonomyCategory.getId());
+
 			page =
 				taxonomyCategoryResource.
 					getTaxonomyCategoryTaxonomyCategoriesPage(
@@ -337,6 +348,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		TaxonomyCategory taxonomyCategory2 =
 			testGetTaxonomyCategoryTaxonomyCategoriesPage_addTaxonomyCategory(
 				parentTaxonomyCategoryId, randomTaxonomyCategory());
+
+		reindex(taxonomyCategory1.getId(), taxonomyCategory2.getId());
 
 		page =
 			taxonomyCategoryResource.getTaxonomyCategoryTaxonomyCategoriesPage(
@@ -377,6 +390,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			testGetTaxonomyCategoryTaxonomyCategoriesPage_addTaxonomyCategory(
 				parentTaxonomyCategoryId, taxonomyCategory1);
 
+		reindex(taxonomyCategory1.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyCategory> page =
 				taxonomyCategoryResource.
@@ -415,6 +430,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			testGetTaxonomyCategoryTaxonomyCategoriesPage_addTaxonomyCategory(
 				parentTaxonomyCategoryId, randomTaxonomyCategory());
 
+		reindex(taxonomyCategory1.getId(), taxonomyCategory2.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyCategory> page =
 				taxonomyCategoryResource.
@@ -447,6 +464,10 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		TaxonomyCategory taxonomyCategory3 =
 			testGetTaxonomyCategoryTaxonomyCategoriesPage_addTaxonomyCategory(
 				parentTaxonomyCategoryId, randomTaxonomyCategory());
+
+		reindex(
+			taxonomyCategory1.getId(), taxonomyCategory2.getId(),
+			taxonomyCategory3.getId());
 
 		Page<TaxonomyCategory> page1 =
 			taxonomyCategoryResource.getTaxonomyCategoryTaxonomyCategoriesPage(
@@ -576,6 +597,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			testGetTaxonomyCategoryTaxonomyCategoriesPage_addTaxonomyCategory(
 				parentTaxonomyCategoryId, taxonomyCategory2);
 
+		reindex(taxonomyCategory1.getId(), taxonomyCategory2.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyCategory> ascPage =
 				taxonomyCategoryResource.
@@ -652,10 +675,14 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		TaxonomyCategory taxonomyCategory =
 			testDeleteTaxonomyCategory_addTaxonomyCategory();
 
+		reindex(taxonomyCategory.getId());
+
 		assertHttpResponseStatusCode(
 			204,
 			taxonomyCategoryResource.deleteTaxonomyCategoryHttpResponse(
 				taxonomyCategory.getId()));
+
+		reindex(taxonomyCategory.getId());
 
 		assertHttpResponseStatusCode(
 			404,
@@ -689,6 +716,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 							"\"" + taxonomyCategory.getId() + "\"");
 					}
 				}));
+
+		reindex(taxonomyCategory.getId());
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -729,6 +758,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		TaxonomyCategory postTaxonomyCategory =
 			testGetTaxonomyCategory_addTaxonomyCategory();
 
+		reindex(postTaxonomyCategory.getId());
+
 		TaxonomyCategory getTaxonomyCategory =
 			taxonomyCategoryResource.getTaxonomyCategory(
 				postTaxonomyCategory.getId());
@@ -748,6 +779,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 	public void testGraphQLGetTaxonomyCategory() throws Exception {
 		TaxonomyCategory taxonomyCategory =
 			testGraphQLTaxonomyCategory_addTaxonomyCategory();
+
+		reindex(taxonomyCategory.getId());
 
 		List<GraphQLField> graphQLFields = getGraphQLFields();
 
@@ -792,6 +825,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 
 		_beanUtilsBean.copyProperties(
 			expectedPatchTaxonomyCategory, randomPatchTaxonomyCategory);
+
+		reindex(postTaxonomyCategory.getId());
 
 		TaxonomyCategory getTaxonomyCategory =
 			taxonomyCategoryResource.getTaxonomyCategory(
@@ -861,6 +896,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 					irrelevantTaxonomyVocabularyId,
 					randomIrrelevantTaxonomyCategory());
 
+			reindex(irrelevantTaxonomyCategory.getId());
+
 			page =
 				taxonomyCategoryResource.
 					getTaxonomyVocabularyTaxonomyCategoriesPage(
@@ -882,6 +919,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		TaxonomyCategory taxonomyCategory2 =
 			testGetTaxonomyVocabularyTaxonomyCategoriesPage_addTaxonomyCategory(
 				taxonomyVocabularyId, randomTaxonomyCategory());
+
+		reindex(taxonomyCategory1.getId(), taxonomyCategory2.getId());
 
 		page =
 			taxonomyCategoryResource.
@@ -923,6 +962,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			testGetTaxonomyVocabularyTaxonomyCategoriesPage_addTaxonomyCategory(
 				taxonomyVocabularyId, taxonomyCategory1);
 
+		reindex(taxonomyCategory1.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyCategory> page =
 				taxonomyCategoryResource.
@@ -961,6 +1002,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			testGetTaxonomyVocabularyTaxonomyCategoriesPage_addTaxonomyCategory(
 				taxonomyVocabularyId, randomTaxonomyCategory());
 
+		reindex(taxonomyCategory1.getId(), taxonomyCategory2.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyCategory> page =
 				taxonomyCategoryResource.
@@ -993,6 +1036,10 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		TaxonomyCategory taxonomyCategory3 =
 			testGetTaxonomyVocabularyTaxonomyCategoriesPage_addTaxonomyCategory(
 				taxonomyVocabularyId, randomTaxonomyCategory());
+
+		reindex(
+			taxonomyCategory1.getId(), taxonomyCategory2.getId(),
+			taxonomyCategory3.getId());
 
 		Page<TaxonomyCategory> page1 =
 			taxonomyCategoryResource.
@@ -1124,6 +1171,8 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 		taxonomyCategory2 =
 			testGetTaxonomyVocabularyTaxonomyCategoriesPage_addTaxonomyCategory(
 				taxonomyVocabularyId, taxonomyCategory2);
+
+		reindex(taxonomyCategory1.getId(), taxonomyCategory2.getId());
 
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyCategory> ascPage =
@@ -1987,6 +2036,26 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 
 	protected TaxonomyCategory randomPatchTaxonomyCategory() throws Exception {
 		return randomTaxonomyCategory();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected TaxonomyCategoryResource taxonomyCategoryResource;
