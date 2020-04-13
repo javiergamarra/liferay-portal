@@ -33,6 +33,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -65,6 +67,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -222,6 +225,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 					@SuppressWarnings("PMD.UnusedLocalVariable")
 					${schemaName} ${schemaVarName} = test${javaMethodSignature.methodName?cap_first}_add${schemaName}();
 
+					reindex(${schemaVarName}.getId());
+
 					assertHttpResponseStatusCode(204, ${schemaVarName}Resource.${javaMethodSignature.methodName}HttpResponse(
 
 					<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -243,6 +248,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 					</#list>
 
 					));
+
+					reindex(${schemaVarName}.getId());
 
 					<#if freeMarkerTool.hasJavaMethodSignature(javaMethodSignatures, "get" + javaMethodSignature.methodName?remove_beginning("delete"))>
 						assertHttpResponseStatusCode(404, ${schemaVarName}Resource.get${javaMethodSignature.methodName?remove_beginning("delete")}HttpResponse(
@@ -374,6 +381,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 							randomIrrelevant${schemaName}());
 
+							reindex(irrelevant${schemaName}.getId());
+
 							page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
 							<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -414,6 +423,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 					</#list>
 
 					random${schemaName}());
+
+					reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId());
 
 					page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -488,6 +499,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						${schemaVarName}1);
 
+						reindex(${schemaVarName}1.getId());
+
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -541,6 +554,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 						</#list>
 
 						random${schemaName}());
+
+						reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId());
 
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
@@ -598,6 +613,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 						</#list>
 
 						random${schemaName}());
+
+						reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId(), ${schemaVarName}3.getId());
 
 						Page<${schemaName}> page1 = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -744,6 +761,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						${schemaVarName}2);
 
+						reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId());
+
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> ascPage = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -847,6 +866,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 				<#if properties?keys?seq_contains("id")>
 					${schemaName} post${schemaName} = test${javaMethodSignature.methodName?cap_first}_add${schemaName}();
 
+					reindex(post${schemaName}.getId());
+
 					${schemaName} get${schemaName} = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
 					<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -924,6 +945,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 					${schemaName} expectedPatch${schemaName} = post${schemaName}.clone();
 
 					_beanUtilsBean.copyProperties(expectedPatch${schemaName}, randomPatch${schemaName});
+
+					reindex(post${schemaName}.getId());
 
 					${schemaName} get${schemaName} = ${schemaVarName}Resource.get${schemaName}(patch${schemaName}.getId());
 
@@ -1092,6 +1115,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 				@SuppressWarnings("PMD.UnusedLocalVariable")
 				${schemaName} ${schemaVarName} = test${javaMethodSignature.methodName?cap_first}_add${schemaName}();
 
+				reindex(${schemaVarName}.getId());
+
 				assertHttpResponseStatusCode(
 					204,
 					${schemaVarName}Resource.${javaMethodSignature.methodName}HttpResponse(
@@ -1119,6 +1144,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 							<#sep>, </#sep>
 						</#list>
 					));
+
+				reindex(${schemaVarName}.getId());
 
 				assertHttpResponseStatusCode(
 					404,
@@ -1206,6 +1233,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 								}
 							}));
 
+					reindex(${schemaVarName}.getId());
+
 					JSONObject jsonObject = JSONFactoryUtil.createJSONObject(invoke(graphQLField.toString()));
 
 					JSONObject dataJSONObject = jsonObject.getJSONObject("data");
@@ -1284,6 +1313,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 					${schemaName} ${schemaVarName}1 = testGraphQL${schemaName}_add${schemaName}();
 					${schemaName} ${schemaVarName}2 = testGraphQL${schemaName}_add${schemaName}();
 
+					reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId());
+
 					jsonObject = JSONFactoryUtil.createJSONObject(invoke(graphQLField.toString()));
 
 					dataJSONObject = jsonObject.getJSONObject("data");
@@ -1300,6 +1331,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 			public void testGraphQL${javaMethodSignature.methodName?cap_first}() throws Exception {
 				<#if properties?keys?seq_contains("id")>
 					${schemaName} ${schemaVarName} = testGraphQL${schemaName}_add${schemaName}();
+
+					reindex(${schemaVarName}.getId());
 
 					List<GraphQLField> graphQLFields = getGraphQLFields();
 
@@ -1364,6 +1397,9 @@ public abstract class Base${schemaName}ResourceTestCase {
 					${schemaName} post${schemaName} = testGet${schemaName}_add${schemaName}();
 
 					${relatedSchemaName} post${relatedSchemaName} = test${javaMethodSignature.methodName?cap_first}_add${relatedSchemaName}(post${schemaName}.getId(), random${relatedSchemaName}());
+
+					reindex(post${schemaName}.getId());
+					reindex(post${relatedSchemaName}.getId());
 
 					${relatedSchemaName} get${relatedSchemaName} = ${schemaVarName}Resource.${javaMethodSignature.methodName}(post${schemaName}.getId());
 
@@ -1974,6 +2010,18 @@ public abstract class Base${schemaName}ResourceTestCase {
 			};
 		}
 	</#list>
+
+	private void reindex(Object ... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(indexer -> {
+			try {
+				indexer.reindex(
+					Arrays.stream(ids).map(Object::toString).toArray(String[]::new));
+			}
+			catch (Throwable e) { }
+		});
+	}
 
 	protected ${schemaName}Resource ${schemaVarName}Resource;
 	protected Group irrelevantGroup;
