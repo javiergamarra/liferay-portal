@@ -805,7 +805,7 @@ public abstract class BaseDataListViewResourceTestCase {
 				getAdditionalAssertFieldNames()) {
 
 			if (Objects.equals("appliedFilters", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
+				if (!equals(
 						dataListView1.getAppliedFilters(),
 						dataListView2.getAppliedFilters())) {
 
@@ -870,9 +870,7 @@ public abstract class BaseDataListViewResourceTestCase {
 			}
 
 			if (Objects.equals("name", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
-						dataListView1.getName(), dataListView2.getName())) {
-
+				if (!equals(dataListView1.getName(), dataListView2.getName())) {
 					return false;
 				}
 
@@ -903,6 +901,28 @@ public abstract class BaseDataListViewResourceTestCase {
 			throw new IllegalArgumentException(
 				"Invalid additional assert field name " +
 					additionalAssertFieldName);
+		}
+
+		return true;
+	}
+
+	private boolean equals(Map<String, Object> map1, Map<String, Object> map2) {
+		if (map1.keySet().equals(map2.keySet())) {
+			for (Map.Entry<String, Object> entry : map1.entrySet()) {
+				if (entry.getValue() instanceof Map) {
+					if (!equals(
+							(Map)entry.getValue(),
+							(Map)map2.get(entry.getKey()))) {
+
+						return false;
+					}
+				}
+				else if (!Objects.deepEquals(
+							entry.getValue(), map2.get(entry.getKey()))) {
+
+					return false;
+				}
+			}
 		}
 
 		return true;
