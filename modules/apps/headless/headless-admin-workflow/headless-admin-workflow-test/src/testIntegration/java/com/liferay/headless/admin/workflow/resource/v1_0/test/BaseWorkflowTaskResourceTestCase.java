@@ -37,6 +37,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -59,6 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -235,6 +238,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			testGetWorkflowInstanceWorkflowTasksPage_addWorkflowTask(
 				workflowInstanceId, randomWorkflowTask());
 
+		reindex(testCompany.getCompanyId());
+
 		page = workflowTaskResource.getWorkflowInstanceWorkflowTasksPage(
 			workflowInstanceId, null, Pagination.of(1, 2));
 
@@ -264,6 +269,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 		WorkflowTask workflowTask3 =
 			testGetWorkflowInstanceWorkflowTasksPage_addWorkflowTask(
 				workflowInstanceId, randomWorkflowTask());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowTask> page1 =
 			workflowTaskResource.getWorkflowInstanceWorkflowTasksPage(
@@ -365,6 +372,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			testGetWorkflowInstanceWorkflowTasksAssignedToMePage_addWorkflowTask(
 				workflowInstanceId, randomWorkflowTask());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			workflowTaskResource.
 				getWorkflowInstanceWorkflowTasksAssignedToMePage(
@@ -396,6 +405,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 		WorkflowTask workflowTask3 =
 			testGetWorkflowInstanceWorkflowTasksAssignedToMePage_addWorkflowTask(
 				workflowInstanceId, randomWorkflowTask());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowTask> page1 =
 			workflowTaskResource.
@@ -500,6 +511,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			testGetWorkflowInstanceWorkflowTasksAssignedToUserPage_addWorkflowTask(
 				workflowInstanceId, randomWorkflowTask());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			workflowTaskResource.
 				getWorkflowInstanceWorkflowTasksAssignedToUserPage(
@@ -531,6 +544,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 		WorkflowTask workflowTask3 =
 			testGetWorkflowInstanceWorkflowTasksAssignedToUserPage_addWorkflowTask(
 				workflowInstanceId, randomWorkflowTask());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowTask> page1 =
 			workflowTaskResource.
@@ -645,6 +660,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			testGetWorkflowTasksAssignedToRolePage_addWorkflowTask(
 				randomWorkflowTask());
 
+		reindex(testCompany.getCompanyId());
+
 		page = workflowTaskResource.getWorkflowTasksAssignedToRolePage(
 			null, Pagination.of(1, 2));
 
@@ -671,6 +688,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 		WorkflowTask workflowTask3 =
 			testGetWorkflowTasksAssignedToRolePage_addWorkflowTask(
 				randomWorkflowTask());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowTask> page1 =
 			workflowTaskResource.getWorkflowTasksAssignedToRolePage(
@@ -728,6 +747,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			testGetWorkflowTasksAssignedToUserPage_addWorkflowTask(
 				randomWorkflowTask());
 
+		reindex(testCompany.getCompanyId());
+
 		page = workflowTaskResource.getWorkflowTasksAssignedToUserPage(
 			null, Pagination.of(1, 2));
 
@@ -754,6 +775,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 		WorkflowTask workflowTask3 =
 			testGetWorkflowTasksAssignedToUserPage_addWorkflowTask(
 				randomWorkflowTask());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowTask> page1 =
 			workflowTaskResource.getWorkflowTasksAssignedToUserPage(
@@ -811,6 +834,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			testGetWorkflowTasksAssignedToUserRolesPage_addWorkflowTask(
 				randomWorkflowTask());
 
+		reindex(testCompany.getCompanyId());
+
 		page = workflowTaskResource.getWorkflowTasksAssignedToUserRolesPage(
 			null, Pagination.of(1, 2));
 
@@ -837,6 +862,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 		WorkflowTask workflowTask3 =
 			testGetWorkflowTasksAssignedToUserRolesPage_addWorkflowTask(
 				randomWorkflowTask());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowTask> page1 =
 			workflowTaskResource.getWorkflowTasksAssignedToUserRolesPage(
@@ -919,6 +946,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 			testGetWorkflowTasksSubmittingUserPage_addWorkflowTask(
 				randomWorkflowTask());
 
+		reindex(testCompany.getCompanyId());
+
 		page = workflowTaskResource.getWorkflowTasksSubmittingUserPage(
 			null, Pagination.of(1, 2));
 
@@ -945,6 +974,8 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 		WorkflowTask workflowTask3 =
 			testGetWorkflowTasksSubmittingUserPage_addWorkflowTask(
 				randomWorkflowTask());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowTask> page1 =
 			workflowTaskResource.getWorkflowTasksSubmittingUserPage(
@@ -1974,6 +2005,26 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 
 	protected WorkflowTask randomPatchWorkflowTask() throws Exception {
 		return randomWorkflowTask();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected WorkflowTaskResource workflowTaskResource;

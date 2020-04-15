@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -64,6 +66,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -232,6 +235,8 @@ public abstract class BaseAccountRoleResourceTestCase {
 		AccountRole accountRole2 = testGetAccountRolesPage_addAccountRole(
 			accountId, randomAccountRole());
 
+		reindex(accountRole1.getId(), accountRole2.getId());
+
 		page = accountRoleResource.getAccountRolesPage(
 			accountId, null, Pagination.of(1, 2), null);
 
@@ -255,6 +260,9 @@ public abstract class BaseAccountRoleResourceTestCase {
 
 		AccountRole accountRole3 = testGetAccountRolesPage_addAccountRole(
 			accountId, randomAccountRole());
+
+		reindex(
+			accountRole1.getId(), accountRole2.getId(), accountRole3.getId());
 
 		Page<AccountRole> page1 = accountRoleResource.getAccountRolesPage(
 			accountId, null, Pagination.of(1, 2), null);
@@ -360,6 +368,8 @@ public abstract class BaseAccountRoleResourceTestCase {
 		accountRole2 = testGetAccountRolesPage_addAccountRole(
 			accountId, accountRole2);
 
+		reindex(accountRole1.getId(), accountRole2.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<AccountRole> ascPage = accountRoleResource.getAccountRolesPage(
 				accountId, null, Pagination.of(1, 2),
@@ -436,6 +446,8 @@ public abstract class BaseAccountRoleResourceTestCase {
 
 		AccountRole accountRole1 = testGraphQLAccountRole_addAccountRole();
 		AccountRole accountRole2 = testGraphQLAccountRole_addAccountRole();
+
+		reindex(accountRole1.getId(), accountRole2.getId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -971,6 +983,26 @@ public abstract class BaseAccountRoleResourceTestCase {
 
 	protected AccountRole randomPatchAccountRole() throws Exception {
 		return randomAccountRole();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected AccountRoleResource accountRoleResource;

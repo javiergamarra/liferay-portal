@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -66,6 +68,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -231,6 +234,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment2 = testGetBlogPostingCommentsPage_addComment(
 			blogPostingId, randomComment());
 
+		reindex(testCompany.getCompanyId());
+
 		page = commentResource.getBlogPostingCommentsPage(
 			blogPostingId, null, null, Pagination.of(1, 2), null);
 
@@ -262,6 +267,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		comment1 = testGetBlogPostingCommentsPage_addComment(
 			blogPostingId, comment1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Comment> page = commentResource.getBlogPostingCommentsPage(
@@ -295,6 +302,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment2 = testGetBlogPostingCommentsPage_addComment(
 			blogPostingId, randomComment());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Comment> page = commentResource.getBlogPostingCommentsPage(
 				blogPostingId, null,
@@ -321,6 +330,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		Comment comment3 = testGetBlogPostingCommentsPage_addComment(
 			blogPostingId, randomComment());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Comment> page1 = commentResource.getBlogPostingCommentsPage(
 			blogPostingId, null, null, Pagination.of(1, 2), null);
@@ -431,6 +442,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		comment2 = testGetBlogPostingCommentsPage_addComment(
 			blogPostingId, comment2);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Comment> ascPage = commentResource.getBlogPostingCommentsPage(
@@ -653,6 +666,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment2 = testGetCommentCommentsPage_addComment(
 			parentCommentId, randomComment());
 
+		reindex(testCompany.getCompanyId());
+
 		page = commentResource.getCommentCommentsPage(
 			parentCommentId, null, null, Pagination.of(1, 2), null);
 
@@ -684,6 +699,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		comment1 = testGetCommentCommentsPage_addComment(
 			parentCommentId, comment1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Comment> page = commentResource.getCommentCommentsPage(
@@ -717,6 +734,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment2 = testGetCommentCommentsPage_addComment(
 			parentCommentId, randomComment());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Comment> page = commentResource.getCommentCommentsPage(
 				parentCommentId, null,
@@ -741,6 +760,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		Comment comment3 = testGetCommentCommentsPage_addComment(
 			parentCommentId, randomComment());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Comment> page1 = commentResource.getCommentCommentsPage(
 			parentCommentId, null, null, Pagination.of(1, 2), null);
@@ -846,6 +867,8 @@ public abstract class BaseCommentResourceTestCase {
 		comment2 = testGetCommentCommentsPage_addComment(
 			parentCommentId, comment2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Comment> ascPage = commentResource.getCommentCommentsPage(
 				parentCommentId, null, null, Pagination.of(1, 2),
@@ -935,6 +958,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment2 = testGetDocumentCommentsPage_addComment(
 			documentId, randomComment());
 
+		reindex(testCompany.getCompanyId());
+
 		page = commentResource.getDocumentCommentsPage(
 			documentId, null, null, Pagination.of(1, 2), null);
 
@@ -965,6 +990,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment1 = randomComment();
 
 		comment1 = testGetDocumentCommentsPage_addComment(documentId, comment1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Comment> page = commentResource.getDocumentCommentsPage(
@@ -998,6 +1025,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment2 = testGetDocumentCommentsPage_addComment(
 			documentId, randomComment());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Comment> page = commentResource.getDocumentCommentsPage(
 				documentId, null, getFilterString(entityField, "eq", comment1),
@@ -1021,6 +1050,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		Comment comment3 = testGetDocumentCommentsPage_addComment(
 			documentId, randomComment());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Comment> page1 = commentResource.getDocumentCommentsPage(
 			documentId, null, null, Pagination.of(1, 2), null);
@@ -1124,6 +1155,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		comment2 = testGetDocumentCommentsPage_addComment(documentId, comment2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Comment> ascPage = commentResource.getDocumentCommentsPage(
 				documentId, null, null, Pagination.of(1, 2),
@@ -1216,6 +1249,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment2 = testGetStructuredContentCommentsPage_addComment(
 			structuredContentId, randomComment());
 
+		reindex(testCompany.getCompanyId());
+
 		page = commentResource.getStructuredContentCommentsPage(
 			structuredContentId, null, null, Pagination.of(1, 2), null);
 
@@ -1248,6 +1283,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		comment1 = testGetStructuredContentCommentsPage_addComment(
 			structuredContentId, comment1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Comment> page =
@@ -1283,6 +1320,8 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment2 = testGetStructuredContentCommentsPage_addComment(
 			structuredContentId, randomComment());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Comment> page =
 				commentResource.getStructuredContentCommentsPage(
@@ -1311,6 +1350,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		Comment comment3 = testGetStructuredContentCommentsPage_addComment(
 			structuredContentId, randomComment());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Comment> page1 = commentResource.getStructuredContentCommentsPage(
 			structuredContentId, null, null, Pagination.of(1, 2), null);
@@ -1422,6 +1463,8 @@ public abstract class BaseCommentResourceTestCase {
 
 		comment2 = testGetStructuredContentCommentsPage_addComment(
 			structuredContentId, comment2);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Comment> ascPage =
@@ -1996,6 +2039,26 @@ public abstract class BaseCommentResourceTestCase {
 
 	protected Comment randomPatchComment() throws Exception {
 		return randomComment();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected CommentResource commentResource;

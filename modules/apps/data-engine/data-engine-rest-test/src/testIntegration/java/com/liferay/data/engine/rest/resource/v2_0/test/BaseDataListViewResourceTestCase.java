@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -66,6 +68,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -235,6 +238,8 @@ public abstract class BaseDataListViewResourceTestCase {
 			testGetDataDefinitionDataListViewsPage_addDataListView(
 				dataDefinitionId, randomDataListView());
 
+		reindex(dataListView1.getId(), dataListView2.getId());
+
 		page = dataListViewResource.getDataDefinitionDataListViewsPage(
 			dataDefinitionId, null, Pagination.of(1, 2), null);
 
@@ -268,6 +273,10 @@ public abstract class BaseDataListViewResourceTestCase {
 		DataListView dataListView3 =
 			testGetDataDefinitionDataListViewsPage_addDataListView(
 				dataDefinitionId, randomDataListView());
+
+		reindex(
+			dataListView1.getId(), dataListView2.getId(),
+			dataListView3.getId());
 
 		Page<DataListView> page1 =
 			dataListViewResource.getDataDefinitionDataListViewsPage(
@@ -387,6 +396,8 @@ public abstract class BaseDataListViewResourceTestCase {
 
 		dataListView2 = testGetDataDefinitionDataListViewsPage_addDataListView(
 			dataDefinitionId, dataListView2);
+
+		reindex(dataListView1.getId(), dataListView2.getId());
 
 		for (EntityField entityField : entityFields) {
 			Page<DataListView> ascPage =
@@ -1166,6 +1177,26 @@ public abstract class BaseDataListViewResourceTestCase {
 
 	protected DataListView randomPatchDataListView() throws Exception {
 		return randomDataListView();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected DataListViewResource dataListViewResource;

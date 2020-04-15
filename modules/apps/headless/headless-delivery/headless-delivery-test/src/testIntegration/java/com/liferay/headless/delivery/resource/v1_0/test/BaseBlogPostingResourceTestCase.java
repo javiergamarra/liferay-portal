@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -68,6 +70,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -437,6 +440,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 		BlogPosting blogPosting2 = testGetSiteBlogPostingsPage_addBlogPosting(
 			siteId, randomBlogPosting());
 
+		reindex(testCompany.getCompanyId());
+
 		page = blogPostingResource.getSiteBlogPostingsPage(
 			siteId, null, null, Pagination.of(1, 2), null);
 
@@ -469,6 +474,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 
 		blogPosting1 = testGetSiteBlogPostingsPage_addBlogPosting(
 			siteId, blogPosting1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<BlogPosting> page =
@@ -503,6 +510,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 		BlogPosting blogPosting2 = testGetSiteBlogPostingsPage_addBlogPosting(
 			siteId, randomBlogPosting());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<BlogPosting> page =
 				blogPostingResource.getSiteBlogPostingsPage(
@@ -528,6 +537,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 
 		BlogPosting blogPosting3 = testGetSiteBlogPostingsPage_addBlogPosting(
 			siteId, randomBlogPosting());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<BlogPosting> page1 = blogPostingResource.getSiteBlogPostingsPage(
 			siteId, null, null, Pagination.of(1, 2), null);
@@ -633,6 +644,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 		blogPosting2 = testGetSiteBlogPostingsPage_addBlogPosting(
 			siteId, blogPosting2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<BlogPosting> ascPage =
 				blogPostingResource.getSiteBlogPostingsPage(
@@ -709,6 +722,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 
 		BlogPosting blogPosting1 = testGraphQLBlogPosting_addBlogPosting();
 		BlogPosting blogPosting2 = testGraphQLBlogPosting_addBlogPosting();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -2203,6 +2218,26 @@ public abstract class BaseBlogPostingResourceTestCase {
 				worstRating = RandomTestUtil.randomDouble();
 			}
 		};
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected BlogPostingResource blogPostingResource;

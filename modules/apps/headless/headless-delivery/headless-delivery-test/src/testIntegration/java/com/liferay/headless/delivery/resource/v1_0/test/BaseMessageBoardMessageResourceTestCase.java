@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -67,6 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -535,6 +538,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetMessageBoardMessageMessageBoardMessagesPage_addMessageBoardMessage(
 				parentMessageBoardMessageId, randomMessageBoardMessage());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			messageBoardMessageResource.
 				getMessageBoardMessageMessageBoardMessagesPage(
@@ -575,6 +580,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetMessageBoardMessageMessageBoardMessagesPage_addMessageBoardMessage(
 				parentMessageBoardMessageId, messageBoardMessage1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> page =
 				messageBoardMessageResource.
@@ -613,6 +620,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetMessageBoardMessageMessageBoardMessagesPage_addMessageBoardMessage(
 				parentMessageBoardMessageId, randomMessageBoardMessage());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> page =
 				messageBoardMessageResource.
@@ -646,6 +655,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 		MessageBoardMessage messageBoardMessage3 =
 			testGetMessageBoardMessageMessageBoardMessagesPage_addMessageBoardMessage(
 				parentMessageBoardMessageId, randomMessageBoardMessage());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<MessageBoardMessage> page1 =
 			messageBoardMessageResource.
@@ -779,6 +790,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetMessageBoardMessageMessageBoardMessagesPage_addMessageBoardMessage(
 				parentMessageBoardMessageId, messageBoardMessage2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> ascPage =
 				messageBoardMessageResource.
@@ -900,6 +913,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetMessageBoardThreadMessageBoardMessagesPage_addMessageBoardMessage(
 				messageBoardThreadId, randomMessageBoardMessage());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			messageBoardMessageResource.
 				getMessageBoardThreadMessageBoardMessagesPage(
@@ -940,6 +955,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetMessageBoardThreadMessageBoardMessagesPage_addMessageBoardMessage(
 				messageBoardThreadId, messageBoardMessage1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> page =
 				messageBoardMessageResource.
@@ -978,6 +995,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetMessageBoardThreadMessageBoardMessagesPage_addMessageBoardMessage(
 				messageBoardThreadId, randomMessageBoardMessage());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> page =
 				messageBoardMessageResource.
@@ -1011,6 +1030,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 		MessageBoardMessage messageBoardMessage3 =
 			testGetMessageBoardThreadMessageBoardMessagesPage_addMessageBoardMessage(
 				messageBoardThreadId, randomMessageBoardMessage());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<MessageBoardMessage> page1 =
 			messageBoardMessageResource.
@@ -1144,6 +1165,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetMessageBoardThreadMessageBoardMessagesPage_addMessageBoardMessage(
 				messageBoardThreadId, messageBoardMessage2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> ascPage =
 				messageBoardMessageResource.
@@ -1256,6 +1279,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetSiteMessageBoardMessagesPage_addMessageBoardMessage(
 				siteId, randomMessageBoardMessage());
 
+		reindex(testCompany.getCompanyId());
+
 		page = messageBoardMessageResource.getSiteMessageBoardMessagesPage(
 			siteId, null, null, null, Pagination.of(1, 2), null);
 
@@ -1291,6 +1316,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 		messageBoardMessage1 =
 			testGetSiteMessageBoardMessagesPage_addMessageBoardMessage(
 				siteId, messageBoardMessage1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> page =
@@ -1328,6 +1355,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetSiteMessageBoardMessagesPage_addMessageBoardMessage(
 				siteId, randomMessageBoardMessage());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> page =
 				messageBoardMessageResource.getSiteMessageBoardMessagesPage(
@@ -1358,6 +1387,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 		MessageBoardMessage messageBoardMessage3 =
 			testGetSiteMessageBoardMessagesPage_addMessageBoardMessage(
 				siteId, randomMessageBoardMessage());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<MessageBoardMessage> page1 =
 			messageBoardMessageResource.getSiteMessageBoardMessagesPage(
@@ -1484,6 +1515,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGetSiteMessageBoardMessagesPage_addMessageBoardMessage(
 				siteId, messageBoardMessage2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardMessage> ascPage =
 				messageBoardMessageResource.getSiteMessageBoardMessagesPage(
@@ -1567,6 +1600,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			testGraphQLMessageBoardMessage_addMessageBoardMessage();
 		MessageBoardMessage messageBoardMessage2 =
 			testGraphQLMessageBoardMessage_addMessageBoardMessage();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -2973,6 +3008,26 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 				worstRating = RandomTestUtil.randomDouble();
 			}
 		};
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected MessageBoardMessageResource messageBoardMessageResource;

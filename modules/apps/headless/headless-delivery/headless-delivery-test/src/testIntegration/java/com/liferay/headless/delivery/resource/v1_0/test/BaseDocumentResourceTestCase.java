@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -70,6 +72,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -245,6 +248,8 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document2 = testGetDocumentFolderDocumentsPage_addDocument(
 			documentFolderId, randomDocument());
 
+		reindex(testCompany.getCompanyId());
+
 		page = documentResource.getDocumentFolderDocumentsPage(
 			documentFolderId, null, null, null, Pagination.of(1, 2), null);
 
@@ -278,6 +283,8 @@ public abstract class BaseDocumentResourceTestCase {
 
 		document1 = testGetDocumentFolderDocumentsPage_addDocument(
 			documentFolderId, document1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Document> page =
@@ -313,6 +320,8 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document2 = testGetDocumentFolderDocumentsPage_addDocument(
 			documentFolderId, randomDocument());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Document> page =
 				documentResource.getDocumentFolderDocumentsPage(
@@ -341,6 +350,8 @@ public abstract class BaseDocumentResourceTestCase {
 
 		Document document3 = testGetDocumentFolderDocumentsPage_addDocument(
 			documentFolderId, randomDocument());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Document> page1 = documentResource.getDocumentFolderDocumentsPage(
 			documentFolderId, null, null, null, Pagination.of(1, 2), null);
@@ -452,6 +463,8 @@ public abstract class BaseDocumentResourceTestCase {
 
 		document2 = testGetDocumentFolderDocumentsPage_addDocument(
 			documentFolderId, document2);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Document> ascPage =
@@ -744,6 +757,8 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document2 = testGetSiteDocumentsPage_addDocument(
 			siteId, randomDocument());
 
+		reindex(testCompany.getCompanyId());
+
 		page = documentResource.getSiteDocumentsPage(
 			siteId, null, null, null, Pagination.of(1, 2), null);
 
@@ -775,6 +790,8 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document1 = randomDocument();
 
 		document1 = testGetSiteDocumentsPage_addDocument(siteId, document1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Document> page = documentResource.getSiteDocumentsPage(
@@ -808,6 +825,8 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document2 = testGetSiteDocumentsPage_addDocument(
 			siteId, randomDocument());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Document> page = documentResource.getSiteDocumentsPage(
 				siteId, null, null,
@@ -832,6 +851,8 @@ public abstract class BaseDocumentResourceTestCase {
 
 		Document document3 = testGetSiteDocumentsPage_addDocument(
 			siteId, randomDocument());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Document> page1 = documentResource.getSiteDocumentsPage(
 			siteId, null, null, null, Pagination.of(1, 2), null);
@@ -935,6 +956,8 @@ public abstract class BaseDocumentResourceTestCase {
 
 		document2 = testGetSiteDocumentsPage_addDocument(siteId, document2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Document> ascPage = documentResource.getSiteDocumentsPage(
 				siteId, null, null, null, Pagination.of(1, 2),
@@ -1010,6 +1033,8 @@ public abstract class BaseDocumentResourceTestCase {
 
 		Document document1 = testGraphQLDocument_addDocument();
 		Document document2 = testGraphQLDocument_addDocument();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -2408,6 +2433,26 @@ public abstract class BaseDocumentResourceTestCase {
 				worstRating = RandomTestUtil.randomDouble();
 			}
 		};
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected DocumentResource documentResource;

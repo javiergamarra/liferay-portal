@@ -223,8 +223,6 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 				testGetSiteTaxonomyVocabulariesPage_addTaxonomyVocabulary(
 					irrelevantSiteId, randomIrrelevantTaxonomyVocabulary());
 
-			reindex(irrelevantTaxonomyVocabulary.getId());
-
 			page = taxonomyVocabularyResource.getSiteTaxonomyVocabulariesPage(
 				irrelevantSiteId, null, null, Pagination.of(1, 2), null);
 
@@ -244,7 +242,7 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 			testGetSiteTaxonomyVocabulariesPage_addTaxonomyVocabulary(
 				siteId, randomTaxonomyVocabulary());
 
-		reindex(taxonomyVocabulary1.getId(), taxonomyVocabulary2.getId());
+		reindex(testCompany.getCompanyId());
 
 		page = taxonomyVocabularyResource.getSiteTaxonomyVocabulariesPage(
 			siteId, null, null, Pagination.of(1, 2), null);
@@ -282,7 +280,7 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 			testGetSiteTaxonomyVocabulariesPage_addTaxonomyVocabulary(
 				siteId, taxonomyVocabulary1);
 
-		reindex(taxonomyVocabulary1.getId());
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyVocabulary> page =
@@ -320,7 +318,7 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 			testGetSiteTaxonomyVocabulariesPage_addTaxonomyVocabulary(
 				siteId, randomTaxonomyVocabulary());
 
-		reindex(taxonomyVocabulary1.getId(), taxonomyVocabulary2.getId());
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyVocabulary> page =
@@ -353,9 +351,7 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 			testGetSiteTaxonomyVocabulariesPage_addTaxonomyVocabulary(
 				siteId, randomTaxonomyVocabulary());
 
-		reindex(
-			taxonomyVocabulary1.getId(), taxonomyVocabulary2.getId(),
-			taxonomyVocabulary3.getId());
+		reindex(testCompany.getCompanyId());
 
 		Page<TaxonomyVocabulary> page1 =
 			taxonomyVocabularyResource.getSiteTaxonomyVocabulariesPage(
@@ -481,7 +477,7 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 			testGetSiteTaxonomyVocabulariesPage_addTaxonomyVocabulary(
 				siteId, taxonomyVocabulary2);
 
-		reindex(taxonomyVocabulary1.getId(), taxonomyVocabulary2.getId());
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<TaxonomyVocabulary> ascPage =
@@ -567,7 +563,7 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 		TaxonomyVocabulary taxonomyVocabulary2 =
 			testGraphQLTaxonomyVocabulary_addTaxonomyVocabulary();
 
-		reindex(taxonomyVocabulary1.getId(), taxonomyVocabulary2.getId());
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -630,14 +626,10 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 		TaxonomyVocabulary taxonomyVocabulary =
 			testDeleteTaxonomyVocabulary_addTaxonomyVocabulary();
 
-		reindex(taxonomyVocabulary.getId());
-
 		assertHttpResponseStatusCode(
 			204,
 			taxonomyVocabularyResource.deleteTaxonomyVocabularyHttpResponse(
 				taxonomyVocabulary.getId()));
-
-		reindex(taxonomyVocabulary.getId());
 
 		assertHttpResponseStatusCode(
 			404,
@@ -671,8 +663,6 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 						put("taxonomyVocabularyId", taxonomyVocabulary.getId());
 					}
 				}));
-
-		reindex(taxonomyVocabulary.getId());
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -714,8 +704,6 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 		TaxonomyVocabulary postTaxonomyVocabulary =
 			testGetTaxonomyVocabulary_addTaxonomyVocabulary();
 
-		reindex(postTaxonomyVocabulary.getId());
-
 		TaxonomyVocabulary getTaxonomyVocabulary =
 			taxonomyVocabularyResource.getTaxonomyVocabulary(
 				postTaxonomyVocabulary.getId());
@@ -736,8 +724,6 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 	public void testGraphQLGetTaxonomyVocabulary() throws Exception {
 		TaxonomyVocabulary taxonomyVocabulary =
 			testGraphQLTaxonomyVocabulary_addTaxonomyVocabulary();
-
-		reindex(taxonomyVocabulary.getId());
 
 		List<GraphQLField> graphQLFields = getGraphQLFields();
 
@@ -780,8 +766,6 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 
 		_beanUtilsBean.copyProperties(
 			expectedPatchTaxonomyVocabulary, randomPatchTaxonomyVocabulary);
-
-		reindex(postTaxonomyVocabulary.getId());
 
 		TaxonomyVocabulary getTaxonomyVocabulary =
 			taxonomyVocabularyResource.getTaxonomyVocabulary(
