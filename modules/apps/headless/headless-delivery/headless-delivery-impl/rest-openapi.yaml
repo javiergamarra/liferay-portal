@@ -2579,7 +2579,7 @@ components:
             type: object
 info:
     description:
-        ""
+        "For Java, you can use com.liferay.headless.delivery.client, version 2.0.1"
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"

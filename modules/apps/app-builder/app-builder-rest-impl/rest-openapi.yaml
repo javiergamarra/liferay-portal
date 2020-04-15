@@ -51,7 +51,7 @@ components:
             type: string
 info:
     description:
-        ""
+        "For Java, you can use com.liferay.app.builder.rest.client, version 1.0.0"
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"

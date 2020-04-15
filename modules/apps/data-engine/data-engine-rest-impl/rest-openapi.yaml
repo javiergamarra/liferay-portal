@@ -275,7 +275,7 @@ components:
             type: object
 info:
     description:
-        ""
+        "For Java, you can use com.liferay.data.engine.rest.client, version 2.0.10"
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"

@@ -45,7 +45,7 @@ import org.osgi.service.component.annotations.Reference;
 )
 @Generated("")
 @OpenAPIDefinition(
-	info = @Info(description = "", license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html"), title = "Data Engine", version = "v2.0")
+	info = @Info(description = "For Java, you can use com.liferay.data.engine.rest.client, version 2.0.10", license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html"), title = "Data Engine", version = "v2.0")
 )
 @Path("/v2.0")
 public class OpenAPIResourceImpl {
