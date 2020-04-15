@@ -225,8 +225,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 					@SuppressWarnings("PMD.UnusedLocalVariable")
 					${schemaName} ${schemaVarName} = test${javaMethodSignature.methodName?cap_first}_add${schemaName}();
 
-					reindex(${schemaVarName}.getId());
-
 					assertHttpResponseStatusCode(204, ${schemaVarName}Resource.${javaMethodSignature.methodName}HttpResponse(
 
 					<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -248,8 +246,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 					</#list>
 
 					));
-
-					reindex(${schemaVarName}.getId());
 
 					<#if freeMarkerTool.hasJavaMethodSignature(javaMethodSignatures, "get" + javaMethodSignature.methodName?remove_beginning("delete"))>
 						assertHttpResponseStatusCode(404, ${schemaVarName}Resource.get${javaMethodSignature.methodName?remove_beginning("delete")}HttpResponse(
@@ -381,8 +377,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 							randomIrrelevant${schemaName}());
 
-							reindex(irrelevant${schemaName}.getId());
-
 							page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
 							<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -424,7 +418,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 					random${schemaName}());
 
-					reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId());
+					reindex(testCompany.getCompanyId());
 
 					page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -499,7 +493,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						${schemaVarName}1);
 
-						reindex(${schemaVarName}1.getId());
+						reindex(testCompany.getCompanyId());
 
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
@@ -555,7 +549,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						random${schemaName}());
 
-						reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId());
+						reindex(testCompany.getCompanyId());
 
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
@@ -614,7 +608,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						random${schemaName}());
 
-						reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId(), ${schemaVarName}3.getId());
+						reindex(testCompany.getCompanyId());
 
 						Page<${schemaName}> page1 = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -761,7 +755,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						${schemaVarName}2);
 
-						reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId());
+						reindex(testCompany.getCompanyId());
 
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> ascPage = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
@@ -866,8 +860,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 				<#if properties?keys?seq_contains("id")>
 					${schemaName} post${schemaName} = test${javaMethodSignature.methodName?cap_first}_add${schemaName}();
 
-					reindex(post${schemaName}.getId());
-
 					${schemaName} get${schemaName} = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
 					<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -945,8 +937,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 					${schemaName} expectedPatch${schemaName} = post${schemaName}.clone();
 
 					_beanUtilsBean.copyProperties(expectedPatch${schemaName}, randomPatch${schemaName});
-
-					reindex(post${schemaName}.getId());
 
 					${schemaName} get${schemaName} = ${schemaVarName}Resource.get${schemaName}(patch${schemaName}.getId());
 
@@ -1115,8 +1105,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 				@SuppressWarnings("PMD.UnusedLocalVariable")
 				${schemaName} ${schemaVarName} = test${javaMethodSignature.methodName?cap_first}_add${schemaName}();
 
-				reindex(${schemaVarName}.getId());
-
 				assertHttpResponseStatusCode(
 					204,
 					${schemaVarName}Resource.${javaMethodSignature.methodName}HttpResponse(
@@ -1144,8 +1132,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 							<#sep>, </#sep>
 						</#list>
 					));
-
-				reindex(${schemaVarName}.getId());
 
 				assertHttpResponseStatusCode(
 					404,
@@ -1233,8 +1219,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 								}
 							}));
 
-					reindex(${schemaVarName}.getId());
-
 					JSONObject jsonObject = JSONFactoryUtil.createJSONObject(invoke(graphQLField.toString()));
 
 					JSONObject dataJSONObject = jsonObject.getJSONObject("data");
@@ -1313,7 +1297,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 					${schemaName} ${schemaVarName}1 = testGraphQL${schemaName}_add${schemaName}();
 					${schemaName} ${schemaVarName}2 = testGraphQL${schemaName}_add${schemaName}();
 
-					reindex(${schemaVarName}1.getId(), ${schemaVarName}2.getId());
+					reindex(testCompany.getCompanyId());
 
 					jsonObject = JSONFactoryUtil.createJSONObject(invoke(graphQLField.toString()));
 
@@ -1331,8 +1315,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 			public void testGraphQL${javaMethodSignature.methodName?cap_first}() throws Exception {
 				<#if properties?keys?seq_contains("id")>
 					${schemaName} ${schemaVarName} = testGraphQL${schemaName}_add${schemaName}();
-
-					reindex(${schemaVarName}.getId());
 
 					List<GraphQLField> graphQLFields = getGraphQLFields();
 
@@ -1397,9 +1379,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 					${schemaName} post${schemaName} = testGet${schemaName}_add${schemaName}();
 
 					${relatedSchemaName} post${relatedSchemaName} = test${javaMethodSignature.methodName?cap_first}_add${relatedSchemaName}(post${schemaName}.getId(), random${relatedSchemaName}());
-
-					reindex(post${schemaName}.getId());
-					reindex(post${relatedSchemaName}.getId());
 
 					${relatedSchemaName} get${relatedSchemaName} = ${schemaVarName}Resource.${javaMethodSignature.methodName}(post${schemaName}.getId());
 
