@@ -44,8 +44,6 @@ import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -88,69 +86,67 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 			});
 		_accountUserResource.setContextCompany(testCompany);
 		_accountUserResource.setContextUser(companyAdminUser);
+
+		_account = _accountResource.postAccount(_randomAccount());
+		_irrelevantAccount = _accountResource.postAccount(_randomAccount());
 	}
 
 	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
 
-		_deleteAccounts(_accounts);
+		_deleteAccounts(_account, _irrelevantAccount);
 		_deleteAccountUsers(_accountUsers);
 	}
 
 	@Override
 	public void testDeleteAccountRoleUserAssociation() throws Exception {
-		Account account = _addAccount();
-
-		AccountRole accountRole = _addAccountRole(account);
-		AccountUser accountUser = _addAccountUser(account);
+		AccountRole accountRole = _addAccountRole(_account);
+		AccountUser accountUser = _addAccountUser(_account);
 
 		_assertAccountRoleUserAssociation(
-			account, accountRole, accountUser, false);
+			_account, accountRole, accountUser, false);
 
 		_accountRoleLocalService.associateUser(
-			account.getId(), accountRole.getId(), accountUser.getId());
+			_account.getId(), accountRole.getId(), accountUser.getId());
 
 		_assertAccountRoleUserAssociation(
-			account, accountRole, accountUser, true);
+			_account, accountRole, accountUser, true);
 
 		assertHttpResponseStatusCode(
 			204,
 			accountRoleResource.deleteAccountRoleUserAssociationHttpResponse(
-				account.getId(), accountRole.getId(), accountUser.getId()));
+				_account.getId(), accountRole.getId(), accountUser.getId()));
 
 		_assertAccountRoleUserAssociation(
-			account, accountRole, accountUser, false);
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetAccountRolesPage() throws Exception {
+			_account, accountRole, accountUser, false);
 	}
 
 	@Override
 	public void testPostAccountRoleUserAssociation() throws Exception {
-		Account account = _addAccount();
-
-		AccountRole accountRole = _addAccountRole(account);
-		AccountUser accountUser = _addAccountUser(account);
+		AccountRole accountRole = _addAccountRole(_account);
+		AccountUser accountUser = _addAccountUser(_account);
 
 		_assertAccountRoleUserAssociation(
-			account, accountRole, accountUser, false);
+			_account, accountRole, accountUser, false);
 
 		assertHttpResponseStatusCode(
 			204,
 			accountRoleResource.postAccountRoleUserAssociationHttpResponse(
-				account.getId(), accountRole.getId(), accountUser.getId()));
+				_account.getId(), accountRole.getId(), accountUser.getId()));
 
 		_assertAccountRoleUserAssociation(
-			account, accountRole, accountUser, true);
+			_account, accountRole, accountUser, true);
 
 		assertHttpResponseStatusCode(
 			404,
 			accountRoleResource.postAccountRoleUserAssociationHttpResponse(
-				account.getId(), 0L, accountUser.getId()));
+				_account.getId(), 0L, accountUser.getId()));
+	}
+
+	@Override
+	protected String[] getAdditionalAssertFieldNames() {
+		return new String[] {"name"};
 	}
 
 	protected AccountUser randomAccountUser() {
@@ -180,29 +176,21 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	}
 
 	@Override
-	protected Long testGetAccountRolesPage_getAccountId() throws Exception {
-		Account account = _addAccount();
-
-		return account.getId();
+	protected Long testGetAccountRolesPage_getAccountId() {
+		return _account.getId();
 	}
 
 	@Override
-	protected Long testGetAccountRolesPage_getIrrelevantAccountId()
-		throws Exception {
-
-		Account account = _addAccount();
-
-		return account.getId();
+	protected Long testGetAccountRolesPage_getIrrelevantAccountId() {
+		return _irrelevantAccount.getId();
 	}
 
 	@Override
 	protected AccountRole testGraphQLAccountRole_addAccountRole()
 		throws Exception {
 
-		Account account = _addAccount();
-
 		return accountRoleResource.postAccountRole(
-			account.getId(), randomAccountRole());
+			_account.getId(), randomAccountRole());
 	}
 
 	@Override
@@ -210,18 +198,8 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 			AccountRole accountRole)
 		throws Exception {
 
-		Account account = _addAccount();
-
 		return accountRoleResource.postAccountRole(
-			account.getId(), accountRole);
-	}
-
-	private Account _addAccount() throws Exception {
-		Account account = _accountResource.postAccount(_randomAccount());
-
-		_accounts.add(account);
-
-		return account;
+			_account.getId(), accountRole);
 	}
 
 	private AccountRole _addAccountRole(Account account) throws Exception {
@@ -259,15 +237,15 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 		}
 	}
 
-	private void _deleteAccounts(List<Account> accounts) {
-		for (Account account : accounts) {
-			try {
-				_accountEntryLocalService.deleteAccountEntry(account.getId());
-			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception, exception);
-				}
+	private void _deleteAccounts(Account account, Account irrelevantAccount) {
+		try {
+			_accountEntryLocalService.deleteAccountEntry(account.getId());
+			_accountEntryLocalService.deleteAccountEntry(
+				irrelevantAccount.getId());
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception, exception);
 			}
 		}
 	}
@@ -300,6 +278,8 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountRoleResourceTest.class);
 
+	private Account _account;
+
 	@Inject
 	private AccountEntryLocalService _accountEntryLocalService;
 
@@ -309,12 +289,11 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	@Inject
 	private AccountRoleLocalService _accountRoleLocalService;
 
-	private final List<Account> _accounts = new ArrayList<>();
-
 	@Inject
 	private AccountUserResource _accountUserResource;
 
 	private final List<AccountUser> _accountUsers = new ArrayList<>();
+	private Account _irrelevantAccount;
 
 	@Inject
 	private UserGroupRoleLocalService _userGroupRoleLocalService;

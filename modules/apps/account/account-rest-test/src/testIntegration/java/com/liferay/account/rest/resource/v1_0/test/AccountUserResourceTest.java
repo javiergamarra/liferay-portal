@@ -34,8 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 
 /**
@@ -43,6 +42,16 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
+
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+
+		_accountEntry = _getAccountEntry();
+
+		_irrelevantAccountEntry = _getAccountEntry();
+	}
 
 	@After
 	@Override
@@ -52,20 +61,9 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 		_deleteAccountUsers(_accountUsers);
 	}
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetAccountUsersPage() throws Exception {
-	}
-
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
 		return new String[] {"firstName", "lastName", "screenName"};
-	}
-
-	@Override
-	protected String[] getIgnoredEntityFieldNames() {
-		return new String[] {"emailAddress"};
 	}
 
 	@Override
@@ -96,15 +94,13 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 	}
 
 	@Override
-	protected Long testGetAccountUsersPage_getAccountId() throws Exception {
+	protected Long testGetAccountUsersPage_getAccountId() {
 		return _getAccountEntryId();
 	}
 
 	@Override
-	protected Long testGetAccountUsersPage_getIrrelevantAccountId()
-		throws Exception {
-
-		return _getAccountEntryId();
+	protected Long testGetAccountUsersPage_getIrrelevantAccountId() {
+		return _getIrrelevantEntryId();
 	}
 
 	@Override
@@ -120,18 +116,6 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 		throws Exception {
 
 		return _addAccountUser(_getAccountEntryId(), accountUser);
-	}
-
-	private AccountEntry _addAccountEntry() throws PortalException {
-		AccountEntry accountEntry = _accountEntryLocalService.addAccountEntry(
-			TestPropsValues.getUserId(),
-			AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
-			RandomTestUtil.randomString(20), RandomTestUtil.randomString(20),
-			null, null, WorkflowConstants.STATUS_APPROVED);
-
-		_accountEntries.add(accountEntry);
-
-		return accountEntry;
 	}
 
 	private AccountUser _addAccountUser(Long accountId, AccountUser accountUser)
@@ -158,22 +142,35 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 		}
 	}
 
-	private Long _getAccountEntryId() throws Exception {
-		AccountEntry accountEntry = _addAccountEntry();
+	private AccountEntry _getAccountEntry() throws PortalException {
+		return _accountEntryLocalService.addAccountEntry(
+			TestPropsValues.getUserId(),
+			AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
+			RandomTestUtil.randomString(20), RandomTestUtil.randomString(20),
+			null, null, WorkflowConstants.STATUS_APPROVED);
+	}
 
-		return accountEntry.getAccountEntryId();
+	private Long _getAccountEntryId() {
+		return _accountEntry.getAccountEntryId();
+	}
+
+	private Long _getIrrelevantEntryId() {
+		return _irrelevantAccountEntry.getAccountEntryId();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountUserResourceTest.class);
 
 	@DeleteAfterTestRun
-	private final List<AccountEntry> _accountEntries = new ArrayList<>();
+	private AccountEntry _accountEntry;
 
 	@Inject
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	private final List<AccountUser> _accountUsers = new ArrayList<>();
+
+	@DeleteAfterTestRun
+	private AccountEntry _irrelevantAccountEntry;
 
 	@Inject
 	private UserLocalService _userLocalService;
