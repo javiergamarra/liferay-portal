@@ -269,7 +269,7 @@ public abstract class BaseSiteResourceTestCase {
 				"site",
 				new HashMap<String, Object>() {
 					{
-						put("siteId", site.getId());
+						put("siteKey", "\"" + site.getSiteId() + "\"");
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
