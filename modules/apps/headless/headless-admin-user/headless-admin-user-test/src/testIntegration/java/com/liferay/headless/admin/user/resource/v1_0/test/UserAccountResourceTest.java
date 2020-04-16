@@ -250,16 +250,6 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 	}
 
 	@Override
-	protected UserAccount randomUserAccount() throws Exception {
-		UserAccount userAccount = super.randomUserAccount();
-
-		userAccount.setEmailAddress(
-			userAccount.getEmailAddress() + "@liferay.com");
-
-		return userAccount;
-	}
-
-	@Override
 	protected UserAccount testGetMyUserAccount_addUserAccount()
 		throws Exception {
 
