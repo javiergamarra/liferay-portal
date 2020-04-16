@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -769,10 +770,12 @@ public abstract class BaseEmailAddressResourceTestCase {
 	protected EmailAddress randomEmailAddress() throws Exception {
 		return new EmailAddress() {
 			{
-				emailAddress = RandomTestUtil.randomString();
+				emailAddress =
+					StringUtil.toLowerCase(RandomTestUtil.randomString()) +
+						"@liferay.com";
 				id = RandomTestUtil.randomLong();
 				primary = RandomTestUtil.randomBoolean();
-				type = RandomTestUtil.randomString();
+				type = StringUtil.toLowerCase(RandomTestUtil.randomString());
 			}
 		};
 	}

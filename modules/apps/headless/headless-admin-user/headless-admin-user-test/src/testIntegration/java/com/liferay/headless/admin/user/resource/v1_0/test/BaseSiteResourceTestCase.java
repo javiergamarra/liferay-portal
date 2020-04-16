@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -884,12 +885,15 @@ public abstract class BaseSiteResourceTestCase {
 	protected Site randomSite() throws Exception {
 		return new Site() {
 			{
-				description = RandomTestUtil.randomString();
-				friendlyUrlPath = RandomTestUtil.randomString();
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				friendlyUrlPath = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				key = RandomTestUtil.randomString();
-				membershipType = RandomTestUtil.randomString();
-				name = RandomTestUtil.randomString();
+				key = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				membershipType = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				parentSiteId = RandomTestUtil.randomLong();
 			}
 		};

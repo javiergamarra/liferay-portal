@@ -519,27 +519,46 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			(entityField, taxonomyCategory1, taxonomyCategory2) -> {
 				Class<?> clazz = taxonomyCategory1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						taxonomyCategory1, entityField.getName(),
+						taxonomyCategory1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						taxonomyCategory2, entityField.getName(),
+						taxonomyCategory2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						taxonomyCategory1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						taxonomyCategory2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						taxonomyCategory1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						taxonomyCategory1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						taxonomyCategory2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						taxonomyCategory2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1068,27 +1087,46 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			(entityField, taxonomyCategory1, taxonomyCategory2) -> {
 				Class<?> clazz = taxonomyCategory1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						taxonomyCategory1, entityField.getName(),
+						taxonomyCategory1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						taxonomyCategory2, entityField.getName(),
+						taxonomyCategory2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						taxonomyCategory1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						taxonomyCategory2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						taxonomyCategory1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						taxonomyCategory1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						taxonomyCategory2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						taxonomyCategory2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1990,10 +2028,12 @@ public abstract class BaseTaxonomyCategoryResourceTestCase {
 			{
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
-				description = RandomTestUtil.randomString();
-				externalReferenceCode = RandomTestUtil.randomString();
-				id = RandomTestUtil.randomString();
-				name = RandomTestUtil.randomString();
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				externalReferenceCode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				id = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				numberOfTaxonomyCategories = RandomTestUtil.randomInt();
 				taxonomyCategoryUsageCount = RandomTestUtil.randomInt();
 			}

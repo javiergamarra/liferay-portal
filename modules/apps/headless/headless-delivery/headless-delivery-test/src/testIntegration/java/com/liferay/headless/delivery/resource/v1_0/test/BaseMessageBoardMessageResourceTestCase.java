@@ -722,27 +722,46 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			(entityField, messageBoardMessage1, messageBoardMessage2) -> {
 				Class<?> clazz = messageBoardMessage1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						messageBoardMessage1, entityField.getName(),
+						messageBoardMessage1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						messageBoardMessage2, entityField.getName(),
+						messageBoardMessage2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						messageBoardMessage1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						messageBoardMessage2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						messageBoardMessage1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						messageBoardMessage1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						messageBoardMessage2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						messageBoardMessage2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1087,27 +1106,46 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			(entityField, messageBoardMessage1, messageBoardMessage2) -> {
 				Class<?> clazz = messageBoardMessage1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						messageBoardMessage1, entityField.getName(),
+						messageBoardMessage1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						messageBoardMessage2, entityField.getName(),
+						messageBoardMessage2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						messageBoardMessage1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						messageBoardMessage2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						messageBoardMessage1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						messageBoardMessage1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						messageBoardMessage2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						messageBoardMessage2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1428,27 +1466,46 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			(entityField, messageBoardMessage1, messageBoardMessage2) -> {
 				Class<?> clazz = messageBoardMessage1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						messageBoardMessage1, entityField.getName(),
+						messageBoardMessage1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						messageBoardMessage2, entityField.getName(),
+						messageBoardMessage2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						messageBoardMessage1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						messageBoardMessage2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						messageBoardMessage1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						messageBoardMessage1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						messageBoardMessage2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						messageBoardMessage2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1528,6 +1585,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 
 	@Test
 	public void testGraphQLGetSiteMessageBoardMessagesPage() throws Exception {
+		Long siteId = testGetSiteMessageBoardMessagesPage_getSiteId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -1547,7 +1606,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
-						put("siteKey", "\"" + testGroup.getGroupId() + "\"");
+
+						put("siteKey", "\"" + siteId + "\"");
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -1624,7 +1684,9 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 				"messageBoardMessageByFriendlyUrlPath",
 				new HashMap<String, Object>() {
 					{
-						put("siteId", messageBoardMessage.getSiteId());
+						put(
+							"siteKey",
+							"\"" + messageBoardMessage.getSiteId() + "\"");
 						put(
 							"friendlyUrlPath",
 							messageBoardMessage.getFriendlyUrlPath());
@@ -2949,12 +3011,16 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 		return new MessageBoardMessage() {
 			{
 				anonymous = RandomTestUtil.randomBoolean();
-				articleBody = RandomTestUtil.randomString();
+				articleBody = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
-				encodingFormat = RandomTestUtil.randomString();
-				friendlyUrlPath = RandomTestUtil.randomString();
-				headline = RandomTestUtil.randomString();
+				encodingFormat = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				friendlyUrlPath = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				headline = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
 				messageBoardSectionId = RandomTestUtil.randomLong();
 				messageBoardThreadId = RandomTestUtil.randomLong();

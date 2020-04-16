@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -768,10 +769,13 @@ public abstract class BasePhoneResourceTestCase {
 	protected Phone randomPhone() throws Exception {
 		return new Phone() {
 			{
-				extension = RandomTestUtil.randomString();
+				extension = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				phoneNumber = RandomTestUtil.randomString();
-				phoneType = RandomTestUtil.randomString();
+				phoneNumber = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				phoneType = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				primary = RandomTestUtil.randomBoolean();
 			}
 		};

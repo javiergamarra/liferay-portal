@@ -400,27 +400,46 @@ public abstract class BaseDocumentResourceTestCase {
 			(entityField, document1, document2) -> {
 				Class<?> clazz = document1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						document1, entityField.getName(),
+						document1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						document2, entityField.getName(),
+						document2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						document1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						document2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						document1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						document1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						document2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						document2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -885,27 +904,46 @@ public abstract class BaseDocumentResourceTestCase {
 			(entityField, document1, document2) -> {
 				Class<?> clazz = document1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						document1, entityField.getName(),
+						document1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						document2, entityField.getName(),
+						document2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						document1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						document2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						document1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						document1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						document2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						document2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -974,6 +1012,8 @@ public abstract class BaseDocumentResourceTestCase {
 
 	@Test
 	public void testGraphQLGetSiteDocumentsPage() throws Exception {
+		Long siteId = testGetSiteDocumentsPage_getSiteId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -993,7 +1033,8 @@ public abstract class BaseDocumentResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
-						put("siteKey", "\"" + testGroup.getGroupId() + "\"");
+
+						put("siteKey", "\"" + siteId + "\"");
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -2397,17 +2438,21 @@ public abstract class BaseDocumentResourceTestCase {
 	protected Document randomDocument() throws Exception {
 		return new Document() {
 			{
-				contentUrl = RandomTestUtil.randomString();
+				contentUrl = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
-				description = RandomTestUtil.randomString();
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				documentFolderId = RandomTestUtil.randomLong();
-				encodingFormat = RandomTestUtil.randomString();
-				fileExtension = RandomTestUtil.randomString();
+				encodingFormat = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				fileExtension = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
 				numberOfComments = RandomTestUtil.randomInt();
 				sizeInBytes = RandomTestUtil.randomLong();
-				title = RandomTestUtil.randomString();
+				title = StringUtil.toLowerCase(RandomTestUtil.randomString());
 			}
 		};
 	}

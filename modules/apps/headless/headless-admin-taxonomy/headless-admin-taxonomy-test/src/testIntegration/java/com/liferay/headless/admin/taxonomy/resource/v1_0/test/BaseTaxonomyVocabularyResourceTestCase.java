@@ -410,27 +410,46 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 			(entityField, taxonomyVocabulary1, taxonomyVocabulary2) -> {
 				Class<?> clazz = taxonomyVocabulary1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						taxonomyVocabulary1, entityField.getName(),
+						taxonomyVocabulary1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						taxonomyVocabulary2, entityField.getName(),
+						taxonomyVocabulary2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						taxonomyVocabulary1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						taxonomyVocabulary2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						taxonomyVocabulary1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						taxonomyVocabulary1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						taxonomyVocabulary2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						taxonomyVocabulary2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -510,6 +529,8 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 
 	@Test
 	public void testGraphQLGetSiteTaxonomyVocabulariesPage() throws Exception {
+		Long siteId = testGetSiteTaxonomyVocabulariesPage_getSiteId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -529,7 +550,8 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
-						put("siteKey", "\"" + testGroup.getGroupId() + "\"");
+
+						put("siteKey", "\"" + siteId + "\"");
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -1643,9 +1665,10 @@ public abstract class BaseTaxonomyVocabularyResourceTestCase {
 			{
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
-				description = RandomTestUtil.randomString();
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				name = RandomTestUtil.randomString();
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				numberOfTaxonomyCategories = RandomTestUtil.randomInt();
 				siteId = testGroup.getGroupId();
 			}

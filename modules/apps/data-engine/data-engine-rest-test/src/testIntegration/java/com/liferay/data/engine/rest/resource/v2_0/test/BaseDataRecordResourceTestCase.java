@@ -327,27 +327,46 @@ public abstract class BaseDataRecordResourceTestCase {
 			(entityField, dataRecord1, dataRecord2) -> {
 				Class<?> clazz = dataRecord1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						dataRecord1, entityField.getName(),
+						dataRecord1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						dataRecord2, entityField.getName(),
+						dataRecord2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						dataRecord1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						dataRecord2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						dataRecord1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						dataRecord1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						dataRecord2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						dataRecord2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -578,27 +597,46 @@ public abstract class BaseDataRecordResourceTestCase {
 			(entityField, dataRecord1, dataRecord2) -> {
 				Class<?> clazz = dataRecord1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						dataRecord1, entityField.getName(),
+						dataRecord1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						dataRecord2, entityField.getName(),
+						dataRecord2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						dataRecord1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						dataRecord2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						dataRecord1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						dataRecord1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						dataRecord2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						dataRecord2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}

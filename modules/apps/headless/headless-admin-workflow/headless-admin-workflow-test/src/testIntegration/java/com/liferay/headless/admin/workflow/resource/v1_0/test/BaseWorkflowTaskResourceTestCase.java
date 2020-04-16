@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -1978,13 +1979,16 @@ public abstract class BaseWorkflowTaskResourceTestCase {
 				dateCompletion = RandomTestUtil.nextDate();
 				dateCreated = RandomTestUtil.nextDate();
 				dateDue = RandomTestUtil.nextDate();
-				description = RandomTestUtil.randomString();
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				label = RandomTestUtil.randomString();
-				name = RandomTestUtil.randomString();
+				label = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				workflowDefinitionId = RandomTestUtil.randomLong();
-				workflowDefinitionName = RandomTestUtil.randomString();
-				workflowDefinitionVersion = RandomTestUtil.randomString();
+				workflowDefinitionName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				workflowDefinitionVersion = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				workflowInstanceId = RandomTestUtil.randomLong();
 			}
 		};

@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.log.CaptureAppender;
@@ -871,15 +872,19 @@ public abstract class BaseFormDocumentResourceTestCase {
 	protected FormDocument randomFormDocument() throws Exception {
 		return new FormDocument() {
 			{
-				contentUrl = RandomTestUtil.randomString();
-				description = RandomTestUtil.randomString();
-				encodingFormat = RandomTestUtil.randomString();
-				fileExtension = RandomTestUtil.randomString();
+				contentUrl = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				encodingFormat = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				fileExtension = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				folderId = RandomTestUtil.randomLong();
 				id = RandomTestUtil.randomLong();
 				siteId = testGroup.getGroupId();
 				sizeInBytes = RandomTestUtil.randomLong();
-				title = RandomTestUtil.randomString();
+				title = StringUtil.toLowerCase(RandomTestUtil.randomString());
 			}
 		};
 	}

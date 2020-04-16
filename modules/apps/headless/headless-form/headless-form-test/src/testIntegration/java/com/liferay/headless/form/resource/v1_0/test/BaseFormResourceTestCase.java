@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -322,6 +323,8 @@ public abstract class BaseFormResourceTestCase {
 
 	@Test
 	public void testGraphQLGetSiteFormsPage() throws Exception {
+		Long siteId = testGetSiteFormsPage_getSiteId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -341,7 +344,8 @@ public abstract class BaseFormResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
-						put("siteKey", "\"" + testGroup.getGroupId() + "\"");
+
+						put("siteKey", "\"" + siteId + "\"");
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -1462,10 +1466,12 @@ public abstract class BaseFormResourceTestCase {
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				datePublished = RandomTestUtil.nextDate();
-				defaultLanguage = RandomTestUtil.randomString();
-				description = RandomTestUtil.randomString();
+				defaultLanguage = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				name = RandomTestUtil.randomString();
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				siteId = testGroup.getGroupId();
 				structureId = RandomTestUtil.randomLong();
 			}

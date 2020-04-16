@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -289,6 +290,8 @@ public abstract class BaseSegmentResourceTestCase {
 
 	@Test
 	public void testGraphQLGetSiteSegmentsPage() throws Exception {
+		Long siteId = testGetSiteSegmentsPage_getSiteId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -308,7 +311,8 @@ public abstract class BaseSegmentResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
-						put("siteKey", "\"" + testGroup.getGroupId() + "\"");
+
+						put("siteKey", "\"" + siteId + "\"");
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -943,13 +947,14 @@ public abstract class BaseSegmentResourceTestCase {
 		return new Segment() {
 			{
 				active = RandomTestUtil.randomBoolean();
-				criteria = RandomTestUtil.randomString();
+				criteria = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				id = RandomTestUtil.randomLong();
-				name = RandomTestUtil.randomString();
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				siteId = testGroup.getGroupId();
-				source = RandomTestUtil.randomString();
+				source = StringUtil.toLowerCase(RandomTestUtil.randomString());
 			}
 		};
 	}

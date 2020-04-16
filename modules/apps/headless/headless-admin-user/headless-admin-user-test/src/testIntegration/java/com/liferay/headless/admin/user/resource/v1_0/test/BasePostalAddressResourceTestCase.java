@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -1054,16 +1055,24 @@ public abstract class BasePostalAddressResourceTestCase {
 	protected PostalAddress randomPostalAddress() throws Exception {
 		return new PostalAddress() {
 			{
-				addressCountry = RandomTestUtil.randomString();
-				addressLocality = RandomTestUtil.randomString();
-				addressRegion = RandomTestUtil.randomString();
-				addressType = RandomTestUtil.randomString();
+				addressCountry = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				addressLocality = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				addressRegion = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				addressType = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				postalCode = RandomTestUtil.randomString();
+				postalCode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				primary = RandomTestUtil.randomBoolean();
-				streetAddressLine1 = RandomTestUtil.randomString();
-				streetAddressLine2 = RandomTestUtil.randomString();
-				streetAddressLine3 = RandomTestUtil.randomString();
+				streetAddressLine1 = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				streetAddressLine2 = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				streetAddressLine3 = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 			}
 		};
 	}

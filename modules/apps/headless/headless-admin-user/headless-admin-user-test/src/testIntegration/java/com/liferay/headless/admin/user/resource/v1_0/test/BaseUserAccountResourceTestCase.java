@@ -457,27 +457,46 @@ public abstract class BaseUserAccountResourceTestCase {
 			(entityField, userAccount1, userAccount2) -> {
 				Class<?> clazz = userAccount1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						userAccount1, entityField.getName(),
+						userAccount1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						userAccount2, entityField.getName(),
+						userAccount2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						userAccount1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						userAccount2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						userAccount1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						userAccount1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						userAccount2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						userAccount2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -727,27 +746,46 @@ public abstract class BaseUserAccountResourceTestCase {
 			(entityField, userAccount1, userAccount2) -> {
 				Class<?> clazz = userAccount1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						userAccount1, entityField.getName(),
+						userAccount1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						userAccount2, entityField.getName(),
+						userAccount2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						userAccount1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						userAccount2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						userAccount1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						userAccount1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						userAccount2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						userAccount2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -960,27 +998,46 @@ public abstract class BaseUserAccountResourceTestCase {
 			(entityField, userAccount1, userAccount2) -> {
 				Class<?> clazz = userAccount1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						userAccount1, entityField.getName(),
+						userAccount1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						userAccount2, entityField.getName(),
+						userAccount2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						userAccount1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						userAccount2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						userAccount1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						userAccount1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						userAccount2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						userAccount2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -2190,22 +2247,33 @@ public abstract class BaseUserAccountResourceTestCase {
 	protected UserAccount randomUserAccount() throws Exception {
 		return new UserAccount() {
 			{
-				additionalName = RandomTestUtil.randomString();
-				alternateName = RandomTestUtil.randomString();
+				additionalName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				alternateName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				birthDate = RandomTestUtil.nextDate();
-				dashboardURL = RandomTestUtil.randomString();
+				dashboardURL = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
-				emailAddress = RandomTestUtil.randomString();
-				familyName = RandomTestUtil.randomString();
-				givenName = RandomTestUtil.randomString();
-				honorificPrefix = RandomTestUtil.randomString();
-				honorificSuffix = RandomTestUtil.randomString();
+				emailAddress =
+					StringUtil.toLowerCase(RandomTestUtil.randomString()) +
+						"@liferay.com";
+				familyName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				givenName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				honorificPrefix = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				honorificSuffix = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				image = RandomTestUtil.randomString();
-				jobTitle = RandomTestUtil.randomString();
-				name = RandomTestUtil.randomString();
-				profileURL = RandomTestUtil.randomString();
+				image = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				jobTitle = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				profileURL = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 			}
 		};
 	}
