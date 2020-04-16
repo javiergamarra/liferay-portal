@@ -18,6 +18,8 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.headless.admin.user.client.dto.v1_0.Role;
 import com.liferay.headless.admin.user.client.pagination.Page;
 import com.liferay.headless.admin.user.client.pagination.Pagination;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -30,6 +32,8 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.After;
@@ -86,12 +90,6 @@ public class RoleResourceTest extends BaseRoleResourceTestCase {
 		assertValid(page);
 	}
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetRolesPage() {
-	}
-
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
 		return new String[] {"name"};
@@ -107,6 +105,47 @@ public class RoleResourceTest extends BaseRoleResourceTestCase {
 					[RandomTestUtil.randomInt(0, 2)]));
 
 		return role;
+	}
+
+	@Test
+	public void testGraphQLGetRolesPage() throws Exception {
+		List<GraphQLField> graphQLFields = new ArrayList<>();
+
+		graphQLFields.add(new GraphQLField("page"));
+		graphQLFields.add(new GraphQLField("totalCount"));
+
+		GraphQLField graphQLField = new GraphQLField(
+			"query",
+			new GraphQLField(
+				"roles",
+				new HashMap<String, Object>() {
+					{
+						put("page", 1);
+						put("pageSize", 2);
+					}
+				},
+				graphQLFields.toArray(new GraphQLField[0])));
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			invoke(graphQLField.toString()));
+
+		JSONObject dataJSONObject = jsonObject.getJSONObject("data");
+
+		JSONObject rolesJSONObject = dataJSONObject.getJSONObject("roles");
+
+		int totalCount = rolesJSONObject.getInt("totalCount");
+
+		testGraphQLRole_addRole();
+		testGraphQLRole_addRole();
+
+		jsonObject = JSONFactoryUtil.createJSONObject(
+			invoke(graphQLField.toString()));
+
+		dataJSONObject = jsonObject.getJSONObject("data");
+
+		rolesJSONObject = dataJSONObject.getJSONObject("roles");
+
+		Assert.assertEquals(totalCount + 2, rolesJSONObject.get("totalCount"));
 	}
 
 	@Override
