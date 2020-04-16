@@ -39,6 +39,10 @@ public class ConfigYAML {
 		return _clientDir;
 	}
 
+	public String getClientMavenGroupId() {
+		return _clientMavenGroupId;
+	}
+
 	public String getImplDir() {
 		return _implDir;
 	}
@@ -53,10 +57,6 @@ public class ConfigYAML {
 
 	public String getTestDir() {
 		return _testDir;
-	}
-
-	public boolean isForceClientVersionDescription() {
-		return _forceClientVersionDescription;
 	}
 
 	public boolean isForcePredictableContentApplicationXML() {
@@ -107,10 +107,8 @@ public class ConfigYAML {
 		_clientDir = clientDir;
 	}
 
-	public void setForceClientVersionDescription(
-		boolean forceClientVersionDescription) {
-
-		_forceClientVersionDescription = forceClientVersionDescription;
+	public void setClientMavenGroupId(String clientMavenGroupId) {
+		_clientMavenGroupId = clientMavenGroupId;
 	}
 
 	public void setForcePredictableContentApplicationXML(
@@ -170,7 +168,7 @@ public class ConfigYAML {
 	private Application _application;
 	private String _author;
 	private String _clientDir;
-	private boolean _forceClientVersionDescription = true;
+	private String _clientMavenGroupId;
 	private boolean _forcePredictableContentApplicationXML = true;
 	private boolean _forcePredictableOperationId = true;
 	private boolean _forcePredictableSchemaPropertyName = true;
