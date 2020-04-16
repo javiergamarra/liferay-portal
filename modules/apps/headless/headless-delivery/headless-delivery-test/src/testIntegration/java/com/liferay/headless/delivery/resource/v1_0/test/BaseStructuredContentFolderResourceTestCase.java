@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -67,6 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -249,6 +252,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			testGetSiteStructuredContentFoldersPage_addStructuredContentFolder(
 				siteId, randomStructuredContentFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			structuredContentFolderResource.getSiteStructuredContentFoldersPage(
 				siteId, null, null, null, Pagination.of(1, 2), null);
@@ -287,6 +292,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			testGetSiteStructuredContentFoldersPage_addStructuredContentFolder(
 				siteId, structuredContentFolder1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<StructuredContentFolder> page =
 				structuredContentFolderResource.
@@ -324,6 +331,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			testGetSiteStructuredContentFoldersPage_addStructuredContentFolder(
 				siteId, randomStructuredContentFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<StructuredContentFolder> page =
 				structuredContentFolderResource.
@@ -356,6 +365,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 		StructuredContentFolder structuredContentFolder3 =
 			testGetSiteStructuredContentFoldersPage_addStructuredContentFolder(
 				siteId, randomStructuredContentFolder());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<StructuredContentFolder> page1 =
 			structuredContentFolderResource.getSiteStructuredContentFoldersPage(
@@ -487,6 +498,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			testGetSiteStructuredContentFoldersPage_addStructuredContentFolder(
 				siteId, structuredContentFolder2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<StructuredContentFolder> ascPage =
 				structuredContentFolderResource.
@@ -576,6 +589,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			testGraphQLStructuredContentFolder_addStructuredContentFolder();
 		StructuredContentFolder structuredContentFolder2 =
 			testGraphQLStructuredContentFolder_addStructuredContentFolder();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -681,6 +696,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 				parentStructuredContentFolderId,
 				randomStructuredContentFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			structuredContentFolderResource.
 				getStructuredContentFolderStructuredContentFoldersPage(
@@ -722,6 +739,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			testGetStructuredContentFolderStructuredContentFoldersPage_addStructuredContentFolder(
 				parentStructuredContentFolderId, structuredContentFolder1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<StructuredContentFolder> page =
 				structuredContentFolderResource.
@@ -762,6 +781,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 				parentStructuredContentFolderId,
 				randomStructuredContentFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<StructuredContentFolder> page =
 				structuredContentFolderResource.
@@ -798,6 +819,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 			testGetStructuredContentFolderStructuredContentFoldersPage_addStructuredContentFolder(
 				parentStructuredContentFolderId,
 				randomStructuredContentFolder());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<StructuredContentFolder> page1 =
 			structuredContentFolderResource.
@@ -936,6 +959,8 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 		structuredContentFolder2 =
 			testGetStructuredContentFolderStructuredContentFoldersPage_addStructuredContentFolder(
 				parentStructuredContentFolderId, structuredContentFolder2);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<StructuredContentFolder> ascPage =
@@ -2284,6 +2309,26 @@ public abstract class BaseStructuredContentFolderResourceTestCase {
 		throws Exception {
 
 		return randomStructuredContentFolder();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected StructuredContentFolderResource structuredContentFolderResource;

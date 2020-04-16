@@ -33,6 +33,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -65,6 +67,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -415,6 +418,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 					random${schemaName}());
 
+					reindex(testCompany.getCompanyId());
+
 					page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
 					<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -488,6 +493,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						${schemaVarName}1);
 
+						reindex(testCompany.getCompanyId());
+
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -541,6 +548,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 						</#list>
 
 						random${schemaName}());
+
+						reindex(testCompany.getCompanyId());
 
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
@@ -598,6 +607,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 						</#list>
 
 						random${schemaName}());
+
+						reindex(testCompany.getCompanyId());
 
 						Page<${schemaName}> page1 = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -743,6 +754,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 						</#list>
 
 						${schemaVarName}2);
+
+						reindex(testCompany.getCompanyId());
 
 						for (EntityField entityField : entityFields) {
 							Page<${schemaName}> ascPage = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
@@ -1283,6 +1296,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 					${schemaName} ${schemaVarName}1 = testGraphQL${schemaName}_add${schemaName}();
 					${schemaName} ${schemaVarName}2 = testGraphQL${schemaName}_add${schemaName}();
+
+					reindex(testCompany.getCompanyId());
 
 					jsonObject = JSONFactoryUtil.createJSONObject(invoke(graphQLField.toString()));
 
@@ -1997,6 +2012,18 @@ public abstract class Base${schemaName}ResourceTestCase {
 			};
 		}
 	</#list>
+
+	private void reindex(Object ... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(indexer -> {
+			try {
+				indexer.reindex(
+					Arrays.stream(ids).map(Object::toString).toArray(String[]::new));
+			}
+			catch (Throwable e) { }
+		});
+	}
 
 	protected ${schemaName}Resource ${schemaVarName}Resource;
 	protected Group irrelevantGroup;

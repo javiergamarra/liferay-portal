@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -67,6 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -248,6 +251,8 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			testGetDataDefinitionByContentTypeContentTypePage_addDataDefinition(
 				contentType, randomDataDefinition());
 
+		reindex(dataDefinition1.getId(), dataDefinition2.getId());
+
 		page =
 			dataDefinitionResource.
 				getDataDefinitionByContentTypeContentTypePage(
@@ -283,6 +288,10 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		DataDefinition dataDefinition3 =
 			testGetDataDefinitionByContentTypeContentTypePage_addDataDefinition(
 				contentType, randomDataDefinition());
+
+		reindex(
+			dataDefinition1.getId(), dataDefinition2.getId(),
+			dataDefinition3.getId());
 
 		Page<DataDefinition> page1 =
 			dataDefinitionResource.
@@ -410,6 +419,8 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		dataDefinition2 =
 			testGetDataDefinitionByContentTypeContentTypePage_addDataDefinition(
 				contentType, dataDefinition2);
+
+		reindex(dataDefinition1.getId(), dataDefinition2.getId());
 
 		for (EntityField entityField : entityFields) {
 			Page<DataDefinition> ascPage =
@@ -734,6 +745,8 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			testGetSiteDataDefinitionByContentTypeContentTypePage_addDataDefinition(
 				siteId, contentType, randomDataDefinition());
 
+		reindex(dataDefinition1.getId(), dataDefinition2.getId());
+
 		page =
 			dataDefinitionResource.
 				getSiteDataDefinitionByContentTypeContentTypePage(
@@ -771,6 +784,10 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		DataDefinition dataDefinition3 =
 			testGetSiteDataDefinitionByContentTypeContentTypePage_addDataDefinition(
 				siteId, contentType, randomDataDefinition());
+
+		reindex(
+			dataDefinition1.getId(), dataDefinition2.getId(),
+			dataDefinition3.getId());
 
 		Page<DataDefinition> page1 =
 			dataDefinitionResource.
@@ -901,6 +918,8 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		dataDefinition2 =
 			testGetSiteDataDefinitionByContentTypeContentTypePage_addDataDefinition(
 				siteId, contentType, dataDefinition2);
+
+		reindex(dataDefinition1.getId(), dataDefinition2.getId());
 
 		for (EntityField entityField : entityFields) {
 			Page<DataDefinition> ascPage =
@@ -1820,6 +1839,26 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 	protected DataDefinition randomPatchDataDefinition() throws Exception {
 		return randomDataDefinition();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected DataDefinitionResource dataDefinitionResource;

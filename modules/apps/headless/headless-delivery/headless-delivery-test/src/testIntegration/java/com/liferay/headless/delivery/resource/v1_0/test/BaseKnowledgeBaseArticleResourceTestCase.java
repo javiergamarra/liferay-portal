@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -68,6 +70,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -543,6 +546,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetKnowledgeBaseArticleKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				parentKnowledgeBaseArticleId, randomKnowledgeBaseArticle());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			knowledgeBaseArticleResource.
 				getKnowledgeBaseArticleKnowledgeBaseArticlesPage(
@@ -584,6 +589,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetKnowledgeBaseArticleKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				parentKnowledgeBaseArticleId, knowledgeBaseArticle1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> page =
 				knowledgeBaseArticleResource.
@@ -622,6 +629,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetKnowledgeBaseArticleKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				parentKnowledgeBaseArticleId, randomKnowledgeBaseArticle());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> page =
 				knowledgeBaseArticleResource.
@@ -655,6 +664,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		KnowledgeBaseArticle knowledgeBaseArticle3 =
 			testGetKnowledgeBaseArticleKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				parentKnowledgeBaseArticleId, randomKnowledgeBaseArticle());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<KnowledgeBaseArticle> page1 =
 			knowledgeBaseArticleResource.
@@ -792,6 +803,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetKnowledgeBaseArticleKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				parentKnowledgeBaseArticleId, knowledgeBaseArticle2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> ascPage =
 				knowledgeBaseArticleResource.
@@ -913,6 +926,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetKnowledgeBaseFolderKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				knowledgeBaseFolderId, randomKnowledgeBaseArticle());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			knowledgeBaseArticleResource.
 				getKnowledgeBaseFolderKnowledgeBaseArticlesPage(
@@ -954,6 +969,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetKnowledgeBaseFolderKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				knowledgeBaseFolderId, knowledgeBaseArticle1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> page =
 				knowledgeBaseArticleResource.
@@ -992,6 +1009,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetKnowledgeBaseFolderKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				knowledgeBaseFolderId, randomKnowledgeBaseArticle());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> page =
 				knowledgeBaseArticleResource.
@@ -1025,6 +1044,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		KnowledgeBaseArticle knowledgeBaseArticle3 =
 			testGetKnowledgeBaseFolderKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				knowledgeBaseFolderId, randomKnowledgeBaseArticle());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<KnowledgeBaseArticle> page1 =
 			knowledgeBaseArticleResource.
@@ -1162,6 +1183,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetKnowledgeBaseFolderKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				knowledgeBaseFolderId, knowledgeBaseArticle2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> ascPage =
 				knowledgeBaseArticleResource.
@@ -1276,6 +1299,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				siteId, randomKnowledgeBaseArticle());
 
+		reindex(testCompany.getCompanyId());
+
 		page = knowledgeBaseArticleResource.getSiteKnowledgeBaseArticlesPage(
 			siteId, null, null, null, Pagination.of(1, 2), null);
 
@@ -1313,6 +1338,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				siteId, knowledgeBaseArticle1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> page =
 				knowledgeBaseArticleResource.getSiteKnowledgeBaseArticlesPage(
@@ -1349,6 +1376,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				siteId, randomKnowledgeBaseArticle());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> page =
 				knowledgeBaseArticleResource.getSiteKnowledgeBaseArticlesPage(
@@ -1379,6 +1408,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 		KnowledgeBaseArticle knowledgeBaseArticle3 =
 			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				siteId, randomKnowledgeBaseArticle());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<KnowledgeBaseArticle> page1 =
 			knowledgeBaseArticleResource.getSiteKnowledgeBaseArticlesPage(
@@ -1509,6 +1540,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGetSiteKnowledgeBaseArticlesPage_addKnowledgeBaseArticle(
 				siteId, knowledgeBaseArticle2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<KnowledgeBaseArticle> ascPage =
 				knowledgeBaseArticleResource.getSiteKnowledgeBaseArticlesPage(
@@ -1592,6 +1625,8 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 			testGraphQLKnowledgeBaseArticle_addKnowledgeBaseArticle();
 		KnowledgeBaseArticle knowledgeBaseArticle2 =
 			testGraphQLKnowledgeBaseArticle_addKnowledgeBaseArticle();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -3254,6 +3289,26 @@ public abstract class BaseKnowledgeBaseArticleResourceTestCase {
 				worstRating = RandomTestUtil.randomDouble();
 			}
 		};
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected KnowledgeBaseArticleResource knowledgeBaseArticleResource;

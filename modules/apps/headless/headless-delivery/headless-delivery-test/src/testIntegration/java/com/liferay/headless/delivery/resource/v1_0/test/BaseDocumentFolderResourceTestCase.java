@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -67,6 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -472,6 +475,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetDocumentFolderDocumentFoldersPage_addDocumentFolder(
 				parentDocumentFolderId, randomDocumentFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		page = documentFolderResource.getDocumentFolderDocumentFoldersPage(
 			parentDocumentFolderId, null, null, null, Pagination.of(1, 2),
 			null);
@@ -507,6 +512,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 		documentFolder1 =
 			testGetDocumentFolderDocumentFoldersPage_addDocumentFolder(
 				parentDocumentFolderId, documentFolder1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<DocumentFolder> page =
@@ -544,6 +551,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetDocumentFolderDocumentFoldersPage_addDocumentFolder(
 				parentDocumentFolderId, randomDocumentFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<DocumentFolder> page =
 				documentFolderResource.getDocumentFolderDocumentFoldersPage(
@@ -575,6 +584,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 		DocumentFolder documentFolder3 =
 			testGetDocumentFolderDocumentFoldersPage_addDocumentFolder(
 				parentDocumentFolderId, randomDocumentFolder());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<DocumentFolder> page1 =
 			documentFolderResource.getDocumentFolderDocumentFoldersPage(
@@ -703,6 +714,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetDocumentFolderDocumentFoldersPage_addDocumentFolder(
 				parentDocumentFolderId, documentFolder2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<DocumentFolder> ascPage =
 				documentFolderResource.getDocumentFolderDocumentFoldersPage(
@@ -807,6 +820,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetSiteDocumentFoldersPage_addDocumentFolder(
 				siteId, randomDocumentFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		page = documentFolderResource.getSiteDocumentFoldersPage(
 			siteId, null, null, null, Pagination.of(1, 2), null);
 
@@ -839,6 +854,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 
 		documentFolder1 = testGetSiteDocumentFoldersPage_addDocumentFolder(
 			siteId, documentFolder1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<DocumentFolder> page =
@@ -875,6 +892,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetSiteDocumentFoldersPage_addDocumentFolder(
 				siteId, randomDocumentFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<DocumentFolder> page =
 				documentFolderResource.getSiteDocumentFoldersPage(
@@ -905,6 +924,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 		DocumentFolder documentFolder3 =
 			testGetSiteDocumentFoldersPage_addDocumentFolder(
 				siteId, randomDocumentFolder());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<DocumentFolder> page1 =
 			documentFolderResource.getSiteDocumentFoldersPage(
@@ -1027,6 +1048,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 		documentFolder2 = testGetSiteDocumentFoldersPage_addDocumentFolder(
 			siteId, documentFolder2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<DocumentFolder> ascPage =
 				documentFolderResource.getSiteDocumentFoldersPage(
@@ -1106,6 +1129,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGraphQLDocumentFolder_addDocumentFolder();
 		DocumentFolder documentFolder2 =
 			testGraphQLDocumentFolder_addDocumentFolder();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -2095,6 +2120,26 @@ public abstract class BaseDocumentFolderResourceTestCase {
 
 	protected DocumentFolder randomPatchDocumentFolder() throws Exception {
 		return randomDocumentFolder();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected DocumentFolderResource documentFolderResource;

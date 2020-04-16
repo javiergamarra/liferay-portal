@@ -37,6 +37,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -59,6 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -231,6 +234,8 @@ public abstract class BaseWorkflowLogResourceTestCase {
 			testGetWorkflowInstanceWorkflowLogsPage_addWorkflowLog(
 				workflowInstanceId, randomWorkflowLog());
 
+		reindex(testCompany.getCompanyId());
+
 		page = workflowLogResource.getWorkflowInstanceWorkflowLogsPage(
 			workflowInstanceId, null, Pagination.of(1, 2));
 
@@ -260,6 +265,8 @@ public abstract class BaseWorkflowLogResourceTestCase {
 		WorkflowLog workflowLog3 =
 			testGetWorkflowInstanceWorkflowLogsPage_addWorkflowLog(
 				workflowInstanceId, randomWorkflowLog());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowLog> page1 =
 			workflowLogResource.getWorkflowInstanceWorkflowLogsPage(
@@ -393,6 +400,8 @@ public abstract class BaseWorkflowLogResourceTestCase {
 			testGetWorkflowTaskWorkflowLogsPage_addWorkflowLog(
 				workflowTaskId, randomWorkflowLog());
 
+		reindex(testCompany.getCompanyId());
+
 		page = workflowLogResource.getWorkflowTaskWorkflowLogsPage(
 			workflowTaskId, null, Pagination.of(1, 2));
 
@@ -422,6 +431,8 @@ public abstract class BaseWorkflowLogResourceTestCase {
 		WorkflowLog workflowLog3 =
 			testGetWorkflowTaskWorkflowLogsPage_addWorkflowLog(
 				workflowTaskId, randomWorkflowLog());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WorkflowLog> page1 =
 			workflowLogResource.getWorkflowTaskWorkflowLogsPage(
@@ -1109,6 +1120,26 @@ public abstract class BaseWorkflowLogResourceTestCase {
 
 	protected WorkflowLog randomPatchWorkflowLog() throws Exception {
 		return randomWorkflowLog();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected WorkflowLogResource workflowLogResource;

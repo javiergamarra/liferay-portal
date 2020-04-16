@@ -37,6 +37,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -59,6 +61,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -275,6 +278,8 @@ public abstract class BaseNavigationMenuResourceTestCase {
 			testGetSiteNavigationMenusPage_addNavigationMenu(
 				siteId, randomNavigationMenu());
 
+		reindex(testCompany.getCompanyId());
+
 		page = navigationMenuResource.getSiteNavigationMenusPage(
 			siteId, Pagination.of(1, 2));
 
@@ -303,6 +308,8 @@ public abstract class BaseNavigationMenuResourceTestCase {
 		NavigationMenu navigationMenu3 =
 			testGetSiteNavigationMenusPage_addNavigationMenu(
 				siteId, randomNavigationMenu());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<NavigationMenu> page1 =
 			navigationMenuResource.getSiteNavigationMenusPage(
@@ -393,6 +400,8 @@ public abstract class BaseNavigationMenuResourceTestCase {
 			testGraphQLNavigationMenu_addNavigationMenu();
 		NavigationMenu navigationMenu2 =
 			testGraphQLNavigationMenu_addNavigationMenu();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -917,6 +926,26 @@ public abstract class BaseNavigationMenuResourceTestCase {
 
 	protected NavigationMenu randomPatchNavigationMenu() throws Exception {
 		return randomNavigationMenu();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected NavigationMenuResource navigationMenuResource;

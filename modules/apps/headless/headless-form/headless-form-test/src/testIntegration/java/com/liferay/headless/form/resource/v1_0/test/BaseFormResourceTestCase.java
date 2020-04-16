@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -61,6 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -263,6 +266,8 @@ public abstract class BaseFormResourceTestCase {
 
 		Form form2 = testGetSiteFormsPage_addForm(siteId, randomForm());
 
+		reindex(testCompany.getCompanyId());
+
 		page = formResource.getSiteFormsPage(siteId, Pagination.of(1, 2));
 
 		Assert.assertEquals(2, page.getTotalCount());
@@ -281,6 +286,8 @@ public abstract class BaseFormResourceTestCase {
 		Form form2 = testGetSiteFormsPage_addForm(siteId, randomForm());
 
 		Form form3 = testGetSiteFormsPage_addForm(siteId, randomForm());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Form> page1 = formResource.getSiteFormsPage(
 			siteId, Pagination.of(1, 2));
@@ -357,6 +364,8 @@ public abstract class BaseFormResourceTestCase {
 
 		Form form1 = testGraphQLForm_addForm();
 		Form form2 = testGraphQLForm_addForm();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -1508,6 +1517,26 @@ public abstract class BaseFormResourceTestCase {
 				title = RandomTestUtil.randomString();
 			}
 		};
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected FormResource formResource;

@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -62,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -440,6 +443,8 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			testGetKnowledgeBaseFolderKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
 				parentKnowledgeBaseFolderId, randomKnowledgeBaseFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			knowledgeBaseFolderResource.
 				getKnowledgeBaseFolderKnowledgeBaseFoldersPage(
@@ -477,6 +482,8 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 		KnowledgeBaseFolder knowledgeBaseFolder3 =
 			testGetKnowledgeBaseFolderKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
 				parentKnowledgeBaseFolderId, randomKnowledgeBaseFolder());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<KnowledgeBaseFolder> page1 =
 			knowledgeBaseFolderResource.
@@ -603,6 +610,8 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
 				siteId, randomKnowledgeBaseFolder());
 
+		reindex(testCompany.getCompanyId());
+
 		page = knowledgeBaseFolderResource.getSiteKnowledgeBaseFoldersPage(
 			siteId, Pagination.of(1, 2));
 
@@ -637,6 +646,8 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 		KnowledgeBaseFolder knowledgeBaseFolder3 =
 			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
 				siteId, randomKnowledgeBaseFolder());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<KnowledgeBaseFolder> page1 =
 			knowledgeBaseFolderResource.getSiteKnowledgeBaseFoldersPage(
@@ -733,6 +744,8 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			testGraphQLKnowledgeBaseFolder_addKnowledgeBaseFolder();
 		KnowledgeBaseFolder knowledgeBaseFolder2 =
 			testGraphQLKnowledgeBaseFolder_addKnowledgeBaseFolder();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -1748,6 +1761,26 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 		throws Exception {
 
 		return randomKnowledgeBaseFolder();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected KnowledgeBaseFolderResource knowledgeBaseFolderResource;

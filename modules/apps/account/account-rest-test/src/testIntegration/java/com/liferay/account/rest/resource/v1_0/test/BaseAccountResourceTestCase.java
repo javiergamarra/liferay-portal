@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -66,6 +68,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -210,6 +213,8 @@ public abstract class BaseAccountResourceTestCase {
 
 		Account account2 = testGetAccountsPage_addAccount(randomAccount());
 
+		reindex(account1.getId(), account2.getId());
+
 		page = accountResource.getAccountsPage(
 			null, null, Pagination.of(1, 2), null);
 
@@ -237,6 +242,8 @@ public abstract class BaseAccountResourceTestCase {
 
 		account1 = testGetAccountsPage_addAccount(account1);
 
+		reindex(account1.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Account> page = accountResource.getAccountsPage(
 				null, getFilterString(entityField, "between", account1),
@@ -262,6 +269,8 @@ public abstract class BaseAccountResourceTestCase {
 		@SuppressWarnings("PMD.UnusedLocalVariable")
 		Account account2 = testGetAccountsPage_addAccount(randomAccount());
 
+		reindex(account1.getId(), account2.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Account> page = accountResource.getAccountsPage(
 				null, getFilterString(entityField, "eq", account1),
@@ -280,6 +289,8 @@ public abstract class BaseAccountResourceTestCase {
 		Account account2 = testGetAccountsPage_addAccount(randomAccount());
 
 		Account account3 = testGetAccountsPage_addAccount(randomAccount());
+
+		reindex(account1.getId(), account2.getId(), account3.getId());
 
 		Page<Account> page1 = accountResource.getAccountsPage(
 			null, null, Pagination.of(1, 2), null);
@@ -381,6 +392,8 @@ public abstract class BaseAccountResourceTestCase {
 
 		account2 = testGetAccountsPage_addAccount(account2);
 
+		reindex(account1.getId(), account2.getId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Account> ascPage = accountResource.getAccountsPage(
 				null, null, Pagination.of(1, 2),
@@ -444,6 +457,8 @@ public abstract class BaseAccountResourceTestCase {
 
 		Account account1 = testGraphQLAccount_addAccount();
 		Account account2 = testGraphQLAccount_addAccount();
+
+		reindex(account1.getId(), account2.getId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -1108,6 +1123,26 @@ public abstract class BaseAccountResourceTestCase {
 
 	protected Account randomPatchAccount() throws Exception {
 		return randomAccount();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected AccountResource accountResource;

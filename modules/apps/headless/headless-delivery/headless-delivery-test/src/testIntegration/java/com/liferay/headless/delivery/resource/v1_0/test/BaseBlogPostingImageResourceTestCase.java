@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -69,6 +71,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -369,6 +372,8 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			testGetSiteBlogPostingImagesPage_addBlogPostingImage(
 				siteId, randomBlogPostingImage());
 
+		reindex(testCompany.getCompanyId());
+
 		page = blogPostingImageResource.getSiteBlogPostingImagesPage(
 			siteId, null, null, Pagination.of(1, 2), null);
 
@@ -405,6 +410,8 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			testGetSiteBlogPostingImagesPage_addBlogPostingImage(
 				siteId, blogPostingImage1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<BlogPostingImage> page =
 				blogPostingImageResource.getSiteBlogPostingImagesPage(
@@ -440,6 +447,8 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			testGetSiteBlogPostingImagesPage_addBlogPostingImage(
 				siteId, randomBlogPostingImage());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<BlogPostingImage> page =
 				blogPostingImageResource.getSiteBlogPostingImagesPage(
@@ -470,6 +479,8 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 		BlogPostingImage blogPostingImage3 =
 			testGetSiteBlogPostingImagesPage_addBlogPostingImage(
 				siteId, randomBlogPostingImage());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<BlogPostingImage> page1 =
 			blogPostingImageResource.getSiteBlogPostingImagesPage(
@@ -595,6 +606,8 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			testGetSiteBlogPostingImagesPage_addBlogPostingImage(
 				siteId, blogPostingImage2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<BlogPostingImage> ascPage =
 				blogPostingImageResource.getSiteBlogPostingImagesPage(
@@ -677,6 +690,8 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			testGraphQLBlogPostingImage_addBlogPostingImage();
 		BlogPostingImage blogPostingImage2 =
 			testGraphQLBlogPostingImage_addBlogPostingImage();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -1421,6 +1436,26 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 
 	protected BlogPostingImage randomPatchBlogPostingImage() throws Exception {
 		return randomBlogPostingImage();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected BlogPostingImageResource blogPostingImageResource;

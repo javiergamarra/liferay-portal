@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -66,6 +68,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -237,6 +240,8 @@ public abstract class BaseWikiPageResourceTestCase {
 		WikiPage wikiPage2 = testGetWikiNodeWikiPagesPage_addWikiPage(
 			wikiNodeId, randomWikiPage());
 
+		reindex(testCompany.getCompanyId());
+
 		page = wikiPageResource.getWikiNodeWikiPagesPage(
 			wikiNodeId, null, null, Pagination.of(1, 2), null);
 
@@ -270,6 +275,8 @@ public abstract class BaseWikiPageResourceTestCase {
 		wikiPage1 = testGetWikiNodeWikiPagesPage_addWikiPage(
 			wikiNodeId, wikiPage1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
 				wikiNodeId, null,
@@ -302,6 +309,8 @@ public abstract class BaseWikiPageResourceTestCase {
 		WikiPage wikiPage2 = testGetWikiNodeWikiPagesPage_addWikiPage(
 			wikiNodeId, randomWikiPage());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
 				wikiNodeId, null, getFilterString(entityField, "eq", wikiPage1),
@@ -325,6 +334,8 @@ public abstract class BaseWikiPageResourceTestCase {
 
 		WikiPage wikiPage3 = testGetWikiNodeWikiPagesPage_addWikiPage(
 			wikiNodeId, randomWikiPage());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<WikiPage> page1 = wikiPageResource.getWikiNodeWikiPagesPage(
 			wikiNodeId, null, null, Pagination.of(1, 2), null);
@@ -432,6 +443,8 @@ public abstract class BaseWikiPageResourceTestCase {
 		wikiPage2 = testGetWikiNodeWikiPagesPage_addWikiPage(
 			wikiNodeId, wikiPage2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<WikiPage> ascPage = wikiPageResource.getWikiNodeWikiPagesPage(
 				wikiNodeId, null, null, Pagination.of(1, 2),
@@ -522,6 +535,8 @@ public abstract class BaseWikiPageResourceTestCase {
 
 		WikiPage wikiPage2 = testGetWikiPageWikiPagesPage_addWikiPage(
 			parentWikiPageId, randomWikiPage());
+
+		reindex(testCompany.getCompanyId());
 
 		page = wikiPageResource.getWikiPageWikiPagesPage(parentWikiPageId);
 
@@ -1673,6 +1688,26 @@ public abstract class BaseWikiPageResourceTestCase {
 
 	protected WikiPage randomPatchWikiPage() throws Exception {
 		return randomWikiPage();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected WikiPageResource wikiPageResource;

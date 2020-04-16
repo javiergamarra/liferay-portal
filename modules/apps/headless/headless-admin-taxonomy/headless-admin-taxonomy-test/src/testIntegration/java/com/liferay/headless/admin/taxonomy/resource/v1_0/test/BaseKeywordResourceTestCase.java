@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -67,6 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -211,6 +214,8 @@ public abstract class BaseKeywordResourceTestCase {
 		Keyword keyword2 = testGetKeywordsRankedPage_addKeyword(
 			randomKeyword());
 
+		reindex(testCompany.getCompanyId());
+
 		page = keywordResource.getKeywordsRankedPage(null, Pagination.of(1, 2));
 
 		Assert.assertEquals(2, page.getTotalCount());
@@ -234,6 +239,8 @@ public abstract class BaseKeywordResourceTestCase {
 
 		Keyword keyword3 = testGetKeywordsRankedPage_addKeyword(
 			randomKeyword());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Keyword> page1 = keywordResource.getKeywordsRankedPage(
 			null, Pagination.of(1, 2));
@@ -428,6 +435,8 @@ public abstract class BaseKeywordResourceTestCase {
 		Keyword keyword2 = testGetSiteKeywordsPage_addKeyword(
 			siteId, randomKeyword());
 
+		reindex(testCompany.getCompanyId());
+
 		page = keywordResource.getSiteKeywordsPage(
 			siteId, null, null, Pagination.of(1, 2), null);
 
@@ -458,6 +467,8 @@ public abstract class BaseKeywordResourceTestCase {
 		Keyword keyword1 = randomKeyword();
 
 		keyword1 = testGetSiteKeywordsPage_addKeyword(siteId, keyword1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<Keyword> page = keywordResource.getSiteKeywordsPage(
@@ -490,6 +501,8 @@ public abstract class BaseKeywordResourceTestCase {
 		Keyword keyword2 = testGetSiteKeywordsPage_addKeyword(
 			siteId, randomKeyword());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Keyword> page = keywordResource.getSiteKeywordsPage(
 				siteId, null, getFilterString(entityField, "eq", keyword1),
@@ -513,6 +526,8 @@ public abstract class BaseKeywordResourceTestCase {
 
 		Keyword keyword3 = testGetSiteKeywordsPage_addKeyword(
 			siteId, randomKeyword());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Keyword> page1 = keywordResource.getSiteKeywordsPage(
 			siteId, null, null, Pagination.of(1, 2), null);
@@ -616,6 +631,8 @@ public abstract class BaseKeywordResourceTestCase {
 
 		keyword2 = testGetSiteKeywordsPage_addKeyword(siteId, keyword2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<Keyword> ascPage = keywordResource.getSiteKeywordsPage(
 				siteId, null, null, Pagination.of(1, 2),
@@ -690,6 +707,8 @@ public abstract class BaseKeywordResourceTestCase {
 
 		Keyword keyword1 = testGraphQLKeyword_addKeyword();
 		Keyword keyword2 = testGraphQLKeyword_addKeyword();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -1368,6 +1387,26 @@ public abstract class BaseKeywordResourceTestCase {
 
 	protected Keyword randomPatchKeyword() throws Exception {
 		return randomKeyword();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected KeywordResource keywordResource;

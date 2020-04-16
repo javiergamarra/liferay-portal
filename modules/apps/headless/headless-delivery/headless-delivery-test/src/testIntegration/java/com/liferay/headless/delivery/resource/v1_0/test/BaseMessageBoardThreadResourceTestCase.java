@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -68,6 +70,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -255,6 +258,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGetMessageBoardSectionMessageBoardThreadsPage_addMessageBoardThread(
 				messageBoardSectionId, randomMessageBoardThread());
 
+		reindex(testCompany.getCompanyId());
+
 		page =
 			messageBoardThreadResource.
 				getMessageBoardSectionMessageBoardThreadsPage(
@@ -295,6 +300,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGetMessageBoardSectionMessageBoardThreadsPage_addMessageBoardThread(
 				messageBoardSectionId, messageBoardThread1);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardThread> page =
 				messageBoardThreadResource.
@@ -333,6 +340,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGetMessageBoardSectionMessageBoardThreadsPage_addMessageBoardThread(
 				messageBoardSectionId, randomMessageBoardThread());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardThread> page =
 				messageBoardThreadResource.
@@ -365,6 +374,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 		MessageBoardThread messageBoardThread3 =
 			testGetMessageBoardSectionMessageBoardThreadsPage_addMessageBoardThread(
 				messageBoardSectionId, randomMessageBoardThread());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<MessageBoardThread> page1 =
 			messageBoardThreadResource.
@@ -497,6 +508,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGetMessageBoardSectionMessageBoardThreadsPage_addMessageBoardThread(
 				messageBoardSectionId, messageBoardThread2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardThread> ascPage =
 				messageBoardThreadResource.
@@ -589,6 +602,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGetMessageBoardThreadsRankedPage_addMessageBoardThread(
 				randomMessageBoardThread());
 
+		reindex(testCompany.getCompanyId());
+
 		page = messageBoardThreadResource.getMessageBoardThreadsRankedPage(
 			null, null, null, Pagination.of(1, 2), null);
 
@@ -621,6 +636,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 		MessageBoardThread messageBoardThread3 =
 			testGetMessageBoardThreadsRankedPage_addMessageBoardThread(
 				randomMessageBoardThread());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<MessageBoardThread> page1 =
 			messageBoardThreadResource.getMessageBoardThreadsRankedPage(
@@ -743,6 +760,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 		messageBoardThread2 =
 			testGetMessageBoardThreadsRankedPage_addMessageBoardThread(
 				messageBoardThread2);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardThread> ascPage =
@@ -1089,6 +1108,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGetSiteMessageBoardThreadsPage_addMessageBoardThread(
 				siteId, randomMessageBoardThread());
 
+		reindex(testCompany.getCompanyId());
+
 		page = messageBoardThreadResource.getSiteMessageBoardThreadsPage(
 			siteId, null, null, null, Pagination.of(1, 2), null);
 
@@ -1124,6 +1145,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 		messageBoardThread1 =
 			testGetSiteMessageBoardThreadsPage_addMessageBoardThread(
 				siteId, messageBoardThread1);
+
+		reindex(testCompany.getCompanyId());
 
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardThread> page =
@@ -1161,6 +1184,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGetSiteMessageBoardThreadsPage_addMessageBoardThread(
 				siteId, randomMessageBoardThread());
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardThread> page =
 				messageBoardThreadResource.getSiteMessageBoardThreadsPage(
@@ -1191,6 +1216,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 		MessageBoardThread messageBoardThread3 =
 			testGetSiteMessageBoardThreadsPage_addMessageBoardThread(
 				siteId, randomMessageBoardThread());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<MessageBoardThread> page1 =
 			messageBoardThreadResource.getSiteMessageBoardThreadsPage(
@@ -1316,6 +1343,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGetSiteMessageBoardThreadsPage_addMessageBoardThread(
 				siteId, messageBoardThread2);
 
+		reindex(testCompany.getCompanyId());
+
 		for (EntityField entityField : entityFields) {
 			Page<MessageBoardThread> ascPage =
 				messageBoardThreadResource.getSiteMessageBoardThreadsPage(
@@ -1398,6 +1427,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			testGraphQLMessageBoardThread_addMessageBoardThread();
 		MessageBoardThread messageBoardThread2 =
 			testGraphQLMessageBoardThread_addMessageBoardThread();
+
+		reindex(testCompany.getCompanyId());
 
 		jsonObject = JSONFactoryUtil.createJSONObject(
 			invoke(graphQLField.toString()));
@@ -3163,6 +3194,26 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 				worstRating = RandomTestUtil.randomDouble();
 			}
 		};
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected MessageBoardThreadResource messageBoardThreadResource;

@@ -36,6 +36,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -58,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -222,6 +225,8 @@ public abstract class BaseAssigneeResourceTestCase {
 		Assignee assignee2 = testGetWorkflowTaskAssignableUsersPage_addAssignee(
 			workflowTaskId, randomAssignee());
 
+		reindex(testCompany.getCompanyId());
+
 		page = assigneeResource.getWorkflowTaskAssignableUsersPage(
 			workflowTaskId, Pagination.of(1, 2));
 
@@ -248,6 +253,8 @@ public abstract class BaseAssigneeResourceTestCase {
 
 		Assignee assignee3 = testGetWorkflowTaskAssignableUsersPage_addAssignee(
 			workflowTaskId, randomAssignee());
+
+		reindex(testCompany.getCompanyId());
 
 		Page<Assignee> page1 =
 			assigneeResource.getWorkflowTaskAssignableUsersPage(
@@ -623,6 +630,26 @@ public abstract class BaseAssigneeResourceTestCase {
 
 	protected Assignee randomPatchAssignee() throws Exception {
 		return randomAssignee();
+	}
+
+	private void reindex(Object... ids) {
+		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
+		Stream<Indexer<?>> stream = indexers.stream();
+		stream.forEach(
+			indexer -> {
+				try {
+					indexer.reindex(
+						Arrays.stream(
+							ids
+						).map(
+							Object::toString
+						).toArray(
+							String[]::new
+						));
+				}
+				catch (Throwable e) {
+				}
+			});
 	}
 
 	protected AssigneeResource assigneeResource;
