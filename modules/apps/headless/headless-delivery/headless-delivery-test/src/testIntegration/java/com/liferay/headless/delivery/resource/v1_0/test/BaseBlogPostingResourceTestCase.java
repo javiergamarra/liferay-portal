@@ -581,27 +581,46 @@ public abstract class BaseBlogPostingResourceTestCase {
 			(entityField, blogPosting1, blogPosting2) -> {
 				Class<?> clazz = blogPosting1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						blogPosting1, entityField.getName(),
+						blogPosting1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						blogPosting2, entityField.getName(),
+						blogPosting2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						blogPosting1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						blogPosting2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						blogPosting1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						blogPosting1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						blogPosting2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						blogPosting2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -673,6 +692,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 
 	@Test
 	public void testGraphQLGetSiteBlogPostingsPage() throws Exception {
+		Long siteId = testGetSiteBlogPostingsPage_getSiteId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -692,7 +713,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
-						put("siteKey", "\"" + testGroup.getGroupId() + "\"");
+
+						put("siteKey", "\"" + siteId + "\"");
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -2189,15 +2211,21 @@ public abstract class BaseBlogPostingResourceTestCase {
 	protected BlogPosting randomBlogPosting() throws Exception {
 		return new BlogPosting() {
 			{
-				alternativeHeadline = RandomTestUtil.randomString();
-				articleBody = RandomTestUtil.randomString();
+				alternativeHeadline = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				articleBody = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				datePublished = RandomTestUtil.nextDate();
-				description = RandomTestUtil.randomString();
-				encodingFormat = RandomTestUtil.randomString();
-				friendlyUrlPath = RandomTestUtil.randomString();
-				headline = RandomTestUtil.randomString();
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				encodingFormat = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				friendlyUrlPath = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				headline = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
 				numberOfComments = RandomTestUtil.randomInt();
 				siteId = testGroup.getGroupId();

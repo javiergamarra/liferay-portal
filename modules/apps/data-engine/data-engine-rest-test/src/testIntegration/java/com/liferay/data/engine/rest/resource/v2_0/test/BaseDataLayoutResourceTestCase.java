@@ -353,27 +353,46 @@ public abstract class BaseDataLayoutResourceTestCase {
 			(entityField, dataLayout1, dataLayout2) -> {
 				Class<?> clazz = dataLayout1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						dataLayout1, entityField.getName(),
+						dataLayout1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						dataLayout2, entityField.getName(),
+						dataLayout2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						dataLayout1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						dataLayout2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						dataLayout1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						dataLayout1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						dataLayout2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						dataLayout2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -643,7 +662,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 				"dataLayoutByContentTypeByDataLayoutKey",
 				new HashMap<String, Object>() {
 					{
-						put("siteId", dataLayout.getSiteId());
+						put("siteKey", "\"" + dataLayout.getSiteId() + "\"");
 						put("contentType", dataLayout.getContentType());
 						put("dataLayoutKey", dataLayout.getDataLayoutKey());
 					}
@@ -1327,13 +1346,16 @@ public abstract class BaseDataLayoutResourceTestCase {
 	protected DataLayout randomDataLayout() throws Exception {
 		return new DataLayout() {
 			{
-				contentType = RandomTestUtil.randomString();
+				contentType = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dataDefinitionId = RandomTestUtil.randomLong();
-				dataLayoutKey = RandomTestUtil.randomString();
+				dataLayoutKey = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				id = RandomTestUtil.randomLong();
-				paginationMode = RandomTestUtil.randomString();
+				paginationMode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				siteId = testGroup.getGroupId();
 				userId = RandomTestUtil.randomLong();
 			}

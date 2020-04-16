@@ -440,27 +440,46 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			(entityField, messageBoardThread1, messageBoardThread2) -> {
 				Class<?> clazz = messageBoardThread1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						messageBoardThread1, entityField.getName(),
+						messageBoardThread1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						messageBoardThread2, entityField.getName(),
+						messageBoardThread2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						messageBoardThread1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						messageBoardThread2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						messageBoardThread1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						messageBoardThread1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						messageBoardThread2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						messageBoardThread2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -690,27 +709,46 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			(entityField, messageBoardThread1, messageBoardThread2) -> {
 				Class<?> clazz = messageBoardThread1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						messageBoardThread1, entityField.getName(),
+						messageBoardThread1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						messageBoardThread2, entityField.getName(),
+						messageBoardThread2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						messageBoardThread1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						messageBoardThread2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						messageBoardThread1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						messageBoardThread1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						messageBoardThread2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						messageBoardThread2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1260,27 +1298,46 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 			(entityField, messageBoardThread1, messageBoardThread2) -> {
 				Class<?> clazz = messageBoardThread1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						messageBoardThread1, entityField.getName(),
+						messageBoardThread1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						messageBoardThread2, entityField.getName(),
+						messageBoardThread2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						messageBoardThread1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						messageBoardThread2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						messageBoardThread1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						messageBoardThread1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						messageBoardThread2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						messageBoardThread2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1360,6 +1417,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 
 	@Test
 	public void testGraphQLGetSiteMessageBoardThreadsPage() throws Exception {
+		Long siteId = testGetSiteMessageBoardThreadsPage_getSiteId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -1379,7 +1438,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
-						put("siteKey", "\"" + testGroup.getGroupId() + "\"");
+
+						put("siteKey", "\"" + siteId + "\"");
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -1492,7 +1552,9 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 				"messageBoardThreadByFriendlyUrlPath",
 				new HashMap<String, Object>() {
 					{
-						put("siteId", messageBoardThread.getSiteId());
+						put(
+							"siteKey",
+							"\"" + messageBoardThread.getSiteId() + "\"");
 						put(
 							"friendlyUrlPath",
 							messageBoardThread.getFriendlyUrlPath());
@@ -3115,12 +3177,16 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 	protected MessageBoardThread randomMessageBoardThread() throws Exception {
 		return new MessageBoardThread() {
 			{
-				articleBody = RandomTestUtil.randomString();
+				articleBody = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
-				encodingFormat = RandomTestUtil.randomString();
-				friendlyUrlPath = RandomTestUtil.randomString();
-				headline = RandomTestUtil.randomString();
+				encodingFormat = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				friendlyUrlPath = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				headline = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
 				messageBoardSectionId = RandomTestUtil.randomLong();
 				numberOfMessageBoardAttachments = RandomTestUtil.randomInt();
@@ -3128,7 +3194,8 @@ public abstract class BaseMessageBoardThreadResourceTestCase {
 				showAsQuestion = RandomTestUtil.randomBoolean();
 				siteId = testGroup.getGroupId();
 				subscribed = RandomTestUtil.randomBoolean();
-				threadType = RandomTestUtil.randomString();
+				threadType = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				viewCount = RandomTestUtil.randomLong();
 			}
 		};

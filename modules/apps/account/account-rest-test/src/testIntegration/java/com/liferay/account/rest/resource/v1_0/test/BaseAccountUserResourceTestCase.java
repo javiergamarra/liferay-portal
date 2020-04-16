@@ -378,27 +378,46 @@ public abstract class BaseAccountUserResourceTestCase {
 			(entityField, accountUser1, accountUser2) -> {
 				Class<?> clazz = accountUser1.getClass();
 
+				String entityName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						accountUser1, entityField.getName(),
+						accountUser1, entityName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						accountUser2, entityField.getName(),
+						accountUser2, entityName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityName.contains("email")) {
+					BeanUtils.setProperty(
+						accountUser1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						accountUser2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						accountUser1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						accountUser1, entityName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						accountUser2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						accountUser2, entityName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -471,6 +490,8 @@ public abstract class BaseAccountUserResourceTestCase {
 
 	@Test
 	public void testGraphQLGetAccountUsersPage() throws Exception {
+		Long accountId = testGetAccountUsersPage_getAccountId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -490,6 +511,8 @@ public abstract class BaseAccountUserResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
+
+						put("accountId", accountId);
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -1087,14 +1110,20 @@ public abstract class BaseAccountUserResourceTestCase {
 	protected AccountUser randomAccountUser() throws Exception {
 		return new AccountUser() {
 			{
-				emailAddress = RandomTestUtil.randomString();
-				firstName = RandomTestUtil.randomString();
+				emailAddress =
+					StringUtil.toLowerCase(RandomTestUtil.randomString()) +
+						"@liferay.com";
+				firstName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				lastName = RandomTestUtil.randomString();
-				middleName = RandomTestUtil.randomString();
-				prefix = RandomTestUtil.randomString();
-				screenName = RandomTestUtil.randomString();
-				suffix = RandomTestUtil.randomString();
+				lastName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				middleName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				prefix = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				screenName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				suffix = StringUtil.toLowerCase(RandomTestUtil.randomString());
 			}
 		};
 	}
