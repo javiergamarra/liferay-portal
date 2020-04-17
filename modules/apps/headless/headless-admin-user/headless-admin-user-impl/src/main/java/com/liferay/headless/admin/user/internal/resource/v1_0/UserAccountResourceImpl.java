@@ -189,7 +189,10 @@ public class UserAccountResourceImpl
 		return new ThemeDisplay() {
 			{
 				setPortalURL(StringPool.BLANK);
-				setSiteGroupId(group.getGroupId());
+
+				if (group != null) {
+					setSiteGroupId(group.getGroupId());
+				}
 			}
 		};
 	}
@@ -319,6 +322,10 @@ public class UserAccountResourceImpl
 					() -> {
 						Group group = user.getGroup();
 
+						if (group == null) {
+							return null;
+						}
+
 						return group.getDisplayURL(
 							_getThemeDisplay(group), true);
 					});
@@ -339,6 +346,10 @@ public class UserAccountResourceImpl
 				setProfileURL(
 					() -> {
 						Group group = user.getGroup();
+
+						if (group == null) {
+							return null;
+						}
 
 						return group.getDisplayURL(_getThemeDisplay(group));
 					});
