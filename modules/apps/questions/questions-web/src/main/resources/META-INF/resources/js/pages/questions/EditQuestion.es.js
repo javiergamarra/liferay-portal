@@ -42,21 +42,16 @@ export default withRouter(
 
 		const loadThread = () =>
 			getThreadContent(questionId, context.siteKey).then(
-				({articleBody, headline, id, taxonomyCategoryBriefs}) => {
+				({articleBody, headline, id, keywords}) => {
 					setArticleBody(articleBody);
 					setHeadline(headline);
 					setId(id);
-					if (taxonomyCategoryBriefs) {
+					if (keywords) {
 						setTags(
-							taxonomyCategoryBriefs.map(
-								({
-									taxonomyCategoryId,
-									taxonomyCategoryName,
-								}) => ({
-									label: taxonomyCategoryName,
-									value: taxonomyCategoryId,
-								})
-							)
+							keywords.map(keyword => ({
+								label: keyword,
+								value: keyword,
+							}))
 						);
 					}
 				}
