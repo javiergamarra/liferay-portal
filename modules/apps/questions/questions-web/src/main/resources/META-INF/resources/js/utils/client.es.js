@@ -334,13 +334,10 @@ export const getThreadContent = (friendlyUrlPath, siteKey) =>
 	request(gql`
         query {
             messageBoardThreadByFriendlyUrlPath(friendlyUrlPath: ${friendlyUrlPath}, siteKey: ${siteKey}){
-                articleBody 
+                articleBody
                 headline
-                id 
-				taxonomyCategoryBriefs {
-                	taxonomyCategoryId
-					taxonomyCategoryName 
-                } 
+                id
+				keywords
             }
         }`);
 
@@ -602,17 +599,14 @@ export const updateThread = (
 	articleBody,
 	headline,
 	messageBoardThreadId,
-	taxonomyCategoryIds
+	tags
 ) =>
 	request(gql`
         mutation {
-            patchMessageBoardThread(messageBoardThread: {articleBody: ${articleBody}, encodingFormat: "html", headline: ${headline}, taxonomyCategoryIds: ${taxonomyCategoryIds}}, messageBoardThreadId: ${messageBoardThreadId}){
+            patchMessageBoardThread(messageBoardThread: {articleBody: ${articleBody}, encodingFormat: "html", headline: ${headline}, keywords: ${tags}}, messageBoardThreadId: ${messageBoardThreadId}){
                 articleBody
                 headline
-				taxonomyCategoryBriefs {
-					taxonomyCategoryId
-					taxonomyCategoryName
-				} 
+				keywords
             }
         }`);
 
