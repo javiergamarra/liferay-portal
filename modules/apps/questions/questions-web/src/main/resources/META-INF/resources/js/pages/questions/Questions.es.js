@@ -20,13 +20,15 @@ import {AppContext} from '../../AppContext.es';
 import Error from '../../components/Error.es';
 import QuestionRow from '../../components/QuestionRow.es';
 import {getRankedThreads, getThreads} from '../../utils/client.es';
+import {slugToText} from '../../utils/utils.es';
 import QuestionsNavigationBar from '../QuestionsNavigationBar.es';
 
 export default ({
 	match: {
-		params: {creatorId, tag: taxonomyCategoryId},
+		params: {creatorId, tag},
 	},
 }) => {
+	const [currentTag, setCurrentTag] = useState('');
 	const [error, setError] = useState({});
 	const [loading, setLoading] = useState(true);
 	const [page, setPage] = useState(1);
@@ -40,6 +42,10 @@ export default ({
 	const siteKey = context.siteKey;
 
 	useEffect(() => {
+		setCurrentTag(tag ? slugToText(tag) : '');
+	}, [tag]);
+
+	useEffect(() => {
 		if (section.id) {
 			renderQuestions(loadThreads());
 		}
@@ -50,7 +56,7 @@ export default ({
 		section,
 		search,
 		siteKey,
-		taxonomyCategoryId,
+		currentTag,
 		loadThreads,
 	]);
 
@@ -71,23 +77,15 @@ export default ({
 		sort =>
 			getThreads({
 				creatorId,
+				keywords: currentTag,
 				page,
 				pageSize,
 				search,
 				section,
 				siteKey,
 				sort,
-				taxonomyCategoryId,
 			}),
-		[
-			creatorId,
-			page,
-			pageSize,
-			search,
-			section,
-			siteKey,
-			taxonomyCategoryId,
-		]
+		[creatorId, currentTag, page, pageSize, search, section, siteKey]
 	);
 
 	const filterChange = type => {
