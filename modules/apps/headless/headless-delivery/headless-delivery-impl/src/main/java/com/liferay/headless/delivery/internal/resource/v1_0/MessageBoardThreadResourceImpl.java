@@ -204,9 +204,8 @@ public class MessageBoardThreadResourceImpl
 
 	@Override
 	public Page<MessageBoardThread> getMessageBoardThreadsRankedPage(
-			Date dateCreated, Date dateModified, Long messageBoardSectionId,
-			Pagination pagination, Sort[] sorts)
-		throws Exception {
+		Date dateCreated, Date dateModified, Long messageBoardSectionId,
+		Pagination pagination, Sort[] sorts) {
 
 		DynamicQuery dynamicQuery = _getDynamicQuery(
 			dateCreated, dateModified, messageBoardSectionId, pagination,
@@ -218,7 +217,10 @@ public class MessageBoardThreadResourceImpl
 				(RatingsStats ratingsStats) -> _toMessageBoardThread(
 					_mbMessageService.getMessage(ratingsStats.getClassPK()))),
 			pagination,
-			_ratingsStatsLocalService.dynamicQueryCount(dynamicQuery));
+			_ratingsStatsLocalService.dynamicQueryCount(
+				_getDynamicQuery(
+					dateCreated, dateModified, messageBoardSectionId,
+					Pagination.of(1, Integer.MAX_VALUE), sorts)));
 	}
 
 	@Override
@@ -456,7 +458,7 @@ public class MessageBoardThreadResourceImpl
 			for (Sort sort : sorts) {
 				String fieldName = sort.getFieldName();
 
-				fieldName = StringUtil.removeSubstring(fieldName, "_sortable");
+				fieldName = StringUtil.replace(fieldName, "_sortable", "Date");
 
 				if (sort.isReverse()) {
 					dynamicQuery.addOrder(OrderFactoryUtil.desc(fieldName));
