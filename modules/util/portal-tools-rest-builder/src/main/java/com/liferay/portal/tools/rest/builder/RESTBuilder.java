@@ -309,7 +309,7 @@ public class RESTBuilder {
 
 		String clientMessage = StringBundler.concat(
 			"A Java client JAR is available for use with the group ID '",
-			clientMavenGroupId, "', artifact ID '",
+			clientMavenGroupId, "',\n        artifact ID '",
 			_configYAML.getApiPackagePath(), ".client', and version '");
 
 		OpenAPIYAML openAPIYAML = _loadOpenAPIYAML(yamlString);
@@ -318,10 +318,14 @@ public class RESTBuilder {
 
 		String description = info.getDescription();
 
-		if (description.contains(clientMessage)) {
+		String trimmedDescription = description.replaceAll("\\s+", "");
+
+		int index = trimmedDescription.indexOf(
+			clientMessage.replaceAll("\\s+", ""));
+
+		if (index != -1) {
 			description = StringUtil.removeSubstring(
-				description,
-				description.substring(description.indexOf(clientMessage)));
+				description, description.substring(index));
 		}
 
 		if (!description.isEmpty()) {
