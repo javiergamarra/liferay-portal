@@ -33,8 +33,6 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -67,18 +65,6 @@ public class WikiPageAttachmentResourceTest
 			serviceContext);
 	}
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLDeleteWikiPageAttachment() {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetWikiPageAttachment() {
-	}
-
 	@Override
 	protected void assertValid(
 			WikiPageAttachment wikiPageAttachment,
@@ -92,15 +78,39 @@ public class WikiPageAttachmentResourceTest
 	}
 
 	@Override
+	protected String[] getAdditionalAssertFieldNames() {
+		return new String[] {"title"};
+	}
+
+	@Override
 	protected Map<String, File> getMultipartFiles() throws Exception {
 		return HashMapBuilder.<String, File>put(
 			"file",
 			() -> {
+				File file = new File(_tempFileName);
+
 				String randomString = RandomTestUtil.randomString();
 
-				return FileUtil.createTempFile(randomString.getBytes());
+				FileUtil.write(file, randomString.getBytes());
+
+				return file;
 			}
 		).build();
+	}
+
+	@Override
+	protected WikiPageAttachment randomWikiPageAttachment() throws Exception {
+		WikiPageAttachment wikiPageAttachment =
+			super.randomWikiPageAttachment();
+
+		_tempFileName = FileUtil.createTempFileName();
+
+		wikiPageAttachment.setTitle(
+			new File(
+				_tempFileName
+			).getName());
+
+		return wikiPageAttachment;
 	}
 
 	@Override
@@ -128,6 +138,14 @@ public class WikiPageAttachmentResourceTest
 		return _wikiPage.getPageId();
 	}
 
+	@Override
+	protected WikiPageAttachment
+			testGraphQLWikiPageAttachment_addWikiPageAttachment()
+		throws Exception {
+
+		return testDeleteWikiPageAttachment_addWikiPageAttachment();
+	}
+
 	private String _read(String url) throws Exception {
 		HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
@@ -140,6 +158,7 @@ public class WikiPageAttachmentResourceTest
 		return httpResponse.getContent();
 	}
 
+	private String _tempFileName;
 	private WikiPage _wikiPage;
 
 }

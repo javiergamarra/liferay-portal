@@ -32,8 +32,6 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -60,18 +58,6 @@ public class MessageBoardAttachmentResourceTest
 		_mbThread = mbMessage.getThread();
 	}
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLDeleteMessageBoardAttachment() {
-	}
-
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetMessageBoardAttachment() {
-	}
-
 	@Override
 	protected void assertValid(
 			MessageBoardAttachment messageBoardAttachment,
@@ -86,15 +72,41 @@ public class MessageBoardAttachmentResourceTest
 	}
 
 	@Override
+	protected String[] getAdditionalAssertFieldNames() {
+		return new String[] {"title"};
+	}
+
+	@Override
 	protected Map<String, File> getMultipartFiles() throws Exception {
 		return HashMapBuilder.<String, File>put(
 			"file",
 			() -> {
+				File file = new File(_tempFileName);
+
 				String randomString = RandomTestUtil.randomString();
 
-				return FileUtil.createTempFile(randomString.getBytes());
+				FileUtil.write(file, randomString.getBytes());
+
+				return file;
 			}
 		).build();
+	}
+
+	@Override
+	protected MessageBoardAttachment randomMessageBoardAttachment()
+		throws Exception {
+
+		MessageBoardAttachment messageBoardAttachment =
+			super.randomMessageBoardAttachment();
+
+		_tempFileName = FileUtil.createTempFileName();
+
+		messageBoardAttachment.setTitle(
+			new File(
+				_tempFileName
+			).getName());
+
+		return messageBoardAttachment;
 	}
 
 	@Override
@@ -133,6 +145,14 @@ public class MessageBoardAttachmentResourceTest
 		return _mbThread.getThreadId();
 	}
 
+	@Override
+	protected MessageBoardAttachment
+			testGraphQLMessageBoardAttachment_addMessageBoardAttachment()
+		throws Exception {
+
+		return testDeleteMessageBoardAttachment_addMessageBoardAttachment();
+	}
+
 	private String _read(String url) throws Exception {
 		HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
@@ -146,5 +166,6 @@ public class MessageBoardAttachmentResourceTest
 	}
 
 	private MBThread _mbThread;
+	private String _tempFileName;
 
 }
