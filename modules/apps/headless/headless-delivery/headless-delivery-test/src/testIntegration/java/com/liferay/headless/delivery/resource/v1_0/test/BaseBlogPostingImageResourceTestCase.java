@@ -740,21 +740,6 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			multipartFiles);
 	}
 
-	@Test
-	public void testGraphQLPostSiteBlogPostingImage() throws Exception {
-		BlogPostingImage randomBlogPostingImage = randomBlogPostingImage();
-
-		BlogPostingImage blogPostingImage =
-			testGraphQLBlogPostingImage_addBlogPostingImage(
-				randomBlogPostingImage);
-
-		Assert.assertTrue(
-			equalsJSONObject(
-				randomBlogPostingImage,
-				JSONFactoryUtil.createJSONObject(
-					JSONFactoryUtil.serialize(blogPostingImage))));
-	}
-
 	protected BlogPostingImage testGraphQLBlogPostingImage_addBlogPostingImage()
 		throws Exception {
 
