@@ -220,7 +220,8 @@ export const getThread = (
                 encodingFormat
                 friendlyUrlPath
                 headline
-                id 
+				id
+				keywords
                 messageBoardMessages(page: ${page}, pageSize: 20, sort: ${sort}) {
                     items {
                     	actions
@@ -271,10 +272,6 @@ export const getThread = (
                     ratingValue
                 }
                 subscribed
-				taxonomyCategoryBriefs {
-                	taxonomyCategoryId
-					taxonomyCategoryName 
-                }
                 viewCount
             }
         }`);
@@ -357,13 +354,13 @@ export const hasListPermissions = (permission, siteKey) =>
 
 export const getThreads = ({
 	creatorId = '',
+	keywords = '',
 	page = 1,
 	pageSize = 30,
 	search = '',
 	section,
 	siteKey,
 	sort = 'dateCreated:desc',
-	taxonomyCategoryId = '',
 }) => {
 	let filter = `(messageBoardSectionId eq ${section.id} `;
 
@@ -373,8 +370,8 @@ export const getThreads = ({
 
 	filter += ')';
 
-	if (taxonomyCategoryId) {
-		filter = `taxonomyCategoryIds/any(x:x eq ${taxonomyCategoryId})`;
+	if (keywords) {
+		filter = `keywords/any(x:x eq '${keywords}')`;
 	}
 	else if (creatorId) {
 		filter = `creator/id eq ${creatorId}`;

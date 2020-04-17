@@ -26,8 +26,6 @@ String questionsRootElementId = renderResponse.getNamespace() + "-questions-root
 
 	<%
 	Map<String, Object> data = HashMapBuilder.<String, Object>put(
-		"defaultVocabulary", "AllAssetTypes"
-	).put(
 		"isOmniAdmin", permissionChecker.isOmniadmin()
 	).put(
 		"siteKey", String.valueOf(themeDisplay.getScopeGroupId())
