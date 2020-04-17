@@ -16,6 +16,9 @@ package com.liferay.portal.vulcan.internal.graphql.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.google.common.base.CaseFormat;
+
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Company;
@@ -144,6 +147,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -1936,7 +1940,11 @@ public class GraphQLServletExtender {
 		@Override
 		public Object get(DataFetchingEnvironment dataFetchingEnvironment) {
 			try {
-				return _createObject(dataFetchingEnvironment, _method);
+				Object object = _createObject(dataFetchingEnvironment, _method);
+
+				_resolveGraphQLActions(object);
+
+				return object;
 			}
 			catch (InvocationTargetException invocationTargetException) {
 				if (dataFetchingEnvironment.getRoot() !=
@@ -1957,7 +1965,159 @@ public class GraphQLServletExtender {
 			_method = method;
 		}
 
+		private Map<String, String> _getGraphQLAction(
+			String className, String method, String href) {
+
+			String operation =
+				StringUtil.equals("GET", method) ? "query" : "mutation";
+
+			int graphQLHRefEnd =
+				href.lastIndexOf("graphql") + "graphql".length();
+
+			String graphQLHref = href.substring(0, graphQLHRefEnd);
+			String path = href.substring(graphQLHRefEnd + 1);
+
+			String type = (className.indexOf('$') > 0) ?
+				className.substring(className.indexOf('$') + 1) :
+					className.substring(className.lastIndexOf('.') + 1);
+
+			type = StringUtil.endsWith(type, "Page") ?
+				type.substring(0, type.indexOf("Page")) : type;
+
+			String field = _getGraphQLField(method, path, type);
+
+			return HashMapBuilder.put(
+				"field", field
+			).put(
+				"href", graphQLHref
+			).put(
+				"operation", operation
+			).build();
+		}
+
+		private String _getGraphQLField(
+			String method, String path, String type) {
+
+			String operation = _methodOperationMap.getOrDefault(method, "");
+			String group = "";
+			String property = "";
+
+			String[] pathElements = StringUtil.split(path, "/");
+
+			Stream<String> stream = Arrays.stream(pathElements);
+
+			List<String> resourceTypes = stream.filter(
+				pathElement -> !pathElement.contains("{")
+			).map(
+				this::_toType
+			).collect(
+				Collectors.toList()
+			);
+
+			if (!resourceTypes.isEmpty() &&
+				!StringUtil.equalsIgnoreCase(resourceTypes.get(0), type)) {
+
+				group = resourceTypes.get(0);
+			}
+
+			if (!resourceTypes.isEmpty() &&
+				!StringUtil.equalsIgnoreCase(
+					resourceTypes.get(resourceTypes.size() - 1), type)) {
+
+				property = resourceTypes.get(resourceTypes.size() - 1);
+			}
+
+			stream = Arrays.stream(pathElements);
+
+			String params = "(";
+
+			params += stream.filter(
+				pathElement -> pathElement.contains("{")
+			).map(
+				pathElement ->
+					pathElement.substring(1, pathElement.indexOf("}")) + ": " +
+						pathElement
+			).collect(
+				Collectors.joining(", ")
+			);
+			params += ")";
+
+			params = StringUtil.replace(
+				params, "siteId: {siteId}", "siteKey: {siteKey}");
+
+			return StringUtil.lowerCaseFirstLetter(
+				StringBundler.concat(operation, group, type, property, params));
+		}
+
+		private void _resolveGraphQLActions(Object object) {
+			Class<?> clazz = object.getClass();
+
+			Class<?> resourceClass =
+				clazz.isLocalClass() || clazz.isAnonymousClass() ?
+					clazz.getSuperclass() : clazz;
+
+			try {
+				Field actionsField = resourceClass.getDeclaredField("actions");
+
+				actionsField.setAccessible(true);
+
+				Map<String, Map<String, String>> actions =
+					(Map<String, Map<String, String>>)actionsField.get(object);
+
+				if (actions != null) {
+					actions.replaceAll(
+						(actionName, action) -> {
+							String method = action.get("method");
+							String href = action.get("href");
+
+							return _getGraphQLAction(
+								resourceClass.getName(), method, href);
+						});
+				}
+			}
+			catch (ReflectiveOperationException reflectiveOperationException) {
+
+				// No actions field. Nothing to do
+
+			}
+
+			try {
+				Field itemsField = resourceClass.getDeclaredField("items");
+
+				itemsField.setAccessible(true);
+
+				Collection<?> items = (Collection)itemsField.get(object);
+
+				for (Object item : items) {
+					_resolveGraphQLActions(item);
+				}
+			}
+			catch (ReflectiveOperationException reflectiveOperationException) {
+
+				// No items field. Nothing to do
+
+			}
+		}
+
+		private String _toType(String pathElement) {
+			String type = pathElement.endsWith("s") ?
+				pathElement.substring(0, pathElement.length() - 1) :
+					pathElement;
+
+			return CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, type);
+		}
+
 		private final Method _method;
+		private final Map<String, String> _methodOperationMap =
+			HashMapBuilder.put(
+				"DELETE", "delete"
+			).put(
+				"PATCH", "patch"
+			).put(
+				"POST", "create"
+			).put(
+				"PUT", "update"
+			).build();
 
 	}
 
