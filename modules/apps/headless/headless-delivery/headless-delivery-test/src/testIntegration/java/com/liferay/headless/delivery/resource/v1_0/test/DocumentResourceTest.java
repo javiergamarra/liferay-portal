@@ -18,6 +18,8 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.headless.delivery.client.dto.v1_0.Document;
 import com.liferay.headless.delivery.client.http.HttpInvoker;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -28,10 +30,12 @@ import com.liferay.portal.search.test.util.SearchTestRule;
 
 import java.io.File;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,28 +46,50 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class DocumentResourceTest extends BaseDocumentResourceTestCase {
 
-	@Ignore
-	@Override
 	@Test
-	public void testGraphQLDeleteDocument() {
-	}
+	public void testGraphQLGetSiteDocumentsPage() throws Exception {
+		List<GraphQLField> graphQLFields = new ArrayList<>();
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetDocument() {
-	}
+		graphQLFields.add(new GraphQLField("page"));
+		graphQLFields.add(new GraphQLField("totalCount"));
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetSiteDocumentsPage() {
-	}
+		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLPostSiteDocument() {
+		graphQLFields.add(
+			new GraphQLField(
+				"items", itemsGraphQLFields.toArray(new GraphQLField[0])));
+
+		GraphQLField graphQLField = new GraphQLField(
+			"query",
+			new GraphQLField(
+				"documents",
+				HashMapBuilder.<String, Object>put(
+					"flatten", true
+				).put(
+					"page", 1
+				).put(
+					"pageSize", 2
+				).put(
+					"siteKey", "\"" + testGroup.getGroupId() + "\""
+				).build(),
+				graphQLFields.toArray(new GraphQLField[0])));
+
+		Document document1 = testGraphQLDocument_addDocument();
+		Document document2 = testGraphQLDocument_addDocument();
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			invoke(graphQLField.toString()));
+
+		JSONObject dataJSONObject = jsonObject.getJSONObject("data");
+
+		JSONObject documentsJSONObject = dataJSONObject.getJSONObject(
+			"documents");
+
+		Assert.assertEquals(2, documentsJSONObject.get("totalCount"));
+
+		assertEqualsJSONArray(
+			Arrays.asList(document1, document2),
+			documentsJSONObject.getJSONArray("items"));
 	}
 
 	@Rule
@@ -124,6 +150,12 @@ public class DocumentResourceTest extends BaseDocumentResourceTestCase {
 			RandomTestUtil.randomString(), serviceContext);
 
 		return folder.getFolderId();
+	}
+
+	@Override
+	protected Document testGraphQLDocument_addDocument() throws Exception {
+		return testPostDocumentFolderDocument_addDocument(
+			randomDocument(), getMultipartFiles());
 	}
 
 	private String _read(String url) throws Exception {
