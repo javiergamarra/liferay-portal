@@ -32,14 +32,12 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -90,23 +88,6 @@ public class RoleResourceTest extends BaseRoleResourceTestCase {
 		assertValid(page);
 	}
 
-	@Override
-	protected String[] getAdditionalAssertFieldNames() {
-		return new String[] {"name"};
-	}
-
-	@Override
-	protected Role randomRole() throws Exception {
-		Role role = super.randomRole();
-
-		role.setRoleType(
-			RoleConstants.getTypeLabel(
-				RoleConstants.TYPES_ORGANIZATION_AND_REGULAR_AND_SITE
-					[RandomTestUtil.randomInt(0, 2)]));
-
-		return role;
-	}
-
 	@Test
 	public void testGraphQLGetRolesPage() throws Exception {
 		List<GraphQLField> graphQLFields = new ArrayList<>();
@@ -118,12 +99,11 @@ public class RoleResourceTest extends BaseRoleResourceTestCase {
 			"query",
 			new GraphQLField(
 				"roles",
-				new HashMap<String, Object>() {
-					{
-						put("page", 1);
-						put("pageSize", 2);
-					}
-				},
+				(HashMap)HashMapBuilder.put(
+					"page", 1
+				).put(
+					"pageSize", 2
+				).build(),
 				graphQLFields.toArray(new GraphQLField[0])));
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
@@ -146,6 +126,23 @@ public class RoleResourceTest extends BaseRoleResourceTestCase {
 		rolesJSONObject = dataJSONObject.getJSONObject("roles");
 
 		Assert.assertEquals(totalCount + 2, rolesJSONObject.get("totalCount"));
+	}
+
+	@Override
+	protected String[] getAdditionalAssertFieldNames() {
+		return new String[] {"name"};
+	}
+
+	@Override
+	protected Role randomRole() throws Exception {
+		Role role = super.randomRole();
+
+		role.setRoleType(
+			RoleConstants.getTypeLabel(
+				RoleConstants.TYPES_ORGANIZATION_AND_REGULAR_AND_SITE
+					[RandomTestUtil.randomInt(0, 2)]));
+
+		return role;
 	}
 
 	@Override
