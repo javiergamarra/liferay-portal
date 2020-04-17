@@ -32,6 +32,8 @@ import com.liferay.headless.delivery.client.resource.v1_0.StructuredContentResou
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -45,11 +47,13 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.InputStream;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -151,16 +155,65 @@ public class StructuredContentResourceTest
 					structuredContent.getId(), _ddmTemplate.getTemplateId()));
 	}
 
-	@Ignore
-	@Override
 	@Test
-	public void testGraphQLGetSiteStructuredContentByKey() {
+	public void testGraphQLGetSiteStructuredContentByKey() throws Exception {
+		StructuredContent structuredContent =
+			testPostSiteStructuredContent_addStructuredContent(
+				randomStructuredContent());
+
+		List<GraphQLField> graphQLFields = getGraphQLFields();
+
+		GraphQLField graphQLField = new GraphQLField(
+			"query",
+			new GraphQLField(
+				"structuredContentByKey",
+				(HashMap)HashMapBuilder.put(
+					"key", "\"" + structuredContent.getKey() + "\""
+				).put(
+					"siteKey", "\"" + structuredContent.getSiteId() + "\""
+				).build(),
+				graphQLFields.toArray(new GraphQLField[0])));
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			invoke(graphQLField.toString()));
+
+		JSONObject dataJSONObject = jsonObject.getJSONObject("data");
+
+		Assert.assertTrue(
+			equalsJSONObject(
+				structuredContent,
+				dataJSONObject.getJSONObject("structuredContentByKey")));
 	}
 
-	@Ignore
 	@Override
 	@Test
-	public void testGraphQLGetSiteStructuredContentByUuid() {
+	public void testGraphQLGetSiteStructuredContentByUuid() throws Exception {
+		StructuredContent structuredContent =
+			testPostSiteStructuredContent_addStructuredContent(
+				randomStructuredContent());
+
+		List<GraphQLField> graphQLFields = getGraphQLFields();
+
+		GraphQLField graphQLField = new GraphQLField(
+			"query",
+			new GraphQLField(
+				"structuredContentByUuid",
+				(HashMap)HashMapBuilder.put(
+					"siteKey", "\"" + structuredContent.getSiteId() + "\""
+				).put(
+					"uuid", "\"" + structuredContent.getUuid() + "\""
+				).build(),
+				graphQLFields.toArray(new GraphQLField[0])));
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			invoke(graphQLField.toString()));
+
+		JSONObject dataJSONObject = jsonObject.getJSONObject("data");
+
+		Assert.assertTrue(
+			equalsJSONObject(
+				structuredContent,
+				dataJSONObject.getJSONObject("structuredContentByUuid")));
 	}
 
 	@Test
