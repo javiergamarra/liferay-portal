@@ -61,7 +61,7 @@ export default withRouter(
 				articleBody,
 				headline,
 				sectionId || section.id,
-				tags.map(tag => tag.value)
+				tags.map(tag => tag.label)
 			).then(() => debounceCallback());
 
 		useEffect(() => {

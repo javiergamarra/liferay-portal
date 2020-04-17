@@ -103,13 +103,10 @@ export const createQuestion = (
 ) =>
 	request(gql`
         mutation {
-            createMessageBoardSectionMessageBoardThread(messageBoardSectionId: ${messageBoardSectionId}, messageBoardThread: {articleBody: ${articleBody}, encodingFormat: "html", headline: ${headline}, showAsQuestion: true, taxonomyCategoryIds: ${tags}, viewableBy: ANYONE}){
+            createMessageBoardSectionMessageBoardThread(messageBoardSectionId: ${messageBoardSectionId}, messageBoardThread: {articleBody: ${articleBody}, encodingFormat: "html", headline: ${headline}, showAsQuestion: true, keywords: ${tags}, viewableBy: ANYONE}){
                 articleBody
                 headline
-                taxonomyCategoryBriefs {
-                	taxonomyCategoryId
-					taxonomyCategoryName 
-                }
+                keywords
                 showAsQuestion
             }
         }`);
@@ -391,17 +388,17 @@ export const getThreads = ({
 						ratingAverage
 						ratingCount
 						ratingValue
-					} 
+					}
 					articleBody
 					creator {
 						id
 						image
 						name
-					} 
+					}
 					dateModified
 					friendlyUrlPath
 					headline
-					id 
+					id
 					messageBoardMessages {
 						items {
 							showAsAnswer
@@ -410,14 +407,11 @@ export const getThreads = ({
 					messageBoardSection {
 						title
 					}
-					taxonomyCategoryBriefs {
-						taxonomyCategoryId
-						taxonomyCategoryName
-					} 
+					keywords
 					viewCount
 				}
-				page 
-				pageSize 
+				page
+				pageSize
 				totalCount
 			}
         }`);

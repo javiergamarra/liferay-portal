@@ -107,7 +107,7 @@ export default ({question}) => {
 					</span>
 				</div>
 
-				<TagList tags={question.taxonomyCategoryBriefs} />
+				<TagList tags={question.keywords} />
 			</div>
 		</div>
 	);
