@@ -1090,19 +1090,6 @@ public abstract class BaseDocumentResourceTestCase {
 	}
 
 	@Test
-	public void testGraphQLPostSiteDocument() throws Exception {
-		Document randomDocument = randomDocument();
-
-		Document document = testGraphQLDocument_addDocument(randomDocument);
-
-		Assert.assertTrue(
-			equalsJSONObject(
-				randomDocument,
-				JSONFactoryUtil.createJSONObject(
-					JSONFactoryUtil.serialize(document))));
-	}
-
-	@Test
 	public void testGetDocumentMyRating() throws Exception {
 		Document postDocument = testGetDocument_addDocument();
 
