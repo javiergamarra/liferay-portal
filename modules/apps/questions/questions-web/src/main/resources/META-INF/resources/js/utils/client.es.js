@@ -173,22 +173,14 @@ export const getTags = (page = 1, siteKey) =>
         }`);
 
 export const getAllTags = siteKey =>
-	request(gql`   
-		query {
-			taxonomyVocabularies(siteKey: ${siteKey}){
-				items {
-					taxonomyCategories {
-						items {
-							id
-							name
-						}
-					}
-					assetTypes {
-						type
-					}
-				}
-			}
-		}`);
+	request(gql`
+	query {
+		keywords(siteKey:${siteKey}) {
+		  items{
+			name
+		  }
+		}
+	  }`);
 
 export const getMessage = (friendlyUrlPath, siteKey) =>
 	request(gql`
