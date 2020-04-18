@@ -765,8 +765,6 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			List<AssetTag> tags = assetTagLocalService.checkTags(
 				userId, siteGroup, tagNames);
 
-			assetEntryPersistence.setAssetTags(entryId, tags);
-
 			if (visible) {
 				if (entry == null) {
 					for (AssetTag tag : tags) {
@@ -802,6 +800,8 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 						oldTag.getTagId(), classNameId);
 				}
 			}
+
+			assetEntryPersistence.setAssetTags(entryId, tags);
 		}
 
 		// Update entry after tags so that entry listeners have access to the
