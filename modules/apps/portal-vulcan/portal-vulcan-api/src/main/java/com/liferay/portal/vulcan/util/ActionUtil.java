@@ -14,6 +14,8 @@
 
 package com.liferay.portal.vulcan.util;
 
+import static com.liferay.portal.vulcan.yaml.util.GraphQLNamingUtil.getGraphQLMutationName;
+
 import com.liferay.oauth2.provider.scope.ScopeChecker;
 import com.liferay.oauth2.provider.scope.liferay.OAuth2ProviderScopeLiferayAccessControlContext;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -21,14 +23,20 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.vulcan.yaml.util.GraphQLNamingUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+
+import java.net.URI;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.MultivaluedMap;
@@ -52,8 +60,8 @@ public class ActionUtil {
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 *             #addAction(String, Class, Long, String, Object, Long, String,
-	 *             Long, UriInfo)}
+	 * #addAction(String, Class, Long, String, Object, Long, String,
+	 * Long, UriInfo)}
 	 */
 	@Deprecated
 	public static Map<String, String> addAction(
@@ -84,8 +92,8 @@ public class ActionUtil {
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 *             #addAction(String, Class, Long, String, Object, Long, String,
-	 *             Long, UriInfo)}
+	 * #addAction(String, Class, Long, String, Object, Long, String,
+	 * Long, UriInfo)}
 	 */
 	@Deprecated
 	public static Map<String, String> addAction(
@@ -99,8 +107,8 @@ public class ActionUtil {
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 *             #addAction(String, Class, Long, String, Object, Long, String,
-	 *             Long, UriInfo)}
+	 * #addAction(String, Class, Long, String, Object, Long, String,
+	 * Long, UriInfo)}
 	 */
 	@Deprecated
 	public static Map<String, String> addAction(
@@ -166,6 +174,52 @@ public class ActionUtil {
 			version = matchedURIs.get(matchedURIs.size() - 1);
 		}
 
+		URI baseUri = uriInfo.getBaseUri();
+
+		String baseUriString = baseUri.toString();
+
+		String httpMethodName = _getHttpMethodName(clazz, methodName);
+
+		if (baseUriString.contains("/graphql")) {
+			String field;
+			String operation;
+
+			if (httpMethodName.equals("GET")) {
+				Stream<Method> stream = Arrays.stream(clazz.getMethods());
+
+				field = GraphQLNamingUtil.getGraphQLPropertyName(
+					methodName,
+					stream.filter(
+						method -> StringUtil.equals(
+							method.getName(), methodName)
+					).findFirst(
+					).map(
+						Method::getReturnType
+					).map(
+						Class::getName
+					).orElse(
+						"Object"
+					),
+					stream.map(
+						Method::getName
+					).collect(
+						Collectors.toList()
+					));
+
+				operation = "query";
+			}
+			else {
+				field = getGraphQLMutationName(methodName);
+				operation = "mutation";
+			}
+
+			return HashMapBuilder.put(
+				"field", field
+			).put(
+				"operation", operation
+			).build();
+		}
+
 		return HashMapBuilder.put(
 			"href",
 			uriInfo.getBaseUriBuilder(
@@ -175,7 +229,7 @@ public class ActionUtil {
 				clazz.getSuperclass(), methodName
 			).toTemplate()
 		).put(
-			"method", _getHttpMethodName(clazz, methodName)
+			"method", httpMethodName
 		).build();
 	}
 
