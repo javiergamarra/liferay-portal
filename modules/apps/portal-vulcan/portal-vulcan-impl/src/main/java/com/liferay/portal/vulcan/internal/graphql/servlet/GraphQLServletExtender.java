@@ -965,18 +965,16 @@ public class GraphQLServletExtender {
 			GraphQLConfiguration.Builder graphQLConfigurationBuilder =
 				GraphQLConfiguration.with(graphQLSchemaBuilder.build());
 
-			ExecutionStrategy sanitizedExecutionStrategy =
-				new AsyncExecutionStrategy(
-					new SanitizedDataFetcherExceptionHandler());
+			ExecutionStrategy executionStrategy = new AsyncExecutionStrategy(
+				new SanitizedDataFetcherExceptionHandler());
 
-			ExecutionStrategyProvider sanitizedExecutionStrategyProvider =
-				new DefaultExecutionStrategyProvider(
-					sanitizedExecutionStrategy);
+			ExecutionStrategyProvider executionStrategyProvider =
+				new DefaultExecutionStrategyProvider(executionStrategy);
 
 			GraphQLQueryInvoker graphQLQueryInvoker =
 				GraphQLQueryInvoker.newBuilder(
 				).withExecutionStrategyProvider(
-					sanitizedExecutionStrategyProvider
+					executionStrategyProvider
 				).build();
 
 			graphQLConfigurationBuilder.with(graphQLQueryInvoker);
@@ -1927,16 +1925,17 @@ public class GraphQLServletExtender {
 
 		@Override
 		public DataFetcherExceptionHandlerResult onException(
-			DataFetcherExceptionHandlerParameters handlerParameters) {
+			DataFetcherExceptionHandlerParameters
+				dataFetcherExceptionHandlerParameters) {
 
 			DataFetcherExceptionHandlerResult.Builder builder =
 				DataFetcherExceptionHandlerResult.newResult();
 
 			return builder.error(
 				new ExceptionWhileDataFetching(
-					handlerParameters.getPath(),
-					handlerParameters.getException(),
-					handlerParameters.getSourceLocation())
+					dataFetcherExceptionHandlerParameters.getPath(),
+					dataFetcherExceptionHandlerParameters.getException(),
+					dataFetcherExceptionHandlerParameters.getSourceLocation())
 			).build();
 		}
 
