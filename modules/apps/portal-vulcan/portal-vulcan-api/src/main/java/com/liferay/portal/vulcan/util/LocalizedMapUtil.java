@@ -61,7 +61,9 @@ public class LocalizedMapUtil {
 
 		Map<Locale, String> localizedMap = getLocalizedMap(i18nMap);
 
-		localizedMap.put(defaultLocale, defaultValue);
+		if (defaultValue != null) {
+			localizedMap.put(defaultLocale, defaultValue);
+		}
 
 		return localizedMap;
 	}
@@ -82,7 +84,9 @@ public class LocalizedMapUtil {
 			localizedMap = new HashMap<>();
 		}
 
-		localizedMap.put(defaultLocale, defaultValue);
+		if (defaultValue != null) {
+			localizedMap.put(defaultLocale, defaultValue);
+		}
 
 		return localizedMap;
 	}
