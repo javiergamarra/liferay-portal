@@ -155,12 +155,12 @@ export const deleteMessageBoardThread = messageBoardThreadId =>
 export const getTags = (page = 1, siteKey) =>
 	request(gql`
         query {
-            taxonomyCategoryRanked(page: ${page}, pageSize: 20, siteKey: ${siteKey}){
+            keywordsRanked(page: ${page}, pageSize: 20, siteKey: ${siteKey}){
                 items {
-                    name
                     dateCreated
                     id
-                    taxonomyCategoryUsageCount
+                    keywordUsageCount
+                    name
                 }
                 lastPage
                 page

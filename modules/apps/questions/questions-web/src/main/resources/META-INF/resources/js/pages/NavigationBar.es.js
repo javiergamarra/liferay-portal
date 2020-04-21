@@ -48,7 +48,10 @@ export default withRouter(
 							<div className="align-items-center col d-flex justify-content-between">
 								<ClayNavigationBar triggerLabel="Questions">
 									<ClayNavigationBar.Item
-										active={!isActive('activity') && !isActive('tags')}
+										active={
+											!isActive('activity') &&
+											!isActive('tags')
+										}
 										onClick={() =>
 											historyPushParser(
 												`/questions/${context.section}`
@@ -75,9 +78,7 @@ export default withRouter(
 											className="nav-link"
 											displayType="unstyled"
 										>
-											{Liferay.Language.get(
-												'tags'
-											)}
+											{Liferay.Language.get('tags')}
 										</ClayLink>
 									</ClayNavigationBar.Item>
 
