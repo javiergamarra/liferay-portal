@@ -46,7 +46,10 @@ export default withRouter(
 					<div className="row">
 						{location.pathname !== '/' && (
 							<div className="align-items-center col d-flex justify-content-between">
-								<ClayNavigationBar triggerLabel="Questions">
+								<ClayNavigationBar
+									className="navigation-bar"
+									triggerLabel="Questions"
+								>
 									<ClayNavigationBar.Item
 										active={
 											!isActive('activity') &&
@@ -84,6 +87,7 @@ export default withRouter(
 
 									<ClayNavigationBar.Item
 										active={isActive('activity')}
+										className="ml-md-auto"
 										onClick={() =>
 											historyPushParser(
 												`/activity/${context.userId}`
