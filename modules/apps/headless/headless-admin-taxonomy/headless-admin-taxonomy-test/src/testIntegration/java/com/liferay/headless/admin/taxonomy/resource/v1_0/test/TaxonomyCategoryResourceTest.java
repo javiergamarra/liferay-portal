@@ -99,6 +99,13 @@ public class TaxonomyCategoryResourceTest
 	}
 
 	@Override
+	protected TaxonomyCategory testGraphQLTaxonomyCategory_addTaxonomyCategory()
+		throws Exception {
+		return testPostTaxonomyCategoryTaxonomyCategory_addTaxonomyCategory(
+			randomTaxonomyCategory());
+	}
+
+	@Override
 	protected Long
 		testGetTaxonomyVocabularyTaxonomyCategoriesPage_getTaxonomyVocabularyId() {
 
