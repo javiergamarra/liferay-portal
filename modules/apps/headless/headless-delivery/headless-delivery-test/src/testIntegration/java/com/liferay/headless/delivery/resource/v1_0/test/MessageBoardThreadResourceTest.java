@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.ratings.kernel.service.RatingsEntryLocalServiceUtil;
 
 import java.util.HashMap;
@@ -37,7 +36,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -108,9 +106,6 @@ public class MessageBoardThreadResourceTest
 				dataJSONObject.getJSONObject(
 					"messageBoardThreadByFriendlyUrlPath")));
 	}
-
-	@Rule
-	public SearchTestRule searchTestRule = new SearchTestRule();
 
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
