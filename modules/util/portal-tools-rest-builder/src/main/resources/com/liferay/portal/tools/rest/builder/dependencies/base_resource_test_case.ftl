@@ -1990,7 +1990,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 						${propertyName} = testGroup.getGroupId();
 					<#elseif stringUtil.equals(properties[propertyName], "Integer")>
 						${propertyName} = RandomTestUtil.randomInt();
-					<#elseif propertyName?contains("email")>
+					<#elseif propertyName?contains("email") && stringUtil.equals(properties[propertyName], "String")>
 						${propertyName} = StringUtil.toLowerCase(RandomTestUtil.randomString()) + "@liferay.com";
 					<#elseif stringUtil.equals(properties[propertyName], "String")>
 						${propertyName} = StringUtil.toLowerCase(RandomTestUtil.randomString());
