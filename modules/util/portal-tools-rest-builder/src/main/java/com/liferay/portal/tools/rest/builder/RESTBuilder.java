@@ -326,7 +326,7 @@ public class RESTBuilder {
 				description.substring(description.indexOf(clientMessage)));
 		}
 
-		if (!description.isEmpty()) {
+		if (!description.isEmpty() && !description.endsWith(". ")) {
 			description = StringBundler.concat(
 				description, ". ", clientMessage, clientVersion, "'.");
 		}
