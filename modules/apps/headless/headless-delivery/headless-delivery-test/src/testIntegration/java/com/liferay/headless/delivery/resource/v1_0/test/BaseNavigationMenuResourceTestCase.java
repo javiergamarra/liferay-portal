@@ -30,6 +30,7 @@ import com.liferay.headless.delivery.client.resource.v1_0.NavigationMenuResource
 import com.liferay.headless.delivery.client.serdes.v1_0.NavigationMenuSerDes;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -207,8 +208,8 @@ public abstract class BaseNavigationMenuResourceTestCase {
 	protected NavigationMenu testGetNavigationMenu_addNavigationMenu()
 		throws Exception {
 
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		return navigationMenuResource.postSiteNavigationMenu(
+			testGroup.getGroupId(), randomNavigationMenu());
 	}
 
 	@Test
@@ -358,8 +359,8 @@ public abstract class BaseNavigationMenuResourceTestCase {
 			Long siteId, NavigationMenu navigationMenu)
 		throws Exception {
 
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		return navigationMenuResource.postSiteNavigationMenu(
+			siteId, navigationMenu);
 	}
 
 	protected Long testGetSiteNavigationMenusPage_getSiteId() throws Exception {
@@ -413,11 +414,138 @@ public abstract class BaseNavigationMenuResourceTestCase {
 					navigationMenusJSONObject.getString("items"))));
 	}
 
+	@Test
+	public void testPostSiteNavigationMenu() throws Exception {
+		NavigationMenu randomNavigationMenu = randomNavigationMenu();
+
+		NavigationMenu postNavigationMenu =
+			testPostSiteNavigationMenu_addNavigationMenu(randomNavigationMenu);
+
+		assertEquals(randomNavigationMenu, postNavigationMenu);
+		assertValid(postNavigationMenu);
+	}
+
+	protected NavigationMenu testPostSiteNavigationMenu_addNavigationMenu(
+			NavigationMenu navigationMenu)
+		throws Exception {
+
+		return navigationMenuResource.postSiteNavigationMenu(
+			testGetSiteNavigationMenusPage_getSiteId(), navigationMenu);
+	}
+
+	@Test
+	public void testGraphQLPostSiteNavigationMenu() throws Exception {
+		NavigationMenu randomNavigationMenu = randomNavigationMenu();
+
+		NavigationMenu navigationMenu =
+			testGraphQLNavigationMenu_addNavigationMenu(randomNavigationMenu);
+
+		Assert.assertTrue(equals(randomNavigationMenu, navigationMenu));
+	}
+
+	protected void appendGraphQLFieldValue(StringBuilder sb, Object value)
+		throws Exception {
+
+		if (value instanceof Object[]) {
+			StringBuilder arraySB = new StringBuilder("[");
+
+			for (Object object : (Object[])value) {
+				if (arraySB.length() > 1) {
+					arraySB.append(",");
+				}
+
+				arraySB.append("{");
+
+				Class<?> clazz = object.getClass();
+
+				for (Field field :
+						ReflectionUtil.getDeclaredFields(
+							clazz.getSuperclass())) {
+
+					arraySB.append(field.getName());
+					arraySB.append(": ");
+
+					appendGraphQLFieldValue(arraySB, field.get(object));
+
+					arraySB.append(",");
+				}
+
+				arraySB.setLength(arraySB.length() - 1);
+
+				arraySB.append("}");
+			}
+
+			arraySB.append("]");
+
+			sb.append(arraySB.toString());
+		}
+		else if (value instanceof String) {
+			sb.append("\"");
+			sb.append(value);
+			sb.append("\"");
+		}
+		else {
+			sb.append(value);
+		}
+	}
+
 	protected NavigationMenu testGraphQLNavigationMenu_addNavigationMenu()
 		throws Exception {
 
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		return testGraphQLNavigationMenu_addNavigationMenu(
+			randomNavigationMenu());
+	}
+
+	protected NavigationMenu testGraphQLNavigationMenu_addNavigationMenu(
+			NavigationMenu navigationMenu)
+		throws Exception {
+
+		JSONDeserializer<NavigationMenu> jsonDeserializer =
+			JSONFactoryUtil.createJSONDeserializer();
+
+		StringBuilder sb = new StringBuilder("{");
+
+		for (Field field :
+				ReflectionUtil.getDeclaredFields(NavigationMenu.class)) {
+
+			if (!ArrayUtil.contains(
+					getAdditionalAssertFieldNames(), field.getName())) {
+
+				continue;
+			}
+
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append(field.getName());
+			sb.append(": ");
+
+			appendGraphQLFieldValue(sb, field.get(navigationMenu));
+		}
+
+		sb.append("}");
+
+		List<GraphQLField> graphQLFields = getGraphQLFields();
+
+		graphQLFields.add(new GraphQLField("id"));
+
+		return jsonDeserializer.deserialize(
+			JSONUtil.getValueAsString(
+				invokeGraphQLMutation(
+					new GraphQLField(
+						"createSiteNavigationMenu",
+						new HashMap<String, Object>() {
+							{
+								put(
+									"siteKey",
+									"\"" + testGroup.getGroupId() + "\"");
+								put("navigationMenu", sb.toString());
+							}
+						},
+						graphQLFields)),
+				"JSONObject/data", "JSONObject/createSiteNavigationMenu"),
+			NavigationMenu.class);
 	}
 
 	protected void assertHttpResponseStatusCode(
