@@ -57,6 +57,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -78,6 +79,64 @@ import javax.ws.rs.core.UriInfo;
 public abstract class BaseNavigationMenuResourceImpl
 	implements NavigationMenuResource, EntityModelResource,
 			   VulcanBatchEngineTaskItemDelegate<NavigationMenu> {
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-delivery/v1.0/navigation-menus/{navigationMenuId}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@DELETE
+	@Operation(
+		description = "Deletes the navigation menu and returns a 204 if the operation succeeds"
+	)
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "navigationMenuId")}
+	)
+	@Path("/navigation-menus/{navigationMenuId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "NavigationMenu")})
+	public void deleteNavigationMenu(
+			@NotNull @Parameter(hidden = true) @PathParam("navigationMenuId")
+				Long navigationMenuId)
+		throws Exception {
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-delivery/v1.0/navigation-menus/batch'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes("application/json")
+	@DELETE
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.QUERY, name = "callbackURL")}
+	)
+	@Path("/navigation-menus/batch")
+	@Produces("application/json")
+	@Tags(value = {@Tag(name = "NavigationMenu")})
+	public Response deleteNavigationMenuBatch(
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
+			Object object)
+		throws Exception {
+
+		vulcanBatchEngineImportTaskResource.setContextAcceptLanguage(
+			contextAcceptLanguage);
+		vulcanBatchEngineImportTaskResource.setContextCompany(contextCompany);
+		vulcanBatchEngineImportTaskResource.setContextHttpServletRequest(
+			contextHttpServletRequest);
+		vulcanBatchEngineImportTaskResource.setContextUriInfo(contextUriInfo);
+		vulcanBatchEngineImportTaskResource.setContextUser(contextUser);
+
+		Response.ResponseBuilder responseBuilder = Response.accepted();
+
+		return responseBuilder.entity(
+			vulcanBatchEngineImportTaskResource.deleteImportTask(
+				NavigationMenu.class.getName(), callbackURL, object)
+		).build();
+	}
 
 	/**
 	 * Invoke this method with the command line:
@@ -206,6 +265,10 @@ public abstract class BaseNavigationMenuResourceImpl
 			java.util.Collection<NavigationMenu> navigationMenus,
 			Map<String, Serializable> parameters)
 		throws Exception {
+
+		for (NavigationMenu navigationMenu : navigationMenus) {
+			deleteNavigationMenu(navigationMenu.getId());
+		}
 	}
 
 	@Override

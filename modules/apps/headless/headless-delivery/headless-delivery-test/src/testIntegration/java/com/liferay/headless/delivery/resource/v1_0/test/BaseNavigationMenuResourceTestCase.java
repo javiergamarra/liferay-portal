@@ -30,6 +30,7 @@ import com.liferay.headless.delivery.client.resource.v1_0.NavigationMenuResource
 import com.liferay.headless.delivery.client.serdes.v1_0.NavigationMenuSerDes;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -47,6 +48,8 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.test.log.CaptureAppender;
+import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
@@ -71,6 +74,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Level;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -193,6 +197,71 @@ public abstract class BaseNavigationMenuResourceTestCase {
 	}
 
 	@Test
+	public void testDeleteNavigationMenu() throws Exception {
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		NavigationMenu navigationMenu =
+			testDeleteNavigationMenu_addNavigationMenu();
+
+		assertHttpResponseStatusCode(
+			204,
+			navigationMenuResource.deleteNavigationMenuHttpResponse(
+				navigationMenu.getId()));
+
+		assertHttpResponseStatusCode(
+			404,
+			navigationMenuResource.getNavigationMenuHttpResponse(
+				navigationMenu.getId()));
+
+		assertHttpResponseStatusCode(
+			404, navigationMenuResource.getNavigationMenuHttpResponse(0L));
+	}
+
+	protected NavigationMenu testDeleteNavigationMenu_addNavigationMenu()
+		throws Exception {
+
+		return navigationMenuResource.postSiteNavigationMenu(
+			testGroup.getGroupId(), randomNavigationMenu());
+	}
+
+	@Test
+	public void testGraphQLDeleteNavigationMenu() throws Exception {
+		NavigationMenu navigationMenu =
+			testGraphQLNavigationMenu_addNavigationMenu();
+
+		Assert.assertTrue(
+			JSONUtil.getValueAsBoolean(
+				invokeGraphQLMutation(
+					new GraphQLField(
+						"deleteNavigationMenu",
+						new HashMap<String, Object>() {
+							{
+								put("navigationMenuId", navigationMenu.getId());
+							}
+						})),
+				"JSONObject/data", "Object/deleteNavigationMenu"));
+
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					"graphql.execution.SimpleDataFetcherExceptionHandler",
+					Level.WARN)) {
+
+			JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
+				invokeGraphQLQuery(
+					new GraphQLField(
+						"navigationMenu",
+						new HashMap<String, Object>() {
+							{
+								put("navigationMenuId", navigationMenu.getId());
+							}
+						},
+						new GraphQLField("id"))),
+				"JSONArray/errors");
+
+			Assert.assertTrue(errorsJSONArray.length() > 0);
+		}
+	}
+
+	@Test
 	public void testGetNavigationMenu() throws Exception {
 		NavigationMenu postNavigationMenu =
 			testGetNavigationMenu_addNavigationMenu();
@@ -304,6 +373,10 @@ public abstract class BaseNavigationMenuResourceTestCase {
 			Arrays.asList(navigationMenu1, navigationMenu2),
 			(List<NavigationMenu>)page.getItems());
 		assertValid(page);
+
+		navigationMenuResource.deleteNavigationMenu(navigationMenu1.getId());
+
+		navigationMenuResource.deleteNavigationMenu(navigationMenu2.getId());
 	}
 
 	@Test

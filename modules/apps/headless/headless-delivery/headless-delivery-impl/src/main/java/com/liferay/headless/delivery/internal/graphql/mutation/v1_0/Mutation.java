@@ -2139,6 +2139,36 @@ public class Mutation {
 					Long.valueOf(siteKey), callbackURL, object));
 	}
 
+	@GraphQLField(
+		description = "Deletes the navigation menu and returns a 204 if the operation succeeds"
+	)
+	public boolean deleteNavigationMenu(
+			@GraphQLName("navigationMenuId") Long navigationMenuId)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_navigationMenuResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			navigationMenuResource ->
+				navigationMenuResource.deleteNavigationMenu(navigationMenuId));
+
+		return true;
+	}
+
+	@GraphQLField
+	public Response deleteNavigationMenuBatch(
+			@GraphQLName("callbackURL") String callbackURL,
+			@GraphQLName("object") Object object)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_navigationMenuResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			navigationMenuResource ->
+				navigationMenuResource.deleteNavigationMenuBatch(
+					callbackURL, object));
+	}
+
 	@GraphQLField(description = "Creates a new navigation menu.")
 	public NavigationMenu createSiteNavigationMenu(
 			@GraphQLName("siteKey") @NotEmpty String siteKey,
