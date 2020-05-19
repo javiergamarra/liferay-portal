@@ -47,6 +47,11 @@ public interface NavigationMenuResource {
 		return FactoryHolder.factory.create();
 	}
 
+	public void deleteNavigationMenu(Long navigationMenuId) throws Exception;
+
+	public Response deleteNavigationMenuBatch(String callbackURL, Object object)
+		throws Exception;
+
 	public NavigationMenu getNavigationMenu(Long navigationMenuId)
 		throws Exception;
 
