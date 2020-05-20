@@ -60,6 +60,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -158,6 +159,68 @@ public abstract class BaseNavigationMenuResourceImpl
 		throws Exception {
 
 		return new NavigationMenu();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PUT' 'http://localhost:8080/o/headless-delivery/v1.0/navigation-menus/{navigationMenuId}' -d $'{"name": ___, "navigationMenuItems": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes({"application/json", "application/xml"})
+	@Operation(
+		description = "Replaces the navigation menu with the information sent in the request body. Any missing fields are deleted, unless they are required."
+	)
+	@PUT
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "navigationMenuId")}
+	)
+	@Path("/navigation-menus/{navigationMenuId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "NavigationMenu")})
+	public NavigationMenu putNavigationMenu(
+			@NotNull @Parameter(hidden = true) @PathParam("navigationMenuId")
+				Long navigationMenuId,
+			NavigationMenu navigationMenu)
+		throws Exception {
+
+		return new NavigationMenu();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PUT' 'http://localhost:8080/o/headless-delivery/v1.0/navigation-menus/batch'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Consumes("application/json")
+	@PUT
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.QUERY, name = "callbackURL")}
+	)
+	@Path("/navigation-menus/batch")
+	@Produces("application/json")
+	@Tags(value = {@Tag(name = "NavigationMenu")})
+	public Response putNavigationMenuBatch(
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
+			Object object)
+		throws Exception {
+
+		vulcanBatchEngineImportTaskResource.setContextAcceptLanguage(
+			contextAcceptLanguage);
+		vulcanBatchEngineImportTaskResource.setContextCompany(contextCompany);
+		vulcanBatchEngineImportTaskResource.setContextHttpServletRequest(
+			contextHttpServletRequest);
+		vulcanBatchEngineImportTaskResource.setContextUriInfo(contextUriInfo);
+		vulcanBatchEngineImportTaskResource.setContextUser(contextUser);
+
+		Response.ResponseBuilder responseBuilder = Response.accepted();
+
+		return responseBuilder.entity(
+			vulcanBatchEngineImportTaskResource.putImportTask(
+				NavigationMenu.class.getName(), callbackURL, object)
+		).build();
 	}
 
 	/**
@@ -323,6 +386,13 @@ public abstract class BaseNavigationMenuResourceImpl
 			java.util.Collection<NavigationMenu> navigationMenus,
 			Map<String, Serializable> parameters)
 		throws Exception {
+
+		for (NavigationMenu navigationMenu : navigationMenus) {
+			putNavigationMenu(
+				navigationMenu.getId() != null ? navigationMenu.getId() :
+				(Long)parameters.get("navigationMenuId"),
+				navigationMenu);
+		}
 	}
 
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {

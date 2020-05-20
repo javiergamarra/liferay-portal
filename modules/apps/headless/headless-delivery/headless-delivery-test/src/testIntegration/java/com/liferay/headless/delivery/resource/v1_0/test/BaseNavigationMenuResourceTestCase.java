@@ -328,6 +328,34 @@ public abstract class BaseNavigationMenuResourceTestCase {
 	}
 
 	@Test
+	public void testPutNavigationMenu() throws Exception {
+		NavigationMenu postNavigationMenu =
+			testPutNavigationMenu_addNavigationMenu();
+
+		NavigationMenu randomNavigationMenu = randomNavigationMenu();
+
+		NavigationMenu putNavigationMenu =
+			navigationMenuResource.putNavigationMenu(
+				postNavigationMenu.getId(), randomNavigationMenu);
+
+		assertEquals(randomNavigationMenu, putNavigationMenu);
+		assertValid(putNavigationMenu);
+
+		NavigationMenu getNavigationMenu =
+			navigationMenuResource.getNavigationMenu(putNavigationMenu.getId());
+
+		assertEquals(randomNavigationMenu, getNavigationMenu);
+		assertValid(getNavigationMenu);
+	}
+
+	protected NavigationMenu testPutNavigationMenu_addNavigationMenu()
+		throws Exception {
+
+		return navigationMenuResource.postSiteNavigationMenu(
+			testGroup.getGroupId(), randomNavigationMenu());
+	}
+
+	@Test
 	public void testGetSiteNavigationMenusPage() throws Exception {
 		Page<NavigationMenu> page =
 			navigationMenuResource.getSiteNavigationMenusPage(
