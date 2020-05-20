@@ -2169,6 +2169,35 @@ public class Mutation {
 					callbackURL, object));
 	}
 
+	@GraphQLField(
+		description = "Replaces the navigation menu with the information sent in the request body. Any missing fields are deleted, unless they are required."
+	)
+	public NavigationMenu updateNavigationMenu(
+			@GraphQLName("navigationMenuId") Long navigationMenuId,
+			@GraphQLName("navigationMenu") NavigationMenu navigationMenu)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_navigationMenuResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			navigationMenuResource -> navigationMenuResource.putNavigationMenu(
+				navigationMenuId, navigationMenu));
+	}
+
+	@GraphQLField
+	public Response updateNavigationMenuBatch(
+			@GraphQLName("callbackURL") String callbackURL,
+			@GraphQLName("object") Object object)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_navigationMenuResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			navigationMenuResource ->
+				navigationMenuResource.putNavigationMenuBatch(
+					callbackURL, object));
+	}
+
 	@GraphQLField(description = "Creates a new navigation menu.")
 	public NavigationMenu createSiteNavigationMenu(
 			@GraphQLName("siteKey") @NotEmpty String siteKey,
