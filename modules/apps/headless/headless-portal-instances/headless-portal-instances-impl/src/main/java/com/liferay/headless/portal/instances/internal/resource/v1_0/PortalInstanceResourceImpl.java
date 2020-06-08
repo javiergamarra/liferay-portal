@@ -129,8 +129,8 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 		throws Exception {
 
 		Company company = _companyLocalService.addCompany(
-			portalInstance.getWebId(), portalInstance.getVirtualhost(),
-			portalInstance.getDomain(), false, 0, true);
+			portalInstance.getCompanyId(), portalInstance.getWebId(),
+			portalInstance.getVirtualhost(), portalInstance.getDomain(), true);
 
 		_portalInstancesLocalService.initializePortalInstance(
 			ServletContextPool.get(StringPool.BLANK), company.getWebId());
