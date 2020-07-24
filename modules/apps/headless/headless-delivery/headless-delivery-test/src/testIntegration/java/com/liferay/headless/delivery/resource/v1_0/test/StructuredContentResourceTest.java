@@ -87,11 +87,13 @@ public class StructuredContentResourceTest
 	public void setUp() throws Exception {
 		super.setUp();
 
+		testGroup = testDepotEntry.getGroup();
+
 		_ddmLocalizedStructure = _addDDMStructure(
 			testGroup, "test-localized-structured-content-structure.json");
-
 		_ddmStructure = _addDDMStructure(
 			testGroup, "test-structured-content-structure.json");
+
 		_irrelevantDDMStructure = _addDDMStructure(
 			irrelevantGroup, "test-structured-content-structure.json");
 
@@ -379,6 +381,18 @@ public class StructuredContentResourceTest
 
 	@Override
 	protected StructuredContent
+			testGetAssetLibraryStructuredContentsPage_addStructuredContent(
+				Long assetLibraryId, StructuredContent structuredContent)
+		throws Exception {
+
+		structuredContent.setContentStructureId(_ddmStructure.getStructureId());
+
+		return structuredContentResource.postAssetLibraryStructuredContent(
+			assetLibraryId, structuredContent);
+	}
+
+	@Override
+	protected StructuredContent
 			testGetContentStructureStructuredContentsPage_addStructuredContent(
 				Long contentStructureId, StructuredContent structuredContent)
 		throws Exception {
@@ -389,8 +403,7 @@ public class StructuredContentResourceTest
 
 	@Override
 	protected Long
-			testGetContentStructureStructuredContentsPage_getContentStructureId()
-		throws Exception {
+		testGetContentStructureStructuredContentsPage_getContentStructureId() {
 
 		return _ddmStructure.getStructureId();
 	}
