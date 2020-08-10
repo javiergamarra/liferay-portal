@@ -192,6 +192,7 @@ public abstract class BaseAccountResourceTestCase {
 		Account account = randomAccount();
 
 		account.setDescription(regex);
+		account.setExternalReferenceCode(regex);
 		account.setName(regex);
 
 		String json = AccountSerDes.toJSON(account);
@@ -201,6 +202,7 @@ public abstract class BaseAccountResourceTestCase {
 		account = AccountSerDes.toDTO(json);
 
 		Assert.assertEquals(regex, account.getDescription());
+		Assert.assertEquals(regex, account.getExternalReferenceCode());
 		Assert.assertEquals(regex, account.getName());
 	}
 
@@ -724,6 +726,16 @@ public abstract class BaseAccountResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"externalReferenceCode", additionalAssertFieldName)) {
+
+				if (account.getExternalReferenceCode() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("name", additionalAssertFieldName)) {
 				if (account.getName() == null) {
 					valid = false;
@@ -858,6 +870,19 @@ public abstract class BaseAccountResourceTestCase {
 			if (Objects.equals("domains", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						account1.getDomains(), account2.getDomains())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"externalReferenceCode", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						account1.getExternalReferenceCode(),
+						account2.getExternalReferenceCode())) {
 
 					return false;
 				}
@@ -1010,6 +1035,14 @@ public abstract class BaseAccountResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("externalReferenceCode")) {
+			sb.append("'");
+			sb.append(String.valueOf(account.getExternalReferenceCode()));
+			sb.append("'");
+
+			return sb.toString();
+		}
+
 		if (entityFieldName.equals("id")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -1083,6 +1116,8 @@ public abstract class BaseAccountResourceTestCase {
 		return new Account() {
 			{
 				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				externalReferenceCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
 				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
