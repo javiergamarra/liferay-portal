@@ -17,6 +17,11 @@ components:
                     items:
                         type: string
                     type: array
+                externalReferenceCode:
+                    # @review
+                    description:
+                        The optional external key of this account.
+                    type: string
                 id:
                     format: int64
                     readOnly: true
