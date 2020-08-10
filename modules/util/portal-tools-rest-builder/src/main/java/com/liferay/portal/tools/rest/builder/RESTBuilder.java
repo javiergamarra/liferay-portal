@@ -57,7 +57,6 @@ import java.io.InputStream;
 
 import java.net.URL;
 
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -76,7 +75,6 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 /**
  * @author Peter Shin
@@ -1825,14 +1823,11 @@ public class RESTBuilder {
 			String directory = StringUtil.removeSubstring(
 				_configYAML.getClientDir(), "src/main/java");
 
-			Stream<String> stream = Files.lines(
-				Paths.get(directory + "/bnd.bnd"), StandardCharsets.UTF_8);
+			if (Files.exists(Paths.get(directory + "/bnd.bnd"))) {
+				return Optional.of("latest.release");
+			}
 
-			return stream.filter(
-				line -> line.startsWith("Bundle-Version: ")
-			).map(
-				line -> StringUtil.removeSubstring(line, "Bundle-Version: ")
-			).findFirst();
+			return Optional.empty();
 		}
 		catch (Exception exception) {
 			return Optional.empty();
