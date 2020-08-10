@@ -19,8 +19,7 @@ import com.liferay.account.model.AccountEntry;
 import com.liferay.account.rest.client.dto.v1_0.Account;
 import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -28,24 +27,19 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.runner.RunWith;
 
 /**
  * @author Drew Brokke
  */
+@DataGuard(scope = DataGuard.Scope.METHOD)
 @RunWith(Arquillian.class)
 public class AccountResourceTest extends BaseAccountResourceTestCase {
 
 	@After
 	@Override
 	public void tearDown() throws Exception {
-		super.tearDown();
-
-		_deleteAccountEntries(_accountEntries);
 	}
 
 	@Override
@@ -117,29 +111,12 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 			String[] domains)
 		throws Exception {
 
-		AccountEntry accountEntry = _accountEntryLocalService.addAccountEntry(
+		return _accountEntryLocalService.addAccountEntry(
 			TestPropsValues.getUserId(), parentAccountEntryId, name,
 			description, domains, null, null,
 			AccountConstants.ACCOUNT_ENTRY_TYPE_BUSINESS,
 			WorkflowConstants.STATUS_APPROVED,
 			ServiceContextTestUtil.getServiceContext());
-
-		_accountEntries.add(accountEntry);
-
-		return accountEntry;
-	}
-
-	private void _deleteAccountEntries(List<AccountEntry> accountEntries) {
-		for (AccountEntry accountEntry : accountEntries) {
-			try {
-				_accountEntryLocalService.deleteAccountEntry(accountEntry);
-			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception, exception);
-				}
-			}
-		}
 	}
 
 	private Account _toAccount(AccountEntry accountEntry) throws Exception {
@@ -154,11 +131,6 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 			}
 		};
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AccountResourceTest.class);
-
-	private final List<AccountEntry> _accountEntries = new ArrayList<>();
 
 	@Inject
 	private AccountEntryLocalService _accountEntryLocalService;
