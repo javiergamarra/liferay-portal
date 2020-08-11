@@ -75,8 +75,22 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 	}
 
 	@Override
+	protected Account testDeleteAccountByExternalReferenceCode_addAccount()
+		throws Exception {
+
+		return _postAccount();
+	}
+
+	@Override
 	protected Account testGetAccount_addAccount() throws Exception {
 		return _addAccount();
+	}
+
+	@Override
+	protected Account testGetAccountByExternalReferenceCode_addAccount()
+		throws Exception {
+
+		return _postAccount();
 	}
 
 	@Override
@@ -97,15 +111,29 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 	}
 
 	@Override
+	protected Account testPatchAccountByExternalReferenceCode_addAccount()
+		throws Exception {
+
+		return _postAccount();
+	}
+
+	@Override
 	protected Account testPostAccount_addAccount(Account account)
 		throws Exception {
 
-		return accountResource.postAccount(account);
+		return _postAccount(account);
 	}
 
 	@Override
 	protected Account testPutAccount_addAccount() throws Exception {
 		return _addAccount();
+	}
+
+	@Override
+	protected Account testPutAccountByExternalReferenceCode_addAccount()
+		throws Exception {
+
+		return _postAccount();
 	}
 
 	private Account _addAccount() throws Exception {
@@ -139,6 +167,14 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 			AccountConstants.ACCOUNT_ENTRY_TYPE_BUSINESS,
 			WorkflowConstants.STATUS_APPROVED,
 			ServiceContextTestUtil.getServiceContext());
+	}
+
+	private Account _postAccount() throws Exception {
+		return _postAccount(randomAccount());
+	}
+
+	private Account _postAccount(Account account) throws Exception {
+		return accountResource.postAccount(account);
 	}
 
 	private Account _toAccount(AccountEntry accountEntry) throws Exception {
