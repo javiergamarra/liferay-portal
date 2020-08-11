@@ -104,6 +104,24 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountByExternalReferenceCode(externalReferenceCode: ___){description, domains, externalReferenceCode, id, name, organizationIds, parentAccountId, status}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "")
+	public Account accountByExternalReferenceCode(
+			@GraphQLName("externalReferenceCode") String externalReferenceCode)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_accountResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			accountResource ->
+				accountResource.getAccountByExternalReferenceCode(
+					externalReferenceCode));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {account(accountId: ___){description, domains, externalReferenceCode, id, name, organizationIds, parentAccountId, status}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "")
@@ -114,6 +132,30 @@ public class Query {
 			_accountResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			accountResource -> accountResource.getAccount(accountId));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountRoles(externalReferenceCode: ___, keywords: ___, page: ___, pageSize: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Gets the account's roles")
+	public AccountRolePage accountRoles(
+			@GraphQLName("externalReferenceCode") String externalReferenceCode,
+			@GraphQLName("keywords") String keywords,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page,
+			@GraphQLName("sort") String sortsString)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_accountRoleResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			accountRoleResource -> new AccountRolePage(
+				accountRoleResource.getAccountRolesPageByExternalReferenceCode(
+					externalReferenceCode, keywords,
+					Pagination.of(page, pageSize),
+					_sortsBiFunction.apply(accountRoleResource, sortsString))));
 	}
 
 	/**
@@ -137,6 +179,32 @@ public class Query {
 				accountRoleResource.getAccountRolesPage(
 					accountId, keywords, Pagination.of(page, pageSize),
 					_sortsBiFunction.apply(accountRoleResource, sortsString))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountUsers(externalReferenceCode: ___, filter: ___, page: ___, pageSize: ___, search: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Gets the users assigned to an account")
+	public AccountUserPage accountUsers(
+			@GraphQLName("externalReferenceCode") String externalReferenceCode,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") String filterString,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page,
+			@GraphQLName("sort") String sortsString)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_accountUserResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			accountUserResource -> new AccountUserPage(
+				accountUserResource.getAccountUsersPageByExternalReferenceCode(
+					externalReferenceCode, search,
+					_filterBiFunction.apply(accountUserResource, filterString),
+					Pagination.of(page, pageSize),
+					_sortsBiFunction.apply(accountUserResource, sortsString))));
 	}
 
 	/**
@@ -198,6 +266,42 @@ public class Query {
 
 	}
 
+	@GraphQLTypeExtension(Account.class)
+	public class GetAccountUsersPageByExternalReferenceCodeTypeExtension {
+
+		public GetAccountUsersPageByExternalReferenceCodeTypeExtension(
+			Account account) {
+
+			_account = account;
+		}
+
+		@GraphQLField(description = "Gets the users assigned to an account")
+		public AccountUserPage users(
+				@GraphQLName("search") String search,
+				@GraphQLName("filter") String filterString,
+				@GraphQLName("pageSize") int pageSize,
+				@GraphQLName("page") int page,
+				@GraphQLName("sort") String sortsString)
+			throws Exception {
+
+			return _applyComponentServiceObjects(
+				_accountUserResourceComponentServiceObjects,
+				Query.this::_populateResourceContext,
+				accountUserResource -> new AccountUserPage(
+					accountUserResource.
+						getAccountUsersPageByExternalReferenceCode(
+							_account.getExternalReferenceCode(), search,
+							_filterBiFunction.apply(
+								accountUserResource, filterString),
+							Pagination.of(page, pageSize),
+							_sortsBiFunction.apply(
+								accountUserResource, sortsString))));
+		}
+
+		private Account _account;
+
+	}
+
 	@GraphQLTypeExtension(AccountRole.class)
 	public class GetAccountTypeExtension {
 
@@ -215,6 +319,39 @@ public class Query {
 		}
 
 		private AccountRole _accountRole;
+
+	}
+
+	@GraphQLTypeExtension(Account.class)
+	public class GetAccountRolesPageByExternalReferenceCodeTypeExtension {
+
+		public GetAccountRolesPageByExternalReferenceCodeTypeExtension(
+			Account account) {
+
+			_account = account;
+		}
+
+		@GraphQLField(description = "Gets the account's roles")
+		public AccountRolePage roles(
+				@GraphQLName("keywords") String keywords,
+				@GraphQLName("pageSize") int pageSize,
+				@GraphQLName("page") int page,
+				@GraphQLName("sort") String sortsString)
+			throws Exception {
+
+			return _applyComponentServiceObjects(
+				_accountRoleResourceComponentServiceObjects,
+				Query.this::_populateResourceContext,
+				accountRoleResource -> new AccountRolePage(
+					accountRoleResource.
+						getAccountRolesPageByExternalReferenceCode(
+							_account.getExternalReferenceCode(), keywords,
+							Pagination.of(page, pageSize),
+							_sortsBiFunction.apply(
+								accountRoleResource, sortsString))));
+		}
+
+		private Account _account;
 
 	}
 

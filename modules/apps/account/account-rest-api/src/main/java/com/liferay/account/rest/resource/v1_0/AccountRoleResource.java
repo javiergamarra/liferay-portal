@@ -47,6 +47,25 @@ public interface AccountRoleResource {
 		return FactoryHolder.factory.create();
 	}
 
+	public Page<AccountRole> getAccountRolesPageByExternalReferenceCode(
+			String externalReferenceCode, String keywords,
+			Pagination pagination, Sort[] sorts)
+		throws Exception;
+
+	public AccountRole postAccountRoleByExternalReferenceCode(
+			String externalReferenceCode, AccountRole accountRole)
+		throws Exception;
+
+	public void deleteAccountRoleUserAssociationByExternalReferenceCode(
+			String externalReferenceCode, Long accountRoleId,
+			Long accountUserId)
+		throws Exception;
+
+	public void postAccountRoleUserAssociationByExternalReferenceCode(
+			String externalReferenceCode, Long accountRoleId,
+			Long accountUserId)
+		throws Exception;
+
 	public Page<AccountRole> getAccountRolesPage(
 			Long accountId, String keywords, Pagination pagination,
 			Sort[] sorts)
