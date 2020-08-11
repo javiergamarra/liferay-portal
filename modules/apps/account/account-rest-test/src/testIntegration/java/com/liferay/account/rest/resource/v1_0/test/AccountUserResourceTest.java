@@ -103,6 +103,32 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 	}
 
 	@Override
+	protected AccountUser
+			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+				String externalReferenceCode, AccountUser accountUser)
+		throws Exception {
+
+		return accountUserResource.postAccountUserByExternalReferenceCode(
+			externalReferenceCode, accountUser);
+	}
+
+	@Override
+	protected String
+			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode()
+		throws Exception {
+
+		return _accountEntry.getExternalReferenceCode();
+	}
+
+	@Override
+	protected String
+			testGetAccountUsersPageByExternalReferenceCode_getIrrelevantExternalReferenceCode()
+		throws Exception {
+
+		return _irrelevantAccountEntry.getExternalReferenceCode();
+	}
+
+	@Override
 	protected AccountUser testGraphQLAccountUser_addAccountUser()
 		throws Exception {
 
@@ -115,6 +141,15 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 		throws Exception {
 
 		return _addAccountUser(_getAccountEntryId(), accountUser);
+	}
+
+	@Override
+	protected AccountUser
+			testPostAccountUserByExternalReferenceCode_addAccountUser(
+				AccountUser accountUser)
+		throws Exception {
+
+		return _addAccountUser(_accountEntry.getAccountEntryId(), accountUser);
 	}
 
 	private AccountUser _addAccountUser(Long accountId, AccountUser accountUser)
