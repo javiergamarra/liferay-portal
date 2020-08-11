@@ -128,6 +128,35 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 
 	@Override
 	@Test
+	public void testDeleteAccountRoleUserAssociationByExternalReferenceCode()
+		throws Exception {
+
+		AccountRole accountRole = _addAccountRole(_account);
+		AccountUser accountUser = _addAccountUser(_account);
+
+		_assertAccountRoleUserAssociation(
+			_account, accountRole, accountUser, false);
+
+		assertHttpResponseStatusCode(
+			204,
+			accountRoleResource.
+				postAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
+					_account.getExternalReferenceCode(), accountRole.getId(),
+					accountUser.getId()));
+
+		_assertAccountRoleUserAssociation(
+			_account, accountRole, accountUser, true);
+
+		assertHttpResponseStatusCode(
+			404,
+			accountRoleResource.
+				postAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
+					_account.getExternalReferenceCode(), 0L,
+					accountUser.getId()));
+	}
+
+	@Override
+	@Test
 	public void testPostAccountRoleUserAssociation() throws Exception {
 		AccountRole accountRole = _addAccountRole(_account);
 		AccountUser accountUser = _addAccountUser(_account);
@@ -147,6 +176,14 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 			404,
 			accountRoleResource.postAccountRoleUserAssociationHttpResponse(
 				_account.getId(), 0L, accountUser.getId()));
+	}
+
+	@Override
+	@Test
+	public void testPostAccountRoleUserAssociationByExternalReferenceCode()
+		throws Exception {
+
+		super.testPostAccountRoleUserAssociationByExternalReferenceCode();
 	}
 
 	@Override
@@ -173,6 +210,21 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	}
 
 	@Override
+	protected AccountRole testDeleteAccountRoleUserAssociation_addAccountRole()
+		throws Exception {
+
+		return _addAccountRole(_account);
+	}
+
+	@Override
+	protected AccountRole
+			testDeleteAccountRoleUserAssociationByExternalReferenceCode_addAccountRole()
+		throws Exception {
+
+		return _addAccountRole(_account);
+	}
+
+	@Override
 	protected AccountRole testGetAccountRolesPage_addAccountRole(
 			Long accountId, AccountRole accountRole)
 		throws Exception {
@@ -191,6 +243,32 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	}
 
 	@Override
+	protected AccountRole
+			testGetAccountRolesPageByExternalReferenceCode_addAccountRole(
+				String externalReferenceCode, AccountRole accountRole)
+		throws Exception {
+
+		return accountRoleResource.postAccountRoleByExternalReferenceCode(
+			externalReferenceCode, accountRole);
+	}
+
+	@Override
+	protected String
+			testGetAccountRolesPageByExternalReferenceCode_getExternalReferenceCode()
+		throws Exception {
+
+		return _account.getExternalReferenceCode();
+	}
+
+	@Override
+	protected String
+			testGetAccountRolesPageByExternalReferenceCode_getIrrelevantExternalReferenceCode()
+		throws Exception {
+
+		return _irrelevantAccount.getExternalReferenceCode();
+	}
+
+	@Override
 	protected AccountRole testGraphQLAccountRole_addAccountRole()
 		throws Exception {
 
@@ -205,6 +283,31 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 
 		return accountRoleResource.postAccountRole(
 			_account.getId(), accountRole);
+	}
+
+	@Override
+	protected AccountRole
+			testPostAccountRoleByExternalReferenceCode_addAccountRole(
+				AccountRole accountRole)
+		throws Exception {
+
+		return accountRoleResource.postAccountRoleByExternalReferenceCode(
+			_account.getExternalReferenceCode(), accountRole);
+	}
+
+	@Override
+	protected AccountRole testPostAccountRoleUserAssociation_addAccountRole()
+		throws Exception {
+
+		return _addAccountRole(_account);
+	}
+
+	@Override
+	protected AccountRole
+			testPostAccountRoleUserAssociationByExternalReferenceCode_addAccountRole()
+		throws Exception {
+
+		return _addAccountRole(_account);
 	}
 
 	private AccountRole _addAccountRole(Account account) throws Exception {
