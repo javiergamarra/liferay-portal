@@ -207,6 +207,48 @@ public class Mutation {
 				callbackURL, object));
 	}
 
+	@GraphQLField(description = "Unassigns account users to the account role")
+	public boolean deleteAccountRoleUserAssociationByExternalReferenceCode(
+			@GraphQLName("accountExternalReferenceCode") String
+				accountExternalReferenceCode,
+			@GraphQLName("accountRoleId") Long accountRoleId,
+			@GraphQLName("accountUserExternalReferenceCode") String
+				accountUserExternalReferenceCode)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_accountRoleResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			accountRoleResource ->
+				accountRoleResource.
+					deleteAccountRoleUserAssociationByExternalReferenceCode(
+						accountExternalReferenceCode, accountRoleId,
+						accountUserExternalReferenceCode));
+
+		return true;
+	}
+
+	@GraphQLField(description = "Assigns account users to the account role")
+	public boolean createAccountRoleUserAssociationByExternalReferenceCode(
+			@GraphQLName("accountExternalReferenceCode") String
+				accountExternalReferenceCode,
+			@GraphQLName("accountRoleId") Long accountRoleId,
+			@GraphQLName("accountUserExternalReferenceCode") String
+				accountUserExternalReferenceCode)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_accountRoleResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			accountRoleResource ->
+				accountRoleResource.
+					postAccountRoleUserAssociationByExternalReferenceCode(
+						accountExternalReferenceCode, accountRoleId,
+						accountUserExternalReferenceCode));
+
+		return true;
+	}
+
 	@GraphQLField(description = "Adds a role for the account")
 	public AccountRole createAccountRoleByExternalReferenceCode(
 			@GraphQLName("externalReferenceCode") String externalReferenceCode,
@@ -219,42 +261,6 @@ public class Mutation {
 			accountRoleResource ->
 				accountRoleResource.postAccountRoleByExternalReferenceCode(
 					externalReferenceCode, accountRole));
-	}
-
-	@GraphQLField(description = "Unassigns account users to the account role")
-	public boolean deleteAccountRoleUserAssociationByExternalReferenceCode(
-			@GraphQLName("externalReferenceCode") String externalReferenceCode,
-			@GraphQLName("accountRoleId") Long accountRoleId,
-			@GraphQLName("accountUserId") Long accountUserId)
-		throws Exception {
-
-		_applyVoidComponentServiceObjects(
-			_accountRoleResourceComponentServiceObjects,
-			this::_populateResourceContext,
-			accountRoleResource ->
-				accountRoleResource.
-					deleteAccountRoleUserAssociationByExternalReferenceCode(
-						externalReferenceCode, accountRoleId, accountUserId));
-
-		return true;
-	}
-
-	@GraphQLField(description = "Assigns account users to the account role")
-	public boolean createAccountRoleUserAssociationByExternalReferenceCode(
-			@GraphQLName("externalReferenceCode") String externalReferenceCode,
-			@GraphQLName("accountRoleId") Long accountRoleId,
-			@GraphQLName("accountUserId") Long accountUserId)
-		throws Exception {
-
-		_applyVoidComponentServiceObjects(
-			_accountRoleResourceComponentServiceObjects,
-			this::_populateResourceContext,
-			accountRoleResource ->
-				accountRoleResource.
-					postAccountRoleUserAssociationByExternalReferenceCode(
-						externalReferenceCode, accountRoleId, accountUserId));
-
-		return true;
 	}
 
 	@GraphQLField(description = "Adds a role for the account")

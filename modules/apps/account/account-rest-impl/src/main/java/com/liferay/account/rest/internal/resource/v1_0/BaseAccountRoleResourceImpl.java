@@ -83,6 +83,78 @@ public abstract class BaseAccountRoleResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -X 'DELETE' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-externalReferenceCode/{accountExternalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserExternalReferenceCode}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@DELETE
+	@Operation(description = "Unassigns account users to the account role")
+	@Parameters(
+		value = {
+			@Parameter(
+				in = ParameterIn.PATH, name = "accountExternalReferenceCode"
+			),
+			@Parameter(in = ParameterIn.PATH, name = "accountRoleId"),
+			@Parameter(
+				in = ParameterIn.PATH, name = "accountUserExternalReferenceCode"
+			)
+		}
+	)
+	@Path(
+		"/accounts/by-externalReferenceCode/{accountExternalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserExternalReferenceCode}"
+	)
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "AccountRole")})
+	public void deleteAccountRoleUserAssociationByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true)
+			@PathParam("accountExternalReferenceCode") String
+				accountExternalReferenceCode,
+			@NotNull @Parameter(hidden = true) @PathParam("accountRoleId") Long
+				accountRoleId,
+			@NotNull @Parameter(hidden = true)
+			@PathParam("accountUserExternalReferenceCode") String
+				accountUserExternalReferenceCode)
+		throws Exception {
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-externalReferenceCode/{accountExternalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserExternalReferenceCode}'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@Operation(description = "Assigns account users to the account role")
+	@POST
+	@Parameters(
+		value = {
+			@Parameter(
+				in = ParameterIn.PATH, name = "accountExternalReferenceCode"
+			),
+			@Parameter(in = ParameterIn.PATH, name = "accountRoleId"),
+			@Parameter(
+				in = ParameterIn.PATH, name = "accountUserExternalReferenceCode"
+			)
+		}
+	)
+	@Path(
+		"/accounts/by-externalReferenceCode/{accountExternalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserExternalReferenceCode}"
+	)
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "AccountRole")})
+	public void postAccountRoleUserAssociationByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true)
+			@PathParam("accountExternalReferenceCode") String
+				accountExternalReferenceCode,
+			@NotNull @Parameter(hidden = true) @PathParam("accountRoleId") Long
+				accountRoleId,
+			@NotNull @Parameter(hidden = true)
+			@PathParam("accountUserExternalReferenceCode") String
+				accountUserExternalReferenceCode)
+		throws Exception {
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-externalReferenceCode/{externalReferenceCode}/account-roles'  -u 'test@liferay.com:test'
 	 */
 	@Override
@@ -138,66 +210,6 @@ public abstract class BaseAccountRoleResourceImpl
 		throws Exception {
 
 		return new AccountRole();
-	}
-
-	/**
-	 * Invoke this method with the command line:
-	 *
-	 * curl -X 'DELETE' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-externalReferenceCode/{externalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserId}'  -u 'test@liferay.com:test'
-	 */
-	@Override
-	@DELETE
-	@Operation(description = "Unassigns account users to the account role")
-	@Parameters(
-		value = {
-			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode"),
-			@Parameter(in = ParameterIn.PATH, name = "accountRoleId"),
-			@Parameter(in = ParameterIn.PATH, name = "accountUserId")
-		}
-	)
-	@Path(
-		"/accounts/by-externalReferenceCode/{externalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserId}"
-	)
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountRole")})
-	public void deleteAccountRoleUserAssociationByExternalReferenceCode(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("externalReferenceCode") String externalReferenceCode,
-			@NotNull @Parameter(hidden = true) @PathParam("accountRoleId") Long
-				accountRoleId,
-			@NotNull @Parameter(hidden = true) @PathParam("accountUserId") Long
-				accountUserId)
-		throws Exception {
-	}
-
-	/**
-	 * Invoke this method with the command line:
-	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-externalReferenceCode/{externalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserId}'  -u 'test@liferay.com:test'
-	 */
-	@Override
-	@Operation(description = "Assigns account users to the account role")
-	@POST
-	@Parameters(
-		value = {
-			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode"),
-			@Parameter(in = ParameterIn.PATH, name = "accountRoleId"),
-			@Parameter(in = ParameterIn.PATH, name = "accountUserId")
-		}
-	)
-	@Path(
-		"/accounts/by-externalReferenceCode/{externalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserId}"
-	)
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountRole")})
-	public void postAccountRoleUserAssociationByExternalReferenceCode(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("externalReferenceCode") String externalReferenceCode,
-			@NotNull @Parameter(hidden = true) @PathParam("accountRoleId") Long
-				accountRoleId,
-			@NotNull @Parameter(hidden = true) @PathParam("accountUserId") Long
-				accountUserId)
-		throws Exception {
 	}
 
 	/**

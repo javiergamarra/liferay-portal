@@ -188,6 +188,7 @@ public abstract class BaseAccountUserResourceTestCase {
 		AccountUser accountUser = randomAccountUser();
 
 		accountUser.setEmailAddress(regex);
+		accountUser.setExternalReferenceCode(regex);
 		accountUser.setFirstName(regex);
 		accountUser.setLastName(regex);
 		accountUser.setMiddleName(regex);
@@ -202,6 +203,7 @@ public abstract class BaseAccountUserResourceTestCase {
 		accountUser = AccountUserSerDes.toDTO(json);
 
 		Assert.assertEquals(regex, accountUser.getEmailAddress());
+		Assert.assertEquals(regex, accountUser.getExternalReferenceCode());
 		Assert.assertEquals(regex, accountUser.getFirstName());
 		Assert.assertEquals(regex, accountUser.getLastName());
 		Assert.assertEquals(regex, accountUser.getMiddleName());
@@ -1015,6 +1017,16 @@ public abstract class BaseAccountUserResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"externalReferenceCode", additionalAssertFieldName)) {
+
+				if (accountUser.getExternalReferenceCode() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("firstName", additionalAssertFieldName)) {
 				if (accountUser.getFirstName() == null) {
 					valid = false;
@@ -1158,6 +1170,19 @@ public abstract class BaseAccountUserResourceTestCase {
 				if (!Objects.deepEquals(
 						accountUser1.getEmailAddress(),
 						accountUser2.getEmailAddress())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"externalReferenceCode", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						accountUser1.getExternalReferenceCode(),
+						accountUser2.getExternalReferenceCode())) {
 
 					return false;
 				}
@@ -1329,6 +1354,14 @@ public abstract class BaseAccountUserResourceTestCase {
 			return sb.toString();
 		}
 
+		if (entityFieldName.equals("externalReferenceCode")) {
+			sb.append("'");
+			sb.append(String.valueOf(accountUser.getExternalReferenceCode()));
+			sb.append("'");
+
+			return sb.toString();
+		}
+
 		if (entityFieldName.equals("firstName")) {
 			sb.append("'");
 			sb.append(String.valueOf(accountUser.getFirstName()));
@@ -1429,6 +1462,8 @@ public abstract class BaseAccountUserResourceTestCase {
 				emailAddress =
 					StringUtil.toLowerCase(RandomTestUtil.randomString()) +
 						"@liferay.com";
+				externalReferenceCode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				firstName = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();

@@ -116,7 +116,7 @@ public abstract class BaseAccountUserResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-externalReferenceCode/{externalReferenceCode}/account-users' -d $'{"emailAddress": ___, "firstName": ___, "lastName": ___, "middleName": ___, "prefix": ___, "screenName": ___, "suffix": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-externalReferenceCode/{externalReferenceCode}/account-users' -d $'{"emailAddress": ___, "externalReferenceCode": ___, "firstName": ___, "lastName": ___, "middleName": ___, "prefix": ___, "screenName": ___, "suffix": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -176,7 +176,7 @@ public abstract class BaseAccountUserResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/{accountId}/account-users' -d $'{"emailAddress": ___, "firstName": ___, "lastName": ___, "middleName": ___, "prefix": ___, "screenName": ___, "suffix": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/{accountId}/account-users' -d $'{"emailAddress": ___, "externalReferenceCode": ___, "firstName": ___, "lastName": ___, "middleName": ___, "prefix": ___, "screenName": ___, "suffix": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
