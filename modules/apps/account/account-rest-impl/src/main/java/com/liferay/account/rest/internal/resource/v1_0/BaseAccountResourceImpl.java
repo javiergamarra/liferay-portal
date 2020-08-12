@@ -237,7 +237,7 @@ public abstract class BaseAccountResourceImpl
 			Account account)
 		throws Exception {
 
-		Account existingAccount = getAccount(externalReferenceCode);
+		Account existingAccount = getAccountByExternalReferenceCode(externalReferenceCode);
 
 		if (account.getDescription() != null) {
 			existingAccount.setDescription(account.getDescription());
@@ -270,7 +270,7 @@ public abstract class BaseAccountResourceImpl
 
 		preparePatch(account, existingAccount);
 
-		return putAccount(externalReferenceCode, existingAccount);
+		return putAccountByExternalReferenceCode(externalReferenceCode, existingAccount);
 	}
 
 	/**
