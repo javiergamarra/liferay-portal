@@ -85,6 +85,32 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 	}
 
 	@Override
+	protected AccountUser
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
+				String externalReferenceCode, AccountUser accountUser)
+		throws Exception {
+
+		return accountUserResource.postAccountUserByExternalReferenceCode(
+			externalReferenceCode, accountUser);
+	}
+
+	@Override
+	protected String
+			testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode()
+		throws Exception {
+
+		return _accountEntry.getExternalReferenceCode();
+	}
+
+	@Override
+	protected String
+			testGetAccountUsersByExternalReferenceCodePage_getIrrelevantExternalReferenceCode()
+		throws Exception {
+
+		return _irrelevantAccountEntry.getExternalReferenceCode();
+	}
+
+	@Override
 	protected AccountUser testGetAccountUsersPage_addAccountUser(
 			Long accountId, AccountUser accountUser)
 		throws Exception {
@@ -100,32 +126,6 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 	@Override
 	protected Long testGetAccountUsersPage_getIrrelevantAccountId() {
 		return _getIrrelevantAccountEntryId();
-	}
-
-	@Override
-	protected AccountUser
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
-				String externalReferenceCode, AccountUser accountUser)
-		throws Exception {
-
-		return accountUserResource.postAccountUserByExternalReferenceCode(
-			externalReferenceCode, accountUser);
-	}
-
-	@Override
-	protected String
-			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode()
-		throws Exception {
-
-		return _accountEntry.getExternalReferenceCode();
-	}
-
-	@Override
-	protected String
-			testGetAccountUsersPageByExternalReferenceCode_getIrrelevantExternalReferenceCode()
-		throws Exception {
-
-		return _irrelevantAccountEntry.getExternalReferenceCode();
 	}
 
 	@Override

@@ -15,15 +15,11 @@
 package com.liferay.account.rest.resource.v1_0.test;
 
 import com.liferay.account.constants.AccountConstants;
-import com.liferay.account.model.AccountEntry;
 import com.liferay.account.rest.client.dto.v1_0.Account;
 import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.test.rule.DataGuard;
-import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 
@@ -70,8 +66,18 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 	}
 
 	@Override
+	protected Account randomAccount() throws Exception {
+		Account account = super.randomAccount();
+
+		account.setStatus(WorkflowConstants.STATUS_APPROVED);
+		account.setParentAccountId(AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT);
+
+		return account;
+	}
+
+	@Override
 	protected Account testDeleteAccount_addAccount() throws Exception {
-		return _addAccount();
+		return _postAccount();
 	}
 
 	@Override
@@ -83,7 +89,7 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 
 	@Override
 	protected Account testGetAccount_addAccount() throws Exception {
-		return _addAccount();
+		return _postAccount();
 	}
 
 	@Override
@@ -97,17 +103,17 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 	protected Account testGetAccountsPage_addAccount(Account account)
 		throws Exception {
 
-		return _addAccount(account);
+		return _postAccount(account);
 	}
 
 	@Override
 	protected Account testGraphQLAccount_addAccount() throws Exception {
-		return _addAccount();
+		return _postAccount();
 	}
 
 	@Override
 	protected Account testPatchAccount_addAccount() throws Exception {
-		return _addAccount();
+		return _postAccount();
 	}
 
 	@Override
@@ -126,7 +132,7 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 
 	@Override
 	protected Account testPutAccount_addAccount() throws Exception {
-		return _addAccount();
+		return _postAccount();
 	}
 
 	@Override
@@ -136,58 +142,12 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 		return _postAccount();
 	}
 
-	private Account _addAccount() throws Exception {
-		return _toAccount(_addAccountEntry());
-	}
-
-	private Account _addAccount(Account account) throws Exception {
-		return _toAccount(_addAccountEntry(account));
-	}
-
-	private AccountEntry _addAccountEntry() throws Exception {
-		return _addAccountEntry(
-			AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(), null);
-	}
-
-	private AccountEntry _addAccountEntry(Account account) throws Exception {
-		return _addAccountEntry(
-			account.getParentAccountId(), account.getName(),
-			account.getDescription(), account.getDomains());
-	}
-
-	private AccountEntry _addAccountEntry(
-			long parentAccountEntryId, String name, String description,
-			String[] domains)
-		throws Exception {
-
-		return _accountEntryLocalService.addAccountEntry(
-			TestPropsValues.getUserId(), parentAccountEntryId, name,
-			description, domains, null, null,
-			AccountConstants.ACCOUNT_ENTRY_TYPE_BUSINESS,
-			WorkflowConstants.STATUS_APPROVED,
-			ServiceContextTestUtil.getServiceContext());
-	}
-
 	private Account _postAccount() throws Exception {
 		return _postAccount(randomAccount());
 	}
 
 	private Account _postAccount(Account account) throws Exception {
 		return accountResource.postAccount(account);
-	}
-
-	private Account _toAccount(AccountEntry accountEntry) throws Exception {
-		return new Account() {
-			{
-				description = accountEntry.getDescription();
-				domains = StringUtil.split(accountEntry.getDomains());
-				id = accountEntry.getAccountEntryId();
-				name = accountEntry.getName();
-				parentAccountId = accountEntry.getParentAccountEntryId();
-				status = accountEntry.getStatus();
-			}
-		};
 	}
 
 	@Inject

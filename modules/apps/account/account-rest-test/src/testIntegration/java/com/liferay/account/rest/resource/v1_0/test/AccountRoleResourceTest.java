@@ -223,6 +223,32 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	}
 
 	@Override
+	protected AccountRole
+			testGetAccountRolesByExternalReferenceCodePage_addAccountRole(
+				String externalReferenceCode, AccountRole accountRole)
+		throws Exception {
+
+		return accountRoleResource.postAccountRoleByExternalReferenceCode(
+			externalReferenceCode, accountRole);
+	}
+
+	@Override
+	protected String
+			testGetAccountRolesByExternalReferenceCodePage_getExternalReferenceCode()
+		throws Exception {
+
+		return _account.getExternalReferenceCode();
+	}
+
+	@Override
+	protected String
+			testGetAccountRolesByExternalReferenceCodePage_getIrrelevantExternalReferenceCode()
+		throws Exception {
+
+		return _irrelevantAccount.getExternalReferenceCode();
+	}
+
+	@Override
 	protected AccountRole testGetAccountRolesPage_addAccountRole(
 			Long accountId, AccountRole accountRole)
 		throws Exception {
@@ -238,32 +264,6 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	@Override
 	protected Long testGetAccountRolesPage_getIrrelevantAccountId() {
 		return _irrelevantAccount.getId();
-	}
-
-	@Override
-	protected AccountRole
-			testGetAccountRolesPageByExternalReferenceCode_addAccountRole(
-				String externalReferenceCode, AccountRole accountRole)
-		throws Exception {
-
-		return accountRoleResource.postAccountRoleByExternalReferenceCode(
-			externalReferenceCode, accountRole);
-	}
-
-	@Override
-	protected String
-			testGetAccountRolesPageByExternalReferenceCode_getExternalReferenceCode()
-		throws Exception {
-
-		return _account.getExternalReferenceCode();
-	}
-
-	@Override
-	protected String
-			testGetAccountRolesPageByExternalReferenceCode_getIrrelevantExternalReferenceCode()
-		throws Exception {
-
-		return _irrelevantAccount.getExternalReferenceCode();
 	}
 
 	@Override
