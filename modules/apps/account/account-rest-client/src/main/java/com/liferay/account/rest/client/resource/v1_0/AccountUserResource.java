@@ -40,13 +40,13 @@ public interface AccountUserResource {
 		return new Builder();
 	}
 
-	public Page<AccountUser> getAccountUsersPageByExternalReferenceCode(
+	public Page<AccountUser> getAccountUsersByExternalReferenceCodePage(
 			String externalReferenceCode, String search, String filterString,
 			Pagination pagination, String sortString)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			getAccountUsersPageByExternalReferenceCodeHttpResponse(
+			getAccountUsersByExternalReferenceCodePageHttpResponse(
 				String externalReferenceCode, String search,
 				String filterString, Pagination pagination, String sortString)
 		throws Exception;
@@ -132,13 +132,13 @@ public interface AccountUserResource {
 
 	public static class AccountUserResourceImpl implements AccountUserResource {
 
-		public Page<AccountUser> getAccountUsersPageByExternalReferenceCode(
+		public Page<AccountUser> getAccountUsersByExternalReferenceCodePage(
 				String externalReferenceCode, String search,
 				String filterString, Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getAccountUsersPageByExternalReferenceCodeHttpResponse(
+				getAccountUsersByExternalReferenceCodePageHttpResponse(
 					externalReferenceCode, search, filterString, pagination,
 					sortString);
 
@@ -163,7 +163,7 @@ public interface AccountUserResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				getAccountUsersPageByExternalReferenceCodeHttpResponse(
+				getAccountUsersByExternalReferenceCodePageHttpResponse(
 					String externalReferenceCode, String search,
 					String filterString, Pagination pagination,
 					String sortString)

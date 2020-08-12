@@ -174,7 +174,7 @@ public abstract class BaseAccountRoleResourceImpl
 	)
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AccountRole")})
-	public Page<AccountRole> getAccountRolesPageByExternalReferenceCode(
+	public Page<AccountRole> getAccountRolesByExternalReferenceCodePage(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("externalReferenceCode") String externalReferenceCode,
 			@Parameter(hidden = true) @QueryParam("keywords") String keywords,

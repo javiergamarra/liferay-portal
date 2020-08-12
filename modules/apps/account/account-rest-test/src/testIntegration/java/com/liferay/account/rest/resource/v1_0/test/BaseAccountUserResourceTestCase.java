@@ -213,29 +213,29 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
-	public void testGetAccountUsersPageByExternalReferenceCode()
+	public void testGetAccountUsersByExternalReferenceCodePage()
 		throws Exception {
 
 		Page<AccountUser> page =
-			accountUserResource.getAccountUsersPageByExternalReferenceCode(
-				testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode(),
+			accountUserResource.getAccountUsersByExternalReferenceCodePage(
+				testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode(),
 				RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(0, page.getTotalCount());
 
 		String externalReferenceCode =
-			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode();
+			testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode();
 		String irrelevantExternalReferenceCode =
-			testGetAccountUsersPageByExternalReferenceCode_getIrrelevantExternalReferenceCode();
+			testGetAccountUsersByExternalReferenceCodePage_getIrrelevantExternalReferenceCode();
 
 		if ((irrelevantExternalReferenceCode != null)) {
 			AccountUser irrelevantAccountUser =
-				testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+				testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 					irrelevantExternalReferenceCode,
 					randomIrrelevantAccountUser());
 
 			page =
-				accountUserResource.getAccountUsersPageByExternalReferenceCode(
+				accountUserResource.getAccountUsersByExternalReferenceCodePage(
 					irrelevantExternalReferenceCode, null, null,
 					Pagination.of(1, 2), null);
 
@@ -248,14 +248,14 @@ public abstract class BaseAccountUserResourceTestCase {
 		}
 
 		AccountUser accountUser1 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, randomAccountUser());
 
 		AccountUser accountUser2 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, randomAccountUser());
 
-		page = accountUserResource.getAccountUsersPageByExternalReferenceCode(
+		page = accountUserResource.getAccountUsersByExternalReferenceCodePage(
 			externalReferenceCode, null, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
@@ -267,7 +267,7 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
-	public void testGetAccountUsersPageByExternalReferenceCodeWithFilterDateTimeEquals()
+	public void testGetAccountUsersByExternalReferenceCodePageWithFilterDateTimeEquals()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -278,17 +278,17 @@ public abstract class BaseAccountUserResourceTestCase {
 		}
 
 		String externalReferenceCode =
-			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode();
+			testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode();
 
 		AccountUser accountUser1 = randomAccountUser();
 
 		accountUser1 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, accountUser1);
 
 		for (EntityField entityField : entityFields) {
 			Page<AccountUser> page =
-				accountUserResource.getAccountUsersPageByExternalReferenceCode(
+				accountUserResource.getAccountUsersByExternalReferenceCodePage(
 					externalReferenceCode, null,
 					getFilterString(entityField, "between", accountUser1),
 					Pagination.of(1, 2), null);
@@ -300,7 +300,7 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
-	public void testGetAccountUsersPageByExternalReferenceCodeWithFilterStringEquals()
+	public void testGetAccountUsersByExternalReferenceCodePageWithFilterStringEquals()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -311,20 +311,20 @@ public abstract class BaseAccountUserResourceTestCase {
 		}
 
 		String externalReferenceCode =
-			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode();
+			testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode();
 
 		AccountUser accountUser1 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, randomAccountUser());
 
 		@SuppressWarnings("PMD.UnusedLocalVariable")
 		AccountUser accountUser2 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, randomAccountUser());
 
 		for (EntityField entityField : entityFields) {
 			Page<AccountUser> page =
-				accountUserResource.getAccountUsersPageByExternalReferenceCode(
+				accountUserResource.getAccountUsersByExternalReferenceCodePage(
 					externalReferenceCode, null,
 					getFilterString(entityField, "eq", accountUser1),
 					Pagination.of(1, 2), null);
@@ -336,26 +336,26 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
-	public void testGetAccountUsersPageByExternalReferenceCodeWithPagination()
+	public void testGetAccountUsersByExternalReferenceCodePageWithPagination()
 		throws Exception {
 
 		String externalReferenceCode =
-			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode();
+			testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode();
 
 		AccountUser accountUser1 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, randomAccountUser());
 
 		AccountUser accountUser2 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, randomAccountUser());
 
 		AccountUser accountUser3 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, randomAccountUser());
 
 		Page<AccountUser> page1 =
-			accountUserResource.getAccountUsersPageByExternalReferenceCode(
+			accountUserResource.getAccountUsersByExternalReferenceCodePage(
 				externalReferenceCode, null, null, Pagination.of(1, 2), null);
 
 		List<AccountUser> accountUsers1 = (List<AccountUser>)page1.getItems();
@@ -363,7 +363,7 @@ public abstract class BaseAccountUserResourceTestCase {
 		Assert.assertEquals(accountUsers1.toString(), 2, accountUsers1.size());
 
 		Page<AccountUser> page2 =
-			accountUserResource.getAccountUsersPageByExternalReferenceCode(
+			accountUserResource.getAccountUsersByExternalReferenceCodePage(
 				externalReferenceCode, null, null, Pagination.of(2, 2), null);
 
 		Assert.assertEquals(3, page2.getTotalCount());
@@ -373,7 +373,7 @@ public abstract class BaseAccountUserResourceTestCase {
 		Assert.assertEquals(accountUsers2.toString(), 1, accountUsers2.size());
 
 		Page<AccountUser> page3 =
-			accountUserResource.getAccountUsersPageByExternalReferenceCode(
+			accountUserResource.getAccountUsersByExternalReferenceCodePage(
 				externalReferenceCode, null, null, Pagination.of(1, 3), null);
 
 		assertEqualsIgnoringOrder(
@@ -382,10 +382,10 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
-	public void testGetAccountUsersPageByExternalReferenceCodeWithSortDateTime()
+	public void testGetAccountUsersByExternalReferenceCodePageWithSortDateTime()
 		throws Exception {
 
-		testGetAccountUsersPageByExternalReferenceCodeWithSort(
+		testGetAccountUsersByExternalReferenceCodePageWithSort(
 			EntityField.Type.DATE_TIME,
 			(entityField, accountUser1, accountUser2) -> {
 				BeanUtils.setProperty(
@@ -395,10 +395,10 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
-	public void testGetAccountUsersPageByExternalReferenceCodeWithSortInteger()
+	public void testGetAccountUsersByExternalReferenceCodePageWithSortInteger()
 		throws Exception {
 
-		testGetAccountUsersPageByExternalReferenceCodeWithSort(
+		testGetAccountUsersByExternalReferenceCodePageWithSort(
 			EntityField.Type.INTEGER,
 			(entityField, accountUser1, accountUser2) -> {
 				BeanUtils.setProperty(accountUser1, entityField.getName(), 0);
@@ -407,10 +407,10 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
-	public void testGetAccountUsersPageByExternalReferenceCodeWithSortString()
+	public void testGetAccountUsersByExternalReferenceCodePageWithSortString()
 		throws Exception {
 
-		testGetAccountUsersPageByExternalReferenceCodeWithSort(
+		testGetAccountUsersByExternalReferenceCodePageWithSort(
 			EntityField.Type.STRING,
 			(entityField, accountUser1, accountUser2) -> {
 				Class<?> clazz = accountUser1.getClass();
@@ -459,7 +459,7 @@ public abstract class BaseAccountUserResourceTestCase {
 			});
 	}
 
-	protected void testGetAccountUsersPageByExternalReferenceCodeWithSort(
+	protected void testGetAccountUsersByExternalReferenceCodePageWithSort(
 			EntityField.Type type,
 			UnsafeTriConsumer<EntityField, AccountUser, AccountUser, Exception>
 				unsafeTriConsumer)
@@ -472,7 +472,7 @@ public abstract class BaseAccountUserResourceTestCase {
 		}
 
 		String externalReferenceCode =
-			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode();
+			testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode();
 
 		AccountUser accountUser1 = randomAccountUser();
 		AccountUser accountUser2 = randomAccountUser();
@@ -482,16 +482,16 @@ public abstract class BaseAccountUserResourceTestCase {
 		}
 
 		accountUser1 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, accountUser1);
 
 		accountUser2 =
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				externalReferenceCode, accountUser2);
 
 		for (EntityField entityField : entityFields) {
 			Page<AccountUser> ascPage =
-				accountUserResource.getAccountUsersPageByExternalReferenceCode(
+				accountUserResource.getAccountUsersByExternalReferenceCodePage(
 					externalReferenceCode, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":asc");
 
@@ -500,7 +500,7 @@ public abstract class BaseAccountUserResourceTestCase {
 				(List<AccountUser>)ascPage.getItems());
 
 			Page<AccountUser> descPage =
-				accountUserResource.getAccountUsersPageByExternalReferenceCode(
+				accountUserResource.getAccountUsersByExternalReferenceCodePage(
 					externalReferenceCode, null, null, Pagination.of(1, 2),
 					entityField.getName() + ":desc");
 
@@ -511,7 +511,7 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	protected AccountUser
-			testGetAccountUsersPageByExternalReferenceCode_addAccountUser(
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
 				String externalReferenceCode, AccountUser accountUser)
 		throws Exception {
 
@@ -520,7 +520,7 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	protected String
-			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode()
+			testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
@@ -528,54 +528,10 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	protected String
-			testGetAccountUsersPageByExternalReferenceCode_getIrrelevantExternalReferenceCode()
+			testGetAccountUsersByExternalReferenceCodePage_getIrrelevantExternalReferenceCode()
 		throws Exception {
 
 		return null;
-	}
-
-	@Test
-	public void testGraphQLGetAccountUsersPageByExternalReferenceCode()
-		throws Exception {
-
-		String externalReferenceCode =
-			testGetAccountUsersPageByExternalReferenceCode_getExternalReferenceCode();
-
-		GraphQLField graphQLField = new GraphQLField(
-			"accountUsers",
-			new HashMap<String, Object>() {
-				{
-					put("page", 1);
-					put("pageSize", 2);
-
-					put(
-						"externalReferenceCode",
-						"\"" + externalReferenceCode + "\"");
-				}
-			},
-			new GraphQLField("items", getGraphQLFields()),
-			new GraphQLField("page"), new GraphQLField("totalCount"));
-
-		JSONObject accountUsersJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/accountUsers");
-
-		Assert.assertEquals(0, accountUsersJSONObject.get("totalCount"));
-
-		AccountUser accountUser1 = testGraphQLAccountUser_addAccountUser();
-		AccountUser accountUser2 = testGraphQLAccountUser_addAccountUser();
-
-		accountUsersJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/accountUsers");
-
-		Assert.assertEquals(2, accountUsersJSONObject.get("totalCount"));
-
-		assertEqualsIgnoringOrder(
-			Arrays.asList(accountUser1, accountUser2),
-			Arrays.asList(
-				AccountUserSerDes.toDTOs(
-					accountUsersJSONObject.getString("items"))));
 	}
 
 	@Test

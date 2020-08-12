@@ -102,7 +102,7 @@ public abstract class BaseAccountUserResourceImpl
 	)
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AccountUser")})
-	public Page<AccountUser> getAccountUsersPageByExternalReferenceCode(
+	public Page<AccountUser> getAccountUsersByExternalReferenceCodePage(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("externalReferenceCode") String externalReferenceCode,
 			@Parameter(hidden = true) @QueryParam("search") String search,

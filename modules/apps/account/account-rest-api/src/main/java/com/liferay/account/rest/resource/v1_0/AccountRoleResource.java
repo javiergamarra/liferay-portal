@@ -57,7 +57,7 @@ public interface AccountRoleResource {
 			String accountUserExternalReferenceCode)
 		throws Exception;
 
-	public Page<AccountRole> getAccountRolesPageByExternalReferenceCode(
+	public Page<AccountRole> getAccountRolesByExternalReferenceCodePage(
 			String externalReferenceCode, String keywords,
 			Pagination pagination, Sort[] sorts)
 		throws Exception;

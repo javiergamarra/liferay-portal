@@ -62,13 +62,13 @@ public interface AccountRoleResource {
 				String accountUserExternalReferenceCode)
 		throws Exception;
 
-	public Page<AccountRole> getAccountRolesPageByExternalReferenceCode(
+	public Page<AccountRole> getAccountRolesByExternalReferenceCodePage(
 			String externalReferenceCode, String keywords,
 			Pagination pagination, String sortString)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			getAccountRolesPageByExternalReferenceCodeHttpResponse(
+			getAccountRolesByExternalReferenceCodePageHttpResponse(
 				String externalReferenceCode, String keywords,
 				Pagination pagination, String sortString)
 		throws Exception;
@@ -315,13 +315,13 @@ public interface AccountRoleResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<AccountRole> getAccountRolesPageByExternalReferenceCode(
+		public Page<AccountRole> getAccountRolesByExternalReferenceCodePage(
 				String externalReferenceCode, String keywords,
 				Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getAccountRolesPageByExternalReferenceCodeHttpResponse(
+				getAccountRolesByExternalReferenceCodePageHttpResponse(
 					externalReferenceCode, keywords, pagination, sortString);
 
 			String content = httpResponse.getContent();
@@ -345,7 +345,7 @@ public interface AccountRoleResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				getAccountRolesPageByExternalReferenceCodeHttpResponse(
+				getAccountRolesByExternalReferenceCodePageHttpResponse(
 					String externalReferenceCode, String keywords,
 					Pagination pagination, String sortString)
 			throws Exception {
