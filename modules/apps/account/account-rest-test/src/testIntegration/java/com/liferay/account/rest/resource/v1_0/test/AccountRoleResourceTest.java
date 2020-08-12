@@ -14,7 +14,6 @@
 
 package com.liferay.account.rest.resource.v1_0.test;
 
-import com.liferay.account.constants.AccountConstants;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.rest.client.dto.v1_0.AccountRole;
 import com.liferay.account.rest.dto.v1_0.Account;
@@ -34,7 +33,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 
@@ -142,7 +140,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 			accountRoleResource.
 				postAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
 					_account.getExternalReferenceCode(), accountRole.getId(),
-					accountUser.getId()));
+					accountUser.getExternalReferenceCode()));
 
 		_assertAccountRoleUserAssociation(
 			_account, accountRole, accountUser, true);
@@ -152,7 +150,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 			accountRoleResource.
 				postAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
 					_account.getExternalReferenceCode(), 0L,
-					accountUser.getId()));
+					accountUser.getExternalReferenceCode()));
 	}
 
 	@Override
@@ -374,11 +372,14 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	private Account _randomAccount() {
 		return new Account() {
 			{
-				description = RandomTestUtil.randomString(20);
-				domains = new String[0];
-				name = RandomTestUtil.randomString(20);
-				parentAccountId = AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT;
-				status = WorkflowConstants.STATUS_APPROVED;
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				externalReferenceCode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				id = RandomTestUtil.randomLong();
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				parentAccountId = RandomTestUtil.randomLong();
+				status = RandomTestUtil.randomInt();
 			}
 		};
 	}
