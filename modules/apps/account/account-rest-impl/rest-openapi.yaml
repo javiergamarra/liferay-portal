@@ -350,7 +350,7 @@ paths:
             # @review
             description:
                 Gets the account's roles
-            operationId: getAccountRolesPageByExternalReferenceCode
+            operationId: getAccountRolesByExternalReferenceCodePage
             parameters:
                 - in: path
                   name: externalReferenceCode
@@ -427,7 +427,7 @@ paths:
             # @review
             description:
                 Gets the users assigned to an account
-            operationId: getAccountUsersPageByExternalReferenceCode
+            operationId: getAccountUsersByExternalReferenceCodePage
             parameters:
                 - in: path
                   name: externalReferenceCode
