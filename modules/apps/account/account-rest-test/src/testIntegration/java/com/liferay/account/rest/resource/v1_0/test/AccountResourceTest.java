@@ -19,12 +19,10 @@ import com.liferay.account.rest.client.dto.v1_0.Account;
 import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.test.rule.DataGuard;
-import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,16 +45,16 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 
 		Account randomAccount = randomAccount();
 
-		Assert.assertNull(
-			_accountEntryLocalService.fetchAccountEntryByReferenceCode(
-				TestPropsValues.getCompanyId(),
+		assertHttpResponseStatusCode(
+			404,
+			accountResource.getAccountByExternalReferenceCodeHttpResponse(
 				randomAccount.getExternalReferenceCode()));
 
 		testPostAccount_addAccount(randomAccount);
 
-		Assert.assertNotNull(
-			_accountEntryLocalService.fetchAccountEntryByReferenceCode(
-				TestPropsValues.getCompanyId(),
+		assertHttpResponseStatusCode(
+			200,
+			accountResource.getAccountByExternalReferenceCodeHttpResponse(
 				randomAccount.getExternalReferenceCode()));
 	}
 
