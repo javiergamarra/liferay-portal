@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 
 import org.junit.After;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -36,26 +35,6 @@ public class AccountResourceTest extends BaseAccountResourceTestCase {
 	@After
 	@Override
 	public void tearDown() throws Exception {
-	}
-
-	@Override
-	@Test
-	public void testPostAccount() throws Exception {
-		super.testPostAccount();
-
-		Account randomAccount = randomAccount();
-
-		assertHttpResponseStatusCode(
-			404,
-			accountResource.getAccountByExternalReferenceCodeHttpResponse(
-				randomAccount.getExternalReferenceCode()));
-
-		testPostAccount_addAccount(randomAccount);
-
-		assertHttpResponseStatusCode(
-			200,
-			accountResource.getAccountByExternalReferenceCodeHttpResponse(
-				randomAccount.getExternalReferenceCode()));
 	}
 
 	@Override
