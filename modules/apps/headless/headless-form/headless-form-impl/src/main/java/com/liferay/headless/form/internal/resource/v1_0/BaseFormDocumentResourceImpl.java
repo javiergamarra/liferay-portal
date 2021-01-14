@@ -36,6 +36,7 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -84,6 +85,8 @@ public abstract class BaseFormDocumentResourceImpl
 	 */
 	@Override
 	@DELETE
+	@Deprecated
+	@Operation(deprecated = true)
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "formDocumentId")}
 	)
@@ -138,7 +141,9 @@ public abstract class BaseFormDocumentResourceImpl
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-documents/{formDocumentId}'  -u 'test@liferay.com:test'
 	 */
 	@Override
+	@Deprecated
 	@GET
+	@Operation(deprecated = true)
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "formDocumentId")}
 	)

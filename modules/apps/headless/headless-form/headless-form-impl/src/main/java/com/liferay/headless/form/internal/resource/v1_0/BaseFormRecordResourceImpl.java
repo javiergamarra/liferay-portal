@@ -36,6 +36,7 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -86,7 +87,9 @@ public abstract class BaseFormRecordResourceImpl
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-records/{formRecordId}'  -u 'test@liferay.com:test'
 	 */
 	@Override
+	@Deprecated
 	@GET
+	@Operation(deprecated = true)
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "formRecordId")}
 	)
@@ -108,6 +111,8 @@ public abstract class BaseFormRecordResourceImpl
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
+	@Deprecated
+	@Operation(deprecated = true)
 	@PUT
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "formRecordId")}
@@ -166,7 +171,9 @@ public abstract class BaseFormRecordResourceImpl
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-records'  -u 'test@liferay.com:test'
 	 */
 	@Override
+	@Deprecated
 	@GET
+	@Operation(deprecated = true)
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "formId"),
@@ -192,6 +199,8 @@ public abstract class BaseFormRecordResourceImpl
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
+	@Deprecated
+	@Operation(deprecated = true)
 	@POST
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "formId")})
 	@Path("/forms/{formId}/form-records")
@@ -251,7 +260,9 @@ public abstract class BaseFormRecordResourceImpl
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-records/by-latest-draft'  -u 'test@liferay.com:test'
 	 */
 	@Override
+	@Deprecated
 	@GET
+	@Operation(deprecated = true)
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "formId")})
 	@Path("/forms/{formId}/form-records/by-latest-draft")
 	@Produces({"application/json", "application/xml"})

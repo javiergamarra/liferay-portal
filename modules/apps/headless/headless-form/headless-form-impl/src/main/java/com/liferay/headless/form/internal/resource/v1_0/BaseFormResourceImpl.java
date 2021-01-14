@@ -39,6 +39,7 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -86,7 +87,9 @@ public abstract class BaseFormResourceImpl
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}'  -u 'test@liferay.com:test'
 	 */
 	@Override
+	@Deprecated
 	@GET
+	@Operation(deprecated = true)
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "formId")})
 	@Path("/forms/{formId}")
 	@Produces({"application/json", "application/xml"})
@@ -105,6 +108,8 @@ public abstract class BaseFormResourceImpl
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
+	@Deprecated
+	@Operation(deprecated = true)
 	@POST
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "formId")})
 	@Path("/forms/{formId}/evaluate-context")
@@ -125,6 +130,8 @@ public abstract class BaseFormResourceImpl
 	 */
 	@Override
 	@Consumes("multipart/form-data")
+	@Deprecated
+	@Operation(deprecated = true)
 	@POST
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "formId")})
 	@Path("/forms/{formId}/form-document")
@@ -144,7 +151,9 @@ public abstract class BaseFormResourceImpl
 	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/sites/{siteId}/forms'  -u 'test@liferay.com:test'
 	 */
 	@Override
+	@Deprecated
 	@GET
+	@Operation(deprecated = true)
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "siteId"),
