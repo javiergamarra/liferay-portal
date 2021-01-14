@@ -442,6 +442,7 @@ openapi: 3.0.1
 paths:
     "/form-documents/{formDocumentId}":
         delete:
+            deprecated: true
             operationId: deleteFormDocument
             parameters:
                 - in: path
@@ -459,6 +460,7 @@ paths:
                         ""
             tags: ["FormDocument"]
         get:
+            deprecated: true
             operationId: getFormDocument
             parameters:
                 - in: path
@@ -481,6 +483,7 @@ paths:
             tags: ["FormDocument"]
     "/form-records/{formRecordId}":
         get:
+            deprecated: true
             operationId: getFormRecord
             parameters:
                 - in: path
@@ -502,6 +505,7 @@ paths:
                         ""
             tags: ["FormRecord"]
         put:
+            deprecated: true
             operationId: putFormRecord
             parameters:
                 - in: path
@@ -536,6 +540,7 @@ paths:
             tags: ["FormRecord"]
     "/form-structures/{formStructureId}":
         get:
+            deprecated: true
             operationId: getFormStructure
             parameters:
                 - in: path
@@ -558,6 +563,7 @@ paths:
             tags: ["FormStructure"]
     "/forms/{formId}":
         get:
+            deprecated: true
             operationId: getForm
             parameters:
                 - in: path
@@ -580,6 +586,7 @@ paths:
             tags: ["Form"]
     "/forms/{formId}/evaluate-context":
         post:
+            deprecated: true
             operationId: postFormEvaluateContext
             parameters:
                 - in: path
@@ -614,6 +621,7 @@ paths:
             tags: ["Form"]
     "/forms/{formId}/form-document":
         post:
+            deprecated: true
             operationId: postFormFormDocument
             parameters:
                 - in: path
@@ -647,6 +655,7 @@ paths:
             tags: ["Form"]
     "/forms/{formId}/form-records":
         get:
+            deprecated: true
             operationId: getFormFormRecordsPage
             parameters:
                 - in: path
@@ -680,6 +689,7 @@ paths:
                         ""
             tags: ["FormRecord"]
         post:
+            deprecated: true
             operationId: postFormFormRecord
             parameters:
                 - in: path
@@ -714,6 +724,7 @@ paths:
             tags: ["FormRecord"]
     "/forms/{formId}/form-records/by-latest-draft":
         get:
+            deprecated: true
             operationId: getFormFormRecordByLatestDraft
             parameters:
                 - in: path
@@ -736,6 +747,7 @@ paths:
             tags: ["FormRecord"]
     "/sites/{siteId}/form-structures":
         get:
+            deprecated: true
             operationId: getSiteFormStructuresPage
             parameters:
                 - in: path
@@ -770,6 +782,7 @@ paths:
             tags: ["FormStructure"]
     "/sites/{siteId}/forms":
         get:
+            deprecated: true
             operationId: getSiteFormsPage
             parameters:
                 - in: path
