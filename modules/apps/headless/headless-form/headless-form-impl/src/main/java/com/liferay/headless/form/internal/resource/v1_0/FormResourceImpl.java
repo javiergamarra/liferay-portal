@@ -47,11 +47,13 @@ import org.osgi.service.component.annotations.ServiceScope;
 /**
  * @author Javier Gamarra
  * @author Victor Oliveira
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/form.properties",
 	scope = ServiceScope.PROTOTYPE, service = FormResource.class
 )
+@Deprecated
 public class FormResourceImpl extends BaseFormResourceImpl {
 
 	@Override
