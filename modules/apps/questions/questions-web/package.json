@@ -15,15 +15,15 @@
 		"@clayui/sticker": "3.3.0",
 		"@liferay/frontend-js-react-web": "*",
 		"asset-taglib": "*",
-		"bbcode-to-react": "^0.2.9",
 		"classnames": "2.2.6",
 		"frontend-editor-ckeditor-web": "*",
 		"frontend-js-web": "*",
-		"graphql": "^15.0.0",
+		"graphql": "^15.5.0",
 		"highlight.js": "10.4.1",
 		"prop-types": "15.7.2",
 		"react": "16.12.0",
-		"react-router-dom": "^5.0.1"
+		"react-router-dom": "^5.0.1",
+		"urql": "^2.0.1"
 	},
 	"jest": {
 		"testPathIgnorePatterns": [

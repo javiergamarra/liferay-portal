@@ -12,7 +12,6 @@
  * details.
  */
 
-import parser from 'bbcode-to-react';
 import React, {useEffect, useState} from 'react';
 
 import Highlight from './Highlight.es';
@@ -35,11 +34,6 @@ export default ({
 
 	return (
 		<>
-			{encodingFormat === 'bbcode' && (
-				<div className={`questions-article-body-${id}`}>
-					<div>{parser.toReact(articleBody)}</div>
-				</div>
-			)}
 			{encodingFormat !== 'bbcode' && compactMode && (
 				<div
 					className={`questions-article-body-${id}`}
