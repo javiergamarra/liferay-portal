@@ -12,7 +12,11 @@
  * details.
  */
 
-import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/highlight';
+import java from 'highlight.js/lib/languages/java';
+import javascript from 'highlight.js/lib/languages/javascript';
+import plaintext from 'highlight.js/lib/languages/plaintext';
+import 'highlight.js/styles/monokai-sublime.css';
 import React, {useEffect, useRef} from 'react';
 
 function Highlight(props) {
@@ -27,6 +31,9 @@ function Highlight(props) {
 			'plaintext',
 		],
 	});
+	hljs.registerLanguage('javascript', javascript);
+	hljs.registerLanguage('java', java);
+	hljs.registerLanguage('plaintext', plaintext);
 
 	const highlightCode = () => {
 		if (el.current) {
