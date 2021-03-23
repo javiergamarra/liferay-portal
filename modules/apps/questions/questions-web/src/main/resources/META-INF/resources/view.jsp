@@ -36,6 +36,8 @@
 			).put(
 				"isOmniAdmin", permissionChecker.isOmniadmin()
 			).put(
+				"npmResolvedPackageName", npmResolvedPackageName
+			).put(
 				"redirectToLogin", questionsConfiguration.enableRedirectToLogin()
 			).put(
 				"rootTopicId", questionsConfiguration.rootTopicId()

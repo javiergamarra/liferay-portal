@@ -12,29 +12,25 @@
  * details.
  */
 
-import {ApolloProvider} from '@apollo/client/react/context';
 import React from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {AppContextProvider} from './AppContext.es';
 import {ErrorBoundary} from './components/ErrorBoundary.es';
-import ForumsToQuestion from './components/ForumsToQuestion.es';
 import ProtectedRoute from './components/ProtectedRoute.es';
+import useLazy from './hooks/useLazy.es';
 import NavigationBar from './pages/NavigationBar.es';
-import EditAnswer from './pages/answers/EditAnswer.es';
-import Home from './pages/home/Home';
-import UserActivity from './pages/home/UserActivity.es';
-import UserSubscriptions from './pages/home/UserSubscriptions.es';
-import EditQuestion from './pages/questions/EditQuestion.es';
-import NewQuestion from './pages/questions/NewQuestion.es';
-import Question from './pages/questions/Question.es';
-import Questions from './pages/questions/Questions.es';
-import Tags from './pages/tags/Tags.es';
 import {client} from './utils/client.es';
 import {getFullPath} from './utils/utils.es';
+import useLazy from "./hooks/useLazy.es";
 
 export default (props) => {
+
 	redirectForNotifications();
+
+	const Component = useLazy();
+
+	const packageName = props.npmResolvedPackageName;
 
 	return (
 		<AppContextProvider {...props}>
@@ -43,35 +39,77 @@ export default (props) => {
 					<ErrorBoundary>
 						<div>
 							<NavigationBar />
-
 							<Switch>
-								<Route component={Home} exact path="/" />
 								<Route
-									component={Home}
+									component={(props) => (
+										<Component
+											module={`${packageName}/js/pages/home/Home`}
+											props={props}
+										/>
+									)}
+									exact
+									path="/"
+								/>
+								<Route
+									component={(props) => (
+										<Component
+											module={`${packageName}/js/pages/home/Home`}
+											props={props}
+										/>
+									)}
 									exact
 									path="/questions"
 								/>
 								<Route
-									component={ForumsToQuestion}
+									component={(props) => (
+										<Component
+											module={`${packageName}/js/components/ForumsToQuestion.es`}
+											props={props}
+										/>
+									)}
 									exact
 									path="/question/:questionId"
 								/>
 								<Route
-									component={UserActivity}
+									component={(props) => (
+										<Component
+											module={`${packageName}/js/pages/home/UserActivity.es`}
+											props={props}
+										/>
+									)}
 									exact
 									path="/activity/:creatorId"
 								/>
 								<Route
-									component={UserSubscriptions}
+									component={(props) => (
+										<Component
+											module={`${packageName}/js/pages/home/UserSubscriptions.es`}
+											props={props}
+										/>
+									)}
 									exact
 									path="/subscriptions/:creatorId"
 								/>
 								<Route
-									component={Questions}
+									component={(props) => (
+										<Component
+											module={`${packageName}/js/pages/questions/Questions.es`}
+											props={props}
+										/>
+									)}
 									exact
 									path="/questions/tag/:tag"
 								/>
-								<Route component={Tags} exact path="/tags" />
+								<Route
+									component={(props) => (
+										<Component
+											module={`${packageName}/js/pages/tags/Tags.es`}
+											props={props}
+										/>
+									)}
+									exact
+									path="/tags"
+								/>
 
 								<Route
 									path="/questions/:sectionTitle"
@@ -79,37 +117,72 @@ export default (props) => {
 										<>
 											<Switch>
 												<ProtectedRoute
-													component={EditAnswer}
+													component={(props) => (
+														<Component
+															module={`${packageName}/js/pages/answers/EditAnswer.es`}
+															props={props}
+														/>
+													)}
 													exact
 													path={`${path}/:questionId/answers/:answerId/edit`}
 												/>
 												<Route
-													component={Questions}
+													component={(props) => (
+														<Component
+															module={`${packageName}/js/pages/questions/Questions.es`}
+															props={props}
+														/>
+													)}
 													exact
 													path={`${path}/creator/:creatorId`}
 												/>
 												<Route
-													component={Questions}
+													component={(props) => (
+														<Component
+															module={`${packageName}/js/pages/questions/Questions.es`}
+															props={props}
+														/>
+													)}
 													exact
 													path={`${path}/tag/:tag`}
 												/>
 												<ProtectedRoute
-													component={NewQuestion}
+													component={(props) => (
+														<Component
+															module={`${packageName}/js/pages/questions/NewQuestion.es`}
+															props={props}
+														/>
+													)}
 													exact
 													path={`${path}/new`}
 												/>
 												<Route
-													component={Question}
+													component={(props) => (
+														<Component
+															module={`${packageName}/js/pages/questions/Question.es`}
+															props={props}
+														/>
+													)}
 													exact
 													path={`${path}/:questionId`}
 												/>
 												<ProtectedRoute
-													component={EditQuestion}
+													component={(props) => (
+														<Component
+															module={`${packageName}/js/pages/questions/EditQuestion.es`}
+															props={props}
+														/>
+													)}
 													exact
 													path={`${path}/:questionId/edit`}
 												/>
 												<Route
-													component={Questions}
+													component={(props) => (
+														<Component
+															module={`${packageName}/js/pages/questions/Questions.es`}
+															props={props}
+														/>
+													)}
 													exact
 													path={`${path}/`}
 												/>
