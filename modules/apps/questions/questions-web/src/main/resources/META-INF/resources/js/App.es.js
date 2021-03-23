@@ -12,7 +12,7 @@
  * details.
  */
 
-import {ApolloProvider} from '@apollo/client';
+import {ApolloProvider} from '@apollo/client/react/context';
 import React from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 

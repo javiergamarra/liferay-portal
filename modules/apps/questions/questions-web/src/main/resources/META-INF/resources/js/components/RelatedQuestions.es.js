@@ -12,7 +12,7 @@
  * details.
  */
 
-import {useQuery} from '@apollo/client';
+import {useQuery} from '@apollo/client/react/hooks';
 import ClayIcon from '@clayui/icon';
 import classNames from 'classnames';
 import React, {useContext, useEffect, useState} from 'react';

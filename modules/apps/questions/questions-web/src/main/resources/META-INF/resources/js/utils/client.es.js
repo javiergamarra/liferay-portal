@@ -11,8 +11,14 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+import {gql} from '@apollo/client/core/';
 
-import {ApolloClient, HttpLink, InMemoryCache, gql} from '@apollo/client';
+import {createClient} from 'urql';
+
+
+import {HttpLink} from '@apollo/client/link/http';
+import {InMemoryCache} from '@apollo/client/cache'
+import {ApolloClient} from '@apollo/client/core';
 import {fetch} from 'frontend-js-web';
 
 const HEADERS = {

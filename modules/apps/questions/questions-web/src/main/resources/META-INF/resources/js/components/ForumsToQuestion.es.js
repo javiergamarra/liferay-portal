@@ -12,7 +12,7 @@
  * details.
  */
 
-import {useQuery} from '@apollo/client';
+import {useQuery} from '@apollo/client/react/hooks';
 
 /*eslint-disable no-unused-vars*/
 import React, {useContext} from 'react';

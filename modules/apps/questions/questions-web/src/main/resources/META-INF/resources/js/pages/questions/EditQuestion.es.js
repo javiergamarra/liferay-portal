@@ -12,7 +12,8 @@
  * details.
  */
 
-import {useMutation, useQuery} from '@apollo/client';
+import {useMutation} from '@apollo/client/react/hooks';
+import {useQuery} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';

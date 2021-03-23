@@ -12,7 +12,7 @@
  * details.
  */
 
-import {MockedProvider} from '@apollo/client/testing';
+import {MockedProvider} from '@apollo/client/utilities/testing/mocking/MockedProvider';
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';

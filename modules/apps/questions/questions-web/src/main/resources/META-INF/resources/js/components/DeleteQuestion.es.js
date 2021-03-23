@@ -25,7 +25,7 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-import {useMutation} from '@apollo/client';
+import {useMutation} from '@apollo/client/react/hooks';
 import React, {useContext} from 'react';
 import {withRouter} from 'react-router-dom';
 

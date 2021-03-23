@@ -12,7 +12,7 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client';
+import {useMutation} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import React, {useCallback, useState} from 'react';
