@@ -12,15 +12,14 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import classnames from 'classnames';
+import {useMutation} from 'graphql-hooks';
 import React, {useCallback, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
 import {
-	client,
 	deleteMessageQuery,
 	markAsAnswerMessageBoardMessageQuery,
 } from '../utils/client.es';
@@ -37,7 +36,6 @@ export default withRouter(
 		answer,
 		answerChange,
 		canMarkAsAnswer,
-		deleteAnswer,
 		editable = true,
 		match: {url},
 	}) => {
@@ -51,29 +49,7 @@ export default withRouter(
 			false
 		);
 
-		const [deleteMessage] = useMutation(deleteMessageQuery, {
-			onCompleted() {
-				if (comments && comments.length) {
-					Promise.all(
-						comments.map(({id}) =>
-							client.mutate({
-								mutation: deleteMessageQuery,
-								variables: {messageBoardMessageId: id},
-							})
-						)
-					).then(() => {
-						deleteAnswer(answer);
-					});
-				}
-				else {
-					deleteAnswer(answer);
-				}
-			},
-			update(proxy) {
-				proxy.evict(`MessageBoardMessage:${answer.id}`);
-				proxy.gc();
-			},
-		});
+		const [deleteMessage] = useMutation(deleteMessageQuery);
 
 		const _commentsChange = useCallback((comments) => {
 			setComments([...comments]);

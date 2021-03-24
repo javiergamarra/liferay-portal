@@ -12,9 +12,9 @@
  * details.
  */
 
-import {useQuery} from '@apollo/client/react/hooks';
 import ClayIcon from '@clayui/icon';
 import classNames from 'classnames';
+import {useQuery} from 'graphql-hooks';
 import React, {useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 

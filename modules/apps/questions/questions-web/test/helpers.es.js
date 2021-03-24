@@ -12,7 +12,6 @@
  * details.
  */
 
-import {MockedProvider} from '@apollo/client/utilities/testing/mocking/MockedProvider';
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
@@ -23,25 +22,14 @@ import {Router} from 'react-router-dom';
 import {AppContext} from '../src/main/resources/META-INF/resources/js/AppContext.es';
 
 export const renderComponent = ({
-	apolloAddTypename = false,
-	apolloMocks = null,
 	contextValue = {},
-	link,
 	ui,
 	route = '/',
 	history = createMemoryHistory({initialEntries: [route]}),
 }) => ({
 	...render(
 		<Router history={history}>
-			<AppContext.Provider value={contextValue}>
-				<MockedProvider
-					addTypename={apolloAddTypename}
-					link={link}
-					mocks={apolloMocks}
-				>
-					{ui}
-				</MockedProvider>
-			</AppContext.Provider>
+			<AppContext.Provider value={contextValue}>{ui}</AppContext.Provider>
 		</Router>
 	),
 	history,

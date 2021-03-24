@@ -12,13 +12,12 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client/react/hooks';
-import {useQuery} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayNavigationBar from '@clayui/navigation-bar';
 import classNames from 'classnames';
+import {useManualQuery, useMutation, useQuery} from 'graphql-hooks';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
@@ -71,13 +70,15 @@ export default withRouter(
 		const [page, setPage] = useState(1);
 		const [pageSize, setPageSize] = useState(20);
 
+		const contextMemo = {
+			uri: '/o/graphql?nestedFields=lastPostDate',
+		};
+
 		const {
-			loading,
 			data: {messageBoardThreadByFriendlyUrlPath: question = {}} = {},
+			loading,
 		} = useQuery(getThreadQuery, {
-			context: {
-				uri: '/o/graphql?nestedFields=lastPostDate',
-			},
+			context: contextMemo,
 			variables: {
 				friendlyUrlPath: questionId,
 				siteKey: context.siteKey,
@@ -90,16 +91,12 @@ export default withRouter(
 				: question.messageBoardSection &&
 				  question.messageBoardSection.title;
 
-		const {
-			data: {messageBoardThreadMessageBoardMessages = {}} = {},
-			refetch,
-		} = useQuery(getMessagesQuery, {
-			context: {
-				uri: '/o/graphql?nestedFields=lastPostDate',
-			},
-			skip: !question || !question.id,
+		const [
+			fetchMessages,
+			{data: {messageBoardThreadMessageBoardMessages = {}} = {}},
+		] = useManualQuery(getMessagesQuery, {
 			variables: {
-				messageBoardThreadId: question.id,
+				messageBoardThreadId: question && question.id,
 				page: sort === 'votes' ? 1 : page,
 				pageSize: sort === 'votes' ? 100 : pageSize,
 				sort:
@@ -108,6 +105,12 @@ export default withRouter(
 						: 'dateCreated:desc',
 			},
 		});
+
+		useEffect(() => {
+			if (question && question.id) {
+				fetchMessages();
+			}
+		}, [question, fetchMessages]);
 
 		const [answers, setAnswers] = useState({});
 
@@ -149,13 +152,7 @@ export default withRouter(
 			}
 		}, [messageBoardThreadMessageBoardMessages, pageSize, sort]);
 
-		const [createAnswer] = useMutation(createAnswerQuery, {
-			context: getContextLink(`${sectionTitle}/${questionId}`),
-			onCompleted() {
-				setArticleBody('');
-				refetch();
-			},
-		});
+		const [createAnswer] = useMutation(createAnswerQuery);
 
 		const deleteAnswer = useCallback(
 			(answer) => {
@@ -173,12 +170,7 @@ export default withRouter(
 		);
 
 		const [markAsAnswerMessageBoardMessage] = useMutation(
-			markAsAnswerMessageBoardMessageQuery,
-			{
-				onCompleted() {
-					refetch();
-				},
-			}
+			markAsAnswerMessageBoardMessageQuery
 		);
 
 		const answerChange = useCallback(
@@ -193,10 +185,12 @@ export default withRouter(
 							messageBoardMessageId: answer.id,
 							showAsAnswer: false,
 						},
+					}).then(() => {
+						fetchMessages();
 					});
 				}
 			},
-			[markAsAnswerMessageBoardMessage, answers.items]
+			[markAsAnswerMessageBoardMessage, answers.items, fetchMessages]
 		);
 
 		return (
@@ -505,12 +499,22 @@ export default withRouter(
 													}
 													displayType="primary"
 													onClick={() => {
-														createAnswer({
-															variables: {
-																articleBody,
-																messageBoardThreadId:
-																	question.id,
+														createAnswer(
+															{
+																variables: {
+																	articleBody,
+																	messageBoardThreadId:
+																		question.id,
+																},
 															},
+															{
+																context: getContextLink(
+																	`${sectionTitle}/${questionId}`
+																),
+															}
+														).then(() => {
+															setArticleBody('');
+															fetchMessages();
 														});
 													}}
 												>

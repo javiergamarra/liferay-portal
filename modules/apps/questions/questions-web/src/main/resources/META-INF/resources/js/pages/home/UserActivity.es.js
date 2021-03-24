@@ -12,8 +12,8 @@
  * details.
  */
 
-import {useQuery} from '@apollo/client';
 import ClayEmptyState from '@clayui/empty-state';
+import {useQuery} from 'graphql-hooks';
 import React, {useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 

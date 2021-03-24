@@ -12,6 +12,7 @@
  * details.
  */
 
+import {ClientContext} from 'graphql-hooks';
 import React from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 
@@ -22,10 +23,8 @@ import useLazy from './hooks/useLazy.es';
 import NavigationBar from './pages/NavigationBar.es';
 import {client} from './utils/client.es';
 import {getFullPath} from './utils/utils.es';
-import useLazy from "./hooks/useLazy.es";
 
 export default (props) => {
-
 	redirectForNotifications();
 
 	const Component = useLazy();
@@ -34,7 +33,7 @@ export default (props) => {
 
 	return (
 		<AppContextProvider {...props}>
-			<ApolloProvider client={client}>
+			<ClientContext.Provider value={client}>
 				<Router>
 					<ErrorBoundary>
 						<div>
@@ -194,7 +193,7 @@ export default (props) => {
 						</div>
 					</ErrorBoundary>
 				</Router>
-			</ApolloProvider>
+			</ClientContext.Provider>
 		</AppContextProvider>
 	);
 

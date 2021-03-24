@@ -12,18 +12,21 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client/react/hooks';
-import {useLazyQuery} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import React, {useContext, useEffect, useState} from 'react';
+import {useMutation} from 'graphql-hooks';
+import React, {useContext, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
 import {AppContext} from '../../AppContext.es';
 import QuestionsEditor from '../../components/QuestionsEditor';
 import TextLengthValidation from '../../components/TextLengthValidation.es';
-import {getMessageQuery, updateMessageQuery} from '../../utils/client.es';
+import {
+	client,
+	getMessageQuery,
+	updateMessageQuery,
+} from '../../utils/client.es';
 import {getContextLink, stripHTML} from '../../utils/utils.es';
 
 export default withRouter(
@@ -35,28 +38,11 @@ export default withRouter(
 	}) => {
 		const context = useContext(AppContext);
 
-		const [getMessage, {data}] = useLazyQuery(getMessageQuery, {
-			fetchPolicy: 'network-only',
-			variables: {friendlyUrlPath: answerId, siteKey: context.siteKey},
-		});
-
 		const [articleBody, setArticleBody] = useState('');
-		const [id, setId] = useState('');
 
-		useEffect(() => {
-			setId((data && data.messageBoardMessageByFriendlyUrlPath.id) || '');
-		}, [data]);
+		const [addUpdateMessage] = useMutation(updateMessageQuery);
 
-		const [addUpdateMessage] = useMutation(updateMessageQuery, {
-			context: getContextLink(`${sectionTitle}/${questionId}`),
-			onCompleted() {
-				history.goBack();
-			},
-			update(proxy) {
-				proxy.evict(`MessageBoardMessage:${id}`);
-				proxy.gc();
-			},
-		});
+		const [data, setData] = useState();
 
 		return (
 			<section className="c-mt-5 questions-section questions-sections-answer">
@@ -84,7 +70,17 @@ export default withRouter(
 									onChange={(event) =>
 										setArticleBody(event.editor.getData())
 									}
-									onInstanceReady={() => getMessage()}
+									onInstanceReady={() => {
+										client
+											.request({
+												query: getMessageQuery,
+												variables: {
+													friendlyUrlPath: answerId,
+													siteKey: context.siteKey,
+												},
+											})
+											.then(({data}) => setData(data));
+									}}
 								/>
 
 								<ClayForm.FeedbackGroup>
@@ -106,15 +102,22 @@ export default withRouter(
 								}
 								displayType="primary"
 								onClick={() => {
-									addUpdateMessage({
-										variables: {
-											articleBody,
-											messageBoardMessageId:
-												data
-													.messageBoardMessageByFriendlyUrlPath
-													.id,
+									addUpdateMessage(
+										{
+											variables: {
+												articleBody,
+												messageBoardMessageId:
+													data
+														.messageBoardMessageByFriendlyUrlPath
+														.id,
+											},
 										},
-									});
+										{
+											context: getContextLink(
+												`${sectionTitle}/${questionId}`
+											),
+										}
+									).then(() => history.goBack());
 								}}
 							>
 								{Liferay.Language.get('update-your-answer')}

@@ -57,7 +57,7 @@ export default withRouter(({allowCreateTopicInRootTopic, history, section}) => {
 
 	const findParent = (messageBoardSectionId) =>
 		client
-			.query({
+			.request({
 				query: getSectionQuery,
 				variables: {messageBoardSectionId},
 			})

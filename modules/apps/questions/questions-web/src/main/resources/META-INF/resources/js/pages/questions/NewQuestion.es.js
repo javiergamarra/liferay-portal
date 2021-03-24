@@ -12,10 +12,10 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput, ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import {useMutation} from 'graphql-hooks';
 import React, {useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
@@ -26,7 +26,6 @@ import QuestionsEditor from '../../components/QuestionsEditor';
 import TagSelector from '../../components/TagSelector.es';
 import TextLengthValidation from '../../components/TextLengthValidation.es';
 import {
-	client,
 	createQuestionInASectionQuery,
 	createQuestionInRootQuery,
 	getSectionBySectionTitle,
@@ -64,23 +63,10 @@ export default withRouter(
 		);
 
 		const [createQuestionInASection] = useMutation(
-			createQuestionInASectionQuery,
-			{
-				context: getContextLink(sectionTitle),
-				onCompleted() {
-					client.resetStore();
-					debounceCallback();
-				},
-			}
+			createQuestionInASectionQuery
 		);
 
-		const [createQuestionInRoot] = useMutation(createQuestionInRootQuery, {
-			context: getContextLink(sectionTitle),
-			onCompleted() {
-				client.resetStore();
-				debounceCallback();
-			},
-		});
+		const [createQuestionInRoot] = useMutation(createQuestionInRootQuery);
 
 		useEffect(() => {
 			getSectionBySectionTitle(
@@ -132,24 +118,34 @@ export default withRouter(
 				sectionTitle === context.rootTopicId &&
 				+context.rootTopicId === 0
 			) {
-				createQuestionInRoot({
-					variables: {
-						articleBody,
-						headline,
-						keywords: tags.map((tag) => tag.label),
-						siteKey: context.siteKey,
+				createQuestionInRoot(
+					{
+						variables: {
+							articleBody,
+							headline,
+							keywords: tags.map((tag) => tag.label),
+							siteKey: context.siteKey,
+						},
 					},
-				}).catch(processError);
+					{context: getContextLink(sectionTitle)}
+				)
+					.then(debounceCallback)
+					.catch(processError);
 			}
 			else {
-				createQuestionInASection({
-					variables: {
-						articleBody,
-						headline,
-						keywords: tags.map((tag) => tag.label),
-						messageBoardSectionId: sectionId,
+				createQuestionInASection(
+					{
+						variables: {
+							articleBody,
+							headline,
+							keywords: tags.map((tag) => tag.label),
+							messageBoardSectionId: sectionId,
+						},
 					},
-				}).catch(processError);
+					{context: getContextLink(sectionTitle)}
+				)
+					.then(debounceCallback)
+					.catch(processError);
 			}
 		};
 

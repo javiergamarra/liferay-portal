@@ -12,7 +12,6 @@
  * details.
  */
 
-import {HttpLink} from '@apollo/client';
 import {cleanup} from '@testing-library/react';
 import React from 'react';
 import {Route} from 'react-router-dom';
@@ -59,12 +58,6 @@ describe('Tags', () => {
 	it('Shows list of tags', async () => {
 		const route = '/tags';
 
-		const link = new HttpLink({
-			credentials: 'include',
-			fetch: global.fetch,
-			uri: '/o/graphql',
-		});
-
 		global.fetch.mockImplementation(() =>
 			Promise.resolve({
 				json: () => Promise.resolve(mockTags),
@@ -74,7 +67,6 @@ describe('Tags', () => {
 
 		const {findByText} = renderComponent({
 			contextValue: {siteKey: '20020'},
-			link,
 			route,
 			ui: <Route component={Tags} />,
 		});

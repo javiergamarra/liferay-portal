@@ -12,12 +12,11 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client/react/hooks';
-import {useQuery} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import React, {useContext, useState} from 'react';
+import {useMutation, useQuery} from 'graphql-hooks';
+import React, {useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
 import {AppContext} from '../../AppContext.es';
@@ -43,14 +42,23 @@ export default withRouter(
 		const [tags, setTags] = useState([]);
 		const [tagsLoaded, setTagsLoaded] = useState(true);
 
-		useQuery(getThreadContentQuery, {
-			onCompleted({messageBoardThreadByFriendlyUrlPath}) {
-				setArticleBody(messageBoardThreadByFriendlyUrlPath.articleBody);
-				setHeadline(messageBoardThreadByFriendlyUrlPath.headline);
-				setId(messageBoardThreadByFriendlyUrlPath.id);
-				if (messageBoardThreadByFriendlyUrlPath.keywords) {
+		const {data = {}} = useQuery(getThreadContentQuery, {
+			variables: {
+				friendlyUrlPath: questionId,
+				siteKey: context.siteKey,
+			},
+		});
+
+		useEffect(() => {
+			if (data.messageBoardThreadByFriendlyUrlPath) {
+				setArticleBody(
+					data.messageBoardThreadByFriendlyUrlPath.articleBody
+				);
+				setHeadline(data.messageBoardThreadByFriendlyUrlPath.headline);
+				setId(data.messageBoardThreadByFriendlyUrlPath.id);
+				if (data.messageBoardThreadByFriendlyUrlPath.keywords) {
 					setTags(
-						messageBoardThreadByFriendlyUrlPath.keywords.map(
+						data.messageBoardThreadByFriendlyUrlPath.keywords.map(
 							(keyword) => ({
 								label: keyword,
 								value: keyword,
@@ -58,23 +66,10 @@ export default withRouter(
 						)
 					);
 				}
-			},
-			variables: {
-				friendlyUrlPath: questionId,
-				siteKey: context.siteKey,
-			},
-		});
+			}
+		}, [data]);
 
-		const [updateThread] = useMutation(updateThreadQuery, {
-			context: getContextLink(`${sectionTitle}/${questionId}`),
-			onCompleted() {
-				history.goBack();
-			},
-			update(proxy) {
-				proxy.evict(`MessageBoardThread:${id}`);
-				proxy.gc();
-			},
-		});
+		const [updateThread] = useMutation(updateThreadQuery);
 
 		return (
 			<section className="c-mt-5 questions-section questions-section-edit">
@@ -165,16 +160,23 @@ export default withRouter(
 								}
 								displayType="primary"
 								onClick={() => {
-									updateThread({
-										variables: {
-											articleBody,
-											headline,
-											keywords: tags.map(
-												(tag) => tag.value
-											),
-											messageBoardThreadId: id,
+									updateThread(
+										{
+											variables: {
+												articleBody,
+												headline,
+												keywords: tags.map(
+													(tag) => tag.value
+												),
+												messageBoardThreadId: id,
+											},
 										},
-									});
+										{
+											context: getContextLink(
+												`${sectionTitle}/${questionId}`
+											),
+										}
+									).then(() => history.goBack());
 								}}
 							>
 								{Liferay.Language.get('update-your-question')}

@@ -12,12 +12,11 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client/react/hooks';
-import {useQuery} from '@apollo/client/react/hooks';
 import {ClayButtonWithIcon} from '@clayui/button';
 import {ClayDropDownWithItems} from '@clayui/drop-down';
 import ClayEmptyState from '@clayui/empty-state';
-import React, {useContext, useEffect, useState} from 'react';
+import {useMutation, useQuery} from 'graphql-hooks';
+import React, {useContext, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
 import {AppContext} from '../../AppContext.es';
@@ -26,23 +25,20 @@ import DeleteQuestion from '../../components/DeleteQuestion.es';
 import Link from '../../components/Link.es';
 import QuestionRow from '../../components/QuestionRow.es';
 import {
-	client,
 	getSubscriptionsQuery,
 	unsubscribeMyUserAccountQuery,
 } from '../../utils/client.es';
 import {historyPushWithSlug} from '../../utils/utils.es';
 
 export default withRouter(({history}) => {
-	const [entity, setEntity] = useState({});
 	const [info, setInfo] = useState({});
 	const [questionToDelete, setQuestionToDelete] = useState({});
 
 	const context = useContext(AppContext);
 
-	const {data: threads, refetch: refetchThreads} = useQuery(
+	const {data: threads, refetch: refetchThread} = useQuery(
 		getSubscriptionsQuery,
 		{
-			fetchPolicy: 'network-only',
 			variables: {
 				contentType: 'MessageBoardThread',
 			},
@@ -52,32 +48,13 @@ export default withRouter(({history}) => {
 	const {data: topics, refetch: refetchTopics} = useQuery(
 		getSubscriptionsQuery,
 		{
-			fetchPolicy: 'network-only',
 			variables: {
 				contentType: 'MessageBoardSection',
 			},
 		}
 	);
 
-	const [unsubscribe] = useMutation(unsubscribeMyUserAccountQuery, {
-		onCompleted() {
-			refetchThreads();
-			refetchTopics();
-			setInfo({
-				title: 'You have unsubscribed from this asset successfully.',
-			});
-		},
-	});
-
-	useEffect(() => {
-		if (entity.title) {
-			client.cache.evict(`MessageBoardSection:${entity.id}`);
-		}
-		else {
-			client.cache.evict(`MessageBoardThread:${entity.id}`);
-		}
-		client.cache.gc();
-	}, [entity]);
+	const [unsubscribe] = useMutation(unsubscribeMyUserAccountQuery);
 
 	const [showDeleteModalPanel, setShowDeleteModalPanel] = useState(false);
 
@@ -90,11 +67,17 @@ export default withRouter(({history}) => {
 			{
 				label: 'Unsubscribe',
 				onClick: () => {
-					setEntity({...data.graphQLNode});
 					unsubscribe({
 						variables: {
 							subscriptionId: data.id,
 						},
+					}).then(() => {
+						refetchThread();
+						refetchTopics();
+						setInfo({
+							title:
+								'You have unsubscribed from this asset successfully.',
+						});
 					});
 				},
 			},

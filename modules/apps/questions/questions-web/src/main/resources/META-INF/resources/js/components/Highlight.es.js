@@ -12,28 +12,24 @@
  * details.
  */
 
-import hljs from 'highlight.js/lib/highlight';
+import hljs from 'highlight.js/lib/core';
 import java from 'highlight.js/lib/languages/java';
 import javascript from 'highlight.js/lib/languages/javascript';
 import plaintext from 'highlight.js/lib/languages/plaintext';
+
 import 'highlight.js/styles/monokai-sublime.css';
 import React, {useEffect, useRef} from 'react';
+
+hljs.configure({
+	languages: ['language-java', 'language-javascript', 'html', 'plaintext'],
+});
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('java', java);
+hljs.registerLanguage('plaintext', plaintext);
 
 function Highlight(props) {
 	const {children, element: Element, innerHTML} = props;
 	const el = useRef(null);
-
-	hljs.configure({
-		languages: [
-			'language-java',
-			'language-javascript',
-			'html',
-			'plaintext',
-		],
-	});
-	hljs.registerLanguage('javascript', javascript);
-	hljs.registerLanguage('java', java);
-	hljs.registerLanguage('plaintext', plaintext);
 
 	const highlightCode = () => {
 		if (el.current) {

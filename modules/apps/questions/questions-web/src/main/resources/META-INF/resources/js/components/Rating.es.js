@@ -12,9 +12,9 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
+import {useMutation} from 'graphql-hooks';
 import React, {useEffect, useState} from 'react';
 
 import {

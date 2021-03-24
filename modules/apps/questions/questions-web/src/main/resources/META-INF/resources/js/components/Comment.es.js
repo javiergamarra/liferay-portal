@@ -12,9 +12,9 @@
  * details.
  */
 
-import {useMutation} from '@apollo/client/react/hooks';
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
+import {useMutation} from 'graphql-hooks';
 import React, {useEffect, useState} from 'react';
 
 import {deleteMessageQuery} from '../utils/client.es';
@@ -26,17 +26,7 @@ export default ({comment, commentChange, editable = true}) => {
 	const [dateModified, setDateModified] = useState('');
 	const [showDeleteCommentModal, setShowDeleteCommentModal] = useState(false);
 
-	const [deleteMessage] = useMutation(deleteMessageQuery, {
-		onCompleted() {
-			if (commentChange) {
-				commentChange(comment);
-			}
-		},
-		update(proxy) {
-			proxy.evict(`MessageBoardMessage:${comment.id}`);
-			proxy.gc();
-		},
-	});
+	const [deleteMessage] = useMutation(deleteMessageQuery);
 
 	useEffect(() => {
 		setDateModified(new Date(comment.dateModified).toLocaleDateString());
@@ -84,6 +74,10 @@ export default ({comment, commentChange, editable = true}) => {
 									variables: {
 										messageBoardMessageId: comment.id,
 									},
+								}).then(() => {
+									if (commentChange) {
+										commentChange(comment);
+									}
 								});
 							}}
 							onClose={() => {
