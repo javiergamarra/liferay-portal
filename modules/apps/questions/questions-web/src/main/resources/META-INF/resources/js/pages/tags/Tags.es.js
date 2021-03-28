@@ -77,6 +77,10 @@ export default withRouter(({history, location}) => {
 	const queryParams = useQueryParams(location);
 
 	useEffect(() => {
+		document.title = 'Tags';
+	}, []);
+
+	useEffect(() => {
 		setPage(+queryParams.get('page') || 1);
 	}, [queryParams]);
 

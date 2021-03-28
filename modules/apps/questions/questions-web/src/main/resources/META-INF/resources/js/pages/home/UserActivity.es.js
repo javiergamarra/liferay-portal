@@ -56,6 +56,10 @@ export default withRouter(
 			setPageSize(queryParams.get('pagesize') || 20);
 		}, [queryParams]);
 
+		useEffect(() => {
+			document.title = creatorId;
+		}, [creatorId]);
+
 		const {data, loading} = useQuery(getUserActivityQuery, {
 			onCompleted(data) {
 				if (data.messageBoardMessages.items.lenght) {

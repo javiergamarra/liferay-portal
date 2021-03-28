@@ -38,6 +38,10 @@ export default withRouter(({history}) => {
 	const [sections, setSections] = useState({});
 
 	useEffect(() => {
+		document.title = 'Questions';
+	}, []);
+
+	useEffect(() => {
 		getSectionsByRootSection(context.siteKey, context.rootTopicId)
 			.then(({data, loading}) => {
 				setSections(data || []);

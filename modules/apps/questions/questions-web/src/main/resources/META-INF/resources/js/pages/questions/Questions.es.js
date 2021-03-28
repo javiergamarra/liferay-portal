@@ -137,6 +137,10 @@ export default withRouter(
 		}, [queryParams]);
 
 		useEffect(() => {
+			document.title = sectionTitle;
+		}, [sectionTitle]);
+
+		useEffect(() => {
 			if (
 				+context.rootTopicId === 0 &&
 				location.pathname.endsWith('/' + context.rootTopicId)

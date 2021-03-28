@@ -91,6 +91,10 @@ export default withRouter(
 				: question.messageBoardSection &&
 				  question.messageBoardSection.title;
 
+		useEffect(() => {
+			document.title = questionId;
+		}, [questionId]);
+
 		const [
 			fetchMessages,
 			{data: {messageBoardThreadMessageBoardMessages = {}} = {}},
