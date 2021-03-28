@@ -14,6 +14,7 @@
 
 import {fetch} from 'frontend-js-web';
 import {GraphQLClient} from 'graphql-hooks';
+import memCache from 'graphql-hooks-memcache'
 
 const headers = {
 	Accept: 'application/json',
@@ -22,9 +23,24 @@ const headers = {
 };
 
 export const client = new GraphQLClient({
+	cache: memCache(),
 	fetch,
 	headers,
 	url: '/o/graphql',
+});
+
+export const clientActions = new GraphQLClient({
+	cache: memCache(),
+	fetch,
+	headers,
+	url: '/o/graphql?restrictFields=actions',
+});
+
+export const clientNestedFields = new GraphQLClient({
+	cache: memCache(),
+	fetch,
+	headers,
+	url: '/o/graphql?nestedFields=lastPostDate',
 });
 
 export const createAnswerQuery = `
@@ -583,22 +599,15 @@ export const getThreads = (
 		!section.messageBoardSections.items.length &&
 		section.id !== 0
 	) {
-		return client
-			.request(
-				{
-					query: getSectionThreadsQuery,
-					variables: {
-						messageBoardSectionId: section.id,
-						page,
-						pageSize,
-					},
+		return clientActions
+			.request({
+				query: getSectionThreadsQuery,
+				variables: {
+					messageBoardSectionId: section.id,
+					page,
+					pageSize,
 				},
-				{
-					context: {
-						url: '/o/graphql?restrictFields=actions',
-					},
-				}
-			)
+			})
 			.then((result) => ({
 				...result,
 				data: result.data.messageBoardSectionMessageBoardThreads,
@@ -628,25 +637,18 @@ export const getThreads = (
 
 	sort = sort || 'dateCreated:desc';
 
-	return client
-		.request(
-			{
-				query: getThreadsQuery,
-				variables: {
-					filter,
-					page,
-					pageSize,
-					search,
-					siteKey,
-					sort,
-				},
+	return clientActions
+		.request({
+			query: getThreadsQuery,
+			variables: {
+				filter,
+				page,
+				pageSize,
+				search,
+				siteKey,
+				sort,
 			},
-			{
-				context: {
-					url: '/o/graphql?restrictFields=actions',
-				},
-			}
-		)
+		})
 		.then((result) => ({...result, data: result.data.messageBoardThreads}));
 };
 
@@ -959,6 +961,29 @@ export const getSectionQuery = `
 		}
 	}
 `;
+
+export const getThread = (friendlyUrlPath, siteKey) =>
+	clientNestedFields.request({
+		query: getThreadQuery,
+		variables: {
+			friendlyUrlPath,
+			siteKey,
+		},
+	});
+
+export const getMessages = (messageBoardThreadId, sort, page, pageSize) =>
+	clientNestedFields.request({
+		query: getMessagesQuery,
+		variables: {
+			messageBoardThreadId,
+			page: sort === 'votes' ? 1 : page,
+			pageSize: sort === 'votes' ? 100 : pageSize,
+			sort:
+				sort === 'votes' || sort === 'active'
+					? 'dateModified:desc'
+					: 'dateCreated:desc',
+		},
+	});
 
 export const getUserActivityQuery = `
 	query messageBoardMessages(

@@ -36,6 +36,7 @@ export default withRouter(
 		answer,
 		answerChange,
 		canMarkAsAnswer,
+	 	deleteAnswer,
 		editable = true,
 		match: {url},
 	}) => {
@@ -56,15 +57,7 @@ export default withRouter(
 		}, []);
 
 		const [markAsAnswerMessageBoardMessage] = useMutation(
-			markAsAnswerMessageBoardMessageQuery,
-			{
-				onCompleted() {
-					setShowAsAnswer(!showAsAnswer);
-					if (answerChange) {
-						answerChange(answer.id);
-					}
-				},
-			}
+			markAsAnswerMessageBoardMessageQuery
 		);
 
 		useEffect(() => {
@@ -167,6 +160,8 @@ export default withRouter(
 																	messageBoardMessageId:
 																		answer.id,
 																},
+															}).then(() => {
+																deleteAnswer(answer);
 															});
 														}}
 														onClose={() => {
@@ -202,7 +197,14 @@ export default withRouter(
 																	showAsAnswer: !showAsAnswer,
 																},
 															}
-														);
+														).then(() => {
+															setShowAsAnswer(
+																!showAsAnswer
+															);
+															if (answerChange) {
+																answerChange(answer.id);
+															}
+														});
 													}}
 												>
 													{Liferay.Language.get(

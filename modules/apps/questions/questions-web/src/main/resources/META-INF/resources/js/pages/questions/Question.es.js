@@ -17,7 +17,7 @@ import ClayForm from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayNavigationBar from '@clayui/navigation-bar';
 import classNames from 'classnames';
-import {useManualQuery, useMutation, useQuery} from 'graphql-hooks';
+import {useMutation} from 'graphql-hooks';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet';
 import {withRouter} from 'react-router-dom';
@@ -40,8 +40,8 @@ import TextLengthValidation from '../../components/TextLengthValidation.es';
 import useQueryParams from '../../hooks/useQueryParams.es';
 import {
 	createAnswerQuery,
-	getMessagesQuery,
-	getThreadQuery,
+	getMessages,
+	getThread,
 	markAsAnswerMessageBoardMessageQuery,
 } from '../../utils/client.es';
 import lang from '../../utils/lang.es';
@@ -72,20 +72,66 @@ export default withRouter(
 		const [page, setPage] = useState(1);
 		const [pageSize, setPageSize] = useState(20);
 
-		const contextMemo = {
-			uri: '/o/graphql?nestedFields=lastPostDate',
-		};
+		const [loading, setLoading] = useState(true);
+		const [question, setQuestion] = useState({});
+		const [answers, setAnswers] = useState({});
 
-		const {
-			data: {messageBoardThreadByFriendlyUrlPath: question = {}} = {},
-			loading,
-		} = useQuery(getThreadQuery, {
-			context: contextMemo,
-			variables: {
-				friendlyUrlPath: questionId,
-				siteKey: context.siteKey,
-			},
-		});
+		const fetchMessages = useCallback(() => {
+			if (question && question.id) {
+				getMessages(question.id, sort, page, pageSize).then(
+					({data: {messageBoardThreadMessageBoardMessages}}) => {
+						if (messageBoardThreadMessageBoardMessages.totalCount) {
+							if (sort !== 'votes') {
+								setAnswers({
+									...messageBoardThreadMessageBoardMessages,
+								});
+							}
+							else {
+								const items = [
+									...[
+										...messageBoardThreadMessageBoardMessages.items,
+									].sort((answer1, answer2) => {
+										if (answer2.showAsAnswer) {
+											return 1;
+										}
+										if (answer1.showAsAnswer) {
+											return -1;
+										}
+
+										const ratingValue1 =
+											(answer1.aggregateRating &&
+												answer1.aggregateRating
+													.ratingValue) ||
+											0;
+										const ratingValue2 =
+											(answer2.aggregateRating &&
+												answer2.aggregateRating
+													.ratingValue) ||
+											0;
+
+										return ratingValue2 - ratingValue1;
+									}),
+								];
+
+								setAnswers({
+									...messageBoardThreadMessageBoardMessages,
+									items,
+								});
+							}
+						}
+					}
+				);
+			}
+		}, [question, page, pageSize, sort]);
+
+		useEffect(() => {
+			getThread(questionId, context.siteKey)
+				.then(({data: {messageBoardThreadByFriendlyUrlPath}}) => {
+					setQuestion(messageBoardThreadByFriendlyUrlPath);
+					setLoading(false);
+				})
+				.catch((_) => setLoading(false));
+		}, [questionId, context.siteKey]);
 
 		sectionTitle =
 			sectionTitle || sectionTitle === '0'
@@ -97,66 +143,9 @@ export default withRouter(
 			document.title = questionId;
 		}, [questionId]);
 
-		const [
-			fetchMessages,
-			{data: {messageBoardThreadMessageBoardMessages = {}} = {}},
-		] = useManualQuery(getMessagesQuery, {
-			variables: {
-				messageBoardThreadId: question && question.id,
-				page: sort === 'votes' ? 1 : page,
-				pageSize: sort === 'votes' ? 100 : pageSize,
-				sort:
-					sort === 'votes' || sort === 'active'
-						? 'dateModified:desc'
-						: 'dateCreated:desc',
-			},
-		});
-
 		useEffect(() => {
-			if (question && question.id) {
-				fetchMessages();
-			}
-		}, [question, fetchMessages]);
-
-		const [answers, setAnswers] = useState({});
-
-		useEffect(() => {
-			if (messageBoardThreadMessageBoardMessages.totalCount) {
-				if (sort !== 'votes') {
-					setAnswers({...messageBoardThreadMessageBoardMessages});
-				}
-				else {
-					const items = [
-						...[
-							...messageBoardThreadMessageBoardMessages.items,
-						].sort((answer1, answer2) => {
-							if (answer2.showAsAnswer) {
-								return 1;
-							}
-							if (answer1.showAsAnswer) {
-								return -1;
-							}
-
-							const ratingValue1 =
-								(answer1.aggregateRating &&
-									answer1.aggregateRating.ratingValue) ||
-								0;
-							const ratingValue2 =
-								(answer2.aggregateRating &&
-									answer2.aggregateRating.ratingValue) ||
-								0;
-
-							return ratingValue2 - ratingValue1;
-						}),
-					];
-
-					setAnswers({
-						...messageBoardThreadMessageBoardMessages,
-						items,
-					});
-				}
-			}
-		}, [messageBoardThreadMessageBoardMessages, pageSize, sort]);
+			fetchMessages();
+		}, [fetchMessages]);
 
 		const [createAnswer] = useMutation(createAnswerQuery);
 
