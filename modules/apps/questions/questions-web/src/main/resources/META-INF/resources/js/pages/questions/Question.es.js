@@ -19,6 +19,7 @@ import ClayNavigationBar from '@clayui/navigation-bar';
 import classNames from 'classnames';
 import {useManualQuery, useMutation, useQuery} from 'graphql-hooks';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {Helmet} from 'react-helmet';
 import {withRouter} from 'react-router-dom';
 
 import {AppContext} from '../../AppContext.es';
@@ -47,6 +48,7 @@ import lang from '../../utils/lang.es';
 import {
 	dateToBriefInternationalHuman,
 	getContextLink,
+	getFullPath,
 	stripHTML,
 } from '../../utils/utils.es';
 
@@ -536,6 +538,14 @@ export default withRouter(
 						<RelatedQuestions question={question} />
 					)}
 				</div>
+
+				<Helmet>
+					<title>${questionId}</title>
+					<link
+						href={`${getFullPath()}#/questions/${sectionTitle}/${questionId}`}
+						rel="canonical"
+					/>
+				</Helmet>
 			</section>
 		);
 	}
