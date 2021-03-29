@@ -38,8 +38,6 @@ export default withRouter(
 	}) => {
 		const [comment, setComment] = useState('');
 
-		const contextLink = getContextLink(`${sectionTitle}/${questionId}`);
-
 		const [createComment] = useMutation(createCommentQuery);
 
 		const _commentChange = useCallback(
@@ -83,15 +81,15 @@ export default withRouter(
 									disabled={stripHTML(comment).length < 15}
 									displayType="primary"
 									onClick={() => {
-										createComment(
-											{
-												variables: {
-													articleBody: comment,
-													parentMessageBoardMessageId: entityId,
-												},
+										createComment({
+											fetchOptionsOverrides: getContextLink(
+												`${sectionTitle}/${questionId}`
+											),
+											variables: {
+												articleBody: comment,
+												parentMessageBoardMessageId: entityId,
 											},
-											{context: contextLink}
-										).then(({data}) => {
+										}).then(({data}) => {
 											setComment('');
 											showNewCommentChange(false);
 											commentsChange([

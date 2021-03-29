@@ -14,7 +14,7 @@
 
 import {fetch} from 'frontend-js-web';
 import {GraphQLClient} from 'graphql-hooks';
-import memCache from 'graphql-hooks-memcache'
+import memCache from 'graphql-hooks-memcache';
 
 const headers = {
 	Accept: 'application/json',

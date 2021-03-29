@@ -118,32 +118,28 @@ export default withRouter(
 				sectionTitle === context.rootTopicId &&
 				+context.rootTopicId === 0
 			) {
-				createQuestionInRoot(
-					{
-						variables: {
-							articleBody,
-							headline,
-							keywords: tags.map((tag) => tag.label),
-							siteKey: context.siteKey,
-						},
+				createQuestionInRoot({
+					fetchOptionsOverrides: getContextLink(sectionTitle),
+					variables: {
+						articleBody,
+						headline,
+						keywords: tags.map((tag) => tag.label),
+						siteKey: context.siteKey,
 					},
-					{context: getContextLink(sectionTitle)}
-				)
+				})
 					.then(debounceCallback)
 					.catch(processError);
 			}
 			else {
-				createQuestionInASection(
-					{
-						variables: {
-							articleBody,
-							headline,
-							keywords: tags.map((tag) => tag.label),
-							messageBoardSectionId: sectionId,
-						},
+				createQuestionInASection({
+					fetchOptionsOverrides: getContextLink(sectionTitle),
+					variables: {
+						articleBody,
+						headline,
+						keywords: tags.map((tag) => tag.label),
+						messageBoardSectionId: sectionId,
 					},
-					{context: getContextLink(sectionTitle)}
-				)
+				})
 					.then(debounceCallback)
 					.catch(processError);
 			}

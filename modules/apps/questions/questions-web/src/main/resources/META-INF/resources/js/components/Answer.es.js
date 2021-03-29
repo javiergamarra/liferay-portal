@@ -36,7 +36,7 @@ export default withRouter(
 		answer,
 		answerChange,
 		canMarkAsAnswer,
-	 	deleteAnswer,
+		deleteAnswer,
 		editable = true,
 		match: {url},
 	}) => {
@@ -161,7 +161,9 @@ export default withRouter(
 																		answer.id,
 																},
 															}).then(() => {
-																deleteAnswer(answer);
+																deleteAnswer(
+																	answer
+																);
 															});
 														}}
 														onClose={() => {
@@ -202,7 +204,9 @@ export default withRouter(
 																!showAsAnswer
 															);
 															if (answerChange) {
-																answerChange(answer.id);
+																answerChange(
+																	answer.id
+																);
 															}
 														});
 													}}

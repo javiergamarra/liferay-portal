@@ -167,12 +167,10 @@ export function getBasePath() {
 
 export function getContextLink(url) {
 	return {
-		fetchOptions: {
-			headers: {
-				Link: encodeURI(
-					`${getFullPath()}?redirectTo=/%23/questions/${url}/`
-				),
-			},
+		headers: {
+			Link: encodeURI(
+				`${getFullPath()}?redirectTo=/%23/questions/${url}/`
+			),
 		},
 	};
 }

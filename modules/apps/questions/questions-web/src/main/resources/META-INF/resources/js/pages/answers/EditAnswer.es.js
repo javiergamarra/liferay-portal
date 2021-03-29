@@ -102,22 +102,18 @@ export default withRouter(
 								}
 								displayType="primary"
 								onClick={() => {
-									addUpdateMessage(
-										{
-											variables: {
-												articleBody,
-												messageBoardMessageId:
-													data
-														.messageBoardMessageByFriendlyUrlPath
-														.id,
-											},
+									addUpdateMessage({
+										fetchOptionsOverrides: getContextLink(
+											`${sectionTitle}/${questionId}`
+										),
+										variables: {
+											articleBody,
+											messageBoardMessageId:
+												data
+													.messageBoardMessageByFriendlyUrlPath
+													.id,
 										},
-										{
-											context: getContextLink(
-												`${sectionTitle}/${questionId}`
-											),
-										}
-									).then(() => history.goBack());
+									}).then(() => history.goBack());
 								}}
 							>
 								{Liferay.Language.get('update-your-answer')}

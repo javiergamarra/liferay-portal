@@ -494,20 +494,16 @@ export default withRouter(
 													}
 													displayType="primary"
 													onClick={() => {
-														createAnswer(
-															{
-																variables: {
-																	articleBody,
-																	messageBoardThreadId:
-																		question.id,
-																},
+														createAnswer({
+															fetchOptionsOverrides: getContextLink(
+																`${sectionTitle}/${questionId}`
+															),
+															variables: {
+																articleBody,
+																messageBoardThreadId:
+																	question.id,
 															},
-															{
-																context: getContextLink(
-																	`${sectionTitle}/${questionId}`
-																),
-															}
-														).then(() => {
+														}).then(() => {
 															setArticleBody('');
 															fetchMessages();
 														});
