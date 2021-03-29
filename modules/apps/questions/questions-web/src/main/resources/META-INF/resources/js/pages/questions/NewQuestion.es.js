@@ -15,7 +15,7 @@
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput, ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import {useMutation} from 'graphql-hooks';
+import {useManualQuery, useMutation} from 'graphql-hooks';
 import React, {useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
@@ -28,7 +28,7 @@ import TextLengthValidation from '../../components/TextLengthValidation.es';
 import {
 	createQuestionInASectionQuery,
 	createQuestionInRootQuery,
-	getSectionBySectionTitle,
+	getSectionBySectionTitleQuery,
 } from '../../utils/client.es';
 import lang from '../../utils/lang.es';
 import {
@@ -67,12 +67,21 @@ export default withRouter(
 		);
 
 		const [createQuestionInRoot] = useMutation(createQuestionInRootQuery);
+		const [getSectionBySectionTitle] = useManualQuery(
+			getSectionBySectionTitleQuery,
+			{
+				variables: {
+					filter: `title eq '${slugToText(
+						sectionTitle
+					)}' or id eq '${slugToText(sectionTitle)}'`,
+					siteKey: context.siteKey,
+				},
+			}
+		);
 
 		useEffect(() => {
-			getSectionBySectionTitle(
-				context.siteKey,
-				slugToText(sectionTitle)
-			).then((section) => {
+			getSectionBySectionTitle().then(({data}) => {
+				const section = data.messageBoardSections.items[0];
 				setSectionId((section && section.id) || +context.rootTopicId);
 				if (section.parentMessageBoardSection) {
 					setSections([
@@ -95,7 +104,12 @@ export default withRouter(
 					]);
 				}
 			});
-		}, [context.rootTopicId, context.siteKey, sectionTitle]);
+		}, [
+			context.rootTopicId,
+			context.siteKey,
+			sectionTitle,
+			getSectionBySectionTitle,
+		]);
 
 		const processError = (error) => {
 			if (error.message && error.message.includes('AssetTagException')) {

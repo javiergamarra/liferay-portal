@@ -16,6 +16,7 @@ import {ClayButtonWithIcon} from '@clayui/button';
 import ClayEmptyState from '@clayui/empty-state';
 import {ClayInput, ClaySelect} from '@clayui/form';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import {useManualQuery} from 'graphql-hooks';
 import React, {useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
@@ -24,7 +25,10 @@ import Alert from '../../components/Alert.es';
 import Link from '../../components/Link.es';
 import PaginatedList from '../../components/PaginatedList.es';
 import useQueryParams from '../../hooks/useQueryParams.es';
-import {getTags} from '../../utils/client.es';
+import {
+	getTagsOrderByDateCreatedQuery,
+	getTagsOrderByNumberOfUsagesQuery,
+} from '../../utils/client.es';
 import lang from '../../utils/lang.es';
 import {
 	dateToInternationalHuman,
@@ -58,21 +62,39 @@ export default withRouter(({history, location}) => {
 	const [search, setSearch] = useState('');
 	const [tags, setTags] = useState([]);
 
+	const [tagsByDate] = useManualQuery(getTagsOrderByDateCreatedQuery, {
+		variables: {page, pageSize, search, siteKey: context.siteKey},
+	});
+
+	const [tagsByRank] = useManualQuery(getTagsOrderByNumberOfUsagesQuery, {
+		variables: {page, pageSize, search, siteKey: context.siteKey},
+	});
+
 	useEffect(() => {
-		getTags(orderBy, page, pageSize, search, context.siteKey)
-			.then(({data, loading}) => {
-				setTags(data || []);
-				setLoading(loading);
-				setSearchBoxValue(search);
-			})
-			.catch((error) => {
-				if (process.env.NODE_ENV === 'development') {
-					console.error(error);
-				}
-				setLoading(false);
-				setError({message: 'Loading Tags', title: 'Error'});
-			});
-	}, [orderBy, page, pageSize, search, context.siteKey]);
+		const fn =
+			orderBy === 'latest-created'
+				? tagsByDate().then(({data, loading}) => ({
+						data: data.keywords,
+						loading,
+				  }))
+				: tagsByRank().then(({data, loading}) => ({
+						data: data.keywordsRanked,
+						loading,
+				  }));
+		fn.then(({data, loading}) => {
+			setTags(data || []);
+			setLoading(loading);
+			setSearchBoxValue(search);
+		}).catch((_) => setError({message: 'Loading Tags', title: 'Error'}));
+	}, [
+		orderBy,
+		page,
+		pageSize,
+		search,
+		context.siteKey,
+		tagsByDate,
+		tagsByRank,
+	]);
 
 	const queryParams = useQueryParams(location);
 

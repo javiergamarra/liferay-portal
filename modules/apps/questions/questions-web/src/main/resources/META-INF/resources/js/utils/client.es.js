@@ -274,46 +274,6 @@ export const getTagsOrderByNumberOfUsagesQuery = `
 	}
 `;
 
-export const getTags = (
-	orderBy,
-	page = 1,
-	pageSize = 30,
-	search = '',
-	siteKey
-) => {
-	if (orderBy === 'latest-created') {
-		return client
-			.request({
-				query: getTagsOrderByDateCreatedQuery,
-				variables: {
-					page,
-					pageSize,
-					search,
-					siteKey,
-				},
-			})
-			.then((result) => ({
-				...result,
-				data: result.data.keywords,
-			}));
-	}
-
-	return client
-		.request({
-			query: getTagsOrderByNumberOfUsagesQuery,
-			variables: {
-				page,
-				pageSize,
-				search,
-				siteKey,
-			},
-		})
-		.then((result) => ({
-			...result,
-			data: result.data.keywordsRanked,
-		}));
-};
-
 export const getMessageQuery = `
 	query messageBoardMessageByFriendlyUrlPath(
 		$friendlyUrlPath: String!
@@ -840,66 +800,6 @@ export const getSectionBySectionTitleQuery = `
 		}
 	}
 `;
-
-export const getSectionBySectionTitle = (siteKey, sectionTitle) =>
-	client
-		.request({
-			query: getSectionBySectionTitleQuery,
-			variables: {
-				filter: `title eq '${sectionTitle}' or id eq '${sectionTitle}'`,
-				siteKey,
-			},
-		})
-		.then(({data}) => {
-			if (
-				data.messageBoardSections &&
-				data.messageBoardSections.items.length
-			) {
-				return data.messageBoardSections.items[0];
-			}
-
-			return Promise.reject(new Error('Section not found'));
-		});
-
-export const getSectionsByRootSection = (siteKey, sectionTitle) => {
-	if (!sectionTitle || sectionTitle === '0') {
-		return client
-			.request({
-				query: getSectionsQuery,
-				variables: {
-					siteKey,
-				},
-			})
-			.then((result) => ({
-				...result,
-				data: result.data.messageBoardSections,
-			}));
-	}
-
-	return getSectionBySectionTitle(siteKey, sectionTitle).then((result) => ({
-		...result,
-		data: result.messageBoardSections,
-	}));
-};
-
-export const getSectionByRootSection = (siteKey) => {
-	return client
-		.request({
-			query: getSectionsQuery,
-			variables: {
-				siteKey,
-			},
-		})
-		.then(({data: {messageBoardSections}}) => ({
-			actions: messageBoardSections.actions,
-			id: 0,
-			messageBoardSections,
-			numberOfMessageBoardSections:
-				messageBoardSections &&
-				messageBoardSections.items &&
-				messageBoardSections.items.length,
-		}));
-};
 
 export const getRelatedThreadsQuery = `
 	query messageBoardThreads($search: String!, $siteKey: String!) {

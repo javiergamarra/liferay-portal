@@ -17,6 +17,7 @@ import ClayCard from '@clayui/card';
 import ClayEmptyState from '@clayui/empty-state';
 import ClayIcon from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import {useManualQuery} from 'graphql-hooks';
 import React, {useContext, useEffect, useState} from 'react';
 import {Redirect, withRouter} from 'react-router-dom';
 
@@ -24,7 +25,10 @@ import {AppContext} from '../../AppContext.es';
 import Alert from '../../components/Alert.es';
 import Link from '../../components/Link.es';
 import NewTopicModal from '../../components/NewTopicModal.es';
-import {getSectionsByRootSection} from '../../utils/client.es';
+import {
+	getSectionBySectionTitleQuery,
+	getSectionsQuery,
+} from '../../utils/client.es';
 import lang from '../../utils/lang.es';
 import {historyPushWithSlug} from '../../utils/utils.es';
 
@@ -41,8 +45,29 @@ export default withRouter(({history}) => {
 		document.title = 'Questions';
 	}, []);
 
+	const [getSections] = useManualQuery(getSectionsQuery, {
+		variables: {siteKey: context.siteKey},
+	});
+	const [getSectionBySectionTitle] = useManualQuery(
+		getSectionBySectionTitleQuery,
+		{
+			filter: `title eq '${context.rootTopicId}' or id eq '${context.rootTopicId}'`,
+			siteKey: context.siteKey,
+		}
+	);
+
 	useEffect(() => {
-		getSectionsByRootSection(context.siteKey, context.rootTopicId)
+		const fn =
+			!context.rootTopicId || context.rootTopicId === '0'
+				? getSections()
+				: getSectionBySectionTitle().then(
+						({data}) => data.messageBoardSections.items[0]
+				  );
+
+		fn.then((result) => ({
+			...result,
+			data: result.data.messageBoardSections,
+		}))
 			.then(({data, loading}) => {
 				setSections(data || []);
 				setLoading(loading);
@@ -54,7 +79,12 @@ export default withRouter(({history}) => {
 				setLoading(false);
 				setError({message: 'Loading Topics', title: 'Error'});
 			});
-	}, [context.rootTopicId, context.siteKey]);
+	}, [
+		context.rootTopicId,
+		context.siteKey,
+		getSectionBySectionTitle,
+		getSections,
+	]);
 
 	function descriptionTruncate(description) {
 		return description.length > 150

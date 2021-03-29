@@ -17,6 +17,7 @@ import ClayEmptyState from '@clayui/empty-state';
 import {ClayInput, ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import {useManualQuery} from 'graphql-hooks';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
@@ -31,9 +32,8 @@ import useQueryParams from '../../hooks/useQueryParams.es';
 import {
 	client,
 	getQuestionThreads,
-	getSectionByRootSection,
-	getSectionBySectionTitle,
-	getSectionsByRootSection,
+	getSectionBySectionTitleQuery,
+	getSectionsQuery,
 } from '../../utils/client.es';
 import {
 	deleteCacheVariables,
@@ -119,6 +119,21 @@ export default withRouter(
 			[history.push]
 		);
 
+		const [getSections] = useManualQuery(getSectionsQuery, {
+			variables: {siteKey: context.siteKey},
+		});
+		const [getSectionBySectionTitle] = useManualQuery(
+			getSectionBySectionTitleQuery,
+			{
+				variables: {
+					filter: `title eq '${slugToText(
+						sectionTitle
+					)}' or id eq '${slugToText(sectionTitle)}'`,
+					siteKey: context.siteKey,
+				},
+			}
+		);
+
 		useEffect(() => {
 			setCurrentTag(tag ? slugToText(tag) : '');
 		}, [tag]);
@@ -145,7 +160,17 @@ export default withRouter(
 				+context.rootTopicId === 0 &&
 				location.pathname.endsWith('/' + context.rootTopicId)
 			) {
-				getSectionsByRootSection(context.siteKey, context.rootTopicId)
+				const fn =
+					!context.rootTopicId || context.rootTopicId === '0'
+						? getSections()
+						: getSectionBySectionTitle().then(
+								({data}) => data.messageBoardSections.items[0]
+						  );
+
+				fn.then((result) => ({
+					...result,
+					data: result.data.messageBoardSections,
+				}))
 					.then(({data}) => {
 						setAllowCreateTopicInRootTopic(
 							data.actions && !!data.actions.create
@@ -159,7 +184,13 @@ export default withRouter(
 						setError({message: 'Loading Topics', title: 'Error'});
 					});
 			}
-		}, [context.rootTopicId, context.siteKey, location.pathname]);
+		}, [
+			context.rootTopicId,
+			context.siteKey,
+			location.pathname,
+			getSectionBySectionTitle,
+			getSections,
+		]);
 
 		useEffect(() => {
 			setTotalCount(
@@ -252,23 +283,36 @@ export default withRouter(
 
 		useEffect(() => {
 			if (sectionTitle && sectionTitle !== '0') {
-				getSectionBySectionTitle(
-					context.siteKey,
-					slugToText(sectionTitle)
-				)
-					.then(setSection)
-					.catch((_) => {
-						deleteCacheVariables(
-							client.cache,
-							'MessageBoardSection'
-						);
-						historyPushParser('/questions/');
-					});
+				getSectionBySectionTitle({
+					variables: {
+						filter: `title eq '${slugToText(
+							sectionTitle
+						)}' or id eq '${slugToText(sectionTitle)}'`,
+						siteKey: context.siteKey,
+					},
+				}).then(({data}) =>
+					setSection(data.messageBoardSections.items[0])
+				);
 			}
 			else if (sectionTitle === '0') {
-				getSectionByRootSection(context.siteKey).then(setSection);
+				getSections({variables: {siteKey: context.siteKey}})
+					.then(({data: {messageBoardSections}}) => ({
+						actions: messageBoardSections.actions,
+						id: 0,
+						messageBoardSections,
+						numberOfMessageBoardSections:
+							messageBoardSections &&
+							messageBoardSections.items &&
+							messageBoardSections.items.length,
+					}))
+					.then(setSection);
 			}
-		}, [historyPushParser, sectionTitle, context.siteKey]);
+		}, [
+			sectionTitle,
+			context.siteKey,
+			getSections,
+			getSectionBySectionTitle,
+		]);
 
 		const filterOptions = getFilterOptions();
 
