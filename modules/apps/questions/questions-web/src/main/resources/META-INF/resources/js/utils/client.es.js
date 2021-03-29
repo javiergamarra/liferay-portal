@@ -29,13 +29,6 @@ export const client = new GraphQLClient({
 	url: '/o/graphql',
 });
 
-export const clientActions = new GraphQLClient({
-	cache: memCache(),
-	fetch,
-	headers,
-	url: '/o/graphql?restrictFields=actions',
-});
-
 export const clientNestedFields = new GraphQLClient({
 	cache: memCache(),
 	fetch,
@@ -541,77 +534,6 @@ export const getThreadsQuery = `
 	}
 `;
 
-export const getThreads = (
-	creatorId = '',
-	keywords = '',
-	page = 1,
-	pageSize = 30,
-	search = '',
-	section,
-	siteKey,
-	sort
-) => {
-	if (
-		!search &&
-		!keywords &&
-		!creatorId &&
-		!sort &&
-		!section.messageBoardSections.items.length &&
-		section.id !== 0
-	) {
-		return clientActions
-			.request({
-				query: getSectionThreadsQuery,
-				variables: {
-					messageBoardSectionId: section.id,
-					page,
-					pageSize,
-				},
-			})
-			.then((result) => ({
-				...result,
-				data: result.data.messageBoardSectionMessageBoardThreads,
-			}));
-	}
-
-	let filter = '';
-
-	if (section && section.id) {
-		filter = `(messageBoardSectionId eq ${section.id} `;
-
-		for (let i = 0; i < section.messageBoardSections.items.length; i++) {
-			filter += `or messageBoardSectionId eq ${section.messageBoardSections.items[i].id} `;
-		}
-
-		filter += ')';
-	}
-
-	if (keywords) {
-		filter += `${
-			(section && section.id && ' and ') || ''
-		}keywords/any(x:x eq '${keywords}')`;
-	}
-	else if (creatorId) {
-		filter += ` and creator/id eq ${creatorId}`;
-	}
-
-	sort = sort || 'dateCreated:desc';
-
-	return clientActions
-		.request({
-			query: getThreadsQuery,
-			variables: {
-				filter,
-				page,
-				pageSize,
-				search,
-				siteKey,
-				sort,
-			},
-		})
-		.then((result) => ({...result, data: result.data.messageBoardThreads}));
-};
-
 export const getRankedThreadsQuery = `
 	query messageBoardThreadsRanked(
 		$dateModified: Date
@@ -661,79 +583,6 @@ export const getRankedThreadsQuery = `
 		}
 	}
 `;
-
-export const getRankedThreads = (
-	dateModified,
-	page = 1,
-	pageSize = 20,
-	section,
-	sort = ''
-) => {
-	return client
-		.request({
-			query: getRankedThreadsQuery,
-			variables: {
-				dateModified: dateModified && dateModified.toISOString(),
-				messageBoardSectionId: section.id,
-				page,
-				pageSize,
-				sort,
-			},
-		})
-		.then((result) => ({
-			...result,
-			data: result.data.messageBoardThreadsRanked,
-		}));
-};
-
-export const getQuestionThreads = (
-	creatorId = '',
-	filter,
-	keywords = '',
-	page = 1,
-	pageSize = 30,
-	search = '',
-	section,
-	siteKey
-) => {
-	if (filter === 'latest-edited') {
-		return getThreads(
-			creatorId,
-			keywords,
-			page,
-			pageSize,
-			search,
-			section,
-			siteKey,
-			'dateModified:desc'
-		);
-	}
-	else if (filter === 'week') {
-		const date = new Date();
-		date.setDate(date.getDate() - 7);
-
-		return getRankedThreads(date, page, pageSize, section);
-	}
-	else if (filter === 'month') {
-		const date = new Date();
-		date.setDate(date.getDate() - 31);
-
-		return getRankedThreads(date, page, pageSize, section);
-	}
-	else if (filter === 'most-voted') {
-		return getRankedThreads(null, page, pageSize, section);
-	}
-
-	return getThreads(
-		creatorId,
-		keywords,
-		page,
-		pageSize,
-		search,
-		section,
-		siteKey
-	);
-};
 
 export const getSectionsQuery = `
 	query messageBoardSections($siteKey: String!) {

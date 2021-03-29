@@ -30,13 +30,13 @@ import ResultsMessage from '../../components/ResultsMessage.es';
 import SectionSubscription from '../../components/SectionSubscription.es';
 import useQueryParams from '../../hooks/useQueryParams.es';
 import {
-	client,
-	getQuestionThreads,
+	getRankedThreadsQuery,
 	getSectionBySectionTitleQuery,
+	getSectionThreadsQuery,
 	getSectionsQuery,
+	getThreadsQuery,
 } from '../../utils/client.es';
 import {
-	deleteCacheVariables,
 	getBasePath,
 	historyPushWithSlug,
 	isWebCrawler,
@@ -134,6 +134,10 @@ export default withRouter(
 			}
 		);
 
+		const [getRankedThreads] = useManualQuery(getRankedThreadsQuery);
+		const [getSectionThreads] = useManualQuery(getSectionThreadsQuery);
+		const [getThreads] = useManualQuery(getThreadsQuery);
+
 		useEffect(() => {
 			setCurrentTag(tag ? slugToText(tag) : '');
 		}, [tag]);
@@ -201,32 +205,156 @@ export default withRouter(
 			);
 		}, [filter, questions.totalCount, search]);
 
+		const getRankedThreadsCallback = useCallback(
+			(dateModified, page = 1, pageSize = 20, section, sort = '') =>
+				getRankedThreads({
+					variables: {
+						dateModified:
+							dateModified && dateModified.toISOString(),
+						messageBoardSectionId: section.id,
+						page,
+						pageSize,
+						sort,
+					},
+				}).then((result) => ({
+					...result,
+					data: result.data.messageBoardThreadsRanked,
+				})),
+			[getRankedThreads]
+		);
+
+		const getThreadsCallback = useCallback(
+			(
+				creatorId = '',
+				keywords = '',
+				page = 1,
+				pageSize = 30,
+				search = '',
+				section,
+				siteKey,
+				sort
+			) => {
+				if (
+					!search &&
+					!keywords &&
+					!creatorId &&
+					!sort &&
+					!section.messageBoardSections.items.length &&
+					section.id !== 0
+				) {
+					return getSectionThreads({
+						variables: {
+							messageBoardSectionId: section.id,
+							page,
+							pageSize,
+						},
+					}).then((result) => ({
+						...result,
+						data:
+							result.data.messageBoardSectionMessageBoardThreads,
+					}));
+				}
+
+				let filter = '';
+
+				if (section && section.id) {
+					filter = `(messageBoardSectionId eq ${section.id} `;
+
+					for (
+						let i = 0;
+						i < section.messageBoardSections.items.length;
+						i++
+					) {
+						filter += `or messageBoardSectionId eq ${section.messageBoardSections.items[i].id} `;
+					}
+
+					filter += ')';
+				}
+
+				if (keywords) {
+					filter += `${
+						(section && section.id && ' and ') || ''
+					}keywords/any(x:x eq '${keywords}')`;
+				}
+				else if (creatorId) {
+					filter += ` and creator/id eq ${creatorId}`;
+				}
+
+				sort = sort || 'dateCreated:desc';
+
+				return getThreads({
+					variables: {
+						filter,
+						page,
+						pageSize,
+						search,
+						siteKey,
+						sort,
+					},
+				}).then((result) => ({
+					...result,
+					data: result.data.messageBoardThreads,
+				}));
+			},
+			[getSectionThreads, getThreads]
+		);
+
 		useEffect(() => {
 			if (section.id == null && !currentTag) {
 				return;
 			}
 
-			getQuestionThreads(
-				creatorId,
-				filter,
-				currentTag,
-				page,
-				pageSize,
-				search,
-				section,
-				siteKey
-			)
-				.then(({data, loading}) => {
-					setQuestions(data || []);
-					setLoading(loading);
-				})
-				.catch((error) => {
-					if (process.env.NODE_ENV === 'development') {
-						console.error(error);
-					}
-					setLoading(false);
-					setError({message: 'Loading Questions', title: 'Error'});
-				});
+			let fn;
+
+			if (filter === 'latest-edited') {
+				fn = getThreadsCallback(
+					creatorId,
+					currentTag,
+					page,
+					pageSize,
+					search,
+					section,
+					siteKey,
+					'dateModified:desc'
+				);
+			}
+			else if (filter === 'week') {
+				const date = new Date();
+				date.setDate(date.getDate() - 7);
+
+				fn = getRankedThreadsCallback(date, page, pageSize, section);
+			}
+			else if (filter === 'month') {
+				const date = new Date();
+				date.setDate(date.getDate() - 31);
+
+				fn = getRankedThreadsCallback(date, page, pageSize, section);
+			}
+			else if (filter === 'most-voted') {
+				fn = getRankedThreadsCallback(null, page, pageSize, section);
+			}
+			else {
+				fn = getThreadsCallback(
+					creatorId,
+					currentTag,
+					page,
+					pageSize,
+					search,
+					section,
+					siteKey
+				);
+			}
+
+			fn.then(({data, loading}) => {
+				setQuestions(data || []);
+				setLoading(loading);
+			}).catch((error) => {
+				if (process.env.NODE_ENV === 'development') {
+					console.error(error);
+				}
+				setLoading(false);
+				setError({message: 'Loading Questions', title: 'Error'});
+			});
 		}, [
 			creatorId,
 			currentTag,
@@ -236,6 +364,8 @@ export default withRouter(
 			search,
 			section,
 			siteKey,
+			getRankedThreadsCallback,
+			getThreadsCallback,
 		]);
 
 		function buildURL(needHashtag, search, page, pageSize) {
