@@ -14,7 +14,7 @@
 
 import {ClientContext} from 'graphql-hooks';
 import React from 'react';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
 
 import {AppContextProvider} from './AppContext.es';
 import {ErrorBoundary} from './components/ErrorBoundary.es';
@@ -29,12 +29,14 @@ export default (props) => {
 
 	const Component = useLazy();
 
+	const Router = props.historyRouterBasePath ? BrowserRouter : HashRouter;
+
 	const packageName = props.npmResolvedPackageName;
 
 	return (
 		<AppContextProvider {...props}>
 			<ClientContext.Provider value={client}>
-				<Router>
+				<Router basename={props.historyRouterBasePath}>
 					<ErrorBoundary>
 						<div>
 							<NavigationBar />

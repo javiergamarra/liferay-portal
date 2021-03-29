@@ -42,6 +42,11 @@ public interface QuestionsConfiguration {
 	)
 	public boolean showCardsForTopicNavigation();
 
+	@Meta.AD(
+		deflt = "", name = "set-base-path-for-history-router", required = false
+	)
+	public String historyRouterBasePath();
+
 	@Meta.AD(deflt = "true", name = "use-topic-names-in-url", required = false)
 	public boolean useTopicNamesInURL();
 
