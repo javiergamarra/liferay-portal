@@ -7258,6 +7258,13 @@ graphiql@1.2.0:
     entities "^2.0.0"
     markdown-it "^10.0.0"
 
+graphql-hooks-memcache@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/graphql-hooks-memcache/-/graphql-hooks-memcache-2.1.1.tgz#1d0c84cbd12deaeb82c8ad73294c2814adea5ce5"
+  integrity sha512-I2siJuNPhGr89NZ4XSQ4A4AbwhDce+oVgqvR/VLGwsMD5DHVzWEg6OzmBkV9M1TYfrJgUFS6yVf5ILLVvYQf3g==
+  dependencies:
+    tiny-lru "^7.0.0"
+
 graphql-hooks@4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/graphql-hooks/-/graphql-hooks-4.4.0.tgz#95a216a0ffd43283041de003cc87628d5ca65d18"
@@ -14982,6 +14989,11 @@ tiny-lr@^1.1.1:
     livereload-js "^2.3.0"
     object-assign "^4.1.0"
     qs "^6.4.0"
+
+tiny-lru@^7.0.0:
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/tiny-lru/-/tiny-lru-7.0.6.tgz#b0c3cdede1e5882aa2d1ae21cb2ceccf2a331f24"
+  integrity sha512-zNYO0Kvgn5rXzWpL0y3RS09sMK67eGaQj9805jlK9G6pSadfriTczzLHFXa/xcW4mIRfmlB9HyQ/+SgL0V1uow==
 
 tiny-warning@^1.0.0, tiny-warning@^1.0.2:
   version "1.0.2"
