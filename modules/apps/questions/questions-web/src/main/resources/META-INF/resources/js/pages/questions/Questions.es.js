@@ -451,7 +451,9 @@ export default withRouter(
 				const baseURL = getBasePath();
 
 				window.location.replace(
-					`/c/portal/login?redirect=${baseURL}#/questions/${sectionTitle}/new`
+					`/c/portal/login?redirect=${baseURL}${
+						context.historyRouterBasePath ? '' : '#'
+					}/questions/${sectionTitle}/new`
 				);
 			}
 			else {

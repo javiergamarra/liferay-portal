@@ -25,7 +25,7 @@ import {client} from './utils/client.es';
 import {getFullPath} from './utils/utils.es';
 
 export default (props) => {
-	redirectForNotifications();
+	redirectForNotifications(props);
 
 	const Component = useLazy();
 
@@ -199,8 +199,8 @@ export default (props) => {
 		</AppContextProvider>
 	);
 
-	function redirectForNotifications() {
-		if (window.location.search) {
+	function redirectForNotifications(props) {
+		if (window.location.search && !props.historyRouterBasePath) {
 			const urlSearchParams = new URLSearchParams(window.location.search);
 
 			const redirectTo = urlSearchParams.get('redirectTo');
