@@ -216,7 +216,6 @@ public class UserAccountResourceImpl
 					userAccount.getCustomFields(),
 					contextAcceptLanguage.getPreferredLocale()),
 				contextCompany.getGroupId(), contextHttpServletRequest, null));
-		//ServiceContextFactory.getInstance(contextHttpServletRequest));
 
 		UserAccountContactInformation userAccountContactInformation =
 			userAccount.getUserAccountContactInformation();
@@ -289,7 +288,6 @@ public class UserAccountResourceImpl
 						contextAcceptLanguage.getPreferredLocale()),
 					contextCompany.getGroupId(), contextHttpServletRequest,
 					null)));
-		//getInstance(contextHttpServletRequest)));
 	}
 
 	@Override
