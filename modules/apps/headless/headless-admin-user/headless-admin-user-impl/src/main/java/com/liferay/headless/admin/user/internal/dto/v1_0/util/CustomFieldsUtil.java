@@ -22,6 +22,9 @@ import com.liferay.headless.admin.user.dto.v1_0.CustomValue;
 import com.liferay.headless.admin.user.dto.v1_0.Geo;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -31,11 +34,16 @@ import java.io.Serializable;
 
 import java.lang.reflect.Array;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -71,6 +79,83 @@ public class CustomFieldsUtil {
 				acceptAllLanguages, entry, expandoBridge, locale)
 		).toArray(
 			CustomField[]::new
+		);
+	}
+
+	public static Map<String, Serializable> toMap(
+		String className, long companyId, CustomField[] customFields,
+		Locale locale) {
+
+		if (customFields == null) {
+			return null;
+		}
+
+		ExpandoBridge expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(
+			companyId, className);
+
+		return Stream.of(
+			customFields
+		).collect(
+			Collectors.toMap(
+				CustomField::getName,
+				customField -> {
+					int attributeType = expandoBridge.getAttributeType(
+						customField.getName());
+
+					CustomValue customValue = customField.getCustomValue();
+
+					Object data = customValue.getData();
+
+					if (ExpandoColumnConstants.DATE == attributeType) {
+						return _parseDate(String.valueOf(data));
+					}
+					else if (ExpandoColumnConstants.DOUBLE_ARRAY ==
+								attributeType) {
+
+						return ArrayUtil.toDoubleArray((List<Number>)data);
+					}
+					else if (ExpandoColumnConstants.FLOAT_ARRAY ==
+								attributeType) {
+
+						return ArrayUtil.toFloatArray((List<Number>)data);
+					}
+					else if (ExpandoColumnConstants.GEOLOCATION ==
+								attributeType) {
+
+						Geo geo = customValue.getGeo();
+
+						return JSONUtil.put(
+							"latitude", geo.getLatitude()
+						).put(
+							"longitude", geo.getLongitude()
+						).toString();
+					}
+					else if (ExpandoColumnConstants.INTEGER_ARRAY ==
+								attributeType) {
+
+						return ArrayUtil.toIntArray((List<Number>)data);
+					}
+					else if (ExpandoColumnConstants.LONG_ARRAY ==
+								attributeType) {
+
+						return ArrayUtil.toLongArray((List<Number>)data);
+					}
+					else if (ExpandoColumnConstants.STRING_ARRAY ==
+								attributeType) {
+
+						List<?> list = (List<?>)data;
+
+						return list.toArray(new String[0]);
+					}
+					else if (ExpandoColumnConstants.STRING_LOCALIZED ==
+								attributeType) {
+
+						return (Serializable)LocalizedMapUtil.getLocalizedMap(
+							locale, (String)data, customValue.getData_i18n());
+					}
+
+					return (Serializable)data;
+				})
 		);
 	}
 
@@ -123,6 +208,19 @@ public class CustomFieldsUtil {
 		}
 
 		return false;
+	}
+
+	private static Serializable _parseDate(String data) {
+		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		try {
+			return dateFormat.parse(data);
+		}
+		catch (ParseException parseException) {
+			throw new IllegalArgumentException(
+				"Unable to parse date from " + data, parseException);
+		}
 	}
 
 	private static CustomField _toCustomField(
