@@ -29,21 +29,21 @@ import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.Assignee;
 import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.Creator;
 import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.Instance;
 import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.Process;
+import com.liferay.portal.workflow.metrics.rest.client.dto.v1_0.SLAResult;
 import com.liferay.portal.workflow.metrics.rest.client.pagination.Page;
 import com.liferay.portal.workflow.metrics.rest.client.pagination.Pagination;
 import com.liferay.portal.workflow.metrics.rest.resource.v1_0.test.helper.WorkflowMetricsRESTTestHelper;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Rafael Praxedes
@@ -113,7 +113,9 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
-		return new String[] {"assetTitle", "assetType", "classPK", "processId"};
+		return new String[] {
+			"assetTitle", "assetType", "classPK", "processId", "slaResults"
+		};
 	}
 
 	@Override
@@ -145,6 +147,8 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 		instance.setDateCompletion((Date)null);
 		instance.setProcessId(_process.getId());
 		instance.setProcessVersion(_process.getVersion());
+		instance.setSlaResults(
+			new SLAResult[] {_randomSLAResult(RandomTestUtil.randomLong())});
 
 		return instance;
 	}
@@ -181,6 +185,14 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 		if (instance.getCompleted()) {
 			_workflowMetricsRESTTestHelper.completeInstance(
 				testGroup.getCompanyId(), instance);
+		}
+
+		if (instance.getSlaResults() != null) {
+			for (SLAResult slaResult : instance.getSlaResults()) {
+				_workflowMetricsRESTTestHelper.addSLAInstanceResult(
+					testGroup.getCompanyId(), instance, false,
+					slaResult.getId());
+			}
 		}
 
 		_instances.add(instance);
@@ -222,6 +234,19 @@ public class InstanceResourceTest extends BaseInstanceResourceTestCase {
 		}
 
 		_instances.clear();
+	}
+
+	private SLAResult _randomSLAResult(long slaDefinitionId) {
+		return new SLAResult() {
+			{
+				dateOverdue = null;
+				id = slaDefinitionId;
+				name = null;
+				onTime = false;
+				remainingTime = 0L;
+				status = Status.RUNNING;
+			}
+		};
 	}
 
 	private void _testGetProcessInstancesPage(

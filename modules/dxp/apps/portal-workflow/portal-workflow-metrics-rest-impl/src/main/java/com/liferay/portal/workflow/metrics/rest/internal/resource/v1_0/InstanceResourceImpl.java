@@ -380,6 +380,7 @@ public class InstanceResourceImpl extends BaseInstanceResourceImpl {
 				dateModified = _parseDate(document.getDate("modifiedDate"));
 				id = document.getLong("instanceId");
 				processId = document.getLong("processId");
+				slaResults = new SLAResult[0];
 				slaStatus = Instance.SLAStatus.create(
 					document.getString("slaStatus"));
 			}
