@@ -156,8 +156,8 @@ export default withRouter(
 		}, [queryParams]);
 
 		useEffect(() => {
-			document.title = sectionTitle;
-		}, [sectionTitle]);
+			document.title = (section && section.title) || sectionTitle;
+		}, [sectionTitle, section]);
 
 		useEffect(() => {
 			if (
