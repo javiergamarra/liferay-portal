@@ -66,36 +66,6 @@ components:
                     format: int64
                     readOnly: true
                     type: integer
-        AccountUser:
-            # @review
-            description:
-                A user that is a member of an account.
-            properties:
-                emailAddress:
-                    format: email
-                    type: string
-                externalReferenceCode:
-                    # @review
-                    description:
-                        The optional external key of this account user.
-                    type: string
-                firstName:
-                    type: string
-                id:
-                    format: int64
-                    readOnly: true
-                    type: integer
-                lastName:
-                    type: string
-                middleName:
-                    type: string
-                prefix:
-                    type: string
-                screenName:
-                    type: string
-                suffix:
-                    type: string
-            type: object
 info:
     description:
         "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
@@ -458,16 +428,16 @@ paths:
                         application/json:
                             schema:
                                 items:
-                                    $ref: "#/components/schemas/AccountUser"
+                                    $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                                 type: array
                         application/xml:
                             schema:
                                 items:
-                                    $ref: "#/components/schemas/AccountUser"
+                                    $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                                 type: array
                     description:
                         ""
-            tags: ["AccountUser"]
+            tags: ["UserAccount"]
         post:
             # @review
             description:
@@ -483,22 +453,22 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/AccountUser"
+                            $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                     application/xml:
                         schema:
-                            $ref: "#/components/schemas/AccountUser"
+                            $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
             responses:
                 200:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/AccountUser"
+                                $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                         application/xml:
                             schema:
-                                $ref: "#/components/schemas/AccountUser"
+                                $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                     description:
                         ""
-            tags: ["AccountUser"]
+            tags: ["UserAccount"]
     "/accounts/{accountId}":
         delete:
             # @review
@@ -793,16 +763,16 @@ paths:
                         application/json:
                             schema:
                                 items:
-                                    $ref: "#/components/schemas/AccountUser"
+                                    $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                                 type: array
                         application/xml:
                             schema:
                                 items:
-                                    $ref: "#/components/schemas/AccountUser"
+                                    $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                                 type: array
                     description:
                         ""
-            tags: ["AccountUser"]
+            tags: ["UserAccount"]
         post:
             # @review
             description:
@@ -819,19 +789,19 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/AccountUser"
+                            $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                     application/xml:
                         schema:
-                            $ref: "#/components/schemas/AccountUser"
+                            $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
             responses:
                 200:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/AccountUser"
+                                $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                         application/xml:
                             schema:
-                                $ref: "#/components/schemas/AccountUser"
+                                $ref: "../../headless/headless-admin-user/headless-admin-user-impl/rest-openapi.yaml#UserAccount"
                     description:
                         ""
-            tags: ["AccountUser"]
+            tags: ["UserAccount"]
