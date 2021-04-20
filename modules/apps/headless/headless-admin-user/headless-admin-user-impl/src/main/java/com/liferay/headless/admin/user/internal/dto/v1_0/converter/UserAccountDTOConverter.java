@@ -111,6 +111,7 @@ public class UserAccountDTOConverter
 				dateCreated = user.getCreateDate();
 				dateModified = user.getModifiedDate();
 				emailAddress = user.getEmailAddress();
+				externalReferenceCode = user.getExternalReferenceCode();
 				familyName = user.getLastName();
 				givenName = user.getFirstName();
 				honorificPrefix =
