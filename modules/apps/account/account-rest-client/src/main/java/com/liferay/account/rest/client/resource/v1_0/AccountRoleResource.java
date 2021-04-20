@@ -42,24 +42,24 @@ public interface AccountRoleResource {
 
 	public void deleteAccountRoleUserAssociationByExternalReferenceCode(
 			String accountExternalReferenceCode, Long accountRoleId,
-			String accountUserExternalReferenceCode)
+			String userAccountExternalReferenceCode)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
 			deleteAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
 				String accountExternalReferenceCode, Long accountRoleId,
-				String accountUserExternalReferenceCode)
+				String userAccountExternalReferenceCode)
 		throws Exception;
 
 	public void postAccountRoleUserAssociationByExternalReferenceCode(
 			String accountExternalReferenceCode, Long accountRoleId,
-			String accountUserExternalReferenceCode)
+			String userAccountExternalReferenceCode)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
 			postAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
 				String accountExternalReferenceCode, Long accountRoleId,
-				String accountUserExternalReferenceCode)
+				String userAccountExternalReferenceCode)
 		throws Exception;
 
 	public Page<AccountRole> getAccountRolesByExternalReferenceCodePage(
@@ -100,20 +100,20 @@ public interface AccountRoleResource {
 		throws Exception;
 
 	public void deleteAccountRoleUserAssociation(
-			Long accountId, Long accountRoleId, Long accountUserId)
+			Long accountId, Long accountRoleId, Long userAccountId)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
 			deleteAccountRoleUserAssociationHttpResponse(
-				Long accountId, Long accountRoleId, Long accountUserId)
+				Long accountId, Long accountRoleId, Long userAccountId)
 		throws Exception;
 
 	public void postAccountRoleUserAssociation(
-			Long accountId, Long accountRoleId, Long accountUserId)
+			Long accountId, Long accountRoleId, Long userAccountId)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse postAccountRoleUserAssociationHttpResponse(
-			Long accountId, Long accountRoleId, Long accountUserId)
+			Long accountId, Long accountRoleId, Long userAccountId)
 		throws Exception;
 
 	public static class Builder {
@@ -189,13 +189,13 @@ public interface AccountRoleResource {
 
 		public void deleteAccountRoleUserAssociationByExternalReferenceCode(
 				String accountExternalReferenceCode, Long accountRoleId,
-				String accountUserExternalReferenceCode)
+				String userAccountExternalReferenceCode)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				deleteAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
 					accountExternalReferenceCode, accountRoleId,
-					accountUserExternalReferenceCode);
+					userAccountExternalReferenceCode);
 
 			String content = httpResponse.getContent();
 
@@ -237,7 +237,7 @@ public interface AccountRoleResource {
 		public HttpInvoker.HttpResponse
 				deleteAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
 					String accountExternalReferenceCode, Long accountRoleId,
-					String accountUserExternalReferenceCode)
+					String userAccountExternalReferenceCode)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -264,14 +264,14 @@ public interface AccountRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/account-rest/v1.0/accounts/by-external-reference-code/{accountExternalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserExternalReferenceCode}");
+						"/o/account-rest/v1.0/accounts/by-external-reference-code/{accountExternalReferenceCode}/account-roles/{accountRoleId}/user-accounts/{userAccountExternalReferenceCode}");
 
 			httpInvoker.path(
 				"accountExternalReferenceCode", accountExternalReferenceCode);
 			httpInvoker.path("accountRoleId", accountRoleId);
 			httpInvoker.path(
-				"accountUserExternalReferenceCode",
-				accountUserExternalReferenceCode);
+				"userAccountExternalReferenceCode",
+				userAccountExternalReferenceCode);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -281,13 +281,13 @@ public interface AccountRoleResource {
 
 		public void postAccountRoleUserAssociationByExternalReferenceCode(
 				String accountExternalReferenceCode, Long accountRoleId,
-				String accountUserExternalReferenceCode)
+				String userAccountExternalReferenceCode)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				postAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
 					accountExternalReferenceCode, accountRoleId,
-					accountUserExternalReferenceCode);
+					userAccountExternalReferenceCode);
 
 			String content = httpResponse.getContent();
 
@@ -329,13 +329,13 @@ public interface AccountRoleResource {
 		public HttpInvoker.HttpResponse
 				postAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
 					String accountExternalReferenceCode, Long accountRoleId,
-					String accountUserExternalReferenceCode)
+					String userAccountExternalReferenceCode)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
 			httpInvoker.body(
-				accountUserExternalReferenceCode.toString(),
+				userAccountExternalReferenceCode.toString(),
 				"application/json");
 
 			if (_builder._locale != null) {
@@ -360,14 +360,14 @@ public interface AccountRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/account-rest/v1.0/accounts/by-external-reference-code/{accountExternalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserExternalReferenceCode}");
+						"/o/account-rest/v1.0/accounts/by-external-reference-code/{accountExternalReferenceCode}/account-roles/{accountRoleId}/user-accounts/{userAccountExternalReferenceCode}");
 
 			httpInvoker.path(
 				"accountExternalReferenceCode", accountExternalReferenceCode);
 			httpInvoker.path("accountRoleId", accountRoleId);
 			httpInvoker.path(
-				"accountUserExternalReferenceCode",
-				accountUserExternalReferenceCode);
+				"userAccountExternalReferenceCode",
+				userAccountExternalReferenceCode);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -747,12 +747,12 @@ public interface AccountRoleResource {
 		}
 
 		public void deleteAccountRoleUserAssociation(
-				Long accountId, Long accountRoleId, Long accountUserId)
+				Long accountId, Long accountRoleId, Long userAccountId)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				deleteAccountRoleUserAssociationHttpResponse(
-					accountId, accountRoleId, accountUserId);
+					accountId, accountRoleId, userAccountId);
 
 			String content = httpResponse.getContent();
 
@@ -793,7 +793,7 @@ public interface AccountRoleResource {
 
 		public HttpInvoker.HttpResponse
 				deleteAccountRoleUserAssociationHttpResponse(
-					Long accountId, Long accountRoleId, Long accountUserId)
+					Long accountId, Long accountRoleId, Long userAccountId)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -820,11 +820,11 @@ public interface AccountRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/account-rest/v1.0/accounts/{accountId}/account-roles/{accountRoleId}/account-users/{accountUserId}");
+						"/o/account-rest/v1.0/accounts/{accountId}/account-roles/{accountRoleId}/user-accounts/{userAccountId}");
 
 			httpInvoker.path("accountId", accountId);
 			httpInvoker.path("accountRoleId", accountRoleId);
-			httpInvoker.path("accountUserId", accountUserId);
+			httpInvoker.path("userAccountId", userAccountId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -833,12 +833,12 @@ public interface AccountRoleResource {
 		}
 
 		public void postAccountRoleUserAssociation(
-				Long accountId, Long accountRoleId, Long accountUserId)
+				Long accountId, Long accountRoleId, Long userAccountId)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				postAccountRoleUserAssociationHttpResponse(
-					accountId, accountRoleId, accountUserId);
+					accountId, accountRoleId, userAccountId);
 
 			String content = httpResponse.getContent();
 
@@ -879,12 +879,12 @@ public interface AccountRoleResource {
 
 		public HttpInvoker.HttpResponse
 				postAccountRoleUserAssociationHttpResponse(
-					Long accountId, Long accountRoleId, Long accountUserId)
+					Long accountId, Long accountRoleId, Long userAccountId)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
-			httpInvoker.body(accountUserId.toString(), "application/json");
+			httpInvoker.body(userAccountId.toString(), "application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -908,11 +908,11 @@ public interface AccountRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/account-rest/v1.0/accounts/{accountId}/account-roles/{accountRoleId}/account-users/{accountUserId}");
+						"/o/account-rest/v1.0/accounts/{accountId}/account-roles/{accountRoleId}/user-accounts/{userAccountId}");
 
 			httpInvoker.path("accountId", accountId);
 			httpInvoker.path("accountRoleId", accountRoleId);
-			httpInvoker.path("accountUserId", accountUserId);
+			httpInvoker.path("userAccountId", userAccountId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

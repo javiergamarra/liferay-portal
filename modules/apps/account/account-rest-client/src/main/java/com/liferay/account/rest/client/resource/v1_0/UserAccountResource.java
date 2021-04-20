@@ -40,40 +40,40 @@ public interface UserAccountResource {
 		return new Builder();
 	}
 
-	public Page<UserAccount> getAccountUsersByExternalReferenceCodePage(
+	public Page<UserAccount> getUserAccountsByExternalReferenceCodePage(
 			String externalReferenceCode, String search, String filterString,
 			Pagination pagination, String sortString)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			getAccountUsersByExternalReferenceCodePageHttpResponse(
+			getUserAccountsByExternalReferenceCodePageHttpResponse(
 				String externalReferenceCode, String search,
 				String filterString, Pagination pagination, String sortString)
 		throws Exception;
 
-	public UserAccount postAccountUserByExternalReferenceCode(
+	public UserAccount postUserAccountByExternalReferenceCode(
 			String externalReferenceCode, UserAccount userAccount)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			postAccountUserByExternalReferenceCodeHttpResponse(
+			postUserAccountByExternalReferenceCodeHttpResponse(
 				String externalReferenceCode, UserAccount userAccount)
 		throws Exception;
 
-	public Page<UserAccount> getAccountUsersPage(
+	public Page<UserAccount> getUserAccountsPage(
 			Long accountId, String search, String filterString,
 			Pagination pagination, String sortString)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse getAccountUsersPageHttpResponse(
+	public HttpInvoker.HttpResponse getUserAccountsPageHttpResponse(
 			Long accountId, String search, String filterString,
 			Pagination pagination, String sortString)
 		throws Exception;
 
-	public UserAccount postAccountUser(Long accountId, UserAccount userAccount)
+	public UserAccount postUserAccount(Long accountId, UserAccount userAccount)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse postAccountUserHttpResponse(
+	public HttpInvoker.HttpResponse postUserAccountHttpResponse(
 			Long accountId, UserAccount userAccount)
 		throws Exception;
 
@@ -148,13 +148,13 @@ public interface UserAccountResource {
 
 	public static class UserAccountResourceImpl implements UserAccountResource {
 
-		public Page<UserAccount> getAccountUsersByExternalReferenceCodePage(
+		public Page<UserAccount> getUserAccountsByExternalReferenceCodePage(
 				String externalReferenceCode, String search,
 				String filterString, Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getAccountUsersByExternalReferenceCodePageHttpResponse(
+				getUserAccountsByExternalReferenceCodePageHttpResponse(
 					externalReferenceCode, search, filterString, pagination,
 					sortString);
 
@@ -196,7 +196,7 @@ public interface UserAccountResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				getAccountUsersByExternalReferenceCodePageHttpResponse(
+				getUserAccountsByExternalReferenceCodePageHttpResponse(
 					String externalReferenceCode, String search,
 					String filterString, Pagination pagination,
 					String sortString)
@@ -245,7 +245,7 @@ public interface UserAccountResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/account-users");
+						"/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/user-accounts");
 
 			httpInvoker.path("externalReferenceCode", externalReferenceCode);
 
@@ -255,12 +255,12 @@ public interface UserAccountResource {
 			return httpInvoker.invoke();
 		}
 
-		public UserAccount postAccountUserByExternalReferenceCode(
+		public UserAccount postUserAccountByExternalReferenceCode(
 				String externalReferenceCode, UserAccount userAccount)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				postAccountUserByExternalReferenceCodeHttpResponse(
+				postUserAccountByExternalReferenceCodeHttpResponse(
 					externalReferenceCode, userAccount);
 
 			String content = httpResponse.getContent();
@@ -301,7 +301,7 @@ public interface UserAccountResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				postAccountUserByExternalReferenceCodeHttpResponse(
+				postUserAccountByExternalReferenceCodeHttpResponse(
 					String externalReferenceCode, UserAccount userAccount)
 			throws Exception {
 
@@ -331,7 +331,7 @@ public interface UserAccountResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/account-users");
+						"/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/user-accounts");
 
 			httpInvoker.path("externalReferenceCode", externalReferenceCode);
 
@@ -341,13 +341,13 @@ public interface UserAccountResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<UserAccount> getAccountUsersPage(
+		public Page<UserAccount> getUserAccountsPage(
 				Long accountId, String search, String filterString,
 				Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getAccountUsersPageHttpResponse(
+				getUserAccountsPageHttpResponse(
 					accountId, search, filterString, pagination, sortString);
 
 			String content = httpResponse.getContent();
@@ -387,7 +387,7 @@ public interface UserAccountResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse getAccountUsersPageHttpResponse(
+		public HttpInvoker.HttpResponse getUserAccountsPageHttpResponse(
 				Long accountId, String search, String filterString,
 				Pagination pagination, String sortString)
 			throws Exception {
@@ -435,7 +435,7 @@ public interface UserAccountResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/account-rest/v1.0/accounts/{accountId}/account-users");
+						"/o/account-rest/v1.0/accounts/{accountId}/user-accounts");
 
 			httpInvoker.path("accountId", accountId);
 
@@ -445,11 +445,11 @@ public interface UserAccountResource {
 			return httpInvoker.invoke();
 		}
 
-		public UserAccount postAccountUser(
+		public UserAccount postUserAccount(
 				Long accountId, UserAccount userAccount)
 			throws Exception {
 
-			HttpInvoker.HttpResponse httpResponse = postAccountUserHttpResponse(
+			HttpInvoker.HttpResponse httpResponse = postUserAccountHttpResponse(
 				accountId, userAccount);
 
 			String content = httpResponse.getContent();
@@ -489,7 +489,7 @@ public interface UserAccountResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse postAccountUserHttpResponse(
+		public HttpInvoker.HttpResponse postUserAccountHttpResponse(
 				Long accountId, UserAccount userAccount)
 			throws Exception {
 
@@ -519,7 +519,7 @@ public interface UserAccountResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/account-rest/v1.0/accounts/{accountId}/account-users");
+						"/o/account-rest/v1.0/accounts/{accountId}/user-accounts");
 
 			httpInvoker.path("accountId", accountId);
 

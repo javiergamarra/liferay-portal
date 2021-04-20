@@ -213,8 +213,8 @@ public class Mutation {
 			@GraphQLName("accountExternalReferenceCode") String
 				accountExternalReferenceCode,
 			@GraphQLName("accountRoleId") Long accountRoleId,
-			@GraphQLName("accountUserExternalReferenceCode") String
-				accountUserExternalReferenceCode)
+			@GraphQLName("userAccountExternalReferenceCode") String
+				userAccountExternalReferenceCode)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -224,7 +224,7 @@ public class Mutation {
 				accountRoleResource.
 					deleteAccountRoleUserAssociationByExternalReferenceCode(
 						accountExternalReferenceCode, accountRoleId,
-						accountUserExternalReferenceCode));
+						userAccountExternalReferenceCode));
 
 		return true;
 	}
@@ -234,8 +234,8 @@ public class Mutation {
 			@GraphQLName("accountExternalReferenceCode") String
 				accountExternalReferenceCode,
 			@GraphQLName("accountRoleId") Long accountRoleId,
-			@GraphQLName("accountUserExternalReferenceCode") String
-				accountUserExternalReferenceCode)
+			@GraphQLName("userAccountExternalReferenceCode") String
+				userAccountExternalReferenceCode)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -245,7 +245,7 @@ public class Mutation {
 				accountRoleResource.
 					postAccountRoleUserAssociationByExternalReferenceCode(
 						accountExternalReferenceCode, accountRoleId,
-						accountUserExternalReferenceCode));
+						userAccountExternalReferenceCode));
 
 		return true;
 	}
@@ -281,7 +281,7 @@ public class Mutation {
 	public boolean deleteAccountRoleUserAssociation(
 			@GraphQLName("accountId") Long accountId,
 			@GraphQLName("accountRoleId") Long accountRoleId,
-			@GraphQLName("accountUserId") Long accountUserId)
+			@GraphQLName("userAccountId") Long userAccountId)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -289,7 +289,7 @@ public class Mutation {
 			this::_populateResourceContext,
 			accountRoleResource ->
 				accountRoleResource.deleteAccountRoleUserAssociation(
-					accountId, accountRoleId, accountUserId));
+					accountId, accountRoleId, userAccountId));
 
 		return true;
 	}
@@ -298,7 +298,7 @@ public class Mutation {
 	public boolean createAccountRoleUserAssociation(
 			@GraphQLName("accountId") Long accountId,
 			@GraphQLName("accountRoleId") Long accountRoleId,
-			@GraphQLName("accountUserId") Long accountUserId)
+			@GraphQLName("userAccountId") Long userAccountId)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -306,7 +306,7 @@ public class Mutation {
 			this::_populateResourceContext,
 			accountRoleResource ->
 				accountRoleResource.postAccountRoleUserAssociation(
-					accountId, accountRoleId, accountUserId));
+					accountId, accountRoleId, userAccountId));
 
 		return true;
 	}
@@ -315,7 +315,7 @@ public class Mutation {
 		description = "Creates a user and assigns them to the account"
 	)
 	public com.liferay.headless.admin.user.dto.v1_0.UserAccount
-			createAccountUserByExternalReferenceCode(
+			createUserAccountByExternalReferenceCode(
 				@GraphQLName("externalReferenceCode") String
 					externalReferenceCode,
 				@GraphQLName("userAccount")
@@ -327,7 +327,7 @@ public class Mutation {
 			_userAccountResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			userAccountResource ->
-				userAccountResource.postAccountUserByExternalReferenceCode(
+				userAccountResource.postUserAccountByExternalReferenceCode(
 					externalReferenceCode, userAccount));
 	}
 
@@ -335,7 +335,7 @@ public class Mutation {
 		description = "Creates a user and assigns them to the account"
 	)
 	public com.liferay.headless.admin.user.dto.v1_0.UserAccount
-			createAccountUser(
+			createUserAccount(
 				@GraphQLName("accountId") Long accountId,
 				@GraphQLName("userAccount")
 					com.liferay.headless.admin.user.dto.v1_0.UserAccount
@@ -345,7 +345,7 @@ public class Mutation {
 		return _applyComponentServiceObjects(
 			_userAccountResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			userAccountResource -> userAccountResource.postAccountUser(
+			userAccountResource -> userAccountResource.postUserAccount(
 				accountId, userAccount));
 	}
 

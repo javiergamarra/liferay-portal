@@ -82,7 +82,7 @@ public abstract class BaseUserAccountResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/account-users'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/user-accounts'  -u 'test@liferay.com:test'
 	 */
 	@GET
 	@Operation(description = "Gets the users assigned to an account")
@@ -98,12 +98,12 @@ public abstract class BaseUserAccountResourceImpl
 		}
 	)
 	@Path(
-		"/accounts/by-external-reference-code/{externalReferenceCode}/account-users"
+		"/accounts/by-external-reference-code/{externalReferenceCode}/user-accounts"
 	)
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "UserAccount")})
 	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
-			getAccountUsersByExternalReferenceCodePage(
+			getUserAccountsByExternalReferenceCodePage(
 				@NotNull @Parameter(hidden = true)
 				@PathParam("externalReferenceCode")
 				String externalReferenceCode,
@@ -118,7 +118,7 @@ public abstract class BaseUserAccountResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/account-users'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/user-accounts'  -u 'test@liferay.com:test'
 	 */
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Creates a user and assigns them to the account")
@@ -129,13 +129,13 @@ public abstract class BaseUserAccountResourceImpl
 		}
 	)
 	@Path(
-		"/accounts/by-external-reference-code/{externalReferenceCode}/account-users"
+		"/accounts/by-external-reference-code/{externalReferenceCode}/user-accounts"
 	)
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "UserAccount")})
 	public com.liferay.headless.admin.user.dto.v1_0.UserAccount
-			postAccountUserByExternalReferenceCode(
+			postUserAccountByExternalReferenceCode(
 				@NotNull @Parameter(hidden = true)
 				@PathParam("externalReferenceCode")
 				String externalReferenceCode,
@@ -149,7 +149,7 @@ public abstract class BaseUserAccountResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/account-rest/v1.0/accounts/{accountId}/account-users'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/account-rest/v1.0/accounts/{accountId}/user-accounts'  -u 'test@liferay.com:test'
 	 */
 	@GET
 	@Operation(description = "Gets the users assigned to an account")
@@ -164,11 +164,11 @@ public abstract class BaseUserAccountResourceImpl
 			@Parameter(in = ParameterIn.QUERY, name = "sort")
 		}
 	)
-	@Path("/accounts/{accountId}/account-users")
+	@Path("/accounts/{accountId}/user-accounts")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "UserAccount")})
 	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
-			getAccountUsersPage(
+			getUserAccountsPage(
 				@NotNull @Parameter(hidden = true) @PathParam("accountId") Long
 					accountId,
 				@Parameter(hidden = true) @QueryParam("search") String search,
@@ -182,17 +182,17 @@ public abstract class BaseUserAccountResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/{accountId}/account-users'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/{accountId}/user-accounts'  -u 'test@liferay.com:test'
 	 */
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Creates a user and assigns them to the account")
 	@Override
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "accountId")})
-	@Path("/accounts/{accountId}/account-users")
+	@Path("/accounts/{accountId}/user-accounts")
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "UserAccount")})
-	public com.liferay.headless.admin.user.dto.v1_0.UserAccount postAccountUser(
+	public com.liferay.headless.admin.user.dto.v1_0.UserAccount postUserAccount(
 			@NotNull @Parameter(hidden = true) @PathParam("accountId") Long
 				accountId,
 			com.liferay.headless.admin.user.dto.v1_0.UserAccount userAccount)

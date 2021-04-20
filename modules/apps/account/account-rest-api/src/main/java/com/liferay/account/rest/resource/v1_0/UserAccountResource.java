@@ -50,25 +50,25 @@ public interface UserAccountResource {
 	}
 
 	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
-			getAccountUsersByExternalReferenceCodePage(
+			getUserAccountsByExternalReferenceCodePage(
 				String externalReferenceCode, String search, Filter filter,
 				Pagination pagination, Sort[] sorts)
 		throws Exception;
 
 	public com.liferay.headless.admin.user.dto.v1_0.UserAccount
-			postAccountUserByExternalReferenceCode(
+			postUserAccountByExternalReferenceCode(
 				String externalReferenceCode,
 				com.liferay.headless.admin.user.dto.v1_0.UserAccount
 					userAccount)
 		throws Exception;
 
 	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
-			getAccountUsersPage(
+			getUserAccountsPage(
 				Long accountId, String search, Filter filter,
 				Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public com.liferay.headless.admin.user.dto.v1_0.UserAccount postAccountUser(
+	public com.liferay.headless.admin.user.dto.v1_0.UserAccount postUserAccount(
 			Long accountId,
 			com.liferay.headless.admin.user.dto.v1_0.UserAccount userAccount)
 		throws Exception;
