@@ -59,19 +59,26 @@ import org.osgi.service.component.annotations.ServiceScope;
 public class UserAccountResourceImpl extends BaseUserAccountResourceImpl {
 
 	@Override
-	public Page<UserAccount> getAccountUsersByExternalReferenceCodePage(
+	public EntityModel getEntityModel(MultivaluedMap multivaluedMap)
+		throws Exception {
+
+		return _accountUserEntityModel;
+	}
+
+	@Override
+	public Page<UserAccount> getUserAccountsByExternalReferenceCodePage(
 			String externalReferenceCode, String search, Filter filter,
 			Pagination pagination, Sort[] sorts)
 		throws Exception {
 
-		return getAccountUsersPage(
+		return getUserAccountsPage(
 			_accountResourceDTOConverter.getAccountEntryId(
 				externalReferenceCode),
 			search, filter, pagination, sorts);
 	}
 
 	@Override
-	public Page<UserAccount> getAccountUsersPage(
+	public Page<UserAccount> getUserAccountsPage(
 			Long accountId, String search, Filter filter, Pagination pagination,
 			Sort[] sorts)
 		throws Exception {
@@ -99,14 +106,7 @@ public class UserAccountResourceImpl extends BaseUserAccountResourceImpl {
 	}
 
 	@Override
-	public EntityModel getEntityModel(MultivaluedMap multivaluedMap)
-		throws Exception {
-
-		return _accountUserEntityModel;
-	}
-
-	@Override
-	public UserAccount postAccountUser(Long accountId, UserAccount userAccount)
+	public UserAccount postUserAccount(Long accountId, UserAccount userAccount)
 		throws Exception {
 
 		AccountEntryUserRel accountEntryUserRel =
@@ -132,11 +132,11 @@ public class UserAccountResourceImpl extends BaseUserAccountResourceImpl {
 	}
 
 	@Override
-	public UserAccount postAccountUserByExternalReferenceCode(
+	public UserAccount postUserAccountByExternalReferenceCode(
 			String externalReferenceCode, UserAccount userAccount)
 		throws Exception {
 
-		return postAccountUser(
+		return postUserAccount(
 			_accountResourceDTOConverter.getAccountEntryId(
 				externalReferenceCode),
 			userAccount);
