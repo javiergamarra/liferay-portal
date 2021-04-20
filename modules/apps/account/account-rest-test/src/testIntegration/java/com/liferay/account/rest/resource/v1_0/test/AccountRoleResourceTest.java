@@ -272,7 +272,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	}
 
 	private UserAccount _addAccountUser(Account account) throws Exception {
-		return _accountUserResource.postAccountUser(
+		return _accountUserResource.postUserAccount(
 			account.getId(), _randomAccountUser());
 	}
 
