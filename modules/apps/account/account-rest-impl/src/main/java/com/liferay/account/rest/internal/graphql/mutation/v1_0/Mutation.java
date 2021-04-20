@@ -16,10 +16,9 @@ package com.liferay.account.rest.internal.graphql.mutation.v1_0;
 
 import com.liferay.account.rest.dto.v1_0.Account;
 import com.liferay.account.rest.dto.v1_0.AccountRole;
-import com.liferay.account.rest.dto.v1_0.AccountUser;
 import com.liferay.account.rest.resource.v1_0.AccountResource;
 import com.liferay.account.rest.resource.v1_0.AccountRoleResource;
-import com.liferay.account.rest.resource.v1_0.AccountUserResource;
+import com.liferay.account.rest.resource.v1_0.UserAccountResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.search.Sort;
@@ -64,12 +63,12 @@ public class Mutation {
 			accountRoleResourceComponentServiceObjects;
 	}
 
-	public static void setAccountUserResourceComponentServiceObjects(
-		ComponentServiceObjects<AccountUserResource>
-			accountUserResourceComponentServiceObjects) {
+	public static void setUserAccountResourceComponentServiceObjects(
+		ComponentServiceObjects<UserAccountResource>
+			userAccountResourceComponentServiceObjects) {
 
-		_accountUserResourceComponentServiceObjects =
-			accountUserResourceComponentServiceObjects;
+		_userAccountResourceComponentServiceObjects =
+			userAccountResourceComponentServiceObjects;
 	}
 
 	@GraphQLField(description = "Creates a new account")
@@ -315,32 +314,39 @@ public class Mutation {
 	@GraphQLField(
 		description = "Creates a user and assigns them to the account"
 	)
-	public AccountUser createAccountUserByExternalReferenceCode(
-			@GraphQLName("externalReferenceCode") String externalReferenceCode,
-			@GraphQLName("accountUser") AccountUser accountUser)
+	public com.liferay.headless.admin.user.dto.v1_0.UserAccount
+			createAccountUserByExternalReferenceCode(
+				@GraphQLName("externalReferenceCode") String
+					externalReferenceCode,
+				@GraphQLName("userAccount")
+					com.liferay.headless.admin.user.dto.v1_0.UserAccount
+						userAccount)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
-			_accountUserResourceComponentServiceObjects,
+			_userAccountResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			accountUserResource ->
-				accountUserResource.postAccountUserByExternalReferenceCode(
-					externalReferenceCode, accountUser));
+			userAccountResource ->
+				userAccountResource.postAccountUserByExternalReferenceCode(
+					externalReferenceCode, userAccount));
 	}
 
 	@GraphQLField(
 		description = "Creates a user and assigns them to the account"
 	)
-	public AccountUser createAccountUser(
-			@GraphQLName("accountId") Long accountId,
-			@GraphQLName("accountUser") AccountUser accountUser)
+	public com.liferay.headless.admin.user.dto.v1_0.UserAccount
+			createAccountUser(
+				@GraphQLName("accountId") Long accountId,
+				@GraphQLName("userAccount")
+					com.liferay.headless.admin.user.dto.v1_0.UserAccount
+						userAccount)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
-			_accountUserResourceComponentServiceObjects,
+			_userAccountResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			accountUserResource -> accountUserResource.postAccountUser(
-				accountId, accountUser));
+			userAccountResource -> userAccountResource.postAccountUser(
+				accountId, userAccount));
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
@@ -409,25 +415,25 @@ public class Mutation {
 	}
 
 	private void _populateResourceContext(
-			AccountUserResource accountUserResource)
+			UserAccountResource userAccountResource)
 		throws Exception {
 
-		accountUserResource.setContextAcceptLanguage(_acceptLanguage);
-		accountUserResource.setContextCompany(_company);
-		accountUserResource.setContextHttpServletRequest(_httpServletRequest);
-		accountUserResource.setContextHttpServletResponse(_httpServletResponse);
-		accountUserResource.setContextUriInfo(_uriInfo);
-		accountUserResource.setContextUser(_user);
-		accountUserResource.setGroupLocalService(_groupLocalService);
-		accountUserResource.setRoleLocalService(_roleLocalService);
+		userAccountResource.setContextAcceptLanguage(_acceptLanguage);
+		userAccountResource.setContextCompany(_company);
+		userAccountResource.setContextHttpServletRequest(_httpServletRequest);
+		userAccountResource.setContextHttpServletResponse(_httpServletResponse);
+		userAccountResource.setContextUriInfo(_uriInfo);
+		userAccountResource.setContextUser(_user);
+		userAccountResource.setGroupLocalService(_groupLocalService);
+		userAccountResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private static ComponentServiceObjects<AccountResource>
 		_accountResourceComponentServiceObjects;
 	private static ComponentServiceObjects<AccountRoleResource>
 		_accountRoleResourceComponentServiceObjects;
-	private static ComponentServiceObjects<AccountUserResource>
-		_accountUserResourceComponentServiceObjects;
+	private static ComponentServiceObjects<UserAccountResource>
+		_userAccountResourceComponentServiceObjects;
 
 	private AcceptLanguage _acceptLanguage;
 	private com.liferay.portal.kernel.model.Company _company;

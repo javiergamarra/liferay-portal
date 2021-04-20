@@ -84,7 +84,7 @@ public class OpenAPIResourceImpl {
 
 			add(AccountRoleResourceImpl.class);
 
-			add(AccountUserResourceImpl.class);
+			add(UserAccountResourceImpl.class);
 
 			add(OpenAPIResourceImpl.class);
 		}

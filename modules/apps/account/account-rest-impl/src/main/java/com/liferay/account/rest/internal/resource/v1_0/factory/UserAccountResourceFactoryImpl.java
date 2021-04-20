@@ -14,7 +14,7 @@
 
 package com.liferay.account.rest.internal.resource.v1_0.factory;
 
-import com.liferay.account.rest.resource.v1_0.AccountUserResource;
+import com.liferay.account.rest.resource.v1_0.UserAccountResource;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -50,31 +50,31 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @author Drew Brokke
  * @generated
  */
-@Component(immediate = true, service = AccountUserResource.Factory.class)
+@Component(immediate = true, service = UserAccountResource.Factory.class)
 @Generated("")
-public class AccountUserResourceFactoryImpl
-	implements AccountUserResource.Factory {
+public class UserAccountResourceFactoryImpl
+	implements UserAccountResource.Factory {
 
 	@Override
-	public AccountUserResource.Builder create() {
-		return new AccountUserResource.Builder() {
+	public UserAccountResource.Builder create() {
+		return new UserAccountResource.Builder() {
 
 			@Override
-			public AccountUserResource build() {
+			public UserAccountResource build() {
 				if (_user == null) {
 					throw new IllegalArgumentException("User is not set");
 				}
 
-				return (AccountUserResource)ProxyUtil.newProxyInstance(
-					AccountUserResource.class.getClassLoader(),
-					new Class<?>[] {AccountUserResource.class},
+				return (UserAccountResource)ProxyUtil.newProxyInstance(
+					UserAccountResource.class.getClassLoader(),
+					new Class<?>[] {UserAccountResource.class},
 					(proxy, method, arguments) -> _invoke(
 						method, arguments, _checkPermissions,
 						_httpServletRequest, _preferredLocale, _user));
 			}
 
 			@Override
-			public AccountUserResource.Builder checkPermissions(
+			public UserAccountResource.Builder checkPermissions(
 				boolean checkPermissions) {
 
 				_checkPermissions = checkPermissions;
@@ -83,7 +83,7 @@ public class AccountUserResourceFactoryImpl
 			}
 
 			@Override
-			public AccountUserResource.Builder httpServletRequest(
+			public UserAccountResource.Builder httpServletRequest(
 				HttpServletRequest httpServletRequest) {
 
 				_httpServletRequest = httpServletRequest;
@@ -92,7 +92,7 @@ public class AccountUserResourceFactoryImpl
 			}
 
 			@Override
-			public AccountUserResource.Builder preferredLocale(
+			public UserAccountResource.Builder preferredLocale(
 				Locale preferredLocale) {
 
 				_preferredLocale = preferredLocale;
@@ -101,7 +101,7 @@ public class AccountUserResourceFactoryImpl
 			}
 
 			@Override
-			public AccountUserResource.Builder user(User user) {
+			public UserAccountResource.Builder user(User user) {
 				_user = user;
 
 				return this;
@@ -117,12 +117,12 @@ public class AccountUserResourceFactoryImpl
 
 	@Activate
 	protected void activate() {
-		AccountUserResource.FactoryHolder.factory = this;
+		UserAccountResource.FactoryHolder.factory = this;
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		AccountUserResource.FactoryHolder.factory = null;
+		UserAccountResource.FactoryHolder.factory = null;
 	}
 
 	private Object _invoke(
@@ -147,27 +147,27 @@ public class AccountUserResourceFactoryImpl
 				_liberalPermissionCheckerFactory.create(user));
 		}
 
-		AccountUserResource accountUserResource =
+		UserAccountResource userAccountResource =
 			_componentServiceObjects.getService();
 
-		accountUserResource.setContextAcceptLanguage(
+		userAccountResource.setContextAcceptLanguage(
 			new AcceptLanguageImpl(httpServletRequest, preferredLocale, user));
 
 		Company company = _companyLocalService.getCompany(user.getCompanyId());
 
-		accountUserResource.setContextCompany(company);
+		userAccountResource.setContextCompany(company);
 
-		accountUserResource.setContextHttpServletRequest(httpServletRequest);
-		accountUserResource.setContextUser(user);
+		userAccountResource.setContextHttpServletRequest(httpServletRequest);
+		userAccountResource.setContextUser(user);
 
 		try {
-			return method.invoke(accountUserResource, arguments);
+			return method.invoke(userAccountResource, arguments);
 		}
 		catch (InvocationTargetException invocationTargetException) {
 			throw invocationTargetException.getTargetException();
 		}
 		finally {
-			_componentServiceObjects.ungetService(accountUserResource);
+			_componentServiceObjects.ungetService(userAccountResource);
 
 			PrincipalThreadLocal.setName(name);
 
@@ -179,7 +179,7 @@ public class AccountUserResourceFactoryImpl
 	private CompanyLocalService _companyLocalService;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
-	private ComponentServiceObjects<AccountUserResource>
+	private ComponentServiceObjects<UserAccountResource>
 		_componentServiceObjects;
 
 	@Reference

@@ -16,10 +16,9 @@ package com.liferay.account.rest.internal.graphql.query.v1_0;
 
 import com.liferay.account.rest.dto.v1_0.Account;
 import com.liferay.account.rest.dto.v1_0.AccountRole;
-import com.liferay.account.rest.dto.v1_0.AccountUser;
 import com.liferay.account.rest.resource.v1_0.AccountResource;
 import com.liferay.account.rest.resource.v1_0.AccountRoleResource;
-import com.liferay.account.rest.resource.v1_0.AccountUserResource;
+import com.liferay.account.rest.resource.v1_0.UserAccountResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.search.Sort;
@@ -68,12 +67,12 @@ public class Query {
 			accountRoleResourceComponentServiceObjects;
 	}
 
-	public static void setAccountUserResourceComponentServiceObjects(
-		ComponentServiceObjects<AccountUserResource>
-			accountUserResourceComponentServiceObjects) {
+	public static void setUserAccountResourceComponentServiceObjects(
+		ComponentServiceObjects<UserAccountResource>
+			userAccountResourceComponentServiceObjects) {
 
-		_accountUserResourceComponentServiceObjects =
-			accountUserResourceComponentServiceObjects;
+		_userAccountResourceComponentServiceObjects =
+			userAccountResourceComponentServiceObjects;
 	}
 
 	/**
@@ -189,7 +188,7 @@ public class Query {
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountUsersByExternalReferenceCode(externalReferenceCode: ___, filter: ___, page: ___, pageSize: ___, search: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Gets the users assigned to an account")
-	public AccountUserPage accountUsersByExternalReferenceCode(
+	public UserAccountPage accountUsersByExternalReferenceCode(
 			@GraphQLName("externalReferenceCode") String externalReferenceCode,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") String filterString,
@@ -199,14 +198,14 @@ public class Query {
 		throws Exception {
 
 		return _applyComponentServiceObjects(
-			_accountUserResourceComponentServiceObjects,
+			_userAccountResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			accountUserResource -> new AccountUserPage(
-				accountUserResource.getAccountUsersByExternalReferenceCodePage(
+			userAccountResource -> new UserAccountPage(
+				userAccountResource.getAccountUsersByExternalReferenceCodePage(
 					externalReferenceCode, search,
-					_filterBiFunction.apply(accountUserResource, filterString),
+					_filterBiFunction.apply(userAccountResource, filterString),
 					Pagination.of(page, pageSize),
-					_sortsBiFunction.apply(accountUserResource, sortsString))));
+					_sortsBiFunction.apply(userAccountResource, sortsString))));
 	}
 
 	/**
@@ -215,7 +214,7 @@ public class Query {
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountUsers(accountId: ___, filter: ___, page: ___, pageSize: ___, search: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Gets the users assigned to an account")
-	public AccountUserPage accountUsers(
+	public UserAccountPage accountUsers(
 			@GraphQLName("accountId") Long accountId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") String filterString,
@@ -225,14 +224,14 @@ public class Query {
 		throws Exception {
 
 		return _applyComponentServiceObjects(
-			_accountUserResourceComponentServiceObjects,
+			_userAccountResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			accountUserResource -> new AccountUserPage(
-				accountUserResource.getAccountUsersPage(
+			userAccountResource -> new UserAccountPage(
+				userAccountResource.getAccountUsersPage(
 					accountId, search,
-					_filterBiFunction.apply(accountUserResource, filterString),
+					_filterBiFunction.apply(userAccountResource, filterString),
 					Pagination.of(page, pageSize),
-					_sortsBiFunction.apply(accountUserResource, sortsString))));
+					_sortsBiFunction.apply(userAccountResource, sortsString))));
 	}
 
 	@GraphQLTypeExtension(Account.class)
@@ -276,7 +275,7 @@ public class Query {
 		}
 
 		@GraphQLField(description = "Gets the users assigned to an account")
-		public AccountUserPage users(
+		public UserAccountPage users(
 				@GraphQLName("search") String search,
 				@GraphQLName("filter") String filterString,
 				@GraphQLName("pageSize") int pageSize,
@@ -285,16 +284,16 @@ public class Query {
 			throws Exception {
 
 			return _applyComponentServiceObjects(
-				_accountUserResourceComponentServiceObjects,
+				_userAccountResourceComponentServiceObjects,
 				Query.this::_populateResourceContext,
-				accountUserResource -> new AccountUserPage(
-					accountUserResource.getAccountUsersPage(
+				userAccountResource -> new UserAccountPage(
+					userAccountResource.getAccountUsersPage(
 						_account.getId(), search,
 						_filterBiFunction.apply(
-							accountUserResource, filterString),
+							userAccountResource, filterString),
 						Pagination.of(page, pageSize),
 						_sortsBiFunction.apply(
-							accountUserResource, sortsString))));
+							userAccountResource, sortsString))));
 		}
 
 		private Account _account;
@@ -331,7 +330,7 @@ public class Query {
 		}
 
 		@GraphQLField(description = "Gets the users assigned to an account")
-		public AccountUserPage usersByExternalReferenceCode(
+		public UserAccountPage usersByExternalReferenceCode(
 				@GraphQLName("search") String search,
 				@GraphQLName("filter") String filterString,
 				@GraphQLName("pageSize") int pageSize,
@@ -340,17 +339,17 @@ public class Query {
 			throws Exception {
 
 			return _applyComponentServiceObjects(
-				_accountUserResourceComponentServiceObjects,
+				_userAccountResourceComponentServiceObjects,
 				Query.this::_populateResourceContext,
-				accountUserResource -> new AccountUserPage(
-					accountUserResource.
+				userAccountResource -> new UserAccountPage(
+					userAccountResource.
 						getAccountUsersByExternalReferenceCodePage(
 							_account.getExternalReferenceCode(), search,
 							_filterBiFunction.apply(
-								accountUserResource, filterString),
+								userAccountResource, filterString),
 							Pagination.of(page, pageSize),
 							_sortsBiFunction.apply(
-								accountUserResource, sortsString))));
+								userAccountResource, sortsString))));
 		}
 
 		private Account _account;
@@ -453,24 +452,25 @@ public class Query {
 
 	}
 
-	@GraphQLName("AccountUserPage")
-	public class AccountUserPage {
+	@GraphQLName("UserAccountPage")
+	public class UserAccountPage {
 
-		public AccountUserPage(Page accountUserPage) {
-			actions = accountUserPage.getActions();
+		public UserAccountPage(Page userAccountPage) {
+			actions = userAccountPage.getActions();
 
-			items = accountUserPage.getItems();
-			lastPage = accountUserPage.getLastPage();
-			page = accountUserPage.getPage();
-			pageSize = accountUserPage.getPageSize();
-			totalCount = accountUserPage.getTotalCount();
+			items = userAccountPage.getItems();
+			lastPage = userAccountPage.getLastPage();
+			page = userAccountPage.getPage();
+			pageSize = userAccountPage.getPageSize();
+			totalCount = userAccountPage.getTotalCount();
 		}
 
 		@GraphQLField
 		protected Map<String, Map> actions;
 
 		@GraphQLField
-		protected java.util.Collection<AccountUser> items;
+		protected java.util.Collection
+			<com.liferay.headless.admin.user.dto.v1_0.UserAccount> items;
 
 		@GraphQLField
 		protected long lastPage;
@@ -557,25 +557,25 @@ public class Query {
 	}
 
 	private void _populateResourceContext(
-			AccountUserResource accountUserResource)
+			UserAccountResource userAccountResource)
 		throws Exception {
 
-		accountUserResource.setContextAcceptLanguage(_acceptLanguage);
-		accountUserResource.setContextCompany(_company);
-		accountUserResource.setContextHttpServletRequest(_httpServletRequest);
-		accountUserResource.setContextHttpServletResponse(_httpServletResponse);
-		accountUserResource.setContextUriInfo(_uriInfo);
-		accountUserResource.setContextUser(_user);
-		accountUserResource.setGroupLocalService(_groupLocalService);
-		accountUserResource.setRoleLocalService(_roleLocalService);
+		userAccountResource.setContextAcceptLanguage(_acceptLanguage);
+		userAccountResource.setContextCompany(_company);
+		userAccountResource.setContextHttpServletRequest(_httpServletRequest);
+		userAccountResource.setContextHttpServletResponse(_httpServletResponse);
+		userAccountResource.setContextUriInfo(_uriInfo);
+		userAccountResource.setContextUser(_user);
+		userAccountResource.setGroupLocalService(_groupLocalService);
+		userAccountResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private static ComponentServiceObjects<AccountResource>
 		_accountResourceComponentServiceObjects;
 	private static ComponentServiceObjects<AccountRoleResource>
 		_accountRoleResourceComponentServiceObjects;
-	private static ComponentServiceObjects<AccountUserResource>
-		_accountUserResourceComponentServiceObjects;
+	private static ComponentServiceObjects<UserAccountResource>
+		_userAccountResourceComponentServiceObjects;
 
 	private AcceptLanguage _acceptLanguage;
 	private com.liferay.portal.kernel.model.Company _company;

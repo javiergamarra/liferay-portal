@@ -14,12 +14,12 @@
 
 package com.liferay.account.rest.client.resource.v1_0;
 
-import com.liferay.account.rest.client.dto.v1_0.AccountUser;
+import com.liferay.account.rest.client.dto.v1_0.UserAccount;
 import com.liferay.account.rest.client.http.HttpInvoker;
 import com.liferay.account.rest.client.pagination.Page;
 import com.liferay.account.rest.client.pagination.Pagination;
 import com.liferay.account.rest.client.problem.Problem;
-import com.liferay.account.rest.client.serdes.v1_0.AccountUserSerDes;
+import com.liferay.account.rest.client.serdes.v1_0.UserAccountSerDes;
 
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -34,13 +34,13 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public interface AccountUserResource {
+public interface UserAccountResource {
 
 	public static Builder builder() {
 		return new Builder();
 	}
 
-	public Page<AccountUser> getAccountUsersByExternalReferenceCodePage(
+	public Page<UserAccount> getAccountUsersByExternalReferenceCodePage(
 			String externalReferenceCode, String search, String filterString,
 			Pagination pagination, String sortString)
 		throws Exception;
@@ -51,16 +51,16 @@ public interface AccountUserResource {
 				String filterString, Pagination pagination, String sortString)
 		throws Exception;
 
-	public AccountUser postAccountUserByExternalReferenceCode(
-			String externalReferenceCode, AccountUser accountUser)
+	public UserAccount postAccountUserByExternalReferenceCode(
+			String externalReferenceCode, UserAccount userAccount)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
 			postAccountUserByExternalReferenceCodeHttpResponse(
-				String externalReferenceCode, AccountUser accountUser)
+				String externalReferenceCode, UserAccount userAccount)
 		throws Exception;
 
-	public Page<AccountUser> getAccountUsersPage(
+	public Page<UserAccount> getAccountUsersPage(
 			Long accountId, String search, String filterString,
 			Pagination pagination, String sortString)
 		throws Exception;
@@ -70,11 +70,11 @@ public interface AccountUserResource {
 			Pagination pagination, String sortString)
 		throws Exception;
 
-	public AccountUser postAccountUser(Long accountId, AccountUser accountUser)
+	public UserAccount postAccountUser(Long accountId, UserAccount userAccount)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse postAccountUserHttpResponse(
-			Long accountId, AccountUser accountUser)
+			Long accountId, UserAccount userAccount)
 		throws Exception;
 
 	public static class Builder {
@@ -86,8 +86,8 @@ public interface AccountUserResource {
 			return this;
 		}
 
-		public AccountUserResource build() {
-			return new AccountUserResourceImpl(this);
+		public UserAccountResource build() {
+			return new UserAccountResourceImpl(this);
 		}
 
 		public Builder endpoint(String host, int port, String scheme) {
@@ -146,9 +146,9 @@ public interface AccountUserResource {
 
 	}
 
-	public static class AccountUserResourceImpl implements AccountUserResource {
+	public static class UserAccountResourceImpl implements UserAccountResource {
 
-		public Page<AccountUser> getAccountUsersByExternalReferenceCodePage(
+		public Page<UserAccount> getAccountUsersByExternalReferenceCodePage(
 				String externalReferenceCode, String search,
 				String filterString, Pagination pagination, String sortString)
 			throws Exception {
@@ -184,7 +184,7 @@ public interface AccountUserResource {
 			}
 
 			try {
-				return Page.of(content, AccountUserSerDes::toDTO);
+				return Page.of(content, UserAccountSerDes::toDTO);
 			}
 			catch (Exception e) {
 				_logger.log(
@@ -255,13 +255,13 @@ public interface AccountUserResource {
 			return httpInvoker.invoke();
 		}
 
-		public AccountUser postAccountUserByExternalReferenceCode(
-				String externalReferenceCode, AccountUser accountUser)
+		public UserAccount postAccountUserByExternalReferenceCode(
+				String externalReferenceCode, UserAccount userAccount)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				postAccountUserByExternalReferenceCodeHttpResponse(
-					externalReferenceCode, accountUser);
+					externalReferenceCode, userAccount);
 
 			String content = httpResponse.getContent();
 
@@ -289,7 +289,7 @@ public interface AccountUserResource {
 			}
 
 			try {
-				return AccountUserSerDes.toDTO(content);
+				return UserAccountSerDes.toDTO(content);
 			}
 			catch (Exception e) {
 				_logger.log(
@@ -302,12 +302,12 @@ public interface AccountUserResource {
 
 		public HttpInvoker.HttpResponse
 				postAccountUserByExternalReferenceCodeHttpResponse(
-					String externalReferenceCode, AccountUser accountUser)
+					String externalReferenceCode, UserAccount userAccount)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
-			httpInvoker.body(accountUser.toString(), "application/json");
+			httpInvoker.body(userAccount.toString(), "application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -341,7 +341,7 @@ public interface AccountUserResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<AccountUser> getAccountUsersPage(
+		public Page<UserAccount> getAccountUsersPage(
 				Long accountId, String search, String filterString,
 				Pagination pagination, String sortString)
 			throws Exception {
@@ -376,7 +376,7 @@ public interface AccountUserResource {
 			}
 
 			try {
-				return Page.of(content, AccountUserSerDes::toDTO);
+				return Page.of(content, UserAccountSerDes::toDTO);
 			}
 			catch (Exception e) {
 				_logger.log(
@@ -445,12 +445,12 @@ public interface AccountUserResource {
 			return httpInvoker.invoke();
 		}
 
-		public AccountUser postAccountUser(
-				Long accountId, AccountUser accountUser)
+		public UserAccount postAccountUser(
+				Long accountId, UserAccount userAccount)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse = postAccountUserHttpResponse(
-				accountId, accountUser);
+				accountId, userAccount);
 
 			String content = httpResponse.getContent();
 
@@ -478,7 +478,7 @@ public interface AccountUserResource {
 			}
 
 			try {
-				return AccountUserSerDes.toDTO(content);
+				return UserAccountSerDes.toDTO(content);
 			}
 			catch (Exception e) {
 				_logger.log(
@@ -490,12 +490,12 @@ public interface AccountUserResource {
 		}
 
 		public HttpInvoker.HttpResponse postAccountUserHttpResponse(
-				Long accountId, AccountUser accountUser)
+				Long accountId, UserAccount userAccount)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
-			httpInvoker.body(accountUser.toString(), "application/json");
+			httpInvoker.body(userAccount.toString(), "application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -529,12 +529,12 @@ public interface AccountUserResource {
 			return httpInvoker.invoke();
 		}
 
-		private AccountUserResourceImpl(Builder builder) {
+		private UserAccountResourceImpl(Builder builder) {
 			_builder = builder;
 		}
 
 		private static final Logger _logger = Logger.getLogger(
-			AccountUserResource.class.getName());
+			UserAccountResource.class.getName());
 
 		private Builder _builder;
 

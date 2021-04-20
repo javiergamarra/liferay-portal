@@ -14,8 +14,7 @@
 
 package com.liferay.account.rest.internal.resource.v1_0;
 
-import com.liferay.account.rest.dto.v1_0.AccountUser;
-import com.liferay.account.rest.resource.v1_0.AccountUserResource;
+import com.liferay.account.rest.resource.v1_0.UserAccountResource;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
@@ -75,9 +74,10 @@ import javax.ws.rs.core.UriInfo;
  */
 @Generated("")
 @Path("/v1.0")
-public abstract class BaseAccountUserResourceImpl
-	implements AccountUserResource, EntityModelResource,
-			   VulcanBatchEngineTaskItemDelegate<AccountUser> {
+public abstract class BaseUserAccountResourceImpl
+	implements EntityModelResource, UserAccountResource,
+			   VulcanBatchEngineTaskItemDelegate
+				   <com.liferay.headless.admin.user.dto.v1_0.UserAccount> {
 
 	/**
 	 * Invoke this method with the command line:
@@ -101,14 +101,15 @@ public abstract class BaseAccountUserResourceImpl
 		"/accounts/by-external-reference-code/{externalReferenceCode}/account-users"
 	)
 	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountUser")})
-	public Page<AccountUser> getAccountUsersByExternalReferenceCodePage(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("externalReferenceCode")
-			String externalReferenceCode,
-			@Parameter(hidden = true) @QueryParam("search") String search,
-			@Context Filter filter, @Context Pagination pagination,
-			@Context Sort[] sorts)
+	@Tags(value = {@Tag(name = "UserAccount")})
+	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
+			getAccountUsersByExternalReferenceCodePage(
+				@NotNull @Parameter(hidden = true)
+				@PathParam("externalReferenceCode")
+				String externalReferenceCode,
+				@Parameter(hidden = true) @QueryParam("search") String search,
+				@Context Filter filter, @Context Pagination pagination,
+				@Context Sort[] sorts)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -117,7 +118,7 @@ public abstract class BaseAccountUserResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/account-users' -d $'{"emailAddress": ___, "externalReferenceCode": ___, "firstName": ___, "lastName": ___, "middleName": ___, "prefix": ___, "screenName": ___, "suffix": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/by-external-reference-code/{externalReferenceCode}/account-users'  -u 'test@liferay.com:test'
 	 */
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Creates a user and assigns them to the account")
@@ -132,15 +133,17 @@ public abstract class BaseAccountUserResourceImpl
 	)
 	@POST
 	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountUser")})
-	public AccountUser postAccountUserByExternalReferenceCode(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("externalReferenceCode")
-			String externalReferenceCode,
-			AccountUser accountUser)
+	@Tags(value = {@Tag(name = "UserAccount")})
+	public com.liferay.headless.admin.user.dto.v1_0.UserAccount
+			postAccountUserByExternalReferenceCode(
+				@NotNull @Parameter(hidden = true)
+				@PathParam("externalReferenceCode")
+				String externalReferenceCode,
+				com.liferay.headless.admin.user.dto.v1_0.UserAccount
+					userAccount)
 		throws Exception {
 
-		return new AccountUser();
+		return new com.liferay.headless.admin.user.dto.v1_0.UserAccount();
 	}
 
 	/**
@@ -163,13 +166,14 @@ public abstract class BaseAccountUserResourceImpl
 	)
 	@Path("/accounts/{accountId}/account-users")
 	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountUser")})
-	public Page<AccountUser> getAccountUsersPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountId") Long
-				accountId,
-			@Parameter(hidden = true) @QueryParam("search") String search,
-			@Context Filter filter, @Context Pagination pagination,
-			@Context Sort[] sorts)
+	@Tags(value = {@Tag(name = "UserAccount")})
+	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
+			getAccountUsersPage(
+				@NotNull @Parameter(hidden = true) @PathParam("accountId") Long
+					accountId,
+				@Parameter(hidden = true) @QueryParam("search") String search,
+				@Context Filter filter, @Context Pagination pagination,
+				@Context Sort[] sorts)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -178,7 +182,7 @@ public abstract class BaseAccountUserResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/{accountId}/account-users' -d $'{"emailAddress": ___, "externalReferenceCode": ___, "firstName": ___, "lastName": ___, "middleName": ___, "prefix": ___, "screenName": ___, "suffix": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/account-rest/v1.0/accounts/{accountId}/account-users'  -u 'test@liferay.com:test'
 	 */
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Creates a user and assigns them to the account")
@@ -187,27 +191,31 @@ public abstract class BaseAccountUserResourceImpl
 	@Path("/accounts/{accountId}/account-users")
 	@POST
 	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "AccountUser")})
-	public AccountUser postAccountUser(
+	@Tags(value = {@Tag(name = "UserAccount")})
+	public com.liferay.headless.admin.user.dto.v1_0.UserAccount postAccountUser(
 			@NotNull @Parameter(hidden = true) @PathParam("accountId") Long
 				accountId,
-			AccountUser accountUser)
+			com.liferay.headless.admin.user.dto.v1_0.UserAccount userAccount)
 		throws Exception {
 
-		return new AccountUser();
+		return new com.liferay.headless.admin.user.dto.v1_0.UserAccount();
 	}
 
 	@Override
 	@SuppressWarnings("PMD.UnusedLocalVariable")
 	public void create(
-			java.util.Collection<AccountUser> accountUsers,
+			java.util.Collection
+				<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
+					userAccounts,
 			Map<String, Serializable> parameters)
 		throws Exception {
 	}
 
 	@Override
 	public void delete(
-			java.util.Collection<AccountUser> accountUsers,
+			java.util.Collection
+				<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
+					userAccounts,
 			Map<String, Serializable> parameters)
 		throws Exception {
 	}
@@ -228,7 +236,7 @@ public abstract class BaseAccountUserResourceImpl
 	}
 
 	@Override
-	public Page<AccountUser> read(
+	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount> read(
 			Filter filter, Pagination pagination, Sort[] sorts,
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
@@ -260,7 +268,9 @@ public abstract class BaseAccountUserResourceImpl
 
 	@Override
 	public void update(
-			java.util.Collection<AccountUser> accountUsers,
+			java.util.Collection
+				<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
+					userAccounts,
 			Map<String, Serializable> parameters)
 		throws Exception {
 	}

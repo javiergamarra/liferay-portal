@@ -14,7 +14,6 @@
 
 package com.liferay.account.rest.resource.v1_0;
 
-import com.liferay.account.rest.dto.v1_0.AccountUser;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -44,27 +43,34 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @Generated("")
 @ProviderType
-public interface AccountUserResource {
+public interface UserAccountResource {
 
 	public static Builder builder() {
 		return FactoryHolder.factory.create();
 	}
 
-	public Page<AccountUser> getAccountUsersByExternalReferenceCodePage(
-			String externalReferenceCode, String search, Filter filter,
-			Pagination pagination, Sort[] sorts)
+	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
+			getAccountUsersByExternalReferenceCodePage(
+				String externalReferenceCode, String search, Filter filter,
+				Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public AccountUser postAccountUserByExternalReferenceCode(
-			String externalReferenceCode, AccountUser accountUser)
+	public com.liferay.headless.admin.user.dto.v1_0.UserAccount
+			postAccountUserByExternalReferenceCode(
+				String externalReferenceCode,
+				com.liferay.headless.admin.user.dto.v1_0.UserAccount
+					userAccount)
 		throws Exception;
 
-	public Page<AccountUser> getAccountUsersPage(
-			Long accountId, String search, Filter filter, Pagination pagination,
-			Sort[] sorts)
+	public Page<com.liferay.headless.admin.user.dto.v1_0.UserAccount>
+			getAccountUsersPage(
+				Long accountId, String search, Filter filter,
+				Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public AccountUser postAccountUser(Long accountId, AccountUser accountUser)
+	public com.liferay.headless.admin.user.dto.v1_0.UserAccount postAccountUser(
+			Long accountId,
+			com.liferay.headless.admin.user.dto.v1_0.UserAccount userAccount)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(
@@ -101,7 +107,7 @@ public interface AccountUserResource {
 	@ProviderType
 	public interface Builder {
 
-		public AccountUserResource build();
+		public UserAccountResource build();
 
 		public Builder checkPermissions(boolean checkPermissions);
 
