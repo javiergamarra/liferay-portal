@@ -14,17 +14,11 @@
 
 package com.liferay.account.rest.internal.dto.v1_0.converter;
 
-import com.liferay.account.rest.dto.v1_0.Account;
-import com.liferay.account.rest.dto.v1_0.AccountUser;
-import com.liferay.portal.kernel.model.Contact;
-import com.liferay.portal.kernel.model.ListType;
+import com.liferay.headless.admin.user.dto.v1_0.UserAccount;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.ListTypeLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
+import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,29 +26,18 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Drew Brokke
  */
-@Component(
-	property = "dto.class.name=com.liferay.portal.kernel.model.User",
-	service = {AccountUserResourceDTOConverter.class, DTOConverter.class}
-)
+@Component(service = AccountUserResourceDTOConverter.class)
 public class AccountUserResourceDTOConverter
-	implements DTOConverter<User, AccountUser> {
+	implements DTOConverter<User, UserAccount> {
 
 	@Override
 	public String getContentType() {
-		return Account.class.getSimpleName();
+		return _getUserDTOConverter().getContentType();
 	}
 
 	@Override
 	public User getObject(String externalReferenceCode) throws Exception {
-		User user = _userLocalService.fetchUserByReferenceCode(
-			CompanyThreadLocal.getCompanyId(), externalReferenceCode);
-
-		if (user == null) {
-			user = _userLocalService.getUser(
-				GetterUtil.getLong(externalReferenceCode));
-		}
-
-		return user;
+		return _getUserDTOConverter().getObject(externalReferenceCode);
 	}
 
 	public long getUserId(String externalReferenceCode) throws Exception {
@@ -64,59 +47,19 @@ public class AccountUserResourceDTOConverter
 	}
 
 	@Override
-	public AccountUser toDTO(DTOConverterContext dtoConverterContext, User user)
+	public UserAccount toDTO(DTOConverterContext dtoConverterContext, User user)
 		throws Exception {
 
-		if (user == null) {
-			return null;
-		}
+		return _getUserDTOConverter().toDTO(dtoConverterContext, user);
+	}
 
-		Contact contact = user.getContact();
-
-		return new AccountUser() {
-			{
-				emailAddress = user.getEmailAddress();
-				externalReferenceCode = user.getExternalReferenceCode();
-				firstName = user.getFirstName();
-				id = user.getUserId();
-				lastName = user.getLastName();
-				middleName = user.getMiddleName();
-				screenName = user.getScreenName();
-
-				setPrefix(
-					() -> {
-						long prefixId = contact.getPrefixId();
-
-						if (prefixId <= 0) {
-							return null;
-						}
-
-						ListType prefixListType =
-							_listTypeLocalService.getListType(prefixId);
-
-						return prefixListType.getName();
-					});
-				setSuffix(
-					() -> {
-						long suffixId = contact.getSuffixId();
-
-						if (suffixId <= 0) {
-							return null;
-						}
-
-						ListType suffixListType =
-							_listTypeLocalService.getListType(suffixId);
-
-						return suffixListType.getName();
-					});
-			}
-		};
+	@SuppressWarnings("unchecked")
+	private DTOConverter<User, UserAccount> _getUserDTOConverter() {
+		return (DTOConverter<User, UserAccount>)
+			_dtoConverterRegistry.getDTOConverter(User.class.getName());
 	}
 
 	@Reference
-	private ListTypeLocalService _listTypeLocalService;
-
-	@Reference
-	private UserLocalService _userLocalService;
+	private DTOConverterRegistry _dtoConverterRegistry;
 
 }
