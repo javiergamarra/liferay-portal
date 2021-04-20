@@ -145,7 +145,7 @@ paths:
                     description:
                         "Account successfully created"
             tags: ["Account"]
-    "/accounts/by-external-reference-code/{accountExternalReferenceCode}/account-roles/{accountRoleId}/account-users/{accountUserExternalReferenceCode}":
+    "/accounts/by-external-reference-code/{accountExternalReferenceCode}/account-roles/{accountRoleId}/user-accounts/{userAccountExternalReferenceCode}":
         delete:
             # @review
             description:
@@ -164,7 +164,7 @@ paths:
                       format: int64
                       type: integer
                 - in: path
-                  name: accountUserExternalReferenceCode
+                  name: userAccountExternalReferenceCode
                   required: true
                   schema:
                       type: string
@@ -194,7 +194,7 @@ paths:
                       format: int64
                       type: integer
                 - in: path
-                  name: accountUserExternalReferenceCode
+                  name: userAccountExternalReferenceCode
                   required: true
                   schema:
                       type: string
@@ -390,12 +390,12 @@ paths:
                     description:
                         ""
             tags: ["AccountRole"]
-    "/accounts/by-external-reference-code/{externalReferenceCode}/account-users":
+    "/accounts/by-external-reference-code/{externalReferenceCode}/user-accounts":
         get:
             # @review
             description:
                 Gets the users assigned to an account
-            operationId: getAccountUsersByExternalReferenceCodePage
+            operationId: getUserAccountsByExternalReferenceCodePage
             parameters:
                 - in: path
                   name: externalReferenceCode
@@ -442,7 +442,7 @@ paths:
             # @review
             description:
                 Creates a user and assigns them to the account
-            operationId: postAccountUserByExternalReferenceCode
+            operationId: postUserAccountByExternalReferenceCode
             parameters:
                 - in: path
                   name: externalReferenceCode
@@ -659,7 +659,7 @@ paths:
                     description:
                         ""
             tags: ["AccountRole"]
-    "/accounts/{accountId}/account-roles/{accountRoleId}/account-users/{accountUserId}":
+    "/accounts/{accountId}/account-roles/{accountRoleId}/user-accounts/{userAccountId}":
         delete:
             # @review
             description:
@@ -679,7 +679,7 @@ paths:
                       format: int64
                       type: integer
                 - in: path
-                  name: accountUserId
+                  name: userAccountId
                   required: true
                   schema:
                       format: int64
@@ -711,7 +711,7 @@ paths:
                       format: int64
                       type: integer
                 - in: path
-                  name: accountUserId
+                  name: userAccountId
                   required: true
                   schema:
                       format: int64
@@ -724,12 +724,12 @@ paths:
                     description:
                         ""
             tags: ["AccountRole"]
-    "/accounts/{accountId}/account-users":
+    "/accounts/{accountId}/user-accounts":
         get:
             # @review
             description:
                 Gets the users assigned to an account
-            operationId: getAccountUsersPage
+            operationId: getUserAccountsPage
             parameters:
                 - in: path
                   name: accountId
@@ -777,7 +777,7 @@ paths:
             # @review
             description:
                 Creates a user and assigns them to the account
-            operationId: postAccountUser
+            operationId: postUserAccount
             parameters:
                 - in: path
                   name: accountId
