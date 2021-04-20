@@ -17,9 +17,9 @@ package com.liferay.account.rest.resource.v1_0.test;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.rest.client.dto.v1_0.Account;
 import com.liferay.account.rest.client.dto.v1_0.AccountRole;
-import com.liferay.account.rest.client.dto.v1_0.AccountUser;
+import com.liferay.account.rest.client.dto.v1_0.UserAccount;
 import com.liferay.account.rest.client.resource.v1_0.AccountResource;
-import com.liferay.account.rest.client.resource.v1_0.AccountUserResource;
+import com.liferay.account.rest.client.resource.v1_0.UserAccountResource;
 import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.account.service.AccountRoleLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
@@ -56,7 +56,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 			LocaleUtil.getDefault()
 		).build();
 
-		_accountUserResource = AccountUserResource.builder(
+		_accountUserResource = UserAccountResource.builder(
 		).authentication(
 			"test@liferay.com", "test"
 		).locale(
@@ -75,7 +75,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	@Test
 	public void testDeleteAccountRoleUserAssociation() throws Exception {
 		AccountRole accountRole = _addAccountRole(_account);
-		AccountUser accountUser = _addAccountUser(_account);
+		UserAccount accountUser = _addAccountUser(_account);
 
 		_assertAccountRoleUserAssociation(
 			_account, accountRole, accountUser, false);
@@ -101,7 +101,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 		throws Exception {
 
 		AccountRole accountRole = _addAccountRole(_account);
-		AccountUser accountUser = _addAccountUser(_account);
+		UserAccount accountUser = _addAccountUser(_account);
 
 		_assertAccountRoleUserAssociation(
 			_account, accountRole, accountUser, false);
@@ -125,7 +125,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	@Test
 	public void testPostAccountRoleUserAssociation() throws Exception {
 		AccountRole accountRole = _addAccountRole(_account);
-		AccountUser accountUser = _addAccountUser(_account);
+		UserAccount accountUser = _addAccountUser(_account);
 
 		_assertAccountRoleUserAssociation(
 			_account, accountRole, accountUser, false);
@@ -150,7 +150,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 		throws Exception {
 
 		AccountRole accountRole = _addAccountRole(_account);
-		AccountUser accountUser = _addAccountUser(_account);
+		UserAccount accountUser = _addAccountUser(_account);
 
 		_assertAccountRoleUserAssociation(
 			_account, accountRole, accountUser, false);
@@ -271,13 +271,13 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 			account.getId(), randomAccountRole());
 	}
 
-	private AccountUser _addAccountUser(Account account) throws Exception {
+	private UserAccount _addAccountUser(Account account) throws Exception {
 		return _accountUserResource.postAccountUser(
 			account.getId(), _randomAccountUser());
 	}
 
 	private void _assertAccountRoleUserAssociation(
-			Account account, AccountRole accountRole, AccountUser accountUser,
+			Account account, AccountRole accountRole, UserAccount accountUser,
 			boolean hasAssociation)
 		throws Exception {
 
@@ -312,21 +312,21 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 		};
 	}
 
-	private AccountUser _randomAccountUser() throws Exception {
-		return new AccountUser() {
+	private UserAccount _randomAccountUser() throws Exception {
+		return new UserAccount() {
 			{
+				additionalName = RandomTestUtil.randomString();
+				alternateName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				emailAddress =
 					StringUtil.toLowerCase(RandomTestUtil.randomString()) +
 						"@liferay.com";
 				externalReferenceCode = RandomTestUtil.randomString();
-				firstName = RandomTestUtil.randomString();
+				familyName = RandomTestUtil.randomString();
+				givenName = RandomTestUtil.randomString();
+				honorificPrefix = RandomTestUtil.randomString();
+				honorificSuffix = RandomTestUtil.randomString();
 				id = RandomTestUtil.randomLong();
-				lastName = RandomTestUtil.randomString();
-				middleName = RandomTestUtil.randomString();
-				prefix = RandomTestUtil.randomString();
-				screenName = StringUtil.toLowerCase(
-					RandomTestUtil.randomString());
-				suffix = RandomTestUtil.randomString();
 			}
 		};
 	}
@@ -341,7 +341,7 @@ public class AccountRoleResourceTest extends BaseAccountRoleResourceTestCase {
 	@Inject
 	private AccountRoleLocalService _accountRoleLocalService;
 
-	private AccountUserResource _accountUserResource;
+	private UserAccountResource _accountUserResource;
 
 	@Inject
 	private UserGroupRoleLocalService _userGroupRoleLocalService;
