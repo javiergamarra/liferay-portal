@@ -32,6 +32,7 @@ import {
 } from '../../utils/client.es';
 import lang from '../../utils/lang.es';
 import {
+	deleteCache,
 	getContextLink,
 	historyPushWithSlug,
 	slugToText,
@@ -128,6 +129,7 @@ export default withRouter(
 		};
 
 		const createQuestion = () => {
+			deleteCache();
 			if (
 				sectionTitle === context.rootTopicId &&
 				+context.rootTopicId === 0

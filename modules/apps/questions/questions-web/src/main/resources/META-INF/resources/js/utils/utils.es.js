@@ -15,6 +15,7 @@
 import {cancelDebounce, debounce} from 'frontend-js-web';
 import {useRef} from 'react';
 
+import {client} from './client.es';
 import lang from './lang.es';
 
 export function dateToInternationalHuman(
@@ -54,10 +55,8 @@ export function dateToBriefInternationalHuman(
 	return intl.format(date);
 }
 
-export function deleteCacheVariables(cache, parameter) {
-	Object.keys(cache.data.data).forEach(
-		(key) => key.match(`^${parameter}`) && cache.data.delete(key)
-	);
+export function deleteCache() {
+	client.cache.clear();
 }
 
 export function timeDifference(previous, current = new Date()) {

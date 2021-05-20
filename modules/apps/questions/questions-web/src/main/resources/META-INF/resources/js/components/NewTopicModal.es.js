@@ -21,6 +21,7 @@ import React, {useContext, useRef} from 'react';
 import {AppContext} from '../AppContext.es';
 import {createSubTopicQuery, createTopicQuery} from '../utils/client.es';
 import lang from '../utils/lang.es';
+import {deleteCache} from '../utils/utils.es';
 
 export default ({
 	currentSectionId,
@@ -61,6 +62,7 @@ export default ({
 
 	const createTopic = () => {
 		if (isValidTopic(topicName.current.value)) {
+			deleteCache();
 			if (currentSectionId) {
 				createNewSubTopic({
 					variables: {
@@ -73,13 +75,12 @@ export default ({
 						data: {
 							createMessageBoardSectionMessageBoardSection: section,
 						},
-					}) => {
+					}) =>
 						onCreateNavigateTo(
 							context.useTopicNamesInURL
 								? section.title
 								: section.id
-						);
-					}
+						)
 				);
 			}
 			else {
@@ -89,11 +90,11 @@ export default ({
 						siteKey: context.siteKey,
 						title: topicName.current.value,
 					},
-				}).then(({data: {createSiteMessageBoardSection: section}}) => {
+				}).then(({data: {createSiteMessageBoardSection: section}}) =>
 					onCreateNavigateTo(
 						context.useTopicNamesInURL ? section.title : section.id
-					);
-				});
+					)
+				);
 			}
 		}
 	};
