@@ -19,6 +19,7 @@ import ClayIcon from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import {useManualQuery} from 'graphql-hooks';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {Helmet} from 'react-helmet';
 import {withRouter} from 'react-router-dom';
 
 import {AppContext} from '../../AppContext.es';
@@ -38,6 +39,7 @@ import {
 } from '../../utils/client.es';
 import {
 	getBasePath,
+	getFullPath,
 	historyPushWithSlug,
 	isWebCrawler,
 	slugToText,
@@ -703,6 +705,15 @@ export default withRouter(
 							</ClayInput.Group>
 						</div>
 					)}
+					<Helmet>
+						<title>${sectionTitle}</title>
+						<link
+							href={`${getFullPath('questions')}${
+								context.historyRouterBasePath ? '' : '#/'
+							}questions/${sectionTitle}`}
+							rel="canonical"
+						/>
+					</Helmet>
 				</div>
 			);
 		}
