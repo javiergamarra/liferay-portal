@@ -1,6 +1,5 @@
 {
 	"dependencies": {
-		"@apollo/client": "^3.3.12",
 		"@clayui/button": "3.6.0",
 		"@clayui/drop-down": "3.28.0",
 		"@clayui/empty-state": "3.2.0",
@@ -16,7 +15,6 @@
 		"@liferay/frontend-js-react-web": "*",
 		"asset-taglib": "*",
 		"classnames": "2.2.6",
-		"extract-files": "8.1.0",
 		"frontend-editor-ckeditor-web": "*",
 		"frontend-js-web": "*",
 		"graphql-hooks": "4.4.0",
