@@ -103,8 +103,17 @@ describe('Answer', () => {
 	it('Show as a valid answer in the case that it is', async () => {
 		const mockIsSignedIn = jest.fn();
 		window.Liferay.ThemeDisplay.isSignedIn = mockIsSignedIn;
+
+		global.fetch.mockImplementationOnce(() =>
+			Promise.resolve({
+				json: () => Promise.resolve(apolloMocks),
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify(apolloMocks)),
+			})
+		);
+
 		const {getByTestId} = renderComponent({
-			apolloMocks,
+			fetch,
 			ui: (
 				<Answer
 					answer={mockAnswer}

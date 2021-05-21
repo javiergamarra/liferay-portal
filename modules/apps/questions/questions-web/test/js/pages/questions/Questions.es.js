@@ -158,6 +158,7 @@ describe('Questions', () => {
 			.mockImplementationOnce(() =>
 				Promise.resolve({
 					json: () => Promise.resolve(mockMessageBoardSections),
+					ok: true,
 					text: () =>
 						Promise.resolve(
 							JSON.stringify(mockMessageBoardSections)
@@ -167,12 +168,14 @@ describe('Questions', () => {
 			.mockImplementation(() =>
 				Promise.resolve({
 					json: () => Promise.resolve(mockThreads),
+					ok: true,
 					text: () => Promise.resolve(JSON.stringify(mockThreads)),
 				})
 			);
 
 		const {container, findByText} = renderComponent({
 			contextValue: {siteKey: '20020'},
+			fetch,
 			route,
 			ui: <Route component={Questions} path={path} />,
 		});
@@ -194,6 +197,7 @@ describe('Questions', () => {
 			.mockImplementationOnce(() =>
 				Promise.resolve({
 					json: () => Promise.resolve(mockMessageBoardSections),
+					ok: true,
 					text: () =>
 						Promise.resolve(
 							JSON.stringify(mockMessageBoardSections)
@@ -203,6 +207,7 @@ describe('Questions', () => {
 			.mockImplementation(() =>
 				Promise.resolve({
 					json: () => Promise.resolve(mockThreads),
+					ok: true,
 					text: () => Promise.resolve(JSON.stringify(mockThreads)),
 				})
 			);

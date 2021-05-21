@@ -61,12 +61,14 @@ describe('Tags', () => {
 		global.fetch.mockImplementation(() =>
 			Promise.resolve({
 				json: () => Promise.resolve(mockTags),
+				ok: true,
 				text: () => Promise.resolve(JSON.stringify(mockTags)),
 			})
 		);
 
 		const {findByText} = renderComponent({
 			contextValue: {siteKey: '20020'},
+			fetch,
 			route,
 			ui: <Route component={Tags} />,
 		});
