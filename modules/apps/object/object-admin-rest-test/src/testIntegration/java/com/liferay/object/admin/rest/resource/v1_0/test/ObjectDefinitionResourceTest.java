@@ -23,6 +23,8 @@ import com.liferay.object.exception.NoSuchObjectDefinitionException;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.test.rule.Inject;
 
 import java.util.Arrays;
@@ -30,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -102,10 +104,20 @@ public class ObjectDefinitionResourceTest
 			items.subList(items.size() - 2, items.size()));
 	}
 
-	@Ignore
-	@Override
 	@Test
-	public void testGraphQLGetObjectDefinitionNotFound() {
+	public void testGraphQLGetObjectDefinitionNotFound() throws Exception {
+		Assert.assertEquals(
+			"Internal Server Error",
+			JSONUtil.getValueAsString(
+				invokeGraphQLQuery(
+					new GraphQLField(
+						"objectDefinition",
+						HashMapBuilder.<String, Object>put(
+							"objectDefinitionId", RandomTestUtil.randomLong()
+						).build(),
+						getGraphQLFields())),
+				"JSONArray/errors", "Object/0", "JSONObject/extensions",
+				"Object/code"));
 	}
 
 	@Override
