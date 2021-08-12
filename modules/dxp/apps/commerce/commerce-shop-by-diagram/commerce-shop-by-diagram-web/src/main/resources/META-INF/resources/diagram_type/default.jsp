@@ -16,6 +16,8 @@
 
 <%@ include file="/init.jsp" %>
 
+<%@ include file="/diagram_type/diagram.jspf" %>
+
 <%
 CPDefinitionDiagramSettingDisplayContext cpDefinitionDiagramSettingDisplayContext = (CPDefinitionDiagramSettingDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
@@ -24,4 +26,31 @@ CPDefinition cpDefinition = cpDefinitionDiagramSettingDisplayContext.getCPDefini
 String type = DefaultCPDefinitionDiagramType.KEY;
 %>
 
-<%@ include file="/diagram_type/diagram.jspf" %>
+
+<react:component
+	module="js/Diagram"
+	props='<%=
+		HashMapBuilder.<String, Object>put(
+			"enablePanZoom", true
+		).put(
+			"enableResetZoom", true
+		).put(
+			"imageSettings",
+			JSONUtil.put(
+				"height", "500px"
+			).put(
+				"width", "100%"
+			)
+		).put(
+			"imageURL", cpDefinitionDiagramSettingDisplayContext.getImageURL()
+		).put(
+			"isAdmin", true
+		).put(
+			"pinsEndpoint", "/o/headless-commerce-admin-catalog/v1.0/"
+		).put(
+			"productId", cpDefinition.getCProductId()
+		).put(
+			"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
+		).build()
+	%>'
+/>
