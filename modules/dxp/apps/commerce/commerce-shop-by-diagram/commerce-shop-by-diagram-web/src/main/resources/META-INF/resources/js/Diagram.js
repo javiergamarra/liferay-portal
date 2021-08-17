@@ -12,7 +12,7 @@
 import {ClayIconSpriteContext} from '@clayui/icon';
 import {fetch} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 
 import AdminTooltip from './AdminTooltip';
 import DiagramFooter from './DiagramFooter';
@@ -116,6 +116,31 @@ const Diagram = ({
 			tooltip: true,
 		});
 	};
+
+	useLayoutEffect(() => {
+		if (showTooltip?.tooltip && cPins) {
+			const newCPinState = cPins.map((element, i) => {
+				if (element.id === showTooltip.details.id) {
+					return {
+						cx: cPins[i].cx,
+						cy: cPins[i].cy,
+						draggable: cPins[i].draggable || true,
+						fill: cPins[i].fill || '#000000',
+						id: showTooltip.details.id,
+						label: showTooltip.details.label,
+						linked_to_sku: showTooltip.details.linked_to_sku,
+						quantity: showTooltip.details.quantity,
+						r: cPins[i].r || 15,
+						sku: showTooltip.details.sku || '',
+					};
+				}
+				else {
+					return element;
+				}
+			});
+			setCpins(newCPinState);
+		}
+	}, [showTooltip, cPins]);
 
 	return imageURL !== '' ? (
 		<div className="diagram mx-auto">

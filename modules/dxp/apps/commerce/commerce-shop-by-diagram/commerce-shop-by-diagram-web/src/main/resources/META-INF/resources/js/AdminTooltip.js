@@ -154,7 +154,6 @@ const AdminTooltip = ({
 								handler: true,
 								pin: showTooltip.details.id,
 							});
-
 							setShowTooltip({
 								details: {
 									cx: null,
@@ -193,7 +192,6 @@ const AdminTooltip = ({
 					>
 						{Liferay.Language.get('cancel')}
 					</ClayButton>
-
 					<ClayButton
 						displayType="primary"
 						onClick={() => {
@@ -206,7 +204,6 @@ const AdminTooltip = ({
 								quantity,
 								sku,
 							});
-
 							setShowTooltip({
 								details: {
 									cx: showTooltip.details.cx,
