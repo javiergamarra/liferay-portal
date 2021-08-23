@@ -14,6 +14,7 @@
 
 package com.liferay.headless.admin.content.internal.graphql.mutation.v1_0;
 
+import com.liferay.headless.admin.content.resource.v1_0.ContentStructureResource;
 import com.liferay.headless.admin.content.resource.v1_0.PageDefinitionResource;
 import com.liferay.headless.admin.content.resource.v1_0.StructuredContentResource;
 import com.liferay.petra.function.UnsafeConsumer;
@@ -46,6 +47,14 @@ import org.osgi.service.component.ComponentServiceObjects;
 @Generated("")
 public class Mutation {
 
+	public static void setContentStructureResourceComponentServiceObjects(
+		ComponentServiceObjects<ContentStructureResource>
+			contentStructureResourceComponentServiceObjects) {
+
+		_contentStructureResourceComponentServiceObjects =
+			contentStructureResourceComponentServiceObjects;
+	}
+
 	public static void setPageDefinitionResourceComponentServiceObjects(
 		ComponentServiceObjects<PageDefinitionResource>
 			pageDefinitionResourceComponentServiceObjects) {
@@ -60,6 +69,89 @@ public class Mutation {
 
 		_structuredContentResourceComponentServiceObjects =
 			structuredContentResourceComponentServiceObjects;
+	}
+
+	@GraphQLField
+	public com.liferay.headless.delivery.dto.v1_0.ContentStructure
+			createAssetLibraryContentStructure(
+				@GraphQLName("siteKey") @NotEmpty String siteKey,
+				@GraphQLName("contentStructure")
+					com.liferay.headless.delivery.dto.v1_0.ContentStructure
+						contentStructure)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			contentStructureResource ->
+				contentStructureResource.postAssetLibraryContentStructure(
+					Long.valueOf(siteKey), contentStructure));
+	}
+
+	@GraphQLField
+	public boolean deleteContentStructure(
+			@GraphQLName("contentStructureId") Long contentStructureId)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			contentStructureResource ->
+				contentStructureResource.deleteContentStructure(
+					contentStructureId));
+
+		return true;
+	}
+
+	@GraphQLField
+	public com.liferay.headless.delivery.dto.v1_0.ContentStructure
+			patchContentStructure(
+				@GraphQLName("contentStructureId") Long contentStructureId,
+				@GraphQLName("contentStructure")
+					com.liferay.headless.delivery.dto.v1_0.ContentStructure
+						contentStructure)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			contentStructureResource ->
+				contentStructureResource.patchContentStructure(
+					contentStructureId, contentStructure));
+	}
+
+	@GraphQLField
+	public com.liferay.headless.delivery.dto.v1_0.ContentStructure
+			updateContentStructure(
+				@GraphQLName("contentStructureId") Long contentStructureId,
+				@GraphQLName("contentStructure")
+					com.liferay.headless.delivery.dto.v1_0.ContentStructure
+						contentStructure)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			contentStructureResource ->
+				contentStructureResource.putContentStructure(
+					contentStructureId, contentStructure));
+	}
+
+	@GraphQLField
+	public com.liferay.headless.delivery.dto.v1_0.ContentStructure
+			createSiteContentStructure(
+				@GraphQLName("siteKey") @NotEmpty String siteKey,
+				@GraphQLName("contentStructure")
+					com.liferay.headless.delivery.dto.v1_0.ContentStructure
+						contentStructure)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			contentStructureResource ->
+				contentStructureResource.postSiteContentStructure(
+					Long.valueOf(siteKey), contentStructure));
 	}
 
 	@GraphQLField(
@@ -154,6 +246,22 @@ public class Mutation {
 	}
 
 	private void _populateResourceContext(
+			ContentStructureResource contentStructureResource)
+		throws Exception {
+
+		contentStructureResource.setContextAcceptLanguage(_acceptLanguage);
+		contentStructureResource.setContextCompany(_company);
+		contentStructureResource.setContextHttpServletRequest(
+			_httpServletRequest);
+		contentStructureResource.setContextHttpServletResponse(
+			_httpServletResponse);
+		contentStructureResource.setContextUriInfo(_uriInfo);
+		contentStructureResource.setContextUser(_user);
+		contentStructureResource.setGroupLocalService(_groupLocalService);
+		contentStructureResource.setRoleLocalService(_roleLocalService);
+	}
+
+	private void _populateResourceContext(
 			PageDefinitionResource pageDefinitionResource)
 		throws Exception {
 
@@ -185,6 +293,8 @@ public class Mutation {
 		structuredContentResource.setRoleLocalService(_roleLocalService);
 	}
 
+	private static ComponentServiceObjects<ContentStructureResource>
+		_contentStructureResourceComponentServiceObjects;
 	private static ComponentServiceObjects<PageDefinitionResource>
 		_pageDefinitionResourceComponentServiceObjects;
 	private static ComponentServiceObjects<StructuredContentResource>

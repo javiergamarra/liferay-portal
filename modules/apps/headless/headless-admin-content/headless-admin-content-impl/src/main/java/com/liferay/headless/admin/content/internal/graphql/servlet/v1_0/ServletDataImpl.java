@@ -16,6 +16,7 @@ package com.liferay.headless.admin.content.internal.graphql.servlet.v1_0;
 
 import com.liferay.headless.admin.content.internal.graphql.mutation.v1_0.Mutation;
 import com.liferay.headless.admin.content.internal.graphql.query.v1_0.Query;
+import com.liferay.headless.admin.content.resource.v1_0.ContentStructureResource;
 import com.liferay.headless.admin.content.resource.v1_0.DisplayPageTemplateResource;
 import com.liferay.headless.admin.content.resource.v1_0.PageDefinitionResource;
 import com.liferay.headless.admin.content.resource.v1_0.StructuredContentResource;
@@ -40,11 +41,15 @@ public class ServletDataImpl implements ServletData {
 
 	@Activate
 	public void activate(BundleContext bundleContext) {
+		Mutation.setContentStructureResourceComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects);
 		Mutation.setPageDefinitionResourceComponentServiceObjects(
 			_pageDefinitionResourceComponentServiceObjects);
 		Mutation.setStructuredContentResourceComponentServiceObjects(
 			_structuredContentResourceComponentServiceObjects);
 
+		Query.setContentStructureResourceComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects);
 		Query.setDisplayPageTemplateResourceComponentServiceObjects(
 			_displayPageTemplateResourceComponentServiceObjects);
 		Query.setStructuredContentResourceComponentServiceObjects(
@@ -70,6 +75,10 @@ public class ServletDataImpl implements ServletData {
 	public Query getQuery() {
 		return new Query();
 	}
+
+	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
+	private ComponentServiceObjects<ContentStructureResource>
+		_contentStructureResourceComponentServiceObjects;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<PageDefinitionResource>

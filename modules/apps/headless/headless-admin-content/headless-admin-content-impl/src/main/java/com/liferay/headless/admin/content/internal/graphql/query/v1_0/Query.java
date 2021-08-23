@@ -15,6 +15,7 @@
 package com.liferay.headless.admin.content.internal.graphql.query.v1_0;
 
 import com.liferay.headless.admin.content.dto.v1_0.DisplayPageTemplate;
+import com.liferay.headless.admin.content.resource.v1_0.ContentStructureResource;
 import com.liferay.headless.admin.content.resource.v1_0.DisplayPageTemplateResource;
 import com.liferay.headless.admin.content.resource.v1_0.StructuredContentResource;
 import com.liferay.petra.function.UnsafeConsumer;
@@ -53,6 +54,14 @@ import org.osgi.service.component.ComponentServiceObjects;
 @Generated("")
 public class Query {
 
+	public static void setContentStructureResourceComponentServiceObjects(
+		ComponentServiceObjects<ContentStructureResource>
+			contentStructureResourceComponentServiceObjects) {
+
+		_contentStructureResourceComponentServiceObjects =
+			contentStructureResourceComponentServiceObjects;
+	}
+
 	public static void setDisplayPageTemplateResourceComponentServiceObjects(
 		ComponentServiceObjects<DisplayPageTemplateResource>
 			displayPageTemplateResourceComponentServiceObjects) {
@@ -67,6 +76,89 @@ public class Query {
 
 		_structuredContentResourceComponentServiceObjects =
 			structuredContentResourceComponentServiceObjects;
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {assetLibraryContentStructures(aggregation: ___, assetLibraryId: ___, filter: ___, page: ___, pageSize: ___, search: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField
+	public ContentStructurePage assetLibraryContentStructures(
+			@GraphQLName("assetLibraryId") @NotEmpty String assetLibraryId,
+			@GraphQLName("search") String search,
+			@GraphQLName("aggregation") List<String> aggregations,
+			@GraphQLName("filter") String filterString,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page,
+			@GraphQLName("sort") String sortsString)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			contentStructureResource -> new ContentStructurePage(
+				contentStructureResource.getAssetLibraryContentStructuresPage(
+					Long.valueOf(assetLibraryId), search,
+					_aggregationBiFunction.apply(
+						contentStructureResource, aggregations),
+					_filterBiFunction.apply(
+						contentStructureResource, filterString),
+					Pagination.of(page, pageSize),
+					_sortsBiFunction.apply(
+						contentStructureResource, sortsString))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contentStructure(contentStructureId: ___){}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Retrieves the content structure.")
+	public com.liferay.headless.delivery.dto.v1_0.ContentStructure
+			contentStructure(
+				@GraphQLName("contentStructureId") Long contentStructureId)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			contentStructureResource ->
+				contentStructureResource.getContentStructure(
+					contentStructureId));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contentStructures(aggregation: ___, filter: ___, page: ___, pageSize: ___, search: ___, siteKey: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "Retrieves the site's content structures. Results can be paginated, filtered, searched, and sorted."
+	)
+	public ContentStructurePage contentStructures(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("search") String search,
+			@GraphQLName("aggregation") List<String> aggregations,
+			@GraphQLName("filter") String filterString,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page,
+			@GraphQLName("sort") String sortsString)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_contentStructureResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			contentStructureResource -> new ContentStructurePage(
+				contentStructureResource.getSiteContentStructuresPage(
+					Long.valueOf(siteKey), search,
+					_aggregationBiFunction.apply(
+						contentStructureResource, aggregations),
+					_filterBiFunction.apply(
+						contentStructureResource, filterString),
+					Pagination.of(page, pageSize),
+					_sortsBiFunction.apply(
+						contentStructureResource, sortsString))));
 	}
 
 	/**
@@ -188,6 +280,45 @@ public class Query {
 					structuredContentId)));
 	}
 
+	@GraphQLName("ContentStructurePage")
+	public class ContentStructurePage {
+
+		public ContentStructurePage(Page contentStructurePage) {
+			actions = contentStructurePage.getActions();
+
+			facets = contentStructurePage.getFacets();
+
+			items = contentStructurePage.getItems();
+			lastPage = contentStructurePage.getLastPage();
+			page = contentStructurePage.getPage();
+			pageSize = contentStructurePage.getPageSize();
+			totalCount = contentStructurePage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected Map<String, Map> actions;
+
+		@GraphQLField
+		protected List<Facet> facets;
+
+		@GraphQLField
+		protected java.util.Collection
+			<com.liferay.headless.delivery.dto.v1_0.ContentStructure> items;
+
+		@GraphQLField
+		protected long lastPage;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
 	@GraphQLName("DisplayPageTemplatePage")
 	public class DisplayPageTemplatePage {
 
@@ -285,6 +416,22 @@ public class Query {
 	}
 
 	private void _populateResourceContext(
+			ContentStructureResource contentStructureResource)
+		throws Exception {
+
+		contentStructureResource.setContextAcceptLanguage(_acceptLanguage);
+		contentStructureResource.setContextCompany(_company);
+		contentStructureResource.setContextHttpServletRequest(
+			_httpServletRequest);
+		contentStructureResource.setContextHttpServletResponse(
+			_httpServletResponse);
+		contentStructureResource.setContextUriInfo(_uriInfo);
+		contentStructureResource.setContextUser(_user);
+		contentStructureResource.setGroupLocalService(_groupLocalService);
+		contentStructureResource.setRoleLocalService(_roleLocalService);
+	}
+
+	private void _populateResourceContext(
 			DisplayPageTemplateResource displayPageTemplateResource)
 		throws Exception {
 
@@ -316,6 +463,8 @@ public class Query {
 		structuredContentResource.setRoleLocalService(_roleLocalService);
 	}
 
+	private static ComponentServiceObjects<ContentStructureResource>
+		_contentStructureResourceComponentServiceObjects;
 	private static ComponentServiceObjects<DisplayPageTemplateResource>
 		_displayPageTemplateResourceComponentServiceObjects;
 	private static ComponentServiceObjects<StructuredContentResource>

@@ -80,6 +80,8 @@ public class OpenAPIResourceImpl {
 
 	private final Set<Class<?>> _resourceClasses = new HashSet<Class<?>>() {
 		{
+			add(ContentStructureResourceImpl.class);
+
 			add(DisplayPageTemplateResourceImpl.class);
 
 			add(PageDefinitionResourceImpl.class);
