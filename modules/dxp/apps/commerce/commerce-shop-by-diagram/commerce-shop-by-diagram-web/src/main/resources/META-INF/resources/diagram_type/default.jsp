@@ -26,7 +26,6 @@ CPDefinition cpDefinition = cpDefinitionDiagramSettingDisplayContext.getCPDefini
 String type = DefaultCPDefinitionDiagramType.KEY;
 %>
 
-
 <react:component
 	module="js/Diagram"
 	props='<%=
