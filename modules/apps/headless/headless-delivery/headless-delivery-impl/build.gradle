@@ -30,7 +30,7 @@ dependencies {
 	compileOnly project(":apps:friendly-url:friendly-url-api")
 	compileOnly project(":apps:headless:headless-admin-user:headless-admin-user-api")
 	compileOnly project(":apps:headless:headless-common-spi")
-	compileOnly project(":apps:headless:headless-delivery:headless-delivery-api")
+	compileOnly project(":apps:headless:headless-deliyvery:headless-delivery-api")
 	compileOnly project(":apps:info:info-api")
 	compileOnly project(":apps:info:info-list-provider-item-selector-api")
 	compileOnly project(":apps:item-selector:item-selector-criteria-api")
