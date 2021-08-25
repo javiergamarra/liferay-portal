@@ -622,7 +622,6 @@ components:
                         The list of the content structure's fields.
                     items:
                         $ref: "#/components/schemas/ContentStructureField"
-                    readOnly: true
                     type: array
                 creator:
                     allOf:
@@ -645,7 +644,6 @@ components:
                 description:
                     description:
                         The content structure's description.
-                    readOnly: true
                     type: string
                 description_i18n:
                     additionalProperties:
@@ -653,7 +651,6 @@ components:
                     # @review
                     description:
                         The localized content structure's description.
-                    readOnly: true
                     type: object
                 id:
                     description:
@@ -664,7 +661,6 @@ components:
                 name:
                     description:
                         The content structure's name.
-                    readOnly: true
                     type: string
                 name_i18n:
                     additionalProperties:
@@ -672,7 +668,6 @@ components:
                     # @review
                     description:
                         The localized content structure's names.
-                    readOnly: true
                     type: object
                 siteId:
                     description:
@@ -688,17 +683,14 @@ components:
                 dataType:
                     description:
                         The form field's type (e.g., date, geolocation, text, etc.).
-                    readOnly: true
                     type: string
                 inputControl:
                     description:
                         The form field's input control type (e.g., text, textarea, select field, etc.).
-                    readOnly: true
                     type: string
                 label:
                     description:
                         The form field's label.
-                    readOnly: true
                     type: string
                 label_i18n:
                     additionalProperties:
@@ -706,29 +698,24 @@ components:
                     # @review
                     description:
                         The form field's labels.
-                    readOnly: true
                     type: object
                 localizable:
                     description:
                         A flag that indicates whether the content is accessible in different languages.
-                    readOnly: true
                     type: boolean
                 multiple:
                     description:
                         A flag that indicates whether the form field can have several values.
-                    readOnly: true
                     type: boolean
                 name:
                     description:
                         The form field's name.
-                    readOnly: true
                     type: string
                 nestedContentStructureFields:
                     description:
                         The child content structure fields that depend on this form field.
                     items:
                         $ref: "#/components/schemas/ContentStructureField"
-                    readOnly: true
                     type: array
                 options:
                     description:
@@ -751,12 +738,10 @@ components:
                                     The internal value of the field option.
                                 type: string
                         type: object
-                    readOnly: true
                     type: array
                 predefinedValue:
                     description:
                         The form field's default value.
-                    readOnly: true
                     type: string
                 predefinedValue_i18n:
                     additionalProperties:
@@ -764,22 +749,18 @@ components:
                     # @review
                     description:
                         The localized form field's default values.
-                    readOnly: true
                     type: object
                 repeatable:
                     description:
                         A flag that indicates whether this content can be rendered (and answered) several times.
-                    readOnly: true
                     type: boolean
                 required:
                     description:
                         A flag that indicates whether this form field is required.
-                    readOnly: true
                     type: boolean
                 showLabel:
                     description:
                         A flag that indicates whether the structure's end target should render the field label.
-                    readOnly: true
                     type: boolean
             type: object
         ContentTemplate:

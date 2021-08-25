@@ -243,8 +243,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/ContentStructure"
                                 type: array
-                    description:
-                        ""
             tags: ["ContentStructure"]
         post:
             operationId: postAssetLibraryContentStructure
@@ -272,8 +270,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "../../headless-delivery/headless-delivery-impl/rest-openapi.yaml#ContentStructure"
-                    description:
-                        ""
             tags: ["ContentStructure"]
     "/content-structures/{contentStructureId}":
         delete:
@@ -290,8 +286,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["ContentStructure"]
         get:
             description:
@@ -313,8 +307,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "../../headless-delivery/headless-delivery-impl/rest-openapi.yaml#ContentStructure"
-                    description:
-                        ""
             tags: ["ContentStructure"]
         patch:
             operationId: patchContentStructure
@@ -342,8 +334,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "../../headless-delivery/headless-delivery-impl/rest-openapi.yaml#ContentStructure"
-                    description:
-                        ""
             tags: ["ContentStructure"]
         put:
             operationId: putContentStructure
@@ -371,8 +361,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "../../headless-delivery/headless-delivery-impl/rest-openapi.yaml#ContentStructure"
-                    description:
-                        ""
             tags: ["ContentStructure"]
     "/sites/{siteId}/content-structures":
         get:
@@ -425,8 +413,6 @@ paths:
                                 items:
                                     $ref: "../../headless-delivery/headless-delivery-impl/rest-openapi.yaml#ContentStructure"
                                 type: array
-                    description:
-                        ""
             tags: ["ContentStructure"]
         post:
             operationId: postSiteContentStructure
@@ -454,8 +440,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "../../headless-delivery/headless-delivery-impl/rest-openapi.yaml#ContentStructure"
-                    description:
-                        ""
             tags: ["ContentStructure"]
     "/sites/{siteId}/display-page-templates":
         get:
