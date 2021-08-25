@@ -157,7 +157,7 @@ public class ContentStructure implements Serializable {
 	}
 
 	@GraphQLField(description = "The list of the content structure's fields.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected ContentStructureField[] contentStructureFields;
 
 	@Schema(description = "The content structure's creator.")
@@ -274,7 +274,7 @@ public class ContentStructure implements Serializable {
 	}
 
 	@GraphQLField(description = "The content structure's description.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String description;
 
 	@Schema(description = "The localized content structure's description.")
@@ -306,7 +306,7 @@ public class ContentStructure implements Serializable {
 	@GraphQLField(
 		description = "The localized content structure's description."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Map<String, String> description_i18n;
 
 	@Schema(description = "The content structure's ID.")
@@ -358,7 +358,7 @@ public class ContentStructure implements Serializable {
 	}
 
 	@GraphQLField(description = "The content structure's name.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String name;
 
 	@Schema(description = "The localized content structure's names.")
@@ -388,7 +388,7 @@ public class ContentStructure implements Serializable {
 	}
 
 	@GraphQLField(description = "The localized content structure's names.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Map<String, String> name_i18n;
 
 	@Schema(

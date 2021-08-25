@@ -90,7 +90,7 @@ public class ContentStructureField implements Serializable {
 	@GraphQLField(
 		description = "The form field's type (e.g., date, geolocation, text, etc.)."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String dataType;
 
 	@Schema(
@@ -122,7 +122,7 @@ public class ContentStructureField implements Serializable {
 	@GraphQLField(
 		description = "The form field's input control type (e.g., text, textarea, select field, etc.)."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String inputControl;
 
 	@Schema(description = "The form field's label.")
@@ -150,7 +150,7 @@ public class ContentStructureField implements Serializable {
 	}
 
 	@GraphQLField(description = "The form field's label.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String label;
 
 	@Schema(description = "The form field's labels.")
@@ -180,7 +180,7 @@ public class ContentStructureField implements Serializable {
 	}
 
 	@GraphQLField(description = "The form field's labels.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Map<String, String> label_i18n;
 
 	@Schema(
@@ -212,7 +212,7 @@ public class ContentStructureField implements Serializable {
 	@GraphQLField(
 		description = "A flag that indicates whether the content is accessible in different languages."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean localizable;
 
 	@Schema(
@@ -244,7 +244,7 @@ public class ContentStructureField implements Serializable {
 	@GraphQLField(
 		description = "A flag that indicates whether the form field can have several values."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean multiple;
 
 	@Schema(description = "The form field's name.")
@@ -270,7 +270,7 @@ public class ContentStructureField implements Serializable {
 	}
 
 	@GraphQLField(description = "The form field's name.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String name;
 
 	@Schema(
@@ -307,7 +307,7 @@ public class ContentStructureField implements Serializable {
 	@GraphQLField(
 		description = "The child content structure fields that depend on this form field."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected ContentStructureField[] nestedContentStructureFields;
 
 	@Schema(description = "The list of different possible values.")
@@ -336,7 +336,7 @@ public class ContentStructureField implements Serializable {
 	}
 
 	@GraphQLField(description = "The list of different possible values.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Option[] options;
 
 	@Schema(description = "The form field's default value.")
@@ -364,7 +364,7 @@ public class ContentStructureField implements Serializable {
 	}
 
 	@GraphQLField(description = "The form field's default value.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String predefinedValue;
 
 	@Schema(description = "The localized form field's default values.")
@@ -396,7 +396,7 @@ public class ContentStructureField implements Serializable {
 	}
 
 	@GraphQLField(description = "The localized form field's default values.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Map<String, String> predefinedValue_i18n;
 
 	@Schema(
@@ -428,7 +428,7 @@ public class ContentStructureField implements Serializable {
 	@GraphQLField(
 		description = "A flag that indicates whether this content can be rendered (and answered) several times."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean repeatable;
 
 	@Schema(
@@ -460,7 +460,7 @@ public class ContentStructureField implements Serializable {
 	@GraphQLField(
 		description = "A flag that indicates whether this form field is required."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean required;
 
 	@Schema(
@@ -492,7 +492,7 @@ public class ContentStructureField implements Serializable {
 	@GraphQLField(
 		description = "A flag that indicates whether the structure's end target should render the field label."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean showLabel;
 
 	@Override
