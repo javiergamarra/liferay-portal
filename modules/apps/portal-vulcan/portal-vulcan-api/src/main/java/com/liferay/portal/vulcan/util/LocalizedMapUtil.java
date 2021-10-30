@@ -15,7 +15,10 @@
 package com.liferay.portal.vulcan.util;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,8 +59,16 @@ public class LocalizedMapUtil {
 		return getI18nMap(true, localizedMap);
 	}
 
+	@Deprecated
+	/**
+	 * @deprecated
+	 */
 	public static Map<String, String> getLanguageIdMap(
 		Map<Locale, String> localizedMap) {
+
+		if (!GetterUtil.getBoolean(PropsUtil.get(PropsKeys.RETURN_LEGACY_LANGUAGE_MAPS), false)) {
+			return getI18nMap(localizedMap);
+		}
 
 		Map<String, String> languageIdMap = new HashMap<>();
 

@@ -3511,6 +3511,9 @@ public interface PropsKeys {
 	public static final String VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD =
 		"value.object.finder.cache.list.threshold";
 
+	public static final String RETURN_LEGACY_LANGUAGE_MAPS =
+		"return.legacy.language.maps";
+
 	public static final String VALUE_OBJECT_FINDER_THREAD_LOCAL_CACHE_MAX_SIZE =
 		"value.object.finder.thread.local.cache.max.size";
 
